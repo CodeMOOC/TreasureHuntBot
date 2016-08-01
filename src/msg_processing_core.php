@@ -45,19 +45,12 @@ if (isset($message['text'])) {
     $text = $message['text'];
 
     // Parse message and return correct response
-    parseMsgIn($text, $chat_id);
+    parseMsgIn($text, $message['chat'], $message['from'], $message_id);
+} else if (isset($message['photo'])) {
+    $photo = $message['photo'];
+    $caption = $message['caption'];
 
-    /*if (strpos($text, "/start") === 0) {
-        echo 'Received /start command!' . PHP_EOL;
-        telegram_send_message($chat_id, 'This is your first Telegram bot, welcome!');
-    }
-    else {
-        echo "Received message: $text" . PHP_EOL;
-
-        // Do something else...
-    }*/
-}
-else {
-    telegram_send_message($chat_id, 'Sorry, I understand only text messages at the moment!');
+} else {
+    telegram_send_message($chat_id, 'Non ho capito!');
 }
 ?>
