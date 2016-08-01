@@ -33,6 +33,9 @@
 //     "date": 1460036220,
 //     "text": "Text"
 //   }
+
+require_once 'bot-commands/msg_in.php';
+
 $message_id = $message['message_id'];
 $chat_id = $message['chat']['id'];
 $from_id = $message['from']['id'];
@@ -41,16 +44,18 @@ if (isset($message['text'])) {
     // We got an incoming text message
     $text = $message['text'];
 
-    if (strpos($text, "/start") === 0) {
-        echo 'Received /start command!' . PHP_EOL;
+    // Parse message and return correct response
+    parseMsgIn($text, $chat_id);
 
+    /*if (strpos($text, "/start") === 0) {
+        echo 'Received /start command!' . PHP_EOL;
         telegram_send_message($chat_id, 'This is your first Telegram bot, welcome!');
     }
     else {
         echo "Received message: $text" . PHP_EOL;
 
         // Do something else...
-    }
+    }*/
 }
 else {
     telegram_send_message($chat_id, 'Sorry, I understand only text messages at the moment!');
