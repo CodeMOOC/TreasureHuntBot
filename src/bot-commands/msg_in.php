@@ -3,23 +3,15 @@
 CONST MSG_START = "/start";
 CONST MSG_END = "/end";
 
-function parseMsgIn($text = "", $chat, $from, $message_id)
+function parseMsgIn($configuration)
 {
-    $chat_id = $chat['id'];
-
-    if (validInput($text, MSG_START)) {
-        echo 'Received /start command!' . PHP_EOL;
-        telegram_send_message($chat_id, 'This is your first Telegram bot, welcome!');
-    } else if (validInput($text, '/lorenz')) {
-        echo $text . ' puzza' . PHP_EOL;
-        telegram_send_message($chat_id, '/lorenz puzza!');
-    } else if (validInput($text, MSG_END)) {
-        echo 'Received /end command!' . PHP_EOL;
-        telegram_send_message($chat_id, 'Goodbye!');
+    if (validInput($configuration->text, '/lorenz')) {
+        echo $configuration->text . ' puzza' . PHP_EOL;
+        telegram_send_message($configuration->chat_id, '/lorenz puzza!');
     } else {
         // Not a recognized message
-        echo "Received message: $text" . PHP_EOL;
-        telegram_send_message($chat_id, $text);
+        echo "Received message: $configuration->text" . PHP_EOL;
+        telegram_send_message($configuration->chat_id, $configuration->text);
     }
 }
 

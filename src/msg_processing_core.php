@@ -35,22 +35,19 @@
 //   }
 
 require_once 'bot-commands/msg_in.php';
+require_once 'bot-commands/configuration.php';
 
-$message_id = $message['message_id'];
-$chat_id = $message['chat']['id'];
-$from_id = $message['from']['id'];
+$configuration = new Configuration($message);
 
-if (isset($message['text'])) {
+if (isset($configuration->text)) {
     // We got an incoming text message
-    $text = $message['text'];
-
     // Parse message and return correct response
-    parseMsgIn($text, $message['chat'], $message['from'], $message_id);
-} else if (isset($message['photo'])) {
-    $photo = $message['photo'];
-    $caption = $message['caption'];
+    parseMsgIn($configuration);
+} else if (isset($configuration->photo)) {
+    $photo = $configuration->photo;
+    $caption = $configuration->caption;
 
 } else {
-    telegram_send_message($chat_id, 'Non ho capito!');
+    telegram_send_message($configuration->chat_id, 'Non ho capito!');
 }
 ?>
