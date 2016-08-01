@@ -3,8 +3,10 @@
 CONST MSG_START = "/start";
 CONST MSG_END = "/end";
 
-function parseMsgIn($text = "", $chat_id)
+function parseMsgIn($text = "", $chat, $from, $message_id)
 {
+    $chat_id = $chat['id'];
+
     if (validInput($text, MSG_START)) {
         echo 'Received /start command!' . PHP_EOL;
         telegram_send_message($chat_id, 'This is your first Telegram bot, welcome!');
