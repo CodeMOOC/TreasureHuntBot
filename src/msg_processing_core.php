@@ -36,18 +36,18 @@
 
 require_once 'bot-commands/msg_in.php';
 require_once 'bot-commands/configuration.php';
+// Set default timezone for date operations
+date_default_timezone_set('UTC');
 
 $configuration = new Configuration($message);
 
 if (isset($configuration->text)) {
-    // We got an incoming text message
-    // Parse message and return correct response
+    // Incoming text message
     parseMsgIn($configuration);
 } else if (isset($configuration->photo)) {
-    $photo = $configuration->photo;
-    $caption = $configuration->caption;
-
+    // Incoming photo
+    parsePhotoIn($configuration);
 } else {
     telegram_send_message($configuration->chat_id, 'Non ho capito!');
 }
-?>
+
