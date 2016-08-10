@@ -28,9 +28,10 @@ function parseMsgIn($configuration)
 
 function parsePhotoIn($configuration)
 {
+    savePhoto($configuration);
     // TODO
     // Check if conversation point is requesting a photo
-    $conversation = db_getConversationList($configuration);
+    /*$conversation = db_getConversationList($configuration);
     if(isset($conversation)){
         switch ($conversation['state']){
             case CONV_START:
@@ -40,7 +41,7 @@ function parsePhotoIn($configuration)
             case CONV_NAME:
                 // TODO: save picture and complete signup
                 if(savePhoto($configuration)){
-                    completeSignup($configuration);
+                    //completeSignup($configuration);
                 } else {
                     // TODO: photo wasn't saved. Ask for it again.
                 }
@@ -52,7 +53,8 @@ function parsePhotoIn($configuration)
         }
     } else {
         // TODO: conversation never started - what to do?
-    }
+        echo "conversation with user has not been initiated" . PHP_EOL;
+    }*/
 }
 
 function validInput($text = '', $command = '')
@@ -196,6 +198,12 @@ function parseName($configuration){
  */
 function savePhoto($configuration)
 {
+    $filePath = getFilePath(getClient(), $configuration->photo[3]['file_id']);
+
+    if(empty($filePath))
+        return false;
+
+    getPicture(getClient(), $filePath);
     return true;
 }
 
