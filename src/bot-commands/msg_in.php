@@ -30,9 +30,12 @@ function parsePhotoIn($configuration)
 {
     // TODO
     // Check if conversation point is requesting a photo
+    echo "checking to see if photo is selfie for group registration..." . PHP_EOL;
     $conversation = db_getConversationList($configuration);
+
+    echo "conversation status: " . $conversation . PHP_EOL;
     if(isset($conversation)){
-        switch ($conversation['state']){
+        switch ($conversation){
             case CONV_START:
                 break;
             case CONV_PARTICIPANTS:
@@ -95,21 +98,22 @@ function startCommand($configuration)
 function createNewGroup($configuration)
 {
     $name = $configuration->from[TELEGRAM_FIRSTNAME] . " " . $configuration->from[TELEGRAM_LASTNAME];
-    $date = date();
+    $date = new DateTime('NOW');
+    $dateString = $date->format("Y-m-d H:i:s");
     $sql = "INSERT INTO groups (name, leader_telegram_id, leader_name, registration, participants_count, photo_path) 
-            VALUES ('new_group_registration', '$configuration->from_id', '$name', $date, 1, 'images/default.jpg')";
+            VALUES ('new_group_registration', '$configuration->from_id', '$name', '$dateString', '1', 'images/default.jpg')";
 
     if(db_perform_action($sql) > 0){
-
+        $val = CONV_START;
         $sql = "INSERT INTO conversation (telegram_user_id, state) 
-            VALUES ('$configuration->from_id', CONV_START)";
+            VALUES ('$configuration->from_id', $val)";
 
         if (db_perform_action($sql) > 0) {
             // 1 Save user ID and Name
             echo "created new conversation with user " . $configuration->from_id . PHP_EOL;
             // 2.a Ask user for participant number
             echo "created new group for conversation id " . $configuration->from_id . PHP_EOL;
-            $msg = $configuration->from[TELEGRAM_FIRSTNAME] . ", hai avviato la procedura di registrazione del tuo gruppo! Indicami il numero di componenti nella tua squadra (da 1 a 6 persone) in questo modo: " . REGISTRATION_MSG_COMPONENTS . " 6, e al posto di 6 inserisci il numero di componenti!";
+            $msg = $configuration->from[TELEGRAM_FIRSTNAME] . ", hai avviato la procedura di registrazione del tuo gruppo! Indicami il numero di componenti nella tua squadra (da 1 a 6 persone) in questo modo: " . MSG_COMPONENTS . " 6, e al posto di 6 inserisci il numero di componenti!";
             telegram_send_message($configuration->chat_id, $msg);
         } else {
             // TODO: coversation row exists or wasn't created.
@@ -128,22 +132,22 @@ function createNewGroup($configuration)
  * Parameters:
  *     @param Configuration $configuration - message data
  */
-function parseComponentsNumber($configuration)
-{
+function parseComponentsNumber($configuration){
     // 2.b Save group number of participants
-    $name = parseCommand($configuration->text, MSG_COMPONENTS);
-    echo "updated conversation." . PHP_EOL;
+    $num = parseCommand($configuration->text, MSG_COMPONENTS);
     $sql = "UPDATE groups 
-                SET name = '$name'
+                SET participants_count = '$num'
                 WHERE leader_telegram_id = $configuration->from_id";
     if (db_perform_action($sql) > 0) {
+        echo "updated group data." . PHP_EOL;
         // Update conversation
+        $val = CONV_PARTICIPANTS;
         $sql = "UPDATE conversation  
-            SET state = CONV_NAME
+            SET state = $val
             WHERE telegram_user_id = $configuration->from_id";
         if (db_perform_action($sql) > 0) {
-            // 4.a Ask user for selfie of group
-            $msg = "Il tuo gruppo ora si chiama" . $name . ". Manca solo un'ultima cosa: inviami un selfie con tutti i membri del tuo gruppo!";
+            echo "updated conversation." . PHP_EOL;
+            $msg = "Hai creato un gruppo da " . $num . " persone! Ora dimmi come vuoi chiamare il tuo gruppo: scrivi /nome NomeGruppo, ed al posto di NomeGruppo scrivi il nome del tuo gruppo!";
             telegram_send_message($configuration->chat_id, $msg);
         } else {
             // TODO: didn't update conversation data
@@ -162,21 +166,24 @@ function parseComponentsNumber($configuration)
  * Parameters:
  *     @param Configuration $configuration - message data
  */
-function parseName($configuration){
+function parseName($configuration)
+{
     // 3.b Save group name
-    $num = parseCommand($configuration->text, MSG_NAME);
+    $name = parseCommand($configuration->text, MSG_NAME);
     $sql = "UPDATE groups 
-                SET participants_count = '$num'
+                SET name = '$name'
                 WHERE leader_telegram_id = $configuration->from_id";
     if (db_perform_action($sql) > 0) {
-        echo "updated group data." . PHP_EOL;
+        echo "updated group." . PHP_EOL;
         // Update conversation
+        $val = CONV_NAME;
         $sql = "UPDATE conversation  
-            SET state = CONV_PARTICIPANTS
+            SET state = $val
             WHERE telegram_user_id = $configuration->from_id";
         if (db_perform_action($sql) > 0) {
             echo "updated conversation." . PHP_EOL;
-            $msg = "Hai creato un gruppo da " . $num . "persone! Ora dimmi come vuoi chiamare il tuo gruppo: scrivi /nome NomeGruppo, ed al posto di NomeGruppo scrivi il nome del tuo gruppo!";
+            // 4.a Ask user for selfie of group
+            $msg = "Il tuo gruppo è stato salvato come " . $name . "! Manca solo un'ultima cosa: inviami un selfie con tutti i membri del tuo gruppo!";
             telegram_send_message($configuration->chat_id, $msg);
         } else {
             // TODO: didn't update conversation data
@@ -186,7 +193,6 @@ function parseName($configuration){
         // TODO: couldn't update group participant data
         echo "failed updating group participant number." . PHP_EOL;
     }
-
 }
 
 /**
@@ -199,39 +205,61 @@ function parseName($configuration){
  */
 function savePhoto($configuration)
 {
-    // Get file path
-    $filePath = getFilePath(getClient(), $configuration->photo[3]['file_id']);
+    $picturePath = downloadPhoto($configuration);
 
-    if(empty($filePath)) {
-        echo "photo file path not received." . PHP_EOL;
+    if(empty($picturePath))
         return false;
-    }
-
-    // Get photo
-    $picturePath = getPicture(getClient(), $filePath, $configuration->photo[3]['file_id']);
-    if(empty($picturePath)) {
-        echo "Photo was not saved." . PHP_EOL;
-        return false;
-    }
 
     // update database
     $sql = "UPDATE groups 
                 SET photo_path = '$picturePath'
                 WHERE leader_telegram_id = $configuration->from_id";
     if (db_perform_action($sql) > 0) {
-        echo "updated conversation." . PHP_EOL;
-        $msg = "Grazie per il selfie! Il tuo gruppo è ora registrato. Ci rivedremo alla caccia al tesoro!";
-        telegram_send_message($configuration->chat_id, $msg);
+        echo "updated group." . PHP_EOL;
+        $var = CONV_END;
+        $sql = "UPDATE conversation  
+            SET state = $var
+            WHERE telegram_user_id = $configuration->from_id";
+        if (db_perform_action($sql) > 0) {
+            echo "updated conversation." . PHP_EOL;
+            $msg = "Grazie per il selfie! Il tuo gruppo è ora registrato. Ci rivediamo alla caccia al tesoro!";
+            telegram_send_message($configuration->chat_id, $msg);
+        } else {
+            // TODO: didn't update conversation data
+            echo "failed updating conversation with end of conversation status." . PHP_EOL;
+        }
+
     } else {
-        // TODO: didn't update conversation data
-        echo "failed updating conversation." . PHP_EOL;
+        // TODO: didn't update group data
+        echo "failed updating group with photo path." . PHP_EOL;
     }
     return true;
+}
+
+function downloadPhoto($configuration){
+    // Get file path
+    $filePath = getFilePath(getClient(), $configuration->photo[3]['file_id']);
+
+    if(empty($filePath)) {
+        echo "photo file path not received." . PHP_EOL;
+        return null;
+    }
+
+    // Get photo
+    $picturePath = getPicture(getClient(), $filePath, $configuration->photo[3]['file_id']);
+    if(empty($picturePath)) {
+        echo "Photo was not saved." . PHP_EOL;
+        return null;
+    }
+
+    return $picturePath;
 }
 
 function db_getConversationList($configuration)
 {
     // Get conversation list
-    $sql = "SELECT * FROM conversation WHERE telegram_user_id = $configuration->from_id";
+    echo "getting conversation: \n";
+    echo "conversation user id: " . $configuration->from_id . PHP_EOL;
+    $sql = "SELECT state FROM conversation WHERE telegram_user_id = '$configuration->from_id'";
     return db_scalar_query($sql);
 }
