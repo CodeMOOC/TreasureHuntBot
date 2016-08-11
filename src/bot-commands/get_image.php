@@ -21,8 +21,8 @@ function getClient()
  * https://api.telegram.org/bot<bot_token>/getFile
  *
  * Parameters:
- *     @param client $client - Guzzle RESTful client
- *     @param client $file_id - Photo file id received by telegram bot
+ *     @param Client $client - Guzzle RESTful client
+ *     @param string $file_id - Photo file id received by telegram bot
  * @return string file path
  */
 function getFilePath($client, $file_id) {
@@ -42,36 +42,40 @@ function getFilePath($client, $file_id) {
  * https://api.telegram.org/file/bot<token>/<file_path>
  *
  * Parameters:
- *     @param client $client - Guzzle RESTful client
- *     @param client $filePath - Picture file path, REMEMBER to put slash in front of it, i.e. '/<file_path>'
+ *     @param Client $client - Guzzle RESTful client
+ *     @param string $filePath - Picture file path, REMEMBER to put slash in front of it, i.e. '/<file_path>'
+ *     @param string $fileId - Picture file id, used as file name
  * @return File picture
  */
-function getPicture($client, $filePath) {
-    echo "picture file path: " . $filePath . PHP_EOL;
+function getPicture($client, $filePath, $fileId) {
+    echo "picture file path for telegram: " . $filePath . PHP_EOL;
     $uri = 'https://api.telegram.org/file/bot' . TELEGRAM_BOT_TOKEN . '/' . $filePath;
     $response = $client->request('GET', $uri);
 
-    return $response->getBody();
+    if($response->getStatusCode() != 200)
+        return null;
+
+    $filePath = savePhotoToDisk($response->getBody(), $fileId);
+    echo "saved photo to path: " . $filePath . PHP_EOL;
+    return $filePath;
 }
 
-/*
-function saveIssuedBadgesToFile($data){
+/**
+ * Function savePhotoToDisk
+ * Save photo to disc
+ *
+ * Parameters:
+ *     @param File $data - picture file
+ *     @param string $fileId - Picture file id, used as file name
+ * @return string File Path
+ */
+function savePhotoToDisk($data, $fileId){
     try {
-        $filename = "csv/generated/badge-list.csv";
-        $file = fopen($filename, "w");
-
-        // Insert data
-        foreach ($data as $var) {
-            $list = array($var['recipient_identifier'], $var['image']);
-            fputcsv($file, $list, ";");
-        }
-
-        fclose($file);
-
-        return "badge-list.csv";
+        $output = 'images/' . $fileId . ".jpg";
+        file_put_contents($output, $data);
+        return $output;
     } catch (Exception $e) {
-        return "";
+        echo "couldn't save photo to disk: " . $e . PHP_EOL;
+        return null;
     }
 }
- *
- */
