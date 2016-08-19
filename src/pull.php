@@ -49,4 +49,4 @@ $message = $first_update['message'];
 file_put_contents("pull-last-update.txt", $update_id);
 
 include 'msg_processing_core.php';
-?>
+
