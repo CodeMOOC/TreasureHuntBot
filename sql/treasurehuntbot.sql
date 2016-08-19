@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 19, 2016 at 07:29 PM
+-- Generation Time: Aug 19, 2016 at 10:48 PM
 -- Server version: 5.5.46-0+deb8u1
 -- PHP Version: 5.6.17-0+deb8u1
 
@@ -50,11 +50,11 @@ CREATE TABLE `assigned_riddles` (
 
 CREATE TABLE `groups` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `leader_telegram_id` int(11) NOT NULL,
   `leader_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `registration` datetime NOT NULL,
-  `photo_path` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `photo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -152,7 +152,8 @@ ALTER TABLE `assigned_riddles`
 -- Indexes for table `groups`
 --
 ALTER TABLE `groups`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `leader_telegram_id` (`leader_telegram_id`);
 
 --
 -- Indexes for table `locations`
