@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 01, 2016 at 05:11 PM
+-- Generation Time: Aug 19, 2016 at 05:51 PM
 -- Server version: 5.5.46-0+deb8u1
 -- PHP Version: 5.6.17-0+deb8u1
 
@@ -54,7 +54,8 @@ CREATE TABLE `groups` (
   `leader_telegram_id` int(11) NOT NULL,
   `leader_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `registration` datetime NOT NULL,
-  `participants_count` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
+  `participants_count` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `photo_path` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -110,10 +111,10 @@ CREATE TABLE `riddles` (
 CREATE TABLE `status` (
   `game_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
-  `state` enum('registered','location_assigned','location_reached','selfie_taken','last_riddle_assigned') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'registered',
-  `assigned_riddle_id` int(11) NOT NULL,
+  `state` enum('new','reg_verified','reg_name','reg_confirmed','reg_number','reg_ready','location_assigned','location_reached','selfie_taken','last_riddle_assigned') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'new',
+  `assigned_riddle_id` int(11) DEFAULT NULL,
   `track_id` int(11) NOT NULL,
-  `track_index` tinyint(3) UNSIGNED NOT NULL
+  `track_index` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
