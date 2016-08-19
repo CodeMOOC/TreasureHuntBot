@@ -7,8 +7,9 @@
  * Support library. Don't change a thing here.
  */
 
-include 'config.php';
-include 'lib_database.php';
+require_once('config.php');
+require_once('lib_database.php');
+require_once('lib_utility.php');
 
 /**
  * Mixes together parameters for an HTTP request.

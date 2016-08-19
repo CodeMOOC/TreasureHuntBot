@@ -1,11 +1,10 @@
 <?php
 /*
- * Telegram Bot Sample
+ * CodeMOOC TreasureHuntBot
  * ===================
  * UWiClab, University of Urbino
  * ===================
  * Basic message processing in pull mode for your bot.
- * Start editing here. =)
  */
 
 include('lib.php');
@@ -49,4 +48,3 @@ $message = $first_update['message'];
 file_put_contents("pull-last-update.txt", $update_id);
 
 include 'msg_processing_core.php';
-

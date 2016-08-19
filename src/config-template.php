@@ -27,4 +27,7 @@ define('DATABASE_NAME', '');
 define('DATABASE_USERNAME', '');
 define('DATABASE_PASSWORD', '');
 
+/* Game constant */
+define('CURRENT_GAME_ID', 1);
+
 ?>

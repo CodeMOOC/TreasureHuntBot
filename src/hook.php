@@ -1,11 +1,10 @@
 <?php
 /*
- * Telegram Bot Sample
+ * CodeMOOC TreasureHuntBot
  * ===================
  * UWiClab, University of Urbino
  * ===================
  * Basic message processing webhook end-point for your bot.
- * Start editing here. =)
  */
 
 include 'lib.php';
@@ -33,4 +32,3 @@ else {
         exit;
     }
 }
-?>
