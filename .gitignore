@@ -1,5 +1,5 @@
 .idea
 .vscode/*
-php_errors.log
-pull-last-update.txt
-config.php
+*/php_errors.log
+*/pull-last-update.txt
+*/config.php
