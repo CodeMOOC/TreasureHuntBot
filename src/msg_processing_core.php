@@ -36,18 +36,23 @@
 
 require_once 'bot-commands/msg_in.php';
 require_once 'bot-commands/configuration.php';
+require_once 'bot-commands/get_image.php';
+require_once 'vendor/autoload.php';
+
+// Set default timezone for date operations
+date_default_timezone_set('UTC');
 
 $configuration = new Configuration($message);
 
 if (isset($configuration->text)) {
-    // We got an incoming text message
-    // Parse message and return correct response
+    // Incoming text message
+    echo "received a text" . PHP_EOL;
     parseMsgIn($configuration);
 } else if (isset($configuration->photo)) {
-    $photo = $configuration->photo;
-    $caption = $configuration->caption;
-
+    // Incoming photo
+    echo "received a photo" . PHP_EOL;
+    parsePhotoIn($configuration);
 } else {
     telegram_send_message($configuration->chat_id, 'Non ho capito!');
 }
-?>
+

@@ -1,4 +1,16 @@
 <?php
+CONST TELEGRAM_MESSAGE = "message_id";
+CONST TELEGRAM_CHAT = "chat";
+CONST TELEGRAM_ID = "id";
+CONST TELEGRAM_DATE = "date";
+CONST TELEGRAM_FROM = "from";
+CONST TELEGRAM_TEXT = "text";
+CONST TELEGRAM_PHOTO = "photo";
+CONST TELEGRAM_CAPTION = "caption";
+CONST TELEGRAM_ENTITIES = "entities";
+CONST TELEGRAM_LOCATION = "location";
+CONST TELEGRAM_FIRSTNAME = "first_name";
+CONST TELEGRAM_LASTNAME = "last_name";
 
 class Configuration {
 
@@ -14,31 +26,31 @@ class Configuration {
     var $location;
 
     function __construct($message) {
-        $this->messageId = $message['chat']['id'];
-        $this->date = $message['date'];
-        $this->chat = $message['chat'];
-        $this->chat_id = $message['chat']['id'];
-        $this->from = $message['from'];
-        $this->from_id = $message['from']['id'];
+        $this->message_id = $message[TELEGRAM_MESSAGE];
+        $this->date = $message[TELEGRAM_DATE];
+        $this->chat = $message[TELEGRAM_CHAT];
+        $this->chat_id = $message[TELEGRAM_CHAT][TELEGRAM_ID];
+        $this->from = $message[TELEGRAM_FROM];
+        $this->from_id = $message[TELEGRAM_FROM][TELEGRAM_ID];
 
-        if(isset($message['text'])){
-            $this->text = $message['text'];
+        if(isset($message[TELEGRAM_TEXT])){
+            $this->text = $message[TELEGRAM_TEXT];
         }
 
-        if(isset($message['photo'])){
-            $this->photo = $message['photo'];
+        if(isset($message[TELEGRAM_PHOTO])){
+            $this->photo = $message[TELEGRAM_PHOTO];
         }
 
-        if(isset($message['caption'])){
-            $this->caption = $message['caption'];
+        if(isset($message[TELEGRAM_CAPTION])){
+            $this->caption = $message[TELEGRAM_CAPTION];
         }
 
-        if(isset($message['entities'])){
-            $this->entities = $message['entities'];
+        if(isset($message[TELEGRAM_ENTITIES])){
+            $this->entities = $message[TELEGRAM_ENTITIES];
         }
 
-        if(isset($message['location'])){
-            $this->entities = $message['location'];
+        if(isset($message[TELEGRAM_LOCATION])){
+            $this->entities = $message[TELEGRAM_LOCATION];
         }
     }
 }
