@@ -45,17 +45,6 @@ CREATE TABLE `assigned_riddles` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `conversation`
---
-
-CREATE TABLE `conversation` (
-  `telegram_user_id` int(11) NOT NULL,
-  `state` tinyint(3) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `groups`
 --
 
@@ -157,12 +146,6 @@ ALTER TABLE `assigned_locations`
 ALTER TABLE `assigned_riddles`
   ADD PRIMARY KEY (`game_id`,`riddle_id`,`group_id`),
   ADD KEY `assriddles_group_constraint` (`group_id`);
-
---
--- Indexes for table `conversation`
---
-ALTER TABLE `conversation`
-  ADD PRIMARY KEY (`telegram_user_id`);
 
 --
 -- Indexes for table `groups`
