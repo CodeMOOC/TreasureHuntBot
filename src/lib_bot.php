@@ -7,6 +7,8 @@
  * Bot control logic.
  */
 
+require_once('model/context.php');
+
 /**
  * Picks a random track.
  * @return int Random track ID.
@@ -37,7 +39,33 @@ function bot_register_new_group($context) {
         return false;
     }
 
+    $context->refresh();
+
     return true;
+}
+
+function bot_update_group_name($context, $new_name) {
+    $updates = db_perform_action("UPDATE `groups` SET `name` = '{$new_name}' WHERE `id` = {$context->get_group_id()}");
+
+    if($updates === 1) {
+        $context->refresh();
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function bot_update_group_state($context, $new_state, $new_name = null) {
+    $updates = db_perform_action("UPDATE `status` SET `state` = '{$new_state}' WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
+
+    if($updates === 1) {
+        $context->refresh();
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 ?>

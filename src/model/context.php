@@ -30,25 +30,7 @@ class Context {
             die('Message variable is not an IncomingMessage instance');
 
         $this->message = $message;
-
-        $last_group = db_row_query("SELECT id, name FROM `groups` WHERE `leader_telegram_id` = {$this->message->from_id} ORDER BY `registration` DESC LIMIT 1");
-        if(!$last_group) {
-            return;
-        }
-        $this->group_id = $last_group[0];
-        $this->group_name = $last_group[1];
-
-        $group_state= db_row_query("SELECT `participants_count`, `state`, `assigned_riddle_id` FROM `status` WHERE `game_id` = " . CURRENT_GAME_ID . " AND `group_id` = {$this->group_id}");
-        if($group_state) {
-            //Existing group state
-            $this->group_state = $group_state[1];
-            $this->assigned_riddle_id = $group_state[2];
-        }
-        else {
-            //Group has no state, assign defaults
-            $this->group_state = 'new';
-            $this->assigned_riddle_id = null;
-        }
+        $this->refresh();
     }
 
     /* True if the talking user is an admin */
@@ -73,12 +55,27 @@ class Context {
         return $this->message;
     }
 
+    /**
+     * Gets a cleaned-up response from the user, if any.
+     */
+    function get_response() {
+        $text = $this->message->text;
+        if($text)
+            return extract_response($text);
+        else
+            return '';
+    }
+
     function get_group_id() {
         return $this->group_id;
     }
 
     function get_group_name() {
         return $this->group_name;
+    }
+
+    function get_group_state() {
+        return $this->group_state;
     }
 
     /**
@@ -94,6 +91,33 @@ class Context {
                 'disable_web_page_preview' => true
             )
         );
+    }
+
+    /**
+     * Refreshes information about the context from the DB.
+     */
+    function refresh() {
+        $last_group = db_row_query("SELECT id, name FROM `groups` WHERE `leader_telegram_id` = {$this->message->from_id} ORDER BY `registration` DESC LIMIT 1");
+        if(!$last_group) {
+            return;
+        }
+        $this->group_id = $last_group[0];
+        if($last_group[1])
+            $this->group_name = $last_group[1];
+        else
+            $this->group_name = 'Senza nome';
+
+        $group_state= db_row_query("SELECT `participants_count`, `state`, `assigned_riddle_id` FROM `status` WHERE `game_id` = " . CURRENT_GAME_ID . " AND `group_id` = {$this->group_id}");
+        if($group_state) {
+            //Existing group state
+            $this->group_state = $group_state[1];
+            $this->assigned_riddle_id = $group_state[2];
+        }
+        else {
+            //Group has no state, assign defaults
+            $this->group_state = 'new';
+            $this->assigned_riddle_id = null;
+        }
     }
 
 }

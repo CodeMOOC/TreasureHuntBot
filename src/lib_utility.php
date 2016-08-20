@@ -32,4 +32,11 @@ function extract_command_payload($text = '', $command = '') {
     return substr($text, strlen($command) + 1);
 }
 
+/**
+ * Extracts a cleaned-up response from the user.
+ */
+function extract_response($text) {
+    return mb_strtolower(trim($text, ' /,.-!?;:\'"'));
+}
+
 ?>

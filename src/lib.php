@@ -245,7 +245,8 @@ function telegram_send_photo($chat_id, $photo_path, $caption, $parameters = null
     }
 
     $parameters = prepare_parameters($parameters, array(
-        'chat_id' => $chat_id
+        'chat_id' => $chat_id,
+        'caption' => $caption
     ));
 
     $handle = prepare_curl_api_request(TELEGRAM_API_URI_PHOTO, 'POST', $parameters, array(

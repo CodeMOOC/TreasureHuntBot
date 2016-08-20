@@ -10,6 +10,7 @@
 
 require_once 'model/context.php';
 require_once 'msg_processing_commands.php';
+require_once 'msg_processing_registration.php';
 //require_once 'bot-commands/msg_in.php';
 //require_once 'bot-commands/get_image.php';
 //require_once 'vendor/autoload.php';
@@ -27,6 +28,11 @@ if (isset($in->text)) {
 
     // Base commands
     if(msg_processing_commands($context)) {
+        return;
+    }
+
+    // Registration responses
+    if(msg_processing_handle_group_response($context)) {
         return;
     }
 
