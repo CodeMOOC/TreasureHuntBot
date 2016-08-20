@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 20, 2016 at 01:28 AM
+-- Generation Time: Aug 20, 2016 at 11:44 AM
 -- Server version: 5.5.46-0+deb8u1
 -- PHP Version: 5.6.17-0+deb8u1
 
@@ -192,6 +192,15 @@ ALTER TABLE `tracks`
   ADD PRIMARY KEY (`game_id`,`id`,`location_id`,`order_index`),
   ADD KEY `track_location_constraint` (`game_id`,`location_id`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `groups`
+--
+ALTER TABLE `groups`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
