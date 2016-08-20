@@ -28,7 +28,7 @@ else {
         include 'msg_processing_core.php';
     }
     else {
-        error_log('Bad message received (no message field)');
+        error_log('Unknown message received (no message field)');
         exit;
     }
 }

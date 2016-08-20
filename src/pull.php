@@ -47,4 +47,9 @@ $message = $first_update['message'];
 // Update persistent store with latest update ID received
 file_put_contents("pull-last-update.txt", $update_id);
 
+if(!$message) {
+    echo 'Non-message update received.' . PHP_EOL;
+    die();
+}
+
 include 'msg_processing_core.php';
