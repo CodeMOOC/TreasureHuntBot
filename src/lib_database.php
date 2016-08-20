@@ -1,6 +1,6 @@
 <?php
 /**
- * Telegram Bot Sample
+ * CodeMOOC TreasureHuntBot
  * ===================
  * UWiClab, University of Urbino
  * ===================
@@ -78,7 +78,9 @@ function db_open_connection($quick = false) {
  * Performs an "action query" (UPDATE, INSERT, REPLACE, or similar)
  * and returns the number of rows affected on success.
  * @param string $sql SQL query to perform.
- * @return bool | int Number of affected rows or false on failure.
+ * @return bool | int Auto-generated ID for INSERT or UPDATE queries, if
+ *                    applicable, otherwise the number of affected rows
+ *                    or false on failure.
  */
 function db_perform_action($sql) {
     $connection = db_open_connection();
@@ -86,6 +88,11 @@ function db_perform_action($sql) {
     if(!mysqli_real_query($connection, $sql)) {
         db_default_error_logging($connection, "Failed to perform query ($sql)");
         return false;
+    }
+
+    $generated_id = mysqli_insert_id($connection);
+    if($generated_id > 0) {
+        return $generated_id;
     }
 
     $affected_rows = mysqli_affected_rows($connection);

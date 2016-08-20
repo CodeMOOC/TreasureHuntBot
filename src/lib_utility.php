@@ -1,6 +1,6 @@
 <?php
 /**
- * Telegram Bot Sample
+ * CodeMOOC TreasureHuntBot
  * ===================
  * UWiClab, University of Urbino
  * ===================

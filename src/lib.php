@@ -1,6 +1,6 @@
 <?php
 /**
- * Telegram Bot Sample
+ * CodeMOOC TreasureHuntBot
  * ===================
  * UWiClab, University of Urbino
  * ===================
@@ -8,6 +8,7 @@
  */
 
 require_once('config.php');
+require_once('lib_bot.php');
 require_once('lib_database.php');
 require_once('lib_utility.php');
 
