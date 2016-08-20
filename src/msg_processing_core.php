@@ -25,9 +25,13 @@ if (isset($in->text)) {
     // Incoming text message
     echo "Text message: '{$in->text}'" . PHP_EOL;
 
+    // Base commands
     if(msg_processing_commands($context)) {
         return;
     }
+
+    // ?
+    $context->reply("Scusa, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.");
 } else if (isset($in->photo)) {
     // Incoming photo
     echo "Photo received" . PHP_EOL;

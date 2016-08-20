@@ -7,7 +7,7 @@
  * Class wrapping the bot's context in this run.
  */
 
-require_once('lib_database.php');
+require_once('lib.php');
 
 require_once('incoming_message.php');
 
@@ -79,6 +79,21 @@ class Context {
 
     function get_group_name() {
         return $this->group_name;
+    }
+
+    /**
+     * Replies to the current incoming message.
+     * Enables markdown parsing and disables web previews by default.
+     */
+    function reply($message) {
+        return telegram_send_message(
+            $this->get_chat_id(),
+            $message,
+            array(
+                'parse_mode' => 'Markdown',
+                'disable_web_page_preview' => true
+            )
+        );
     }
 
 }
