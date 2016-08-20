@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 19, 2016 at 10:48 PM
+-- Generation Time: Aug 20, 2016 at 01:28 AM
 -- Server version: 5.5.46-0+deb8u1
 -- PHP Version: 5.6.17-0+deb8u1
 
@@ -66,6 +66,7 @@ CREATE TABLE `groups` (
 CREATE TABLE `locations` (
   `game_id` int(11) NOT NULL,
   `id` int(11) NOT NULL,
+  `code` char(16) COLLATE utf8_unicode_ci NOT NULL,
   `lat` float NOT NULL,
   `lng` float NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL
@@ -159,7 +160,8 @@ ALTER TABLE `groups`
 -- Indexes for table `locations`
 --
 ALTER TABLE `locations`
-  ADD PRIMARY KEY (`game_id`,`id`);
+  ADD PRIMARY KEY (`game_id`,`id`),
+  ADD KEY `game_id` (`game_id`,`code`);
 
 --
 -- Indexes for table `log`
