@@ -30,4 +30,7 @@ define('DATABASE_PASSWORD', '');
 /* Game constant */
 define('CURRENT_GAME_ID', 1);
 
+/* Pre-set codes (16 characters) */
+define('CODE_REGISTER', '');
+
 ?>

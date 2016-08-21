@@ -8,6 +8,7 @@
  * used by both pull and push scripts.
  */
 
+require_once 'text.php';
 require_once 'model/context.php';
 require_once 'msg_processing_commands.php';
 require_once 'msg_processing_registration.php';
@@ -37,7 +38,7 @@ if (isset($in->text)) {
     }
 
     // ?
-    $context->reply("Scusa, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.");
+    $context->reply(TEXT_FALLBACK_RESPONSE);
 } else if (isset($in->photo)) {
     // Incoming photo
     echo "Photo received" . PHP_EOL;

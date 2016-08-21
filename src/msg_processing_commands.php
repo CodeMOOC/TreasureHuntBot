@@ -20,12 +20,32 @@ function msg_processing_commands($context) {
     $text = $context->get_message()->text;
 
     if(starts_with($text, '/help')) {
-        $context->reply('Help message.');
+        $context->reply(TEXT_CMD_HELP);
 
         return true;
     }
     else if(starts_with($text, '/reset')) {
-        $context->reply('Reset command received. Not implemented.');
+        $context->reply(TEXT_CMD_RESET);
+
+        return true;
+    }
+    else if(starts_with($text, '/start ' . CODE_REGISTER)) {
+        if(null === $context->get_group_id()) {
+            if(!bot_register_new_group($context)) {
+                //TODO: generalize this
+                $context->reply("Qualcosa è andato storto. Chi di dovere è stato avvertito.");
+            }
+            else {
+                $context->reply(TEXT_CMD_REGISTER_CONFIRM);
+
+                msg_processing_handle_group_state($context);
+            }
+        }
+        else {
+            $context->reply(TEXT_CMD_REGISTER_REGISTERED);
+
+            msg_processing_handle_group_state($context);
+        }
 
         return true;
     }
@@ -33,12 +53,12 @@ function msg_processing_commands($context) {
         $payload = extract_command_payload($text, '/start');
         if($payload === '') {
             if(null !== $context->get_group_id()) {
-                $context->reply("Ciao, {$context->get_message()->get_full_sender_name()}! Sei già registrato con il gruppo _'{$context->get_group_name()}'_.");
+                $context->reply(TEXT_CMD_START_REGISTERED);
 
                 msg_processing_handle_group_state($context);
             }
             else {
-                $context->reply("Ciao, {$context->get_message()->get_full_sender_name()}! Benvenuto alla caccia al tesoro *Urbino Code Hunting Game*. Per partecipare è necessario registrarsi, secondo le [modalità descritte sul sito](http://codemooc.org/urbino-code-hunting/), inviando il comando /register in questa chat.");
+                $context->reply(TEXT_CMD_START_NEW);
             }
         }
         else if(strlen($payload) === 16) {
@@ -48,26 +68,6 @@ function msg_processing_commands($context) {
         else {
             echo "Unknown payload ({$payload})." . PHP_EOL;
             error_log("Unsupported /start payload ({$payload})");
-        }
-
-        return true;
-    }
-    else if(starts_with($text, '/register')) {
-        if(null === $context->get_group_id()) {
-            if(!bot_register_new_group($context)) {
-                //TODO: generalize this
-                $context->reply("Qualcosa è andato storto. Chi di dovere è stato avvertito.");
-            }
-            else {
-                $context->reply("Ok, ti sei registrato per l'evento!");
-
-                msg_processing_handle_group_state($context);
-            }
-        }
-        else {
-            $context->reply("Sei già registrato con il gruppo _'{$context->get_group_name()}'_, non c'è bisogno di registrarsi nuovamente.");
-
-            msg_processing_handle_group_state($context);
         }
 
         return true;
