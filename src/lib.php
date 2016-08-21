@@ -20,17 +20,7 @@ require_once('lib_utility.php');
  * @return array Final mixed parameters.
  */
 function prepare_parameters($orig_params, $add_params) {
-    if(!$orig_params || !is_array($orig_params)) {
-        $orig_params = array();
-    }
-
-    if($add_params && is_array($add_params)) {
-        foreach ($add_params as $key => &$val) {
-            $orig_params[$key] = $val;
-        }
-    }
-
-    return $orig_params;
+    return unite_arrays($orig_params, $add_params);
 }
 
 /**
