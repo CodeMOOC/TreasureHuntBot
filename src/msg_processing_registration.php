@@ -85,8 +85,11 @@ function msg_processing_handle_group_response($context) {
                 bot_update_group_name($context, $name);
                 bot_update_group_state($context, 'reg_name');
 
+                $groups_count = bot_get_registered_groups($context);
+
                 $context->reply(TEXT_REGISTRATION_RESPONSE_VERIFIED_OK, array(
-                    '%NAME%' => $name
+                    '%NAME%' => $name,
+                    '%COUNT%' => $groups_count
                 ));
 
                 msg_processing_handle_group_state($context);
@@ -99,6 +102,7 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case 'reg_name':
+            //Nop
             msg_processing_handle_group_state($context);
 
             return true;

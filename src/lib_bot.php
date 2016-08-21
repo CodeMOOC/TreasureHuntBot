@@ -73,4 +73,11 @@ function bot_update_group_state($context, $new_state, $new_name = null) {
     }
 }
 
+/**
+ * Gets the count of registered groups (verified and with name).
+ */
+function bot_get_registered_groups($context) {
+    return db_scalar_query("SELECT count(*) FROM `status` WHERE `game_id` = {$context->get_game_id()} AND `state` NOT IN('', 'new', 'reg_verified')");
+}
+
 ?>
