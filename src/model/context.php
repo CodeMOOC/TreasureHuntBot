@@ -82,10 +82,17 @@ class Context {
      * Replies to the current incoming message.
      * Enables markdown parsing and disables web previews by default.
      */
-    function reply($message) {
+    function reply($message, $additional_values = null) {
+        $hydration_values = array(
+            '%FULL_NAME%' => $this->get_message()->get_full_sender_name(),
+            '%GROUP_NAME%' => $this->get_group_name()
+        );
+
+        $hydrated = hydrate($message, unite_arrays($hydration_values, $additional_values));
+
         return telegram_send_message(
             $this->get_chat_id(),
-            $message,
+            $hydrated,
             array(
                 'parse_mode' => 'Markdown',
                 'disable_web_page_preview' => true

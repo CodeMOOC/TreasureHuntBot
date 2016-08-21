@@ -85,12 +85,16 @@ function msg_processing_handle_group_response($context) {
                 bot_update_group_name($context, $name);
                 bot_update_group_state($context, 'reg_name');
 
-                $context->reply(TEXT_REGISTRATION_RESPONSE_VERIFIED_OK);
+                $context->reply(TEXT_REGISTRATION_RESPONSE_VERIFIED_OK, array(
+                    '%NAME%' => $name
+                ));
 
                 msg_processing_handle_group_state($context);
             }
             else {
-                $context->reply(TEXT_REGISTRATION_RESPONSE_VERIFIED_INVALID);
+                $context->reply(TEXT_REGISTRATION_RESPONSE_VERIFIED_INVALID, array(
+                    '%NAME%' => $name
+                ));
             }
             return true;
 

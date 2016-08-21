@@ -40,6 +40,20 @@ function extract_response($text) {
 }
 
 /**
+ * Hydrates a string value using a map of key/values.
+ */
+function hydrate($text, $map = null) {
+    if(!$map || !is_array($map)) {
+        $map = array();
+    }
+
+    foreach($map as $from => $to) {
+        $text = str_replace($from, $to, $text);
+    }
+    return $text;
+}
+
+/**
  * Unite two arrays, even if they are null.
  * Always returns a valid array.
  */
