@@ -15,7 +15,7 @@
  * @return bool True if $text starts with $substring.
  */
 function starts_with($text = '', $substring = '') {
-    return (strpos(mb_strtolower($text), $substring) === 0);
+    return (strpos(mb_strtolower($text), mb_strtolower($substring)) === 0);
 }
 
 /**
@@ -25,11 +25,11 @@ function starts_with($text = '', $substring = '') {
  * @return string Command payload, if any, or empty string.
  */
 function extract_command_payload($text = '', $command = '') {
-    if(strlen($command) >= strlen($text)) {
+    if(mb_strlen($command) >= mb_strlen($text)) {
         return '';
     }
 
-    return substr($text, strlen($command) + 1);
+    return substr($text, mb_strlen($command) + 1);
 }
 
 /**

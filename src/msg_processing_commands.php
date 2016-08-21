@@ -61,7 +61,7 @@ function msg_processing_commands($context) {
                 $context->reply(TEXT_CMD_START_NEW);
             }
         }
-        else if(strlen($payload) === 16) {
+        else if(mb_strlen($payload) === 16) {
             //Special treasure-hunt code sent
             echo "Treasure hunt code: {$payload}." . PHP_EOL;
         }
