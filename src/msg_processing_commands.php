@@ -29,7 +29,7 @@ function msg_processing_commands($context) {
 
         return true;
     }
-    else if(starts_with($text, '/start ' . CODE_REGISTER)) {
+    else if($text === '/start ' . CODE_REGISTER) {
         if(null === $context->get_group_id()) {
             if(!bot_register_new_group($context)) {
                 //TODO: generalize this
