@@ -30,7 +30,7 @@ const TEXT_CMD_START_REGISTERED = "Bentornato, %FULL_NAME%! Sei già registrato 
 
 // First response after receiving "/start REGISTER_CODE" command
 const TEXT_CMD_REGISTER_CONFIRM = "Perfetto, ti sei ora registrato per l'evento! 🎉";
-const TEXT_CMD_REGISTER_REGISTERED = "Sei registrato per l'evento.";
+const TEXT_CMD_REGISTER_REGISTERED = "Sei registrato per l'evento. 👍";
 
 // States and messages for the registration process
 const TEXT_REGISTRATION_STATE_NEW = "Ma sei veramente pronto per il gioco? Per esserne certi ti farò una domanda semplice per iniziare. (Le regole sono basate su [CodyRoby](http://codemooc.org/codyroby/), che sicuramente conoscerai.)";
@@ -42,7 +42,7 @@ const TEXT_REGISTRATION_STATE_VERIFIED = "Ora devi soltanto assegnare un nome av
 const TEXT_REGISTRATION_RESPONSE_VERIFIED_OK = "Ok, _\"%NAME%\"_ suona bene!";
 const TEXT_REGISTRATION_RESPONSE_VERIFIED_INVALID = "Non mi sembra un nome valido. Come vuoi che il tuo gruppo si chiami?";
 
-const TEXT_REGISTRATION_STATE_NAME = "Sei registrato col gruppo _\"%GROUP_NAME%\"_. Riceverai le prossime istruzioni nei prossimi giorni… non rimane che aspettare. ⏰";
+const TEXT_REGISTRATION_STATE_NAME = "Sei attualmente registrato per l'evento col gruppo _\"%GROUP_NAME%\"_. Riceverai le prossime istruzioni nei prossimi giorni… non rimane che aspettare. ⏰";
 
 // Default response for anything else
 const TEXT_FALLBACK_RESPONSE = "Scusa, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.";
