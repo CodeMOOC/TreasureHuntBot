@@ -104,27 +104,27 @@ class Context {
      * Refreshes information about the context from the DB.
      */
     function refresh() {
-        $last_group = db_row_query("SELECT id, name FROM `groups` WHERE `leader_telegram_id` = {$this->message->from_id} ORDER BY `registration` DESC LIMIT 1");
-        if(!$last_group) {
+        $group_id = db_scalar_query("SELECT `id` FROM `identities` WHERE `telegram_id` = {$this->get_user_id()}");
+        if($group_id === null || $group_id === false) {
+            //No identity registered
             return;
         }
-        $this->group_id = $last_group[0];
-        if($last_group[1])
-            $this->group_name = $last_group[1];
-        else
-            $this->group_name = 'Senza nome';
 
-        $group_state= db_row_query("SELECT `participants_count`, `state`, `assigned_riddle_id` FROM `status` WHERE `game_id` = " . CURRENT_GAME_ID . " AND `group_id` = {$this->group_id}");
-        if($group_state) {
-            //Existing group state
-            $this->group_state = $group_state[1];
-            $this->assigned_riddle_id = $group_state[2];
+        $state = db_row_query("SELECT `group_id`, `name`, `participants_count`, `state`, `assigned_riddle_id` FROM `status` WHERE `game_id` = " . CURRENT_GAME_ID . " AND `group_id` = {$group_id}");
+        if($state === null) {
+            //No registration
+            return;
+        }
+
+        $this->group_id = intval($state[0]);
+        if($state[1]) {
+            $this->group_name = $state[1];
         }
         else {
-            //Group has no state, assign defaults
-            $this->group_state = 'new';
-            $this->assigned_riddle_id = null;
+            $this->group_name = TEXT_UNNAMED_GROUP;
         }
+        $this->group_state = $state[3];
+        $this->assigned_riddle_id = $state[4];
     }
 
 }

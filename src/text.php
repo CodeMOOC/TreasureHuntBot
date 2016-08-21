@@ -16,6 +16,8 @@
  * You may also use most Unicode emojis in the text.
  */
 
+const TEXT_UNNAMED_GROUP = "Senza nome";
+
 // Response to "/help"
 const TEXT_CMD_HELP = "Messaggio di aiuto.";
 
