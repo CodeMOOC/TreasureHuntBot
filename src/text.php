@@ -42,7 +42,7 @@ const TEXT_REGISTRATION_STATE_VERIFIED = "Ora devi soltanto assegnare un nome av
 const TEXT_REGISTRATION_RESPONSE_VERIFIED_OK = "Ok, “%NAME%” suona bene! Questo è il %COUNT%° gruppo a registrarsi per l’evento.";
 const TEXT_REGISTRATION_RESPONSE_VERIFIED_INVALID = "Non mi sembra un nome valido. Come vuoi che il tuo gruppo si chiami?";
 
-const TEXT_REGISTRATION_STATE_NAME = "La tua partecipazione col gruppo “%GROUP_NAME%” è stata prenotata. Le registrazioni verranno confermate successivamente, in base all’ordine di prenotazione. Riceverai le prossime istruzioni nei prossimi giorni… non rimane che aspettare! ⏰";
+const TEXT_REGISTRATION_STATE_NAME = "La tua partecipazione col gruppo “%GROUP_NAME%” è stata prenotata. Nei prossimi giorni riceverai un messaggio per corfermare la partecipazione della tua squadra. Solo se risponderai a quel messaggo di conferma tra i primi 30 la tua squadra sarà effettivamente registrata e potrà partecipare ... non rimane che aspettare e studiare il [regolamento](http://codemooc.org/urbino-code-hunting/)! ⏰";
 
 // Default response for anything else
 const TEXT_FALLBACK_RESPONSE = "Scusa, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.";
