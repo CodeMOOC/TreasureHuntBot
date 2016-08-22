@@ -30,7 +30,7 @@ function msg_processing_commands($context) {
         return true;
     }
     else if($text === '/start ' . CODE_REGISTER) {
-        if(null === $context->get_group_id()) {
+        if(null === $context->get_group_state()) {
             if(!bot_register_new_group($context)) {
                 //TODO: generalize this
                 $context->reply("Qualcosa è andato storto. Chi di dovere è stato avvertito.");
@@ -52,7 +52,7 @@ function msg_processing_commands($context) {
     else if(starts_with($text, '/start')) {
         $payload = extract_command_payload($text, '/start');
         if($payload === '') {
-            if(null !== $context->get_group_id()) {
+            if(null !== $context->get_group_state()) {
                 $context->reply(TEXT_CMD_START_REGISTERED);
 
                 msg_processing_handle_group_state($context);
