@@ -87,6 +87,8 @@ function msg_processing_handle_group_response($context) {
 
                 $groups_count = bot_get_registered_groups($context);
 
+                Logger::info("Registered group {$name} as {$groups_count}th group", __FILE__, $context, true);
+
                 $context->reply(TEXT_REGISTRATION_RESPONSE_VERIFIED_OK, array(
                     '%NAME%' => $name,
                     '%COUNT%' => $groups_count

@@ -81,7 +81,7 @@ CREATE TABLE `log` (
   `timestamp` datetime NOT NULL,
   `tag` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `message` text COLLATE utf8_unicode_ci NOT NULL,
-  `severity` tinyint(1) UNSIGNED NOT NULL,
+  `severity` tinyint(3) UNSIGNED NOT NULL,
   `group_id` int(11) DEFAULT NULL,
   `telegram_chat_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

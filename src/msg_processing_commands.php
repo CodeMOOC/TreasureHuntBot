@@ -61,12 +61,10 @@ function msg_processing_commands($context) {
             }
         }
         else if(mb_strlen($payload) === 16) {
-            //Special treasure-hunt code sent
-            echo "Treasure hunt code: {$payload}." . PHP_EOL;
+            Logger::debug("Treasure hunt code: '{$payload}'", __FILE__, $context);
         }
         else {
-            echo "Unknown payload ({$payload})." . PHP_EOL;
-            error_log("Unsupported /start payload ({$payload})");
+            Logger::warning("Unsupported /start payload received: '{$payload}'", __FILE__, $context);
         }
 
         return true;

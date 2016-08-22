@@ -7,7 +7,8 @@
  * Basic message processing in pull mode for your bot.
  */
 
-include('lib.php');
+require_once('log.php');
+require_once('lib.php');
 
 // Reload latest update ID received (if any) from persistent store
 $last_update = @file_get_contents("pull-last-update.txt");
@@ -18,18 +19,16 @@ $last_update = @file_get_contents("pull-last-update.txt");
 //       to enable (the request will hang until timeout or until a message is received).
 $content = telegram_get_updates(intval($last_update) + 1, 1, 60);
 if($content === false) {
-    error_log('Failed to fetch updates from API');
-    exit;
+    Logger::fatal('Failed to fetch updates from API');
 }
 if(count($content) == 0) {
-    echo 'No new messages.' . PHP_EOL;
+    Logger::debug('No new messages');
     exit;
 }
 
 $first_update = $content[0];
 
-echo 'New update received:' . PHP_EOL;
-print_r($first_update);
+Logger::debug('New update: ' . print_r($first_update, true));
 
 // Updates have the following structure:
 // [
@@ -48,8 +47,7 @@ $message = $first_update['message'];
 file_put_contents("pull-last-update.txt", $update_id);
 
 if(!$message) {
-    echo 'Non-message update received.' . PHP_EOL;
-    die();
+    Logger::fatal('Non-message update received');
 }
 
 include 'msg_processing_core.php';

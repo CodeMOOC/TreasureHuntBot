@@ -16,35 +16,39 @@ require_once('model/context.php');
 function bot_pick_random_track_id($context) {
     $track_id = db_scalar_query("SELECT DISTINCT(id) FROM `tracks` WHERE `game_id` = {$context->get_game_id()} ORDER BY RAND() LIMIT 1");
     if($track_id === null) {
-        echo "Unable to pick track (no track?)." . PHP_EOL;
-        return null;
+        Logger::fatal('Unable to pick random track (no tracks in DB?)', __FILE__, $context);
     }
 
     //TODO: Safety check on track length
     $track_length = db_scalar_query("SELECT count(*) FROM `tracks` WHERE `game_id` = {$context->get_game_id()} AND `id` = {$track_id}");
 
-    echo "Picked random track ID {$track_id} of length {$track_length}." . PHP_EOL;
+    Logger::debug("Picked random track ID {$track_id} of length {$track_length}", __FILE__, $context);
 
     return $track_id;
 }
 
 function bot_register_new_group($context) {
+    Logger::debug("Attempting to register new group for user {$context->get_user_id()}", __FILE__, $context);
+
     $group_id = db_scalar_query("SELECT `id` FROM `identities` WHERE `telegram_id` = {$context->get_user_id()}");
     if($group_id === null) {
-        //New identity
+        Logger::debug('Registering new identity', __FILE__, $context);
+
         $group_id = db_perform_action("INSERT INTO `identities` (`id`, `telegram_id`, `full_name`, `last_registration`) VALUES(DEFAULT, {$context->get_user_id()}, '{$context->get_message()->get_full_sender_name()}', NOW())");
     }
     if($group_id === false) {
-        error_log("Failed to register new group for user {$context->get_user_id()}");
+        Logger::error("Failed to register new group for user {$context->get_user_id()}", __FILE__, $context);
         return false;
     }
 
     if(db_perform_action("INSERT INTO `status` VALUES({$context->get_game_id()}, {$group_id}, NULL, 0, NULL, " . STATE_NEW . ", NULL, NULL, 0, NOW(), NOW())") === false) {
-        error_log("Failed to register group status for group {$group_id}");
+        Logger::error("Failed to register group status for group {$group_id}", __FILE__, $context);
         return false;
     }
 
     $context->refresh();
+
+    Logger::info("New group registered for user {$context->get_user_id()}", __FILE__, $context);
 
     return true;
 }

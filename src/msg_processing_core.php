@@ -9,6 +9,7 @@
  */
 
 require_once('text.php');
+require_once('log.php');
 require_once('model/context.php');
 require_once('msg_processing_commands.php');
 require_once('msg_processing_registration.php');
@@ -23,14 +24,14 @@ date_default_timezone_set('UTC');
 $in = new IncomingMessage($message);
 $context = new Context($in);
 
-echo "Current group state: {$context->get_group_state()}." . PHP_EOL;
+Logger::debug("Current group state: {$context->get_group_state()}", __FILE__, $context);
 
 if($in->is_group()) {
     // Group (TODO)
 }
 else if($in->is_private()) {
     if($in->is_text()) {
-        echo "Text message: '{$in->text}'" . PHP_EOL;
+        Logger::debug("Text: '{$in->text}'", __FILE__, $context);
 
         // Base commands
         if(msg_processing_commands($context)) {

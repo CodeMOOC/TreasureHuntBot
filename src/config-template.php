@@ -27,9 +27,10 @@ define('DATABASE_NAME', '');
 define('DATABASE_USERNAME', '');
 define('DATABASE_PASSWORD', '');
 
-/* Game constant */
+/* Settings constant */
 define('CURRENT_GAME_ID', 1);
 define('CHAT_GROUP_DEBUG', 0);
+define('DEBUG_TO_DB', false);
 
 /* Pre-set codes (16 characters) */
 define('CODE_REGISTER', '');

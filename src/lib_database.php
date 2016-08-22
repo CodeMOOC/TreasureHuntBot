@@ -10,7 +10,7 @@
  function db_default_error_logging($connection, $message = "Database error") {
     $errno = mysqli_errno($connection);
     $error = mysqli_error($connection);
-    error_log("$message #$errno: $error");
+    Logger::warning("$message #$errno: $error", __FILE__);
  }
 
 /**
@@ -40,8 +40,7 @@ function db_open_connection($quick = false) {
             // This can be removed for performance since we usually have no
             // long-running scripts.
             if(!mysqli_ping($connection)) {
-                error_log('Database connection already open but does not respond to ping');
-                die();
+                Logger::fatal('Database connection already open but does not respond to ping', __FILE__);
             }
         }
 
@@ -50,8 +49,7 @@ function db_open_connection($quick = false) {
     else {
         // Check configuration
         if(!DATABASE_USERNAME || !DATABASE_NAME) {
-            error_log('Please configure the database connection in file config.php');
-            die();
+            Logger::fatal('Please configure the database connection in file config.php', __FILE__);
         }
 
         // Open up a new connection
@@ -60,8 +58,7 @@ function db_open_connection($quick = false) {
         if(!$connection) {
             $errno = mysqli_connect_errno();
             $error = mysqli_connect_error();
-            error_log("Failed to establish database connection. Error #$errno: $error");
-            die();
+            Logger::fatal("Failed to establish database connection. Error #$errno: $error", __FILE__);
         }
 
         // Store connection for later
@@ -128,13 +125,13 @@ function db_scalar_query($sql) {
     // Sanity checks
     if(mysqli_field_count($connection) !== 1) {
         mysqli_free_result($result);
-        error_log("Query ($sql) generated results with multiple fields (non-scalar)");
+        Logger::error("Query ($sql) generated results with multiple fields (non-scalar)", __FILE__);
         return false;
     }
     $num_rows = mysqli_num_rows($result);
     if($num_rows > 1) {
         mysqli_free_result($result);
-        error_log("Query ($sql) generated more than one row of results (non-scalar)");
+        Logger::error("Query ($sql) generated more than one row of results (non-scalar)", __FILE__);
         return false;
     }
     else if($num_rows == 0) {
@@ -148,11 +145,11 @@ function db_scalar_query($sql) {
 
     //Error checking on results (just for the sake of it)
     if($row == null) {
-        error_log("Failed to access first row of query results");
+        Logger::error("Failed to access first row of query results", __FILE__);
         return false;
     }
     if(count($row) < 1) {
-        error_log("Results row is empty");
+        Logger::error("Results row is empty", __FILE__);
         return false;
     }
 
@@ -220,7 +217,7 @@ function db_row_query($sql) {
     $num_rows = mysqli_num_rows($result);
     if($num_rows > 1) {
         mysqli_free_result($result);
-        error_log("Query ($sql) generated more than one row of results");
+        Logger::error("Query ($sql) generated more than one row of results", __FILE__);
         return false;
     }
     else if($num_rows == 0) {

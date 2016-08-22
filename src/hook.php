@@ -7,7 +7,8 @@
  * Basic message processing webhook end-point for your bot.
  */
 
-include 'lib.php';
+require_once('log.php');
+require_once('lib.php');
 
 // Get input contents
 // Notice: we use php://stdin (the HTTP request body) normally, but switch
@@ -19,8 +20,7 @@ $content = file_get_contents((php_sapi_name() == "cli") ? "php://stdin" : "php:/
 $update = json_decode($content, true);
 
 if (!$update) {
-    error_log('Bad message received (not JSON)');
-    exit;
+    Logger::fatal('Bad message received (not JSON)');
 }
 else {
     if (isset($update['message'])) {
@@ -28,7 +28,6 @@ else {
         include 'msg_processing_core.php';
     }
     else {
-        error_log('Unknown message received (no message field)');
-        exit;
+        Logger::fatal('Bad message received (no message field)');
     }
 }
