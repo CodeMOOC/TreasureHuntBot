@@ -23,6 +23,8 @@ date_default_timezone_set('UTC');
 $in = new IncomingMessage($message);
 $context = new Context($in);
 
+echo "Current group state: {$context->get_group_state()}." . PHP_EOL;
+
 if($in->is_group()) {
     // Group (TODO)
 }

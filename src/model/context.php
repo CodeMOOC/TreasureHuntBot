@@ -20,7 +20,7 @@ class Context {
     private $group_id = null;
     private $group_name = null;
 
-    private $group_state = STATE_NEW;
+    private $group_state = null;
     private $assigned_riddle_id = null;
 
     /**
