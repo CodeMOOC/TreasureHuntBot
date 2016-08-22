@@ -15,11 +15,13 @@ class Context {
 
     private $message;
 
-    private $group_id;
-    private $group_name;
+    private $is_admin = false;
 
-    private $group_state;
-    private $assigned_riddle_id;
+    private $group_id = null;
+    private $group_name = null;
+
+    private $group_state = STATE_NEW;
+    private $assigned_riddle_id = null;
 
     /**
      * Construct Context class.
@@ -35,7 +37,7 @@ class Context {
 
     /* True if the talking user is an admin */
     function is_admin() {
-        return false;
+        return $this->is_admin;
     }
 
     /* The running game ID */
@@ -104,27 +106,29 @@ class Context {
      * Refreshes information about the context from the DB.
      */
     function refresh() {
-        $group_id = db_scalar_query("SELECT `id` FROM `identities` WHERE `telegram_id` = {$this->get_user_id()}");
-        if($group_id === null || $group_id === false) {
+        $identity = db_row_query("SELECT `id`, `full_name`, `is_admin` FROM `identities` WHERE `telegram_id` = {$this->get_user_id()}");
+        if(!$identity) {
             //No identity registered
             return;
         }
 
-        $state = db_row_query("SELECT `group_id`, `name`, `participants_count`, `state`, `assigned_riddle_id` FROM `status` WHERE `game_id` = " . CURRENT_GAME_ID . " AND `group_id` = {$group_id}");
-        if($state === null) {
+        $this->group_id = intval($identity[0]);
+        $this->is_admin = (bool)$identity[2];
+
+        $state = db_row_query("SELECT `name`, `participants_count`, `state`, `assigned_riddle_id` FROM `status` WHERE `game_id` = " . CURRENT_GAME_ID . " AND `group_id` = {$this->group_id}");
+        if(!$state) {
             //No registration
             return;
         }
 
-        $this->group_id = intval($state[0]);
-        if($state[1]) {
-            $this->group_name = $state[1];
+        if($state[0]) {
+            $this->group_name = $state[0];
         }
         else {
             $this->group_name = TEXT_UNNAMED_GROUP;
         }
-        $this->group_state = $state[3];
-        $this->assigned_riddle_id = $state[4];
+        $this->group_state = intval($state[2]);
+        $this->assigned_riddle_id = $state[3];
     }
 
 }

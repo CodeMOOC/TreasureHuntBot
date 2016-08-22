@@ -52,7 +52,8 @@ CREATE TABLE `identities` (
   `id` int(11) NOT NULL COMMENT 'Internal ID',
   `telegram_id` int(11) NOT NULL,
   `full_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `last_registration` datetime NOT NULL COMMENT 'Last attempt at registering a group to a game'
+  `last_registration` datetime NOT NULL COMMENT 'Last attempt at registering a group to a game',
+  `is_admin` bit(1) NOT NULL DEFAULT b'0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
