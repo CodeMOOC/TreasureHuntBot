@@ -17,6 +17,7 @@
  */
 
 const TEXT_UNNAMED_GROUP = "Senza nome";
+const TEXT_FAILURE_GENERAL = "Qualcosa è andato storto. Chi di dovere è stato avvertito.";
 
 // Response to "/help"
 const TEXT_CMD_HELP = "Messaggio di aiuto.";

@@ -32,8 +32,7 @@ function msg_processing_commands($context) {
     else if($text === '/start ' . CODE_REGISTER) {
         if(null === $context->get_group_state()) {
             if(!bot_register_new_group($context)) {
-                //TODO: generalize this
-                $context->reply("Qualcosa è andato storto. Chi di dovere è stato avvertito.");
+                $context->reply(TEXT_FAILURE_GENERAL);
             }
             else {
                 $context->reply(TEXT_CMD_REGISTER_CONFIRM);
