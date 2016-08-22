@@ -39,7 +39,7 @@ function bot_register_new_group($context) {
         return false;
     }
 
-    if(db_perform_action("INSERT INTO `status` VALUES({$context->get_game_id()}, {$group_id}, NULL, 0, NULL, 'new', NULL, NULL, 0, NOW(), NOW())") === false) {
+    if(db_perform_action("INSERT INTO `status` VALUES({$context->get_game_id()}, {$group_id}, NULL, 0, NULL, " . STATE_NEW . ", NULL, NULL, 0, NOW(), NOW())") === false) {
         error_log("Failed to register group status for group {$group_id}");
         return false;
     }
@@ -62,7 +62,7 @@ function bot_update_group_name($context, $new_name) {
 }
 
 function bot_update_group_state($context, $new_state, $new_name = null) {
-    $updates = db_perform_action("UPDATE `status` SET `state` = '{$new_state}', `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
+    $updates = db_perform_action("UPDATE `status` SET `state` = {$new_state}, `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
 
     if($updates === 1) {
         $context->refresh();
@@ -77,7 +77,7 @@ function bot_update_group_state($context, $new_state, $new_name = null) {
  * Gets the count of registered groups (verified and with name).
  */
 function bot_get_registered_groups($context) {
-    return db_scalar_query("SELECT count(*) FROM `status` WHERE `game_id` = {$context->get_game_id()} AND `state` NOT IN('', 'new', 'reg_verified')");
+    return db_scalar_query("SELECT count(*) FROM `status` WHERE `game_id` = {$context->get_game_id()} AND `state` >= " . STATE_REG_NAME);
 }
 
 ?>

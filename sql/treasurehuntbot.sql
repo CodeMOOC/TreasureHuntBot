@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 21, 2016 at 01:08 PM
+-- Generation Time: Aug 22, 2016 at 03:15 PM
 -- Server version: 5.5.46-0+deb8u1
 -- PHP Version: 5.6.17-0+deb8u1
 
@@ -80,7 +80,7 @@ CREATE TABLE `log` (
   `timestamp` datetime NOT NULL,
   `tag` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `message` text COLLATE utf8_unicode_ci NOT NULL,
-  `severity` enum('debug','info','warning','error') COLLATE utf8_unicode_ci NOT NULL,
+  `severity` tinyint(1) UNSIGNED NOT NULL,
   `group_id` int(11) DEFAULT NULL,
   `telegram_chat_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -112,7 +112,7 @@ CREATE TABLE `status` (
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `participants_count` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   `photo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Path to the group''s photo',
-  `state` enum('new','reg_verified','reg_name','reg_confirmed','reg_number','reg_ready','location_assigned','location_reached','selfie_taken','last_riddle_assigned') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'new',
+  `state` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
   `assigned_riddle_id` int(11) DEFAULT NULL COMMENT 'Currently assigned riddle ID',
   `track_id` int(11) DEFAULT NULL COMMENT 'Assigned track ID for the game',
   `track_index` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Current progression index inside the track',

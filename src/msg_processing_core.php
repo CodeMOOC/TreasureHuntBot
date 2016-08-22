@@ -8,10 +8,10 @@
  * used by both pull and push scripts.
  */
 
-require_once 'text.php';
-require_once 'model/context.php';
-require_once 'msg_processing_commands.php';
-require_once 'msg_processing_registration.php';
+require_once('text.php');
+require_once('model/context.php');
+require_once('msg_processing_commands.php');
+require_once('msg_processing_registration.php');
 //require_once 'bot-commands/msg_in.php';
 //require_once 'bot-commands/get_image.php';
 //require_once 'vendor/autoload.php';
@@ -47,3 +47,5 @@ if (isset($in->text)) {
 } else {
     telegram_send_message($in->chat_id, 'Non ho capito!');
 }
+
+?>

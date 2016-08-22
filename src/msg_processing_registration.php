@@ -26,7 +26,7 @@ function msg_processing_handle_group_state($context) {
     }
 
     switch($context->get_group_state()) {
-        case 'new':
+        case STATE_NEW:
             //Needs to send the captcha question
             $context->reply(TEXT_REGISTRATION_STATE_NEW);
 
@@ -37,12 +37,12 @@ function msg_processing_handle_group_state($context) {
             );
             return true;
 
-        case 'reg_verified':
+        case STATE_REG_VERIFIED:
             //Needs to ask for group name
             $context->reply(TEXT_REGISTRATION_STATE_VERIFIED);
             return true;
 
-        case 'reg_name':
+        case STATE_REG_NAME:
             $context->reply(TEXT_REGISTRATION_STATE_NAME);
             return true;
     }
@@ -65,11 +65,11 @@ function msg_processing_handle_group_response($context) {
     }
 
     switch($context->get_group_state()) {
-        case 'new':
+        case STATE_NEW:
             if('c' === $context->get_response()) {
                 $context->reply(TEXT_REGISTRATION_RESPONSE_CORRECT);
 
-                bot_update_group_state($context, 'reg_verified');
+                bot_update_group_state($context, STATE_REG_VERIFIED);
 
                 msg_processing_handle_group_state($context);
             }
@@ -78,12 +78,12 @@ function msg_processing_handle_group_response($context) {
             }
             return true;
 
-        case 'reg_verified':
+        case STATE_REG_VERIFIED:
             if($context->get_response()) {
                 $name = ucwords($context->get_response());
 
                 bot_update_group_name($context, $name);
-                bot_update_group_state($context, 'reg_name');
+                bot_update_group_state($context, STATE_REG_NAME);
 
                 $groups_count = bot_get_registered_groups($context);
 
@@ -101,7 +101,7 @@ function msg_processing_handle_group_response($context) {
             }
             return true;
 
-        case 'reg_name':
+        case STATE_REG_NAME:
             //Nop
             msg_processing_handle_group_state($context);
 
