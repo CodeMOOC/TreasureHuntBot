@@ -34,7 +34,7 @@ function bot_register_new_group($context) {
     if($group_id === null) {
         Logger::debug('Registering new identity', __FILE__, $context);
 
-        $group_id = db_perform_action("INSERT INTO `identities` (`id`, `telegram_id`, `full_name`, `last_registration`) VALUES(DEFAULT, {$context->get_user_id()}, '{$context->get_message()->get_full_sender_name()}', NOW())");
+        $group_id = db_perform_action("INSERT INTO `identities` (`id`, `telegram_id`, `full_name`, `last_registration`) VALUES(DEFAULT, {$context->get_user_id()}, '" . db_escape($context->get_message()->get_full_sender_name()) . "', NOW())");
     }
     if($group_id === false) {
         Logger::error("Failed to register new group for user {$context->get_user_id()}", __FILE__, $context);
@@ -54,7 +54,7 @@ function bot_register_new_group($context) {
 }
 
 function bot_update_group_name($context, $new_name) {
-    $updates = db_perform_action("UPDATE `status` SET `name` = '{$new_name}' WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
+    $updates = db_perform_action("UPDATE `status` SET `name` = '" . db_escape($new_name) . "' WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
 
     if($updates === 1) {
         $context->refresh();
