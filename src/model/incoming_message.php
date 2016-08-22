@@ -63,6 +63,20 @@ class IncomingMessage {
         return isset($this->payload[self::TELEGRAM_PHOTO]);
     }
 
+    /**
+     * True if this is a private chat message.
+     */
+    function is_private() {
+        return 'private' === $this->payload['chat']['type'];
+    }
+
+    /**
+     * True if this is a group chat message.
+     */
+    function is_group() {
+        return 'group' === $this->payload['chat']['type'];
+    }
+
     function get_photo_small_id() {
         $photo = $this->payload[self::TELEGRAM_PHOTO];
         if(!isset($photo)) {
@@ -81,6 +95,9 @@ class IncomingMessage {
         return $photo[sizeof($photo)-1][self::TELEGRAM_FILEID];
     }
 
+    /**
+     * Gets the full sender name (combination of all available names).
+     */
     function get_full_sender_name() {
         $parts = array(
             $this->payload['from']['first_name'],

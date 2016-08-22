@@ -29,6 +29,7 @@ define('DATABASE_PASSWORD', '');
 
 /* Game constant */
 define('CURRENT_GAME_ID', 1);
+define('CHAT_GROUP_DEBUG', 0);
 
 /* Pre-set codes (16 characters) */
 define('CODE_REGISTER', '');

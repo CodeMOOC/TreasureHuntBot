@@ -23,29 +23,30 @@ date_default_timezone_set('UTC');
 $in = new IncomingMessage($message);
 $context = new Context($in);
 
-if (isset($in->text)) {
-    // Incoming text message
-    echo "Text message: '{$in->text}'" . PHP_EOL;
-
-    // Base commands
-    if(msg_processing_commands($context)) {
-        return;
-    }
-
-    // Registration responses
-    if(msg_processing_handle_group_response($context)) {
-        return;
-    }
-
-    // ?
-    $context->reply(TEXT_FALLBACK_RESPONSE);
-} else if (isset($in->photo)) {
-    // Incoming photo
-    echo "Photo received" . PHP_EOL;
-
-    //parsePhotoIn($configuration);
-} else {
-    telegram_send_message($in->chat_id, 'Non ho capito!');
+if($in->is_group()) {
+    // Group (TODO)
 }
+else if($in->is_private()) {
+    if($in->is_text()) {
+        echo "Text message: '{$in->text}'" . PHP_EOL;
 
-?>
+        // Base commands
+        if(msg_processing_commands($context)) {
+            return;
+        }
+
+        // Registration responses
+        if(msg_processing_handle_group_response($context)) {
+            return;
+        }
+
+        // ?
+        $context->reply(TEXT_FALLBACK_RESPONSE);
+    }
+    else if($in->is_photo()) {
+        $context->reply(TEXT_UNSUPPORTED_PHOTO);
+    }
+    else {
+        $context->reply(TEXT_UNSUPPORTED_OTHER);
+    }
+}

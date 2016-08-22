@@ -46,5 +46,7 @@ const TEXT_REGISTRATION_STATE_NAME = "La tua partecipazione col gruppo “%GROUP
 
 // Default response for anything else
 const TEXT_FALLBACK_RESPONSE = "Scusa, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.";
+const TEXT_UNSUPPORTED_PHOTO = "📷 Ti prego di non inviarmi foto direttamente. Invia i _selfie_, quando richiesto, nella chat di gruppo.";
+const TEXT_UNSUPPORTED_OTHER = "Non gestisco questo tipo di messaggi, inviami solo messaggi testuali.";
 
  ?>
