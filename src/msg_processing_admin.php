@@ -7,15 +7,15 @@
  * Administrator command message processing.
  */
 
-function admin_broadcast($context, $min_group_state, $message) {
+function admin_broadcast($context, $message, $min_group_state = STATE_NEW, $max_group_state = STATE_GAME_WON) {
     $payload = extract_command_payload($message);
     if(!$payload) {
         return;
     }
 
-    Logger::debug("Broadcasting to groups with state >= {$min_group_state}: {$payload}", __FILE__, $context);
+    Logger::debug("Broadcasting to groups with state {$min_group_state}-{$max_group_state}: {$payload}", __FILE__, $context);
 
-    $groups = bot_get_telegram_ids_of_groups($context, $min_group_state);
+    $groups = bot_get_telegram_ids_of_groups($context, $min_group_state, $max_group_state);
     foreach($groups as $group) {
         $hydrated = hydrate($payload, array(
             '%NAME%' => $group[1],
@@ -37,7 +37,7 @@ function msg_processing_admin($context) {
         $context->reply(
             "👑 *Administration commands*\n" .
             "/status: status of the game and group statistics.\n" .
-            "/broadcast\_registered, /broadcast\_playing, /broadcast\_all: broadcasts following text to registered, playing, or all groups respectively. You may use _%NAME%_ (leader’s name) and _%GROUP%_ (group name) placeholders in the message."
+            "/broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, /broadcast\_all: broadcasts following text to registered, playing, or all groups respectively. You may use _%NAME%_ (leader’s name) and _%GROUP%_ (group name) placeholders in the message."
         );
         return true;
     }
@@ -66,20 +66,24 @@ function msg_processing_admin($context) {
     }
 
     /* Broadcasting */
-    if(starts_with($text, '/broadcast_registered')) {
-        admin_broadcast($context, STATE_REG_NAME, $text);
+    if(starts_with($text, '/broadcast_reserved')) {
+        admin_broadcast($context, $text, STATE_REG_NAME, STATE_REG_NAME);
+        return true;
+    }
+    if(starts_with($text, '/broadcast_ready')) {
+        admin_broadcast($context, $text, STATE_REG_READY, STATE_REG_READY);
         return true;
     }
     if(starts_with($text, '/broadcast_playing')) {
-        admin_broadcast($context, STATE_GAME_LOCATION, $text);
+        admin_broadcast($context, $text, STATE_GAME_LOCATION, STATE_GAME_LAST_PUZ);
         return true;
     }
     if(starts_with($text, '/broadcast_all')) {
-        admin_broadcast($context, STATE_NEW, $text);
+        admin_broadcast($context, $text);
         return true;
     }
     if(starts_with($text, '/broadcast')) {
-        $context->reply("Pick one of the following commands: /broadcast\_registered, /broadcast\_playing, or /broadcast\_all. See /help for more info.");
+        $context->reply("Pick one of the following commands: /broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, or /broadcast\_all. See /help for more info.");
         return true;
     }
 }
