@@ -108,7 +108,7 @@ class Logger {
                 $report .= "\n· {$m}";
             }
             if(self::$last_group_id) {
-                $report .= "\n_Group ID: " . self::$last_group_id . "_";
+                $report .= "\nGroup ID: " . self::$last_group_id;
             }
 
             telegram_send_message(CHAT_GROUP_DEBUG, $report);

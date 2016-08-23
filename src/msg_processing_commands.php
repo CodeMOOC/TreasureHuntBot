@@ -49,7 +49,7 @@ function msg_processing_commands($context) {
         return true;
     }
     else if(starts_with($text, '/start')) {
-        $payload = extract_command_payload($text, '/start');
+        $payload = extract_command_payload($text);
         if($payload === '') {
             if(null !== $context->get_group_state()) {
                 $context->reply(TEXT_CMD_START_REGISTERED);

@@ -89,7 +89,7 @@ function bot_update_group_photo($context, $new_photo_path) {
     }
 }
 
-function bot_update_group_state($context, $new_state, $new_name = null) {
+function bot_update_group_state($context, $new_state) {
     $updates = db_perform_action("UPDATE `status` SET `state` = {$new_state}, `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
 
     if($updates === 1) {
