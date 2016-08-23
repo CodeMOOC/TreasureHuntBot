@@ -9,6 +9,10 @@
 
 function admin_broadcast($context, $min_group_state, $message) {
     $payload = extract_command_payload($message);
+    if(!$payload) {
+        return;
+    }
+
     Logger::debug("Broadcasting to groups with state >= {$min_group_state}: {$payload}", __FILE__, $context);
 
     $groups = bot_get_telegram_ids_of_groups($context, $min_group_state);
@@ -32,11 +36,32 @@ function msg_processing_admin($context) {
     if(starts_with($text, '/help')) {
         $context->reply(
             "👑 *Administration commands*\n" .
-            "/broadcast\_registered text\n" .
-            "/broadcast\_playing text\n" .
-            "/broadcast\_all text\n" .
-            "Broadcasts _text_ to registered, playing, or all groups respectively. You may use _%NAME%_ (leader's name) and _%GROUP%_ (group name) placeholders in the message."
+            "/status: status of the game and group statistics.\n" .
+            "/broadcast\_registered, /broadcast\_playing, /broadcast\_all: broadcasts following text to registered, playing, or all groups respectively. You may use _%NAME%_ (leader’s name) and _%GROUP%_ (group name) placeholders in the message."
         );
+        return true;
+    }
+
+    /* Status */
+    if(starts_with($text, '/status')) {
+        $states = bot_get_group_count_by_state($context);
+        $context->reply(
+            "*Group registration* ✍\n" .
+            "1) New: {$states[STATE_NEW]}\n" .
+            "2) Verified (puzzle ok): {$states[STATE_REG_VERIFIED]}\n" .
+            "3) Reserved (name ok): {$states[STATE_REG_NAME]}\n" .
+            "4) Confirmed: {$states[STATE_REG_CONFIRMED]}\n" .
+            "5) Counted (participants ok): {$states[STATE_REG_NUMBER]}\n" .
+            "6) Ready (avatar ok): {$states[STATE_REG_READY]}\n" .
+            "*Game status* 🗺\n" .
+            "Moving to location: {$states[STATE_GAME_LOCATION]}\n" .
+            "Taking selfie: {$states[STATE_GAME_SELFIE]}\n" .
+            "Solving puzzle: {$states[STATE_GAME_PUZZLE]}\n" .
+            "Moving to last location: {$states[STATE_GAME_LAST_LOC]}\n" .
+            "Solving last puzzle: {$states[STATE_GAME_LAST_PUZ]}\n" .
+            "Won: {$states[STATE_GAME_WON]} 🏆"
+        );
+
         return true;
     }
 

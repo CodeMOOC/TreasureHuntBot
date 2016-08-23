@@ -124,4 +124,21 @@ function bot_get_telegram_ids_of_groups($context, $min_state_level = STATE_REG_C
     return db_table_query("SELECT i.`telegram_id`, i.`full_name`, s.`name` FROM `status` AS s LEFT JOIN `identities` AS i ON s.`group_id` = i.`id` WHERE s.`game_id` = {$context->get_game_id()} AND s.`state` >= {$min_state_level}");
 }
 
+/**
+ * Gets a map of group counts, grouped by group state.
+ */
+function bot_get_group_count_by_state($context) {
+    $data = db_table_query("SELECT `state`, count(*) FROM `status` WHERE `game_id` = {$context->get_game_id()} GROUP BY `state` ORDER BY `state` ASC");
+
+    $map = array();
+    foreach(STATE_ALL as $c) {
+        $map[$c] = 0;
+    }
+    foreach($data as $d) {
+        $map[$d[0]] = $d[1];
+    }
+
+    return $map;
+}
+
 ?>

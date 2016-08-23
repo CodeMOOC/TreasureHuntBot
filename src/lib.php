@@ -16,7 +16,7 @@ require_once('lib_utility.php');
 const STATE_NEW             = 0;  // newly registered
 const STATE_REG_VERIFIED    = 1;  // verified as human user
 const STATE_REG_NAME        = 2;  // name registered
-const STATE_REG_CONFIRMED   = 10; // registration confirmed *DEPRECATED
+const STATE_REG_CONFIRMED   = 10; // registration confirmed
 const STATE_REG_NUMBER      = 12; // number of participants given
 const STATE_REG_READY       = 20; // selfie given, ready to play
 const STATE_GAME_LOCATION   = 30; // location assigned
@@ -25,6 +25,21 @@ const STATE_GAME_PUZZLE     = 34; // selfie taken, puzzle assigned
 const STATE_GAME_LAST_LOC   = 40; // last location assigned
 const STATE_GAME_LAST_PUZ   = 50; // last puzzle assigned
 const STATE_GAME_WON        = 99; // victory
+
+const STATE_ALL             = array(
+    STATE_NEW,
+    STATE_REG_VERIFIED,
+    STATE_REG_NAME,
+    STATE_REG_CONFIRMED,
+    STATE_REG_NUMBER,
+    STATE_REG_READY,
+    STATE_GAME_LOCATION,
+    STATE_GAME_SELFIE,
+    STATE_GAME_PUZZLE,
+    STATE_GAME_LAST_LOC,
+    STATE_GAME_LAST_PUZ,
+    STATE_GAME_WON
+);
 
 const OP_LESSTHAN           = -2;
 const OP_LESSTHANEQUALS     = -1;
