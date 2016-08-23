@@ -10,6 +10,7 @@
 require_once('lib.php');
 require_once('model/context.php');
 require_once ('vendor/autoload.php');
+require_once ('file_downloader/get_file.php');
 
 /**
  * Handles the group's current registration state,
@@ -133,7 +134,7 @@ function msg_processing_handle_group_response($context) {
                 bot_update_group_number($context, $number);
                 bot_update_group_state($context, STATE_REG_NUMBER);
 
-                Logger::info("Group '{$context->get_group_name}' registered '{$number}' participants", __FILE__, $context, true);
+                Logger::info("Group '{$context->get_group_name()}' registered '{$number}' participants", __FILE__, $context, true);
 
                 $context->reply(TEXT_REGISTRATION_RESPONSE_NUMBER_OK, array(
                     '%NUMBER%' => $number
@@ -149,23 +150,22 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case STATE_REG_NUMBER:
-            if($context->get_response()) {
-
-                $file_path = getFilePath(getClient(), $context->message->get_photo_large_id());
-                $photo_path = getPicture(getClient(), $file_path);
+            if(!empty($context->get_message()->get_photo_large_id())){
+                $file_path = getFilePath(getClient(), $context->get_message()->get_photo_large_id());
+                $photo_path = getPicture(getClient(), $file_path, $context->get_message()->get_photo_large_id(), PHOTO_AVATAR);
 
                 // Get photo
-                bot_update_group_number($context, $photo_path);
+                bot_update_group_photo($context, $photo_path);
                 bot_update_group_state($context, STATE_REG_READY);
 
-                Logger::info("Group '{$context->get_group_name}' sent photo for avatar.", __FILE__, $context, true);
+                Logger::info("Group '{$context->get_group_name()}' sent photo for avatar.", __FILE__, $context, true);
 
                 $context->reply(TEXT_REGISTRATION_RESPONSE_READY_OK, array());
 
                 msg_processing_handle_group_state($context);
             }
             else {
-                $context->reply(TEXT_REGISTRATION_RESPONSE_VERIFIED_INVALID, array(
+                $context->reply(/*TODO*/TEXT_REGISTRATION_RESPONSE_VERIFIED_INVALID, array(
                     '%NAME%' => 'name_unavailable'
                 ));
             }

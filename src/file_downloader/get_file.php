@@ -47,7 +47,7 @@ function getFilePath($client, $file_id) {
  *     @param string $fileId - Picture file id, used as file name
  * @return File picture
  */
-function getPicture($client, $filePath, $fileId) {
+function getPicture($client, $filePath, $fileId, $folderPath) {
     //echo "picture file path for telegram: " . $filePath . PHP_EOL;
     $uri = 'https://api.telegram.org/file/bot' . TELEGRAM_BOT_TOKEN . '/' . $filePath;
     $response = $client->request('GET', $uri);
@@ -55,7 +55,7 @@ function getPicture($client, $filePath, $fileId) {
     if($response->getStatusCode() != 200)
         return null;
 
-    $filePath = savePhotoToDisk($response->getBody(), $fileId);
+    $filePath = savePhotoToDisk($response->getBody(), $fileId, $folderPath);
     //echo "saved photo to path: " . $filePath . PHP_EOL;
     return $filePath;
 }
@@ -69,9 +69,18 @@ function getPicture($client, $filePath, $fileId) {
  *     @param string $fileId - Picture file id, used as file name
  * @return string File Path
  */
-function savePhotoToDisk($data, $fileId){
+function savePhotoToDisk($data, $fileId, $folderPath){
     try {
-        $output = 'images/' . $fileId . ".jpg";
+        switch($folderPath) {
+            case PHOTO_AVATAR:
+                $output = 'avatars/' . $fileId . ".jpg";
+                break;
+            case PHOTO_SELFIE:
+                $output = 'selfies/' . $fileId . ".jpg";
+                break;
+            default:
+                $output = 'images/' . $fileId . ".jpg";
+        }
         file_put_contents($output, $data);
         return $output;
     } catch (Exception $e) {

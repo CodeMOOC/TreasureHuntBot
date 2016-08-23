@@ -26,6 +26,9 @@ const STATE_GAME_LAST_LOC   = 40; // last location assigned
 const STATE_GAME_LAST_PUZ   = 50; // last puzzle assigned
 const STATE_GAME_WON        = 99; // victory
 
+const PHOTO_AVATAR          = 100;
+const PHOTO_SELFIE          = 101;
+
 /**
  * Mixes together parameters for an HTTP request.
  *
