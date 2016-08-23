@@ -9,10 +9,12 @@
 
 require_once('lib.php');
 require_once('model/context.php');
+require_once ('vendor/autoload.php');
 
 /**
  * Handles the group's current registration state,
  * sending out a question to the user if needed.
+ *  @param Context $context - message context.
  * @return bool True if handled, false if no need.
  */
 function msg_processing_handle_group_state($context) {
@@ -44,6 +46,18 @@ function msg_processing_handle_group_state($context) {
 
         case STATE_REG_NAME:
             $context->reply(TEXT_REGISTRATION_STATE_NAME);
+            return true;
+
+        case STATE_REG_CONFIRMED:
+            $context->reply(TEXT_REGISTRATION_STATE_CONFIRMED);
+            return true;
+
+        case STATE_REG_NUMBER:
+            $context->reply(TEXT_REGISTRATION_STATE_NUMBER);
+            return true;
+
+        case STATE_REG_READY:
+            $context->reply(TEXT_REGISTRATION_STATE_READY);
             return true;
     }
 
@@ -98,7 +112,7 @@ function msg_processing_handle_group_response($context) {
             }
             else {
                 $context->reply(TEXT_REGISTRATION_RESPONSE_VERIFIED_INVALID, array(
-                    '%NAME%' => $name
+                    '%NAME%' => 'name_unavailable'
                 ));
             }
             return true;
@@ -106,7 +120,60 @@ function msg_processing_handle_group_response($context) {
         case STATE_REG_NAME:
             //Nop
             msg_processing_handle_group_state($context);
+            return true;
 
+        case STATE_REG_CONFIRMED:
+            if($context->get_response()) {
+                $number = intval($context->get_response());
+
+                if(empty($number) || $number === 0) {
+                    // TODO: error
+                    return false;
+                }
+                bot_update_group_number($context, $number);
+                bot_update_group_state($context, STATE_REG_NUMBER);
+
+                Logger::info("Group '{$context->get_group_name}' registered '{$number}' participants", __FILE__, $context, true);
+
+                $context->reply(TEXT_REGISTRATION_RESPONSE_NUMBER_OK, array(
+                    '%NUMBER%' => $number
+                ));
+
+                msg_processing_handle_group_state($context);
+            }
+            else {
+                $context->reply(TEXT_REGISTRATION_RESPONSE_VERIFIED_INVALID, array(
+                    '%NAME%' => 'name_unavailable'
+                ));
+            }
+            return true;
+
+        case STATE_REG_NUMBER:
+            if($context->get_response()) {
+
+                $file_path = getFilePath(getClient(), $context->message->get_photo_large_id());
+                $photo_path = getPicture(getClient(), $file_path);
+
+                // Get photo
+                bot_update_group_number($context, $photo_path);
+                bot_update_group_state($context, STATE_REG_READY);
+
+                Logger::info("Group '{$context->get_group_name}' sent photo for avatar.", __FILE__, $context, true);
+
+                $context->reply(TEXT_REGISTRATION_RESPONSE_READY_OK, array());
+
+                msg_processing_handle_group_state($context);
+            }
+            else {
+                $context->reply(TEXT_REGISTRATION_RESPONSE_VERIFIED_INVALID, array(
+                    '%NAME%' => 'name_unavailable'
+                ));
+            }
+            return true;
+
+        case STATE_REG_READY:
+            //Nop
+            msg_processing_handle_group_state($context);
             return true;
     }
 

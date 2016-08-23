@@ -16,7 +16,7 @@ require_once('lib_utility.php');
 const STATE_NEW             = 0;  // newly registered
 const STATE_REG_VERIFIED    = 1;  // verified as human user
 const STATE_REG_NAME        = 2;  // name registered
-const STATE_REG_CONFIRMED   = 10; // registration confirmed
+const STATE_REG_CONFIRMED   = 10; // registration confirmed *DEPRECATED
 const STATE_REG_NUMBER      = 12; // number of participants given
 const STATE_REG_READY       = 20; // selfie given, ready to play
 const STATE_GAME_LOCATION   = 30; // location assigned

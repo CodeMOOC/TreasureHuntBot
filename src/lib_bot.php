@@ -65,6 +65,30 @@ function bot_update_group_name($context, $new_name) {
     }
 }
 
+function bot_update_group_number($context, $new_number) {
+    $updates = db_perform_action("UPDATE `status` SET `participants_count` = '" . $new_number . "' WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
+
+    if($updates === 1) {
+        $context->refresh();
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function bot_update_group_photo($context, $new_photo_path) {
+    $updates = db_perform_action("UPDATE `status` SET `photo_path` = '" . $new_photo_path . "' WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
+
+    if($updates === 1) {
+        $context->refresh();
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 function bot_update_group_state($context, $new_state, $new_name = null) {
     $updates = db_perform_action("UPDATE `status` SET `state` = {$new_state}, `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
 
@@ -84,4 +108,3 @@ function bot_get_registered_groups($context) {
     return db_scalar_query("SELECT count(*) FROM `status` WHERE `game_id` = {$context->get_game_id()} AND `state` >= " . STATE_REG_NAME);
 }
 
-?>
