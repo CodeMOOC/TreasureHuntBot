@@ -76,8 +76,10 @@ class Logger {
     private static function common($level, $message, $tag = '', $context = null) {
         echo '(' . self::severity_to_char($level) . ') ' . $message . PHP_EOL;
 
-        self::$max_level = max(self::$max_level, $level);
-        self::$messages[] = $message;
+        if(DEBUG_TO_BOT || $level > self::SEVERITY_DEBUG) {
+            self::$max_level = max(self::$max_level, $level);
+            self::$messages[] = $message;
+        }
 
         if($context !== null) {
             $group_id = $context->get_group_id();
@@ -101,7 +103,7 @@ class Logger {
      */
     public static function notify() {
         if(self::$messages && sizeof(self::$messages) > 0 && self::$max_level >= self::SEVERITY_WARNING) {
-            $report = (self::$max_level === self::SEVERITY_ERROR) ? '🚨 *Error report*' : '⚠️ *Warning report*';
+            $report = (self::$max_level === self::SEVERITY_ERROR) ? '🚨 Error report' : '⚠️ Warning report';
             foreach(self::$messages as $m) {
                 $report .= "\n· {$m}";
             }
@@ -109,9 +111,7 @@ class Logger {
                 $report .= "\n_Group ID: " . self::$last_group_id . "_";
             }
 
-            telegram_send_message(CHAT_GROUP_DEBUG, $report, array(
-                'parse_mode' => 'Markdown'
-            ));
+            telegram_send_message(CHAT_GROUP_DEBUG, $report);
         }
 
         Logger::$messages = array();

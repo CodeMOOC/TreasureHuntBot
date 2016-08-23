@@ -21,15 +21,10 @@ function starts_with($text = '', $substring = '') {
 /**
  * Extracts the command payload from a string.
  * @param $text String to search in.
- * @param $command Command string to remove.
  * @return string Command payload, if any, or empty string.
  */
-function extract_command_payload($text = '', $command = '') {
-    if(mb_strlen($command) >= mb_strlen($text)) {
-        return '';
-    }
-
-    return substr($text, mb_strlen($command) + 1);
+function extract_command_payload($text = '') {
+    return mb_ereg_replace("^\/[a-zA-Z0-9_]* ", '', $text);
 }
 
 /**

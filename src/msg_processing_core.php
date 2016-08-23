@@ -11,6 +11,7 @@
 require_once('text.php');
 require_once('log.php');
 require_once('model/context.php');
+require_once('msg_processing_admin.php');
 require_once('msg_processing_commands.php');
 require_once('msg_processing_registration.php');
 
@@ -29,6 +30,12 @@ if($in->is_group()) {
 else if($in->is_private()) {
     if($in->is_text()) {
         Logger::debug("Text: '{$in->text}'", __FILE__, $context);
+
+        if($context->is_admin()) {
+            if(msg_processing_admin($context)) {
+                return;
+            }
+        }
 
         // Base commands
         if(msg_processing_commands($context)) {
