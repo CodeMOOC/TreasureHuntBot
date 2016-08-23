@@ -48,13 +48,13 @@ const TEXT_REGISTRATION_STATE_NAME = "La tua partecipazione col gruppo “%GROUP
 // TODO:
 const TEXT_REGISTRATION_STATE_CONFIRMED = "Mi puoi scrivere quanti componenti ci sono nel tuo gruppo?";
 // TODO:
-const TEXT_REGISTRATION_RESPONSE_NUMBER_OK = "Hai appena confemato per %NUMBER% partecipanti! Mi puoi mandare ora una foto o una immagine da usare come avatar?";
+const TEXT_REGISTRATION_RESPONSE_NUMBER_OK = "Hai appena confemato per %NUMBER% partecipanti!";
 // TODO:
 const TEXT_REGISTRATION_STATE_NUMBER = "Mi puoi mandare ora una foto o una immagine da usare come avatar?";
 // TODO:
-const TEXT_REGISTRATION_STATE_READY = "Hai già completato la registrazione! Ci vediamo alle 20:30 nella piazza per l'inizio della caccia al tesoro!";
-//TODO:
-const TEXT_REGISTRATION_RESPONSE_READY_OK = "Il tuo gruppo è ora confermato! Ci vediamo alle 20:30 nella piazza per l'inizio della caccia al tesoro!";
+const TEXT_REGISTRATION_STATE_READY = "Ci vediamo alle 20:30 nella piazza per l'inizio della caccia al tesoro!";
+// TODO:
+const TEXT_REGISTRATION_RESPONSE_READY_OK = "Il tuo gruppo è confermato!";
 
 // Default response for anything else
 const TEXT_FALLBACK_RESPONSE = "Scusa, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.";
