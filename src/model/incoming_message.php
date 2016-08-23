@@ -78,21 +78,16 @@ class IncomingMessage {
     }
 
     function get_photo_small_id() {
-        $photo = $this->payload[self::TELEGRAM_PHOTO];
-        if(!isset($photo)) {
-            return 0;
+        if(isset($this->payload[self::TELEGRAM_PHOTO])) {
+            return $this->payload[self::TELEGRAM_PHOTO][1][self::TELEGRAM_FILEID];
         }
-
-        return $photo[1][self::TELEGRAM_FILEID];
     }
 
     function get_photo_large_id() {
-        $photo = $this->payload[self::TELEGRAM_PHOTO];
-        if(!isset($photo)) {
-            return 0;
+        if(isset($this->payload[self::TELEGRAM_PHOTO])) {
+            $photo = $this->payload[self::TELEGRAM_PHOTO];
+            return $photo[sizeof($photo)-1][self::TELEGRAM_FILEID];
         }
-
-        return $photo[sizeof($photo)-1][self::TELEGRAM_FILEID];
     }
 
     /**
