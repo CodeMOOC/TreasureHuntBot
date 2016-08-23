@@ -26,6 +26,31 @@ const STATE_GAME_LAST_LOC   = 40; // last location assigned
 const STATE_GAME_LAST_PUZ   = 50; // last puzzle assigned
 const STATE_GAME_WON        = 99; // victory
 
+const OP_LESSTHAN           = -2;
+const OP_LESSTHANEQUALS     = -1;
+const OP_EQUALS             =  0;
+const OP_GREATERTHANEQUALS  =  1;
+const OP_GREATERTHAN        =  2;
+
+/**
+ * Converts an integer comparison operator to a valid SQL
+ * string operator.
+ */
+function op_to_sql($op) {
+    $intop = intval($op);
+
+    if($intop <= OP_LESSTHAN)
+        return '<';
+    else if($intop == OP_LESSTHANEQUALS)
+        return '<=';
+    else if($intop == OP_EQUALS)
+        return '=';
+    else if($intop == OP_GREATERTHANEQUALS)
+        return '>=';
+    else
+        return '>';
+}
+
 /**
  * Mixes together parameters for an HTTP request.
  *
