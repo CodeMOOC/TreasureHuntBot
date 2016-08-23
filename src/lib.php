@@ -133,13 +133,13 @@ function prepare_curl_api_request($url, $method, $parameters = null, $body = nul
         }
     }
 
+    Logger::debug("HTTP request to {$url}");
+
     // Prepare final request URL
     $query_string = http_build_query($parameters);
     if(!empty($query_string)) {
         $url .= '?' . $query_string;
     }
-
-    echo $url . PHP_EOL;
 
     // Prepare cURL handle
     $handle = curl_init($url);
