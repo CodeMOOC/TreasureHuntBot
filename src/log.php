@@ -76,8 +76,10 @@ class Logger {
     private static function common($level, $message, $tag = '', $context = null) {
         echo '(' . self::severity_to_char($level) . ') ' . $message . PHP_EOL;
 
-        self::$max_level = max(self::$max_level, $level);
-        self::$messages[] = $message;
+        if(DEBUG_TO_BOT || $level > self::SEVERITY_DEBUG) {
+            self::$max_level = max(self::$max_level, $level);
+            self::$messages[] = $message;
+        }
 
         if($context !== null) {
             $group_id = $context->get_group_id();
