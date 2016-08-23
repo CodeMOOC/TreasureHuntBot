@@ -84,4 +84,13 @@ function bot_get_registered_groups($context) {
     return db_scalar_query("SELECT count(*) FROM `status` WHERE `game_id` = {$context->get_game_id()} AND `state` >= " . STATE_REG_NAME);
 }
 
+/**
+ * Gets a list of Telegram IDs and names of all registered groups.
+ * @param $min_state_level Minimum level the groups must have.
+ * @return array List of (Telegram ID, Leader name, Group name).
+ */
+function bot_get_telegram_ids_of_groups($context, $min_state_level = STATE_REG_CONFIRMED) {
+    return db_table_query("SELECT i.`telegram_id`, i.`full_name`, s.`name` FROM `status` AS s LEFT JOIN `identities` AS i ON s.`group_id` = i.`id` WHERE s.`game_id` = {$context->get_game_id()} AND s.`state` >= {$min_state_level}");
+}
+
 ?>
