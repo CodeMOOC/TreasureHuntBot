@@ -55,7 +55,8 @@ else if($in->is_private()) {
         if(msg_processing_handle_group_response($context)) {
             return;
         }
-        //$context->reply(TEXT_UNSUPPORTED_PHOTO);
+
+        $context->reply(TEXT_UNREQUESTED_PHOTO);
     }
     else {
         $context->reply(TEXT_UNSUPPORTED_OTHER);
