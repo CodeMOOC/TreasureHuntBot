@@ -109,6 +109,13 @@ function bot_get_registered_groups($context) {
 }
 
 /**
+ * Gets the count of ready groups (verified, with name, participants, and avatars).
+ */
+function bot_get_ready_groups($context) {
+    return db_scalar_query("SELECT count(*) FROM `status` WHERE `game_id` = {$context->get_game_id()} AND `state` >= " . STATE_REG_READY);
+}
+
+/**
  * Gets a list of Telegram IDs and names of all registered groups.
  * @param $min_state_level Minimum level the groups must have.
  * @return array List of (Telegram ID, Leader name, Group name).

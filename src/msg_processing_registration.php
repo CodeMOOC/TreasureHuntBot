@@ -31,34 +31,34 @@ function msg_processing_handle_group_state($context) {
     switch($context->get_group_state()) {
         case STATE_NEW:
             //Needs to send the captcha question
-            $context->reply(TEXT_REGISTRATION_STATE_NEW);
+            $context->reply(TEXT_REGISTRATION_NEW_STATE);
 
             telegram_send_photo(
                 $context->get_chat_id(),
                 'images/quiz-captcha.png',
-                TEXT_REGISTRATION_STATE_NEW_CAPTION
+                TEXT_REGISTRATION_NEW_STATE_CAPTION
             );
             return true;
 
         case STATE_REG_VERIFIED:
             //Needs to ask for group name
-            $context->reply(TEXT_REGISTRATION_STATE_VERIFIED);
+            $context->reply(TEXT_REGISTRATION_VERIFIED_STATE);
             return true;
 
         case STATE_REG_NAME:
-            $context->reply(TEXT_REGISTRATION_STATE_NAME);
+            $context->reply(TEXT_REGISTRATION_NAME_STATE);
             return true;
 
         case STATE_REG_CONFIRMED:
-            $context->reply(TEXT_REGISTRATION_STATE_CONFIRMED);
+            $context->reply(TEXT_REGISTRATION_CONFIRMED_STATE);
             return true;
 
         case STATE_REG_NUMBER:
-            $context->reply(TEXT_REGISTRATION_STATE_NUMBER);
+            $context->reply(TEXT_REGISTRATION_NUMBER_STATE);
             return true;
 
         case STATE_REG_READY:
-            $context->reply(TEXT_REGISTRATION_STATE_READY);
+            $context->reply(TEXT_REGISTRATION_READY_STATE);
             return true;
     }
 
@@ -82,14 +82,14 @@ function msg_processing_handle_group_response($context) {
     switch($context->get_group_state()) {
         case STATE_NEW:
             if('c' === $context->get_response()) {
-                $context->reply(TEXT_REGISTRATION_RESPONSE_CORRECT);
+                $context->reply(TEXT_REGISTRATION_NEW_RESPONSE_CORRECT);
 
                 bot_update_group_state($context, STATE_REG_VERIFIED);
 
                 msg_processing_handle_group_state($context);
             }
             else {
-                $context->reply(TEXT_REGISTRATION_RESPONSE_WRONG);
+                $context->reply(TEXT_REGISTRATION_NEW_RESPONSE_WRONG);
             }
             return true;
 
@@ -102,19 +102,17 @@ function msg_processing_handle_group_response($context) {
 
                 $groups_count = bot_get_registered_groups($context);
 
-                Logger::info("Registered group '{$name}' as {$groups_count}th group", __FILE__, $context, true);
+                Logger::info("Registered group '{$name}' ({$groups_count}th)", __FILE__, $context, true);
 
-                $context->reply(TEXT_REGISTRATION_RESPONSE_VERIFIED_OK, array(
-                    '%NAME%' => $name,
+                $context->reply(TEXT_REGISTRATION_VERIFIED_RESPONSE_OK, array(
+                    '%GROUP%' => $name,
                     '%COUNT%' => $groups_count
                 ));
 
                 msg_processing_handle_group_state($context);
             }
             else {
-                $context->reply(TEXT_REGISTRATION_RESPONSE_VERIFIED_INVALID, array(
-                    '%NAME%' => 'name_unavailable'
-                ));
+                $context->reply(TEXT_REGISTRATION_VERIFIED_RESPONSE_INVALID);
             }
             return true;
 
@@ -124,49 +122,57 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case STATE_REG_CONFIRMED:
-            if($context->get_response()) {
-                $number = intval($context->get_response());
-
-                if(empty($number) || $number === 0) {
-                    // TODO: error
-                    return false;
-                }
-                bot_update_group_number($context, $number);
-                bot_update_group_state($context, STATE_REG_NUMBER);
-
-                Logger::info("Group '{$context->get_group_name()}' registered '{$number}' participants", __FILE__, $context, true);
-
-                $context->reply(TEXT_REGISTRATION_RESPONSE_NUMBER_OK, array(
-                    '%NUMBER%' => $number
-                ));
-
-                msg_processing_handle_group_state($context);
+            if(!is_numeric($context->get_response())) {
+                $context->reply(TEXT_REGISTRATION_CONFIRMED_RESPONSE_INVALID);
+                return true;
             }
-            else {
-                $context->reply(TEXT_REGISTRATION_RESPONSE_VERIFIED_INVALID, array(
-                    '%NAME%' => 'name_unavailable'
-                ));
+
+            $number = intval($context->get_response());
+            if($number < 2) {
+                $context->reply(TEXT_REGISTRATION_CONFIRMED_RESPONSE_TOOFEW);
+                return true;
             }
+            else if($number > 6) {
+                $context->reply(TEXT_REGISTRATION_CONFIRMED_RESPONSE_TOOMANY);
+                return true;
+            }
+
+            bot_update_group_number($context, $number);
+            bot_update_group_state($context, STATE_REG_NUMBER);
+
+            Logger::info("Group '{$context->get_group_name()}' registered '{$number}' participants", __FILE__, $context);
+
+            $context->reply(TEXT_REGISTRATION_CONFIRMED_RESPONSE_OK, array(
+                '%GROUP%' => $context->get_group_name(),
+                '%NUMBER%' => $number
+            ));
+
+            msg_processing_handle_group_state($context);
+
             return true;
 
         case STATE_REG_NUMBER:
-            if(!empty($context->get_message()->get_photo_large_id())){
+            if($context->get_message()->get_photo_large_id()){
                 $file_path = getFilePath(getClient(), $context->get_message()->get_photo_large_id());
                 $photo_path = getPicture(getClient(), $file_path, $context->get_message()->get_photo_large_id(), PHOTO_AVATAR);
 
-                // Get photo
                 bot_update_group_photo($context, $photo_path);
                 bot_update_group_state($context, STATE_REG_READY);
 
-                Logger::info("Group '{$context->get_group_name()}' sent photo for avatar.", __FILE__, $context, true);
+                $groups_count = bot_get_ready_groups($context);
 
-                $context->reply(TEXT_REGISTRATION_RESPONSE_READY_OK, array());
+                Logger::info("Group '{$context->get_group_name()}' is ready for the game ({$groups_count}th)", __FILE__, $context, true);
+
+                $context->reply(TEXT_REGISTRATION_NUMBER_RESPONSE_OK, array(
+                    '%GROUP%' => $context->get_group_name(),
+                    '%COUNT%' => $groups_count
+                ));
 
                 msg_processing_handle_group_state($context);
             }
             else {
-                $context->reply(/*TODO*/TEXT_REGISTRATION_RESPONSE_VERIFIED_INVALID, array(
-                    '%NAME%' => 'name_unavailable'
+                $context->reply(TEXT_REGISTRATION_NUMBER_RESPONSE_INVALID, array(
+                    '%GROUP%' => $context->get_group_name()
                 ));
             }
             return true;
