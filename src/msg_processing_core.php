@@ -14,9 +14,6 @@ require_once('model/context.php');
 require_once('msg_processing_admin.php');
 require_once('msg_processing_commands.php');
 require_once('msg_processing_registration.php');
-//require_once 'bot-commands/msg_in.php';
-//require_once 'bot-commands/get_image.php';
-//require_once 'vendor/autoload.php';
 
 // Set default timezone for date operations
 date_default_timezone_set('UTC');
@@ -54,7 +51,11 @@ else if($in->is_private()) {
         $context->reply(TEXT_FALLBACK_RESPONSE);
     }
     else if($in->is_photo()) {
-        $context->reply(TEXT_UNSUPPORTED_PHOTO);
+        // Registration responses
+        if(msg_processing_handle_group_response($context)) {
+            return;
+        }
+        //$context->reply(TEXT_UNSUPPORTED_PHOTO);
     }
     else {
         $context->reply(TEXT_UNSUPPORTED_OTHER);

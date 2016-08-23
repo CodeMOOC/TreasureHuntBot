@@ -26,12 +26,12 @@ function getClient()
  * @return string file path
  */
 function getFilePath($client, $file_id) {
-    echo "picture file id: " . $file_id . PHP_EOL;
+    //echo "picture file id: " . $file_id . PHP_EOL;
     $response = $client->request('GET', 'getFile', [
         'query' => ['file_id' => $file_id]
     ]);
 
-    echo "getFilePath response: " . $response->getBody() . PHP_EOL;
+    //echo "getFilePath response: " . $response->getBody() . PHP_EOL;
     $body = json_decode($response->getBody(), true);
     return $body['result']['file_path'];
 }
@@ -47,16 +47,16 @@ function getFilePath($client, $file_id) {
  *     @param string $fileId - Picture file id, used as file name
  * @return File picture
  */
-function getPicture($client, $filePath, $fileId) {
-    echo "picture file path for telegram: " . $filePath . PHP_EOL;
+function getPicture($client, $filePath, $fileId, $folderPath) {
+    //echo "picture file path for telegram: " . $filePath . PHP_EOL;
     $uri = 'https://api.telegram.org/file/bot' . TELEGRAM_BOT_TOKEN . '/' . $filePath;
     $response = $client->request('GET', $uri);
 
     if($response->getStatusCode() != 200)
         return null;
 
-    $filePath = savePhotoToDisk($response->getBody(), $fileId);
-    echo "saved photo to path: " . $filePath . PHP_EOL;
+    $filePath = savePhotoToDisk($response->getBody(), $fileId, $folderPath);
+    //echo "saved photo to path: " . $filePath . PHP_EOL;
     return $filePath;
 }
 
@@ -69,9 +69,18 @@ function getPicture($client, $filePath, $fileId) {
  *     @param string $fileId - Picture file id, used as file name
  * @return string File Path
  */
-function savePhotoToDisk($data, $fileId){
+function savePhotoToDisk($data, $fileId, $folderPath){
     try {
-        $output = 'images/' . $fileId . ".jpg";
+        switch($folderPath) {
+            case PHOTO_AVATAR:
+                $output = 'avatars/' . $fileId . ".jpg";
+                break;
+            case PHOTO_SELFIE:
+                $output = 'selfies/' . $fileId . ".jpg";
+                break;
+            default:
+                $output = 'images/' . $fileId . ".jpg";
+        }
         file_put_contents($output, $data);
         return $output;
     } catch (Exception $e) {
