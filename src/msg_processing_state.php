@@ -4,13 +4,13 @@
  * ===================
  * UWiClab, University of Urbino
  * ===================
- * Registration process message processing.
+ * State process message processing.
  */
 
 require_once('lib.php');
 require_once('model/context.php');
-require_once ('vendor/autoload.php');
-require_once ('file_downloader/get_file.php');
+require_once('vendor/autoload.php');
+require_once('file_downloader/get_file.php');
 
 /**
  * Handles the group's current registration state,
@@ -60,6 +60,26 @@ function msg_processing_handle_group_state($context) {
         case STATE_REG_READY:
             $context->reply(TEXT_REGISTRATION_READY_STATE);
             return true;
+
+        /* GAME */
+
+        case STATE_GAME_LOCATION:
+            return true;
+
+        case STATE_GAME_SELFIE:
+            return true;
+
+        case STATE_GAME_PUZZLE:
+            return true;
+
+        case STATE_GAME_LAST_LOC:
+            return true;
+
+        case STATE_GAME_LAST_PUZ:
+            return true;
+
+        case STATE_GAME_WON:
+            return true;
     }
 
     return false;
@@ -80,6 +100,9 @@ function msg_processing_handle_group_response($context) {
     }
 
     switch($context->get_group_state()) {
+
+        /* REGISTRATION */
+
         case STATE_NEW:
             if('c' === $context->get_response()) {
                 $context->reply(TEXT_REGISTRATION_NEW_RESPONSE_CORRECT);
@@ -120,6 +143,8 @@ function msg_processing_handle_group_response($context) {
             //Nop
             msg_processing_handle_group_state($context);
             return true;
+
+        /* CONFIRMATION (2nd step) */
 
         case STATE_REG_CONFIRMED:
             if(!is_numeric($context->get_response())) {
@@ -181,9 +206,27 @@ function msg_processing_handle_group_response($context) {
             //Nop
             msg_processing_handle_group_state($context);
             return true;
+
+        /* GAME */
+
+        case STATE_GAME_LOCATION:
+            return true;
+
+        case STATE_GAME_SELFIE:
+            return true;
+
+        case STATE_GAME_PUZZLE:
+            return true;
+
+        case STATE_GAME_LAST_LOC:
+            return true;
+
+        case STATE_GAME_LAST_PUZ:
+            return true;
+
+        case STATE_GAME_WON:
+            return true;
     }
 
     return false;
 }
-
-?>

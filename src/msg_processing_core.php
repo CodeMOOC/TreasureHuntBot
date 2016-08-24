@@ -13,7 +13,7 @@ require_once('log.php');
 require_once('model/context.php');
 require_once('msg_processing_admin.php');
 require_once('msg_processing_commands.php');
-require_once('msg_processing_registration.php');
+require_once('msg_processing_state.php');
 
 // Set default timezone for date operations
 date_default_timezone_set('UTC');

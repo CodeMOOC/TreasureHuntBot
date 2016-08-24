@@ -8,7 +8,7 @@
  */
 
 require_once('lib.php');
-require_once('msg_processing_registration.php');
+require_once('msg_processing_state.php');
 require_once('model/context.php');
 
 /*
