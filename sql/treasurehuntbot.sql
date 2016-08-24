@@ -164,7 +164,7 @@ ALTER TABLE `identities`
 --
 ALTER TABLE `locations`
   ADD PRIMARY KEY (`game_id`,`id`),
-  ADD KEY `game_id` (`game_id`,`code`);
+  ADD UNIQUE KEY `location_code` (`game_id`,`code`) USING BTREE;
 
 --
 -- Indexes for table `log`
@@ -233,8 +233,8 @@ ALTER TABLE `log`
 -- Constraints for table `status`
 --
 ALTER TABLE `status`
-  ADD CONSTRAINT `status_track_constraint` FOREIGN KEY (`game_id`,`track_id`) REFERENCES `tracks` (`game_id`, `id`),
-  ADD CONSTRAINT `status_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`);
+  ADD CONSTRAINT `status_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`),
+  ADD CONSTRAINT `status_track_constraint` FOREIGN KEY (`game_id`,`track_id`) REFERENCES `tracks` (`game_id`, `id`);
 
 --
 -- Constraints for table `tracks`
