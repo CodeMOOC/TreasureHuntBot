@@ -7,7 +7,7 @@
  * Administrator command message processing.
  */
 
-function admin_broadcast($context, $message, $min_group_state = STATE_NEW, $max_group_state = STATE_GAME_WON) {
+function admin_broadcast($context, $message, $min_group_state = STATE_NEW, $max_group_state = STATE_GAME_WON, $admins = false) {
     $payload = extract_command_payload($message);
     if(!$payload) {
         return;
@@ -15,7 +15,7 @@ function admin_broadcast($context, $message, $min_group_state = STATE_NEW, $max_
 
     Logger::debug("Broadcasting to groups with state {$min_group_state}-{$max_group_state}: {$payload}", __FILE__, $context);
 
-    $groups = bot_get_telegram_ids_of_groups($context, $min_group_state, $max_group_state);
+    $groups = bot_get_telegram_ids_of_groups($context, $min_group_state, $max_group_state, $admins);
     foreach($groups as $group) {
         $hydrated = hydrate($payload, array(
             '%NAME%' => $group[1],
@@ -37,7 +37,7 @@ function msg_processing_admin($context) {
         $context->reply(
             "👑 *Administration commands*\n" .
             "/status: status of the game and group statistics.\n" .
-            "/broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, /broadcast\_all: broadcasts following text to registered, playing, or all groups respectively. You may use _%NAME%_ (leader’s name) and _%GROUP%_ (group name) placeholders in the message."
+            "/broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, /broadcast\_all, /broadcast\_admin: broadcasts following text to reserved, ready, playing, all, or admin-owned groups respectively. You may use _%NAME%_ (leader’s name) and _%GROUP%_ (group name) placeholders in the message."
         );
         return true;
     }
@@ -82,8 +82,12 @@ function msg_processing_admin($context) {
         admin_broadcast($context, $text);
         return true;
     }
+    if(starts_with($text, '/broadcast_admin')) {
+        admin_broadcast($context, $text, STATE_NEW, STATE_GAME_WON, true);
+        return true;
+    }
     if(starts_with($text, '/broadcast')) {
-        $context->reply("Pick one of the following commands: /broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, or /broadcast\_all. See /help for more info.");
+        $context->reply("Pick one of the following commands: /broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, /broadcast\_all, or /broadcast\_admin. See /help for more info.");
         return true;
     }
 }
