@@ -43,7 +43,7 @@ function hydrate($text, $map = null) {
     }
 
     foreach($map as $from => $to) {
-        $text = str_replace($from, $to, $text);
+        $text = str_replace($from, escape_markdown($to), $text);
     }
     return $text;
 }
