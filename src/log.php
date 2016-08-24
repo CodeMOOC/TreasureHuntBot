@@ -22,6 +22,7 @@ class Logger {
 
     private static $max_level = self::SEVERITY_DEBUG;
     private static $messages = array();
+    private static $last_user_id = null;
     private static $last_group_id = null;
 
     public static function debug($message, $tag = '', $context = null) {
@@ -86,6 +87,7 @@ class Logger {
             $from_id = $context->get_user_id();
 
             self::$last_group_id = $group_id;
+            self::$last_user_id = $from_id;
         }
         else {
             $group_id = 'NULL';
@@ -107,8 +109,8 @@ class Logger {
             foreach(self::$messages as $m) {
                 $report .= "\n· " . escape_markdown($m);
             }
-            if(self::$last_group_id) {
-                $report .= "\n_Group ID: " . self::$last_group_id . "_";
+            if(self::$last_group_id && self::$last_user_id) {
+                $report .= "\n_Group #" . self::$last_group_id . " User #" . self::$last_user_id . "_";
             }
 
             telegram_send_message(CHAT_GROUP_DEBUG, $report, array(
