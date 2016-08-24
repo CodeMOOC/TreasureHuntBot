@@ -52,8 +52,11 @@ $res = db_table_query($q);
             <div class="starter-template">
                 <?php
                 foreach($res as $var){
-                    echo '<img src="src/' . $var[4] . '" style="width:100px; height:160px;"/>';
                     echo $var[2] . "</br>";
+                    echo "<div style=\"width:120px;height:160px;overflow:hidden\">";
+                    echo '<img src="src/' . $var[4] . '" style="height:160px;"/>';
+                    echo "</div>";
+                    echo "</br>";
                 }
                 ?>
             </div>
