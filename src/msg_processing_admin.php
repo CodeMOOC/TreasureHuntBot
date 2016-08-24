@@ -40,6 +40,7 @@ function msg_processing_admin($context) {
             "👑 *Administration commands*\n" .
             "/status: status of the game and group statistics.\n" .
             "/channel: sends a message to the channel.\n" .
+            "/confirm: confirms all reserved groups and starts 2nd step of registration.\n" .
             "/broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, /broadcast\_all, /broadcast\_admin: broadcasts following text to reserved, ready, playing, all, or admin-owned groups respectively. You may use _%NAME%_ (leader’s name) and _%GROUP%_ (group name) placeholders in the message."
         );
         return true;
@@ -104,6 +105,23 @@ function msg_processing_admin($context) {
             'parse_mode' => 'Markdown'
         )) === false) {
             $context->reply(TEXT_FAILURE_GENERAL);
+        }
+
+        return true;
+    }
+
+    /* Group state */
+    if(starts_with($text, '/confirm')) {
+        $confirm_response = bot_promote_reserved_to_confirmed($context);
+        if($confirm_response === false || $confirm_response === null) {
+            $context->reply(TEXT_FAILURE_GENERAL);
+            return true;
+        }
+        Logger::info("{$confirm_response} groups promoted to confirmed status", __FILE__, $context, true);
+
+        if($confirm_response > 0) {
+            // Notify promoted users
+            admin_broadcast($context, TEXT_ADVANCEMENT_CONFIRMED, STATE_REG_CONFIRMED, STATE_REG_CONFIRMED, false);
         }
 
         return true;

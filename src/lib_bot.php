@@ -102,6 +102,14 @@ function bot_update_group_state($context, $new_state) {
 }
 
 /**
+ * Promotes reserved groups (verified, with name) to confirmed
+ * groups that can complete the registration process.
+ */
+function bot_promote_reserved_to_confirmed($context) {
+    return db_perform_action("UPDATE `status` SET `state` = " . STATE_REG_CONFIRMED . ", `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `state` = " . STATE_REG_NAME);
+}
+
+/**
  * Gets the count of registered groups (verified and with name).
  */
 function bot_get_registered_groups($context) {

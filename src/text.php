@@ -57,6 +57,9 @@ const TEXT_REGISTRATION_NUMBER_RESPONSE_INVALID = "Si è verificato un errore. I
 
 const TEXT_REGISTRATION_READY_STATE = "Ci vediamo *venerdì 26 agosto* alle *20:30* nel cortile del Collegio Raffaello per l’inizio della caccia al tesoro!";
 
+// Advancement notifications
+const TEXT_ADVANCEMENT_CONFIRMED = "📢 È giunto il momento di completare la registrazione per il gruppo “%GROUP%”!\nInnanzitutto dichiara quante persone parteciperanno al gioco (te incluso).";
+
 // Default response for anything else
 const TEXT_FALLBACK_RESPONSE = "Scusa, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.";
 const TEXT_UNSUPPORTED_PHOTO = " Ti prego di non inviarmi foto direttamente. Invia i _selfie_, quando richiesto, nella chat di gruppo.";
