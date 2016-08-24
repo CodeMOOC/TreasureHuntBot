@@ -64,21 +64,27 @@ function msg_processing_handle_group_state($context) {
         /* GAME */
 
         case STATE_GAME_LOCATION:
+            // TODO: waiting for qrcode scan
             return true;
 
         case STATE_GAME_SELFIE:
+            // TODO: waiting for selfie
             return true;
 
         case STATE_GAME_PUZZLE:
+            // TODO: send group puzzle
             return true;
 
         case STATE_GAME_LAST_LOC:
+            // TODO:
             return true;
 
         case STATE_GAME_LAST_PUZ:
+            // TODO:
             return true;
 
         case STATE_GAME_WON:
+            // TODO: group has finished the treasure hunt. Nothing to do.
             return true;
     }
 
@@ -210,21 +216,33 @@ function msg_processing_handle_group_response($context) {
         /* GAME */
 
         case STATE_GAME_LOCATION:
+            // TODO: [puzzle solved], location assigned, waiting for qr code
+            // expecting deeplink
             return true;
 
         case STATE_GAME_SELFIE:
+            // TODO: location reached, qr code scanned, waiting for selfie
+            // expecting photo
             return true;
 
         case STATE_GAME_PUZZLE:
+            // TODO: selfie taken, puzzle assigned
+            // expecting text
             return true;
 
         case STATE_GAME_LAST_LOC:
+            // TODO: puzzle solved, last location assigned, waiting for qr code
+            // expecting deeplink
             return true;
 
         case STATE_GAME_LAST_PUZ:
+            // TODO: qr code scanned, last puzzle assigned
+            // expecting deeplink
             return true;
 
         case STATE_GAME_WON:
+            // TODO: final qrcode scanned, victory
+            // congratulate group and tell them rank & time
             return true;
     }
 
