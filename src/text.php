@@ -31,7 +31,7 @@ const TEXT_CMD_START_REGISTERED = "Bentornato, %FULL_NAME%! Questo è il bot ded
 
 // First response after receiving "/start REGISTER_CODE" command
 const TEXT_CMD_REGISTER_CONFIRM = "Perfetto! 🎉 Cerchiamo ora di registrare il tuo gruppo.";
-const TEXT_CMD_REGISTER_REGISTERED = "La tua domanda di registrazione è stata avviata. 👍";
+const TEXT_CMD_REGISTER_REGISTERED = "La tua domanda di registrazione è stata ricevuta. 👍";
 
 // States and messages for the registration process
 const TEXT_REGISTRATION_NEW_STATE = "Ma sei veramente pronto per il gioco? Per esserne certi ti farò una domanda semplice per iniziare. (Le regole sono basate su [CodyRoby](http://codemooc.org/codyroby/), che sicuramente conoscerai.)";
@@ -43,7 +43,7 @@ const TEXT_REGISTRATION_VERIFIED_STATE = "Ora devi soltanto assegnare un nome av
 const TEXT_REGISTRATION_VERIFIED_RESPONSE_OK = "Ok, “%GROUP%” suona bene! Questo è il %COUNT%° gruppo a registrarsi per l’evento.";
 const TEXT_REGISTRATION_VERIFIED_RESPONSE_INVALID = "Non mi sembra un nome valido. Come vuoi che il tuo gruppo si chiami?";
 
-const TEXT_REGISTRATION_NAME_STATE = "La tua partecipazione col gruppo “%GROUP_NAME%” è stata prenotata. Nei prossimi giorni riceverai un messaggio per confermare la partecipazione della tua squadra. Solo se risponderai a quel messaggio di conferma tra i primi 30 la tua squadra sarà effettivamente registrata e potrà partecipare… non rimane che aspettare e studiare il [regolamento](http://codemooc.org/urbino-code-hunting/)! ⏰";
+const TEXT_REGISTRATION_NAME_STATE = "Il gruppo “%GROUP_NAME%” è prenotato. Nei prossimi giorni riceverai un messaggio per confermare la partecipazione della tua squadra. Solo se risponderai a quel messaggio di conferma tra i primi 30 la tua squadra sarà effettivamente registrata e potrà partecipare… non rimane che aspettare e studiare il [regolamento](http://codemooc.org/urbino-code-hunting/)! ⏰";
 
 const TEXT_REGISTRATION_CONFIRMED_STATE = "Mi puoi scrivere quanti componenti ci sono nel tuo gruppo?";
 const TEXT_REGISTRATION_CONFIRMED_RESPONSE_INVALID = "Specifica il numero di partecipanti in cifre, per favore.";
