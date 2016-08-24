@@ -22,9 +22,11 @@ function admin_broadcast($context, $message, $min_group_state = STATE_NEW, $max_
             '%GROUP%' => $group[2]
         ));
 
-        telegram_send_message($group[0], $hydrated, array(
+        if(telegram_send_message($group[0], $hydrated, array(
             'parse_mode' => 'Markdown'
-        ));
+        )) === false) {
+            Logger::error("Broadcast failed to ID {$group[0]} ({$group[1]}, group {$group[2]})");
+        }
     }
 
     Logger::info("Sent broadcast message to " . sizeof($groups) . " groups", __FILE__, $context, true);
@@ -37,6 +39,7 @@ function msg_processing_admin($context) {
         $context->reply(
             "👑 *Administration commands*\n" .
             "/status: status of the game and group statistics.\n" .
+            "/channel: sends a message to the channel.\n" .
             "/broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, /broadcast\_all, /broadcast\_admin: broadcasts following text to reserved, ready, playing, all, or admin-owned groups respectively. You may use _%NAME%_ (leader’s name) and _%GROUP%_ (group name) placeholders in the message."
         );
         return true;
@@ -88,6 +91,21 @@ function msg_processing_admin($context) {
     }
     if(starts_with($text, '/broadcast')) {
         $context->reply("Pick one of the following commands: /broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, /broadcast\_all, or /broadcast\_admin. See /help for more info.");
+        return true;
+    }
+
+    if(starts_with($text, '/channel')) {
+        $payload = extract_command_payload($text);
+        if(!$payload) {
+            return false;
+        }
+
+        if(telegram_send_message(CHAT_CHANNEL, $payload, array(
+            'parse_mode' => 'Markdown'
+        )) === false) {
+            $context->reply(TEXT_FAILURE_GENERAL);
+        }
+
         return true;
     }
 }
