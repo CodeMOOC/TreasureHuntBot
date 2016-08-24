@@ -64,4 +64,12 @@ function unite_arrays($a, $b) {
     return $a;
 }
 
+/**
+ * Escapes Markdown reserved characters so non-Markdown text can be
+ * embedded in a Markdown message without issues.
+ */
+function escape_markdown($text) {
+    return mb_ereg_replace('([_*\[\]\(\)])', '\\\1', $text);
+}
+
 ?>

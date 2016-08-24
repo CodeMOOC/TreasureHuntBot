@@ -18,8 +18,8 @@ function admin_broadcast($context, $message, $min_group_state = STATE_NEW, $max_
     $groups = bot_get_telegram_ids_of_groups($context, $min_group_state, $max_group_state, $admins);
     foreach($groups as $group) {
         $hydrated = hydrate($payload, array(
-            '%NAME%' => $group[1],
-            '%GROUP%' => $group[2]
+            '%NAME%' => escape_markdown($group[1]),
+            '%GROUP%' => escape_markdown($group[2])
         ));
 
         telegram_send_message($group[0], $hydrated, array(

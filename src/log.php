@@ -103,15 +103,17 @@ class Logger {
      */
     public static function notify() {
         if(self::$messages && sizeof(self::$messages) > 0 && self::$max_level >= self::SEVERITY_WARNING) {
-            $report = (self::$max_level === self::SEVERITY_ERROR) ? '🚨 Error report' : '⚠️ Warning report';
+            $report = (self::$max_level === self::SEVERITY_ERROR) ? '🚨 *Error report*' : '⚠️ *Warning report*';
             foreach(self::$messages as $m) {
-                $report .= "\n· {$m}";
+                $report .= "\n· " . escape_markdown($m);
             }
             if(self::$last_group_id) {
-                $report .= "\nGroup ID: " . self::$last_group_id;
+                $report .= "\n_Group ID: " . self::$last_group_id . "_";
             }
 
-            telegram_send_message(CHAT_GROUP_DEBUG, $report);
+            telegram_send_message(CHAT_GROUP_DEBUG, $report, array(
+                'parse_mode' => 'Markdown'
+            ));
         }
 
         Logger::$messages = array();
@@ -122,9 +124,7 @@ class Logger {
      * Use sparingly.
      */
     public static function notification($message) {
-        telegram_send_message(CHAT_GROUP_DEBUG, 'ℹ️ ' . $message, array(
-            'parse_mode' => 'Markdown'
-        ));
+        telegram_send_message(CHAT_GROUP_DEBUG, 'ℹ️ ' . $message);
     }
 
     /**
