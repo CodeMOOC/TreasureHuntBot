@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 25, 2016 at 12:31 PM
+-- Generation Time: Aug 25, 2016 at 12:55 PM
 -- Server version: 5.5.46-0+deb8u1
 -- PHP Version: 5.6.17-0+deb8u1
 
@@ -185,8 +185,8 @@ ALTER TABLE `riddles`
 --
 ALTER TABLE `status`
   ADD PRIMARY KEY (`game_id`,`group_id`),
-  ADD KEY `status_group_constraint` (`group_id`),
-  ADD KEY `status_track_constraint` (`game_id`,`track_id`) USING BTREE;
+  ADD UNIQUE KEY `status_track_constraint` (`game_id`,`track_id`) USING BTREE,
+  ADD KEY `status_group_constraint` (`group_id`);
 
 --
 -- Indexes for table `tracks`
