@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 22, 2016 at 03:15 PM
+-- Generation Time: Aug 25, 2016 at 11:23 AM
 -- Server version: 5.5.46-0+deb8u1
 -- PHP Version: 5.6.17-0+deb8u1
 
@@ -25,7 +25,7 @@ CREATE TABLE `assigned_locations` (
   `location_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
   `assigned_on` datetime NOT NULL,
-  `reached_on` datetime NOT NULL
+  `reached_on` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -38,8 +38,8 @@ CREATE TABLE `assigned_riddles` (
   `game_id` int(11) NOT NULL,
   `riddle_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
-  `timestamp` datetime NOT NULL,
-  `last_answer` datetime NOT NULL
+  `assigned_on` datetime NOT NULL,
+  `last_answer_on` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
