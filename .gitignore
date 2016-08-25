@@ -3,3 +3,7 @@
 */php_errors.log
 */pull-last-update.txt
 */config.php
+src/avatars/*
+!src/avatars/default.jpg
+src/selfies/*
+!src/selfies/default.jpg
