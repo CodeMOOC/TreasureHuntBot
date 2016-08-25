@@ -139,6 +139,7 @@ function bot_get_telegram_ids_of_groups($context, $min_state_level = STATE_NEW, 
 
 /**
  * Gets a map of group counts, grouped by group state.
+ * Excludes groups by administrators.
  */
 function bot_get_group_count_by_state($context) {
     $data = db_table_query("SELECT s.`state`, count(*) FROM `status` AS s LEFT JOIN `identities` AS i ON s.`group_id` = i.`id` WHERE s.`game_id` = {$context->get_game_id()} AND i.`is_admin` = 0 GROUP BY s.`state` ORDER BY s.`state` ASC");
@@ -152,6 +153,14 @@ function bot_get_group_count_by_state($context) {
     }
 
     return $map;
+}
+
+/**
+ * Gets the total count of participants in groups that are ready.
+ * Excludes groups by administrators.
+ */
+function bot_get_participants_count($context) {
+    return db_scalar_query("SELECT sum(`participants_count`) FROM `status` AS s LEFT JOIN `identities` AS i ON s.`group_id` = i.`id` WHERE s.`game_id` = {$context->get_game_id()} AND i.`is_admin` = 0 AND s.`state` >= " . STATE_REG_READY);
 }
 
 ?>

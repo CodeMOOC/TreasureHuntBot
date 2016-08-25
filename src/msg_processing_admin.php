@@ -49,6 +49,8 @@ function msg_processing_admin($context) {
     /* Status */
     if(starts_with($text, '/status')) {
         $states = bot_get_group_count_by_state($context);
+        $participants_count = bot_get_participants_count($context);
+
         $context->reply(
             "*Group registration* ✍\n" .
             "1) New: {$states[STATE_NEW]}\n" .
@@ -63,8 +65,9 @@ function msg_processing_admin($context) {
             "Solving puzzle: {$states[STATE_GAME_PUZZLE]}\n" .
             "Moving to last location: {$states[STATE_GAME_LAST_LOC]}\n" .
             "Solving last puzzle: {$states[STATE_GAME_LAST_PUZ]}\n" .
-            "Won: {$states[STATE_GAME_WON]} 🏆\n" .
-            "(This list does _not_ include groups by administrators.)"
+            "Won: {$states[STATE_GAME_WON]} 🏆\n\n" .
+            "*{$participants_count} participants* 👥 (ready/playing)\n\n" .
+            "(Data does _not_ include groups by administrators.)"
         );
 
         return true;
