@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 25, 2016 at 11:23 AM
+-- Generation Time: Aug 25, 2016 at 12:31 PM
 -- Server version: 5.5.46-0+deb8u1
 -- PHP Version: 5.6.17-0+deb8u1
 
@@ -114,7 +114,6 @@ CREATE TABLE `status` (
   `participants_count` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   `photo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Path to the group''s photo',
   `state` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
-  `assigned_riddle_id` int(11) DEFAULT NULL COMMENT 'Currently assigned riddle ID',
   `track_id` int(11) DEFAULT NULL COMMENT 'Assigned track ID for the game',
   `track_index` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Current progression index inside the track',
   `registration` datetime NOT NULL COMMENT 'Original generation timestamp',

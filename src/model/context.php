@@ -19,9 +19,7 @@ class Context {
 
     private $group_id = null;
     private $group_name = null;
-
     private $group_state = null;
-    private $assigned_riddle_id = null;
 
     /**
      * Construct Context class.
@@ -115,7 +113,7 @@ class Context {
         $this->group_id = intval($identity[0]);
         $this->is_admin = (bool)$identity[2];
 
-        $state = db_row_query("SELECT `name`, `participants_count`, `state`, `assigned_riddle_id` FROM `status` WHERE `game_id` = " . CURRENT_GAME_ID . " AND `group_id` = {$this->group_id}");
+        $state = db_row_query("SELECT `name`, `participants_count`, `state` FROM `status` WHERE `game_id` = " . CURRENT_GAME_ID . " AND `group_id` = {$this->group_id}");
         if(!$state) {
             //No registration
             return;
@@ -128,7 +126,6 @@ class Context {
             $this->group_name = TEXT_UNNAMED_GROUP;
         }
         $this->group_state = intval($state[2]);
-        $this->assigned_riddle_id = $state[3];
     }
 
 }
