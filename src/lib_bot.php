@@ -141,7 +141,7 @@ function bot_get_telegram_ids_of_groups($context, $min_state_level = STATE_NEW, 
  * Gets a map of group counts, grouped by group state.
  */
 function bot_get_group_count_by_state($context) {
-    $data = db_table_query("SELECT `state`, count(*) FROM `status` WHERE `game_id` = {$context->get_game_id()} GROUP BY `state` ORDER BY `state` ASC");
+    $data = db_table_query("SELECT s.`state`, count(*) FROM `status` AS s LEFT JOIN `identities` AS i ON s.`group_id` = i.`id` WHERE s.`game_id` = {$context->get_game_id()} AND i.`is_admin` = 0 GROUP BY s.`state` ORDER BY s.`state` ASC");
 
     $map = array();
     foreach(STATE_ALL as $c) {

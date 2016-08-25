@@ -63,7 +63,8 @@ function msg_processing_admin($context) {
             "Solving puzzle: {$states[STATE_GAME_PUZZLE]}\n" .
             "Moving to last location: {$states[STATE_GAME_LAST_LOC]}\n" .
             "Solving last puzzle: {$states[STATE_GAME_LAST_PUZ]}\n" .
-            "Won: {$states[STATE_GAME_WON]} 🏆"
+            "Won: {$states[STATE_GAME_WON]} 🏆\n" .
+            "(This list does _not_ include groups by administrators.)"
         );
 
         return true;
