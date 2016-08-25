@@ -38,11 +38,45 @@ function msg_processing_admin($context) {
     if(starts_with($text, '/help')) {
         $context->reply(
             "👑 *Administration commands*\n" .
+            "/send id message: sends a message to a group by ID.\n" .
             "/status: status of the game and group statistics.\n" .
             "/channel: sends a message to the channel.\n" .
             "/confirm ok: confirms all reserved groups and starts 2nd step of registration.\n" .
             "/broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, /broadcast\_all, /broadcast\_admin: broadcasts following text to reserved, ready, playing, all, or admin-owned groups respectively. You may use _%NAME%_ (leader’s name) and _%GROUP%_ (group name) placeholders in the message."
         );
+        return true;
+    }
+
+    /* Text messages */
+    if(starts_with($text, '/send')) {
+        $payload = extract_command_payload($text);
+        $split_pos = strpos($payload, ' ');
+        if($split_pos === false || $split_pos === 0) {
+            $context->reply("Specify group ID and message, separated by space.");
+            return true;
+        }
+
+        $group_id = intval(substr($payload, 0, $split_pos));
+        $message = substr($payload, $split_pos + 1);
+        if(empty($message)) {
+            $context->reply("Specify a valid message to send.");
+            return true;
+        }
+
+        $telegram_id = bot_get_telegram_id($context, $group_id);
+        if(!$telegram_id) {
+            $context->reply("Group with ID {$group_id} not found.");
+            return true;
+        }
+
+        Logger::info("Sending '{$message}' to group #{$group_id} (Telegram ID {$telegram_id})", __FILE__, $context, true);
+
+        if(telegram_send_message($telegram_id, $message, array(
+            'parse_mode' => 'Markdown',
+        )) === false) {
+            $context->reply("Failed to send message.");
+        }
+
         return true;
     }
 

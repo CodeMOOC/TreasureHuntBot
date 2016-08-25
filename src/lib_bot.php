@@ -10,11 +10,21 @@
 require_once('model/context.php');
 
 /**
- * Picks a random track.
- * @return int | null Random track ID or null on failure.
+ * Get the Telegram ID of a group.
  */
-function bot_pick_random_track_id($context) {
-    $track_id = db_scalar_query("SELECT DISTINCT(id) FROM `tracks` WHERE `game_id` = {$context->get_game_id()} ORDER BY RAND() LIMIT 1");
+function bot_get_telegram_id($context, $group_id = null) {
+    if($group_id === null) {
+        $group_id = $context->get_group_id();
+    }
+
+    return db_scalar_query("SELECT `telegram_id` FROM `identities` WHERE `id` = {$group_id}");
+}
+
+/**
+ * Assigns a random track to the user's group.
+ * @return The track ID on success, false otherwise.
+ */
+function bot_assign_random_track_id($context) {
     if($track_id === null) {
         Logger::fatal('Unable to pick random track (no tracks in DB?)', __FILE__, $context);
     }
