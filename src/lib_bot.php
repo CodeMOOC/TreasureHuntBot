@@ -51,7 +51,7 @@ function bot_register_new_group($context) {
         return false;
     }
 
-    if(db_perform_action("INSERT INTO `status` VALUES({$context->get_game_id()}, {$group_id}, NULL, 0, NULL, " . STATE_NEW . ", NULL, NULL, 0, NOW(), NOW())") === false) {
+    if(db_perform_action("INSERT INTO `status` VALUES({$context->get_game_id()}, {$group_id}, NULL, 0, NULL, " . STATE_NEW . ", NULL, 0, NOW(), NOW())") === false) {
         Logger::error("Failed to register group status for group {$group_id}", __FILE__, $context);
         return false;
     }
