@@ -28,6 +28,13 @@ function bot_get_riddle_info($context, $riddle_id) {
 }
 
 /**
+ * Get lat, long, and description of a location, by ID.
+ */
+function bot_get_location_info($context, $location_id) {
+    return db_row_query("SELECT `lat`, `lng`, `description` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `id` = {$location_id}");
+}
+
+/**
  * Registers new group for current user.
  */
 function bot_register_new_group($context) {

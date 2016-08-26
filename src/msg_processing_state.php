@@ -271,21 +271,23 @@ function msg_processing_handle_group_response($context) {
                     $context->reply(TEXT_GAME_PUZZLE_RESPONSE_WRONG);
                 }
                 else if($result === true) {
-                    //TODO: SECRET RESPONSE HERE!
+                    //TODO: GIVE OUT SECRET HINT HERE!
 
                     $advance_result = bot_advance_track_location($context);
                     if($advance_result === false) {
-
+                        $context->reply(TEXT_FAILURE_GENERAL);
                     }
                     else if($advance_result === 'eot') {
-                        // All done! Send last location
+                        // All done! Set location as last one
                         bot_update_group_state($context, STATE_GAME_LAST_LOC);
-
-
+                        $advance_result = LAST_LOCATION_ID;
                     }
-                    else {
 
-                    }
+                    $location_info = bot_get_location_info($context, $advance_result);
+
+                    telegram_send_location($context->get_chat_id(), $location_info[0], $location_info[1]);
+
+                    msg_processing_handle_group_state($context);
                 }
                 else {
                     $context->reply(TEXT_GAME_PUZZLE_RESPONSE_WAIT, array(
