@@ -7,3 +7,5 @@ src/avatars/*
 !src/avatars/default.jpg
 src/selfies/*
 !src/selfies/default.jpg
+src/riddles/*
+!src/riddles/default.jpg
