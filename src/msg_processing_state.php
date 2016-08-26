@@ -234,7 +234,7 @@ function msg_processing_handle_group_response($context) {
 
                 $riddle_id = bot_assign_random_riddle($context);
                 if($riddle_id === false || $riddle_id === null) {
-                    context->reply(TEXT_FAILURE_GENERAL);
+                    $context->reply(TEXT_FAILURE_GENERAL);
                     return true;
                 }
 

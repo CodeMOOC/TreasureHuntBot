@@ -235,10 +235,11 @@ function bot_reach_location($context, $code) {
     else if($expected_payload === null) {
         return 'unexpected';
     }
-    else if($payload !== $expected_payload) {
-        return 'wrong'
+    else if($code !== $expected_payload) {
+        return 'wrong';
     }
 
+    $state = $context->get_group_state();
     if($state === STATE_GAME_LOCATION) {
         Logger::info("Group {$context->get_group_id()} reached its " . ($context->get_track_index() + 1) . "th assigned location", __FILE__, $context, true);
 
