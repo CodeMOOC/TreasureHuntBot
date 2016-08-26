@@ -35,6 +35,19 @@ function bot_get_location_info($context, $location_id) {
 }
 
 /**
+ * Get whether the game has been won by a group.
+ * @return The winning game's name or false otherwise.
+ */
+function bot_get_winning_group($context) {
+    $count = db_scalar_query("SELECT `name` FROM `status` WHERE `game_id` = {$context->get_game_id()} AND `state` = " . STATE_GAME_WON);
+
+    if($count === null || $count === false)
+        return false;
+
+    return (string)$count;
+}
+
+/**
  * Registers new group for current user.
  */
 function bot_register_new_group($context) {

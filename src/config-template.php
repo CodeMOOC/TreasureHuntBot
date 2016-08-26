@@ -37,6 +37,7 @@ define('DEBUG_TO_BOT', false);
 /* Pre-set codes (16 characters) */
 define('CODE_REGISTER', '');
 define('CODE_ACTIVATE', '');
+define('CODE_VICTORY', '');
 define('LAST_LOCATION_ID', 0);
 
 ?>

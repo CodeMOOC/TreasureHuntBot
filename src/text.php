@@ -32,9 +32,13 @@ const TEXT_CMD_RESET = "Comando di reset, non implementato.";
 const TEXT_CMD_START_NEW = "Ciao, %FULL_NAME%! Benvenuto alla caccia al tesoro *Urbino Code Hunting Game*. Per partecipare è necessario registrarsi, seguendo le [indicazioni descritte sul sito](http://codemooc.org/urbino-code-hunting/).";
 const TEXT_CMD_START_REGISTERED = "Bentornato, %FULL_NAME%! Questo è il bot dedicato alla caccia al tesoro *Urbino Code Hunting Game*.";
 
+const TEXT_CMD_START_PRIZE_INVALID = "Scansionato codice vittoria, ma non ha stato giusto";
+const TEXT_CMD_START_PRIZE_TOOLATE = "Altro gruppo %GROUP% ha già vinto";
+
 const TEXT_CMD_START_LOCATION_REACHED = "Bravi, siete nel posto giusto!";
 const TEXT_CMD_START_LOCATION_UNEXPECTED = "Ok! Ma ora non mi serve sapere dove sei! Segui le istruzioni per piacere.";
 const TEXT_CMD_START_LOCATION_WRONG = "Sembra che tu abbia scansionato il QRCode sbagliato! Forse sei finito nel posto sbagliato? 😒😒😒";
+
 const TEXT_CMD_START_WRONG_PAYLOAD = "Non ho capito! Forse hai scritto a mano un link ma sarebbe bene che usassi i link contenuti nei QRCode così come sono.";
 
 // First response after receiving "/start REGISTER_CODE" command
