@@ -259,8 +259,43 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case STATE_GAME_PUZZLE:
-            // TODO: selfie taken, puzzle assigned
-            // expecting text
+            // Expecting response to puzzle
+            $response = $context->get_response();
+            if($response) {
+                $result = bot_give_solution($context, $response);
+
+                if($result === false) {
+                    $context->reply(TEXT_FAILURE_GENERAL);
+                }
+                else if($result === 'wrong') {
+                    $context->reply(TEXT_GAME_PUZZLE_RESPONSE_WRONG);
+                }
+                else if($result === true) {
+                    //TODO: SECRET RESPONSE HERE!
+
+                    $advance_result = bot_advance_track_location($context);
+                    if($advance_result === false) {
+
+                    }
+                    else if($advance_result === 'eot') {
+                        // All done! Send last location
+                        bot_update_group_state($context, STATE_GAME_LAST_LOC);
+
+
+                    }
+                    else {
+
+                    }
+                }
+                else {
+                    $context->reply(TEXT_GAME_PUZZLE_RESPONSE_WAIT, array(
+                        '%SECONDS%' => intval($result)
+                    ));
+                }
+            }
+            else {
+                msg_processing_handle_group_state($context);
+            }
             return true;
 
         case STATE_GAME_LAST_LOC:
