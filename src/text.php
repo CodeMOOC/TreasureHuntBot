@@ -32,6 +32,10 @@ const TEXT_CMD_RESET = "Comando di reset, non implementato.";
 const TEXT_CMD_START_NEW = "Ciao, %FULL_NAME%! Benvenuto alla caccia al tesoro *Urbino Code Hunting Game*. Per partecipare è necessario registrarsi, seguendo le [indicazioni descritte sul sito](http://codemooc.org/urbino-code-hunting/).";
 const TEXT_CMD_START_REGISTERED = "Bentornato, %FULL_NAME%! Questo è il bot dedicato alla caccia al tesoro *Urbino Code Hunting Game*.";
 
+const TEXT_CMD_START_LOCATION_UNEXPECTED = "Stato != in cerca di location";
+const TEXT_CMD_START_LOCATION_WRONG = "Payload != codice location (QR code sbagliato?)";
+const TEXT_CMD_START_WRONG_PAYLOAD = "Whops!";
+
 // First response after receiving "/start REGISTER_CODE" command
 const TEXT_CMD_REGISTER_CONFIRM = "Perfetto! 🎉 Cerchiamo ora di registrare il tuo gruppo.";
 const TEXT_CMD_REGISTER_REGISTERED = "La tua domanda di registrazione è stata ricevuta. 👍";
@@ -63,6 +67,16 @@ const TEXT_REGISTRATION_READY_STATE = "Ci vediamo *venerdì 26 agosto* alle *20:
 // Advancement notifications
 const TEXT_ADVANCEMENT_CONFIRMED = "📢 È giunto il momento di completare la registrazione per il gruppo “%GROUP%”!\nInnanzitutto dichiara quante persone parteciperanno al gioco (te incluso).";
 const TEXT_ADVANCEMENT_ACTIVATED = "Tutto ok! 👍\nSegui le istruzioni.";
+
+// States and responses for the game
+const TEXT_GAME_LOCATION_STATE_FIRST = "Aspetta ulteriori istruzioni.";
+const TEXT_GAME_LOCATION_STATE = "Raggiungi punto assegnato";
+
+const TEXT_GAME_SELFIE_STATE = "Mandami selfie";
+
+const TEXT_GAME_PUZZLE_RESPONSE_OK = "Bravolone";
+const TEXT_GAME_PUZZLE_RESPONSE_WAIT = "Aspetta altri %SECONDS% secondi";
+const TEXT_GAME_PUZZLE_RESPONSE_WRONG = "Nope!";
 
 // Default response for anything else
 const TEXT_FALLBACK_RESPONSE = "Scusa, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.";
