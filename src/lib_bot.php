@@ -272,9 +272,9 @@ function bot_reach_location($context, $code) {
  *         false otherwise.
  */
 function bot_give_solution($context, $solution) {
-    $second_interval = db_scalar_query("SELECT TIMESTAMPDIFF(SECOND, NOW(), `last_answer_on`) FROM `assigned_riddles` WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()} ORDER BY `assigned_on` DESC LIMIT 1");
+    $second_interval = db_scalar_query("SELECT TIMESTAMPDIFF(SECOND, `last_answer_on`, NOW()) FROM `assigned_riddles` WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()} ORDER BY `assigned_on` DESC LIMIT 1");
     if($second_interval && intval($second_interval) <= 60) {
-        return intval($second_interval);
+        return 61 - intval($second_interval);
     }
 
     $correct_answer = db_scalar_query("SELECT r.`solution` FROM `assigned_riddles` AS ass LEFT JOIN `riddles` AS r ON ass.`riddle_id` = r.`id` WHERE ass.`game_id` = {$context->get_game_id()} AND ass.`group_id` = {$context->get_group_id()} ORDER BY ass.`assigned_on` DESC LIMIT 1");
