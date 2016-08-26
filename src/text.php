@@ -75,6 +75,9 @@ const TEXT_GAME_LOCATION_STATE_FIRST = "Aspetta ulteriori istruzioni.";
 const TEXT_GAME_LOCATION_STATE = "Raggiungi punto assegnato";
 
 const TEXT_GAME_SELFIE_STATE = "Mandami selfie";
+const TEXT_GAME_SELFIE_RESPONSE_OK = "Selfie ok!";
+const TEXT_GAME_SELFIE_RESPONSE_INVALID = "Me devi da mannà er selfie";
+const TEXT_GAME_SELFIE_FORWARD_CAPTION = "Il gruppo “%GROUP%” raggiunge la %INDEX%° tappa!";
 
 const TEXT_GAME_PUZZLE_RESPONSE_OK = "Bravolone";
 const TEXT_GAME_PUZZLE_RESPONSE_WAIT = "Aspetta altri %SECONDS% secondi";

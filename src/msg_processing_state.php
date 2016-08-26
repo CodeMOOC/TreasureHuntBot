@@ -226,8 +226,35 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case STATE_GAME_SELFIE:
-            // TODO: location reached, qr code scanned, waiting for selfie
-            // expecting photo
+            // Expecting photo taken at reached location
+            if($context->get_message()->get_photo_large_id()) {
+                $file_path = getFilePath(getClient(), $context->get_message()->get_photo_large_id());
+                $photo_path = getPicture(getClient(), $file_path, $context->get_message()->get_photo_large_id(), PHOTO_SELFIE);
+
+                $riddle_id = bot_assign_random_riddle($context);
+                if($riddle_id === false || $riddle_id === null) {
+                    context->reply(TEXT_FAILURE_GENERAL);
+                    return true;
+                }
+
+                // Send out riddle
+                $riddle_info = bot_get_riddle_info($context, $riddle_id);
+                if($riddle_info[0]) {
+                    telegram_send_photo($context->get_chat_id(), $riddle_info[0], $riddle_info[1]);
+                }
+                else {
+                    telegram_send_message($context->get_chat_id(), $riddle_info[1]);
+                }
+
+                // Forward selfie to channel
+                telegram_send_photo(CHAT_CHANNEL, $photo_path, hydrate(TEXT_GAME_SELFIE_FORWARD_CAPTION, array(
+                    '%GROUP%' => $context->get_group_name(),
+                    '%INDEX%' => $context->get_track_index() + 1
+                )));
+            }
+            else {
+                $context->reply(TEXT_GAME_SELFIE_RESPONSE_INVALID);
+            }
             return true;
 
         case STATE_GAME_PUZZLE:

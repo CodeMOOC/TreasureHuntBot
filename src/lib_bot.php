@@ -21,6 +21,13 @@ function bot_get_telegram_id($context, $group_id = null) {
 }
 
 /**
+ * Gets image path, text, and hint for a riddle, by ID.
+ */
+function bot_get_riddle_info($context, $riddle_id) {
+    return db_row_query("SELECT `image_path`, `text`, `solution` FROM `riddles` WHERE `game_id` = {$context->get_game_id()} AND `id` = {$riddle_id}");
+}
+
+/**
  * Registers new group for current user.
  */
 function bot_register_new_group($context) {
