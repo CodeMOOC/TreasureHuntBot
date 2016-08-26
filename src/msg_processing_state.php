@@ -232,6 +232,8 @@ function msg_processing_handle_group_response($context) {
                 $file_path = getFilePath(getClient(), $context->get_message()->get_photo_large_id());
                 $photo_path = getPicture(getClient(), $file_path, $context->get_message()->get_photo_large_id(), PHOTO_SELFIE);
 
+                $context->reply(TEXT_GAME_SELFIE_RESPONSE_OK);
+
                 $riddle_id = bot_assign_random_riddle($context);
                 if($riddle_id === false || $riddle_id === null) {
                     $context->reply(TEXT_FAILURE_GENERAL);
