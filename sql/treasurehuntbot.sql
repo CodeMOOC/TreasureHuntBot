@@ -24,6 +24,7 @@ CREATE TABLE `assigned_locations` (
   `game_id` int(11) NOT NULL,
   `location_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
+  `track_index` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   `assigned_on` datetime NOT NULL,
   `reached_on` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -141,7 +142,7 @@ CREATE TABLE `tracks` (
 -- Indexes for table `assigned_locations`
 --
 ALTER TABLE `assigned_locations`
-  ADD PRIMARY KEY (`game_id`,`location_id`,`group_id`),
+  ADD PRIMARY KEY (`game_id`,`location_id`,`group_id`,`track_index`) USING BTREE,
   ADD KEY `assloc_group_constraint` (`group_id`);
 
 --
