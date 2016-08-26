@@ -61,6 +61,10 @@ function db_open_connection($quick = false) {
             Logger::fatal("Failed to establish database connection. Error #$errno: $error", __FILE__);
         }
 
+        if(!mysqli_real_query($connection, 'SET NAMES utf8')) {
+            Logger::warning("Failed to set names UTF8", __FILE__);
+        }
+
         // Store connection for later
         $GLOBALS['db_connection'] = $connection;
 
