@@ -86,11 +86,11 @@ const TEXT_GAME_PUZZLE_RESPONSE_OK = "Bravissimo!";
 const TEXT_GAME_PUZZLE_RESPONSE_WAIT = "Devi aspettare altri %SECONDS% secondi prima di poter rispondere.";
 const TEXT_GAME_PUZZLE_RESPONSE_WRONG = "Ehm… Non proprio! 😩 Purtroppo hai sbagliato e ora devi aspettare un minuto prima di poter dare un’altra risposta…\nGiusto il tempo di pensare alla soluzione corretta! 😉";
 
-const TEXT_GAME_LAST_LOCATION_STATE = "Dovresti raggiungere il punto assegnato.";
+const TEXT_GAME_LAST_LOCATION_STATE = "Manca pochissimo per trovare il tesoro... Raggiungi la posizione assegnata!";
 
-const TEXT_GAME_LAST_PUZZLE_STATE = "Last puzzle state";
+const TEXT_GAME_LAST_PUZZLE_STATE = "Sei giunto all'ultimo quesito... ora, con la mappa in mano, hai tutto il necessario per raggiungere la meta finale! Leggi \bAttentamente\b tutto quello che ti ho scritto fin'ora, dalla prima tappa in poi, e saprai trovare il percorso che ti porterà al tesoro!";
 
-const TEXT_GAME_WON = "Hai vinto tantissimo";
+const TEXT_GAME_WON = "%GROUP%, siete stati i primi a trovare il tesoro e avete vinto!!!";
 
 // Default response for anything else
 const TEXT_FALLBACK_RESPONSE = "Scusami, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.";
