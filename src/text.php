@@ -23,7 +23,7 @@ const TEXT_FAILURE_GROUP_ALREADY_ACTIVE = "Sei già pronto per giocare.";
 const TEXT_FAILURE_GROUP_INVALID_STATE = "Sembra che il tuo gruppo non sia pronto per giocare. 🙁 Segui le istruzioni che ti sono state date.";
 
 // Response to "/help"
-const TEXT_CMD_HELP = "Il tuo gruppo è “%GROUP%”. Trovi le informazioni sul [sito della caccia al tesoro](http://codemooc.org/urbino-code-hunting/) oppure sul canale @urbinocodehunting.";
+const TEXT_CMD_HELP = "Trovi le informazioni sul [sito della caccia al tesoro](http://codemooc.org/urbino-code-hunting/) oppure sul canale @urbinocodehunting.";
 
 // Response to "/reset"
 const TEXT_CMD_RESET = "Comando di reset, non implementato.";
