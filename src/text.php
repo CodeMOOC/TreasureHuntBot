@@ -71,7 +71,7 @@ const TEXT_ADVANCEMENT_ACTIVATED = "Tutto ok! 👍\nSegui le istruzioni.";
 
 // States and responses for the game
 const TEXT_GAME_LOCATION_STATE_FIRST = "Aspetta altre istruzioni per piacere.";
-const TEXT_GAME_LOCATION_STATE = "Dovresti raggiungere il punto assegnato.";
+const TEXT_GAME_LOCATION_STATE = "Raggiungi il punto assegnato e trova il QRCode.";
 
 const TEXT_GAME_SELFIE_STATE = "Mandami un _selfie_ del tuo gruppo! (Sono ammesse smorfie.)";
 const TEXT_GAME_SELFIE_RESPONSE_OK = "Selfie ok!";
@@ -80,7 +80,7 @@ const TEXT_GAME_SELFIE_FORWARD_CAPTION = "Il gruppo “%GROUP%” raggiunge la %
 const TEXT_GAME_PUZZLE_STATE = "Scrivi qui la risposta al quesito appena inviato.";
 const TEXT_GAME_PUZZLE_RESPONSE_OK = "Bravissimo!";
 const TEXT_GAME_PUZZLE_RESPONSE_WAIT = "Devi aspettare altri %SECONDS% secondi prima di poter rispondere.";
-const TEXT_GAME_PUZZLE_RESPONSE_WRONG = "Ehm… Non proprio! 😩 Purtroppo hai sbagliato e ora devi aspettare un minuto prima di poter dare un’altra risposta…\nGiusto il tempo di pensare alla soluzione corretta! 😉?";
+const TEXT_GAME_PUZZLE_RESPONSE_WRONG = "Ehm… Non proprio! 😩 Purtroppo hai sbagliato e ora devi aspettare un minuto prima di poter dare un’altra risposta…\nGiusto il tempo di pensare alla soluzione corretta! 😉";
 
 const TEXT_GAME_LAST_LOCATION_STATE = "Dovresti raggiungere il punto assegnato.";
 
