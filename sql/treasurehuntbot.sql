@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 25, 2016 at 12:55 PM
+-- Generation Time: Aug 26, 2016 at 09:27 AM
 -- Server version: 5.5.46-0+deb8u1
 -- PHP Version: 5.6.17-0+deb8u1
 
@@ -40,7 +40,8 @@ CREATE TABLE `assigned_riddles` (
   `riddle_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
   `assigned_on` datetime NOT NULL,
-  `last_answer_on` datetime DEFAULT NULL
+  `last_answer_on` datetime DEFAULT NULL,
+  `solved_on` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
