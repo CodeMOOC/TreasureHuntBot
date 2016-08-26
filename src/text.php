@@ -32,8 +32,8 @@ const TEXT_CMD_RESET = "Comando di reset, non implementato.";
 const TEXT_CMD_START_NEW = "Ciao, %FULL_NAME%! Benvenuto alla caccia al tesoro *Urbino Code Hunting Game*. Per partecipare è necessario registrarsi, seguendo le [indicazioni descritte sul sito](http://codemooc.org/urbino-code-hunting/).";
 const TEXT_CMD_START_REGISTERED = "Bentornato, %FULL_NAME%! Questo è il bot dedicato alla caccia al tesoro *Urbino Code Hunting Game*.";
 
-const TEXT_CMD_START_PRIZE_INVALID = "Scansionato codice vittoria, ma non ha stato giusto";
-const TEXT_CMD_START_PRIZE_TOOLATE = "Altro gruppo %GROUP% ha già vinto";
+const TEXT_CMD_START_PRIZE_INVALID = "Hmmm, sembra che abbiate trovato il premio, ma che _non_ dovevate ancora trovarlo! 🤔";
+const TEXT_CMD_START_PRIZE_TOOLATE = "Mi dispiace, ma il gruppo “%GROUP%” ha raggiunto il premio prima di voi! 😱";
 
 const TEXT_CMD_START_LOCATION_REACHED = "Bravi, siete nel posto giusto!";
 const TEXT_CMD_START_LOCATION_UNEXPECTED = "Ok! Ma ora non mi serve sapere dove sei! Segui le istruzioni per piacere.";
@@ -71,29 +71,28 @@ const TEXT_REGISTRATION_READY_STATE = "Ci vediamo *venerdì 26 agosto* alle *20:
 
 // Advancement notifications
 const TEXT_ADVANCEMENT_CONFIRMED = "📢 È giunto il momento di completare la registrazione per il gruppo “%GROUP%”!\nPer prima cosa dimmi quante persone parteciperanno al gioco (te incluso), per piacere.";
-const TEXT_ADVANCEMENT_ACTIVATED = "Tutto ok! 👍\nSegui le istruzioni.";
+const TEXT_ADVANCEMENT_ACTIVATED = "Tutto ok! 👍\nSeguite le istruzioni.";
 
 // States and responses for the game
-const TEXT_GAME_LOCATION_STATE_FIRST = "Aspetta altre istruzioni per piacere.";
-const TEXT_GAME_LOCATION_STATE = "Raggiungi il punto assegnato e trova il QRCode.";
+const TEXT_GAME_LOCATION_STATE_FIRST = "Aspettate altre istruzioni per piacere.";
+const TEXT_GAME_LOCATION_STATE = "Raggiungete il punto assegnato e trovate il QRCode.";
 
-const TEXT_GAME_SELFIE_STATE = "Mandami un _selfie_ del tuo gruppo per dimostrare di esserci tutti! (Sono ammesse smorfie.)";
-const TEXT_GAME_SELFIE_RESPONSE_OK = "Selfie ok! Ora domanda";
+const TEXT_GAME_SELFIE_STATE = "Mandatemi un _selfie_ del gruppo per dimostrare di esserci tutti! (Sono ammesse smorfie.)";
+const TEXT_GAME_SELFIE_RESPONSE_OK = "Bellissima foto! Ecco l’indovinello da risolvere a questa tappa.";
 const TEXT_GAME_SELFIE_FORWARD_CAPTION = "Il gruppo “%GROUP%” raggiunge la %INDEX%° tappa!";
 
-const TEXT_GAME_PUZZLE_STATE = "Scrivi qui la risposta al quesito appena inviato.";
-const TEXT_GAME_PUZZLE_RESPONSE_OK = "Bravissimo!";
-const TEXT_GAME_PUZZLE_RESPONSE_WAIT = "Devi aspettare altri %SECONDS% secondi prima di poter rispondere.";
-const TEXT_GAME_PUZZLE_RESPONSE_WRONG = "Ehm… Non proprio! 😩 Purtroppo hai sbagliato e ora devi aspettare un minuto prima di poter dare un’altra risposta…\nGiusto il tempo di pensare alla soluzione corretta! 😉";
+const TEXT_GAME_PUZZLE_STATE = "Scrivete qui la risposta al quesito appena inviato.";
+const TEXT_GAME_PUZZLE_RESPONSE_WAIT = "Dovete aspettare altri %SECONDS% secondi prima di poter rispondere.";
+const TEXT_GAME_PUZZLE_RESPONSE_WRONG = "Ehm… Non proprio! 😩 Purtroppo avete sbagliato e dovrete aspettare un minuto prima di poter dare un’altra risposta…\nGiusto il tempo di pensare alla soluzione corretta! 😉";
 
-const TEXT_GAME_LAST_LOCATION_STATE = "Manca pochissimo per trovare il tesoro... Raggiungi la posizione assegnata!";
+const TEXT_GAME_LAST_LOCATION_STATE = "Manca pochissimo per trovare il tesoro… Raggiungete la posizione assegnata!";
 
-const TEXT_GAME_LAST_PUZZLE_STATE = "Sei giunto all'ultimo quesito... ora, con la mappa in mano, hai tutto il necessario per raggiungere la meta finale! Leggi \bAttentamente\b tutto quello che ti ho scritto fin'ora, dalla prima tappa in poi, e saprai trovare il percorso che ti porterà al tesoro!";
+const TEXT_GAME_LAST_PUZZLE_STATE = "Siete giunti all’ultimo quesito… ora, con la mappa in mano, avete tutto il necessario per raggiungere la meta finale! Considerate _attentamente_ lo svolgimento del gioco fino a questo momento e saprete trovare il percorso che vi porterà al tesoro! 😉";
 
-const TEXT_GAME_WON = "%GROUP%, siete stati i primi a trovare il tesoro e avete vinto!!!";
+const TEXT_GAME_WON = "🎉 *Complimenti!* 🎉\n“%GROUP_NAME%”, siete stati i primi a trovare il tesoro ed avete vinto! Godetevi il premio! 🏆";
+const TEXT_GAME_WON_CHANNEL = "*Il gruppo “%GROUP_NAME” ha raggiunto la tappa finale e vince il gioco!* 🎉";
 
 // Default response for anything else
 const TEXT_FALLBACK_RESPONSE = "Scusami, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.";
 const TEXT_UNREQUESTED_PHOTO = "Grazie per la foto! Ma inviami i tuoi _selfie_ solo quando richiesto espressamente dal gioco. 😉";
 const TEXT_UNSUPPORTED_OTHER = "Piano Piano! Non sono così intelligente ancora!\n\nPurtroppo non gestisco questo tipo di messaggi.\nInviami solo messaggi testuali o foto per piacere.";
-

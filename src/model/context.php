@@ -114,6 +114,27 @@ class Context {
     }
 
     /**
+     * Sends out a message on the channel.
+     */
+    function channel($message, $additional_values = null) {
+        $hydration_values = array(
+            '%FULL_NAME%' => $this->get_message()->get_full_sender_name(),
+            '%GROUP_NAME%' => $this->get_group_name()
+        );
+
+        $hydrated = hydrate($message, unite_arrays($hydration_values, $additional_values));
+
+        return telegram_send_message(
+            CHAT_CHANNEL,
+            $hydrated,
+            array(
+                'parse_mode' => 'Markdown',
+                'disable_web_page_preview' => true
+            )
+        );
+    }
+
+    /**
      * Refreshes information about the context from the DB.
      */
     function refresh() {

@@ -139,9 +139,7 @@ function msg_processing_admin($context) {
             return false;
         }
 
-        if(telegram_send_message(CHAT_CHANNEL, $payload, array(
-            'parse_mode' => 'Markdown'
-        )) === false) {
+        if($context->channel($payload) === false) {
             $context->reply(TEXT_FAILURE_GENERAL);
         }
 

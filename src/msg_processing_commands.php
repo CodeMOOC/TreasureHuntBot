@@ -84,7 +84,7 @@ function msg_processing_commands($context) {
         return true;
     }
     else if($text === '/start ' . CODE_VICTORY) {
-        Logger::info("Group {$context->get_group_id()} has reached the prize", __FILE__, $context, true);
+        Logger::debug("Prize code scanned", __FILE__, $context);
 
         if($context->get_group_state() === STATE_GAME_LAST_PUZ) {
             $winning_group = bot_get_winning_group($context);
@@ -98,11 +98,15 @@ function msg_processing_commands($context) {
 
                 msg_processing_handle_group_state($context);
 
-                //TODO segnala a tutti!
+                Logger::info("Group {$context->get_group_id()} has reached the prize and won", __FILE__, $context, true);
+
+                $context->channel(TEXT_GAME_WON_CHANNEL);
             }
         }
         else {
             $context->reply(TEXT_CMD_START_PRIZE_INVALID);
+
+            Logger::warning("Group {$context->get_group_id()} has reached the prize but is in state {$context->get_group_state()}", __FILE__, $context);
         }
 
         return true;
@@ -142,6 +146,10 @@ function msg_processing_commands($context) {
                 $context->reply(TEXT_CMD_START_LOCATION_REACHED);
 
                 msg_processing_handle_group_state($context);
+
+                if($context->get_group_state() === STATE_GAME_LAST_PUZ) {
+                    //TODO warn others!
+                }
             }
         }
         // Something else (?)
