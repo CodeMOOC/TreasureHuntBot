@@ -32,6 +32,7 @@ const TEXT_CMD_RESET = "Comando di reset, non implementato.";
 const TEXT_CMD_START_NEW = "Ciao, %FULL_NAME%! Benvenuto alla caccia al tesoro *Urbino Code Hunting Game*. Per partecipare è necessario registrarsi, seguendo le [indicazioni descritte sul sito](http://codemooc.org/urbino-code-hunting/).";
 const TEXT_CMD_START_REGISTERED = "Bentornato, %FULL_NAME%! Questo è il bot dedicato alla caccia al tesoro *Urbino Code Hunting Game*.";
 
+const TEXT_CMD_START_LOCATION_REACHED = "Location raggiunta! Fai selfie!";
 const TEXT_CMD_START_LOCATION_UNEXPECTED = "Stato != in cerca di location";
 const TEXT_CMD_START_LOCATION_WRONG = "Payload != codice location (QR code sbagliato?)";
 const TEXT_CMD_START_WRONG_PAYLOAD = "Whops!";

@@ -49,7 +49,7 @@ function bot_register_new_group($context) {
     return true;
 }
 
-/*** TRACKS AND ASSIGNMENTS ***/
+/*** TRACKS, PUZZLES, AND ASSIGNMENTS ***/
 
 /**
  * Assigns a random track to a group.
@@ -98,8 +98,44 @@ function bot_assign_random_track_id($context, $group_id = null) {
 }
 
 /**
+ * Assigns a random, not assigned previously, riddle to a group.
+ * @return Riddle ID if assigned correctly,
+ *         null if no riddle can be assigned,
+ *         false otherwise.
+ */
+function bot_assign_random_riddle($context, $group_id = null) {
+    if($group_id === null) {
+        $group_id = $context->get_group_id();
+    }
+
+    Logger::debug("Assigning random riddle to group {$group_id}", __FILE__, $context);
+
+    $riddle_id = db_scalar_query("SELECT `id` FROM `riddles` WHERE `game_id` = {$context->get_game_id()} AND `id` NOT IN (SELECT `riddle_id` FROM `assigned_riddles` WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id}) ORDER BY RAND() LIMIT 1");
+    if($riddle_id === false) {
+        return false;
+    }
+    else if($riddle_id === null) {
+        return null;
+    }
+
+    // Write new riddle
+    if(db_perform_action("INSERT INTO `assigned_riddles` VALUES({$context->get_game_id()}, {$riddle_id}, {$group_id}, NOW(), NULL, NULL)") === false) {
+        return false;
+    }
+    if(db_perform_action("UPDATE `status` SET `state` = " . STATE_GAME_PUZZLE . ", `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id}") === false) {
+        return false;
+    }
+
+    $context->refresh();
+
+    Logger::info("Group {$group_id} assigned to riddle {$riddle_id}", __FILE__, $context);
+
+    return $riddle_id;
+}
+
+/**
  * Assigns the next location inside a track to the group.
- * @return Newly assigned track ID on success,
+ * @return Newly assigned location ID on success,
  *         'eot' if track is completed (no more locations in track),
  *         False on failure.
  */
@@ -142,13 +178,69 @@ function bot_advance_track_location($context, $group_id = null, $track_id = null
     if(db_perform_action("INSERT INTO `assigned_locations` VALUES({$context->get_game_id()}, {$next_location_id}, {$group_id}, {$next_track_index}, NOW(), NULL)") === false) {
         return false;
     }
+
     if(db_perform_action("UPDATE `status` SET `state` = " . STATE_GAME_LOCATION . ", `track_index` = {$next_track_index}, `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id}") === false) {
         return false;
     }
 
     Logger::info("Group {$group_id} assigned to location {$next_location_id} (track index {$next_track_index})", __FILE__, $context);
 
+    $context->refresh();
+
     return $next_location_id;
+}
+
+/**
+ * Gets the current location code for the current group.
+ * @return Location code as string, null if no location assigned,
+ *         False on failure.
+ */
+function bot_get_current_location_code($context) {
+    $state = $context->get_group_state();
+
+    if($state === STATE_GAME_LOCATION) {
+        return db_scalar_query("SELECT l.`code` FROM `assigned_locations` AS ass LEFT JOIN `locations` AS l ON ass.`location_id` = l.`id` WHERE ass.`game_id` = {$context->get_game_id()} AND ass.`group_id` = {$context->get_group_id()} AND ass.`track_index` = {$context->get_track_index()} AND ass.`reached_on` IS NULL");
+    }
+    else if($state === STATE_GAME_LAST_LOC) {
+        return db_scalar_query("SELECT `code` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `id` = " . LAST_LOCATION_ID);
+    }
+    else {
+        return null;
+    }
+}
+
+/**
+ * Group reaches location.
+ */
+function bot_reach_location($context, $code) {
+    $expected_payload = bot_get_current_location_code($context);
+
+    if($expected_payload === false) {
+        return false;
+    }
+    else if($expected_payload === null) {
+        return 'unexpected';
+    }
+    else if($payload !== $expected_payload) {
+        return 'wrong'
+    }
+
+    // Location reached!
+    Logger::info("Group {$context->get_group_id()} reached its assigned location", __FILE__, $context);
+
+    $reached_rows = db_perform_action("UPDATE `assigned_locations` SET `reached_on` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()} AND `track_index` = {$context->get_track_index()}");
+    if($reached_rows !== 1) {
+        Logger::error("Marking location as reached updated {$reached_rows} rows", __FILE__, $context);
+        return false;
+    }
+
+    if(db_perform_action("UPDATE `status` SET `state` = " . STATE_GAME_SELFIE . ", `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}") === false) {
+        return false;
+    }
+
+    Logger::info("Group {$context->get_group_id()} reached " . ($context->get_track_index() + 1) . "th location", __FILE__, $context, true);
+
+    return true;
 }
 
 /*** GROUP UPDATING ***/

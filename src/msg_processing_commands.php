@@ -85,6 +85,8 @@ function msg_processing_commands($context) {
     }
     else if(starts_with($text, '/start')) {
         $payload = extract_command_payload($text);
+
+        // Naked /start message
         if($payload === '') {
             if(null !== $context->get_group_state()) {
                 $context->reply(TEXT_CMD_START_REGISTERED);
@@ -95,11 +97,30 @@ function msg_processing_commands($context) {
                 $context->reply(TEXT_CMD_START_NEW);
             }
         }
+        // Secret location code
         else if(mb_strlen($payload) === 16) {
             Logger::debug("Treasure hunt code: '{$payload}'", __FILE__, $context);
+
+            $result = bot_reach_location($context, $payload);
+
+            if($result === false) {
+                $context->reply(TEXT_FAILURE_GENERAL);
+            }
+            else if($result === 'unexpected') {
+                $context->reply(TEXT_CMD_START_LOCATION_UNEXPECTED);
+            }
+            else if($result === 'wrong') {
+                $context->reply(TEXT_CMD_START_LOCATION_WRONG);
+            }
+            else {
+                $context->reply(TEXT_CMD_START_LOCATION_REACHED);
+            }
         }
+        // Something else (?)
         else {
             Logger::warning("Unsupported /start payload received: '{$payload}'", __FILE__, $context);
+
+            $context->reply(TEXT_CMD_START_WRONG_PAYLOAD);
         }
 
         return true;

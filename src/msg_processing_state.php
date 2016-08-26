@@ -64,7 +64,13 @@ function msg_processing_handle_group_state($context) {
         /* GAME */
 
         case STATE_GAME_LOCATION:
-            // TODO: waiting for qrcode scan
+            // Group has an assigned location to reach
+            if($context->get_track_index() === 0) {
+                $context->reply(TEXT_GAME_LOCATION_STATE_FIRST);
+            }
+            else {
+                $context->reply(TEXT_GAME_LOCATION_STATE);
+            }
             return true;
 
         case STATE_GAME_SELFIE:
