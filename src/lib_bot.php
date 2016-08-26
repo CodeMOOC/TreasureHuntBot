@@ -21,22 +21,8 @@ function bot_get_telegram_id($context, $group_id = null) {
 }
 
 /**
- * Assigns a random track to the user's group.
- * @return The track ID on success, false otherwise.
+ * Registers new group for current user.
  */
-function bot_assign_random_track_id($context) {
-    if($track_id === null) {
-        Logger::fatal('Unable to pick random track (no tracks in DB?)', __FILE__, $context);
-    }
-
-    //TODO: Safety check on track length
-    $track_length = db_scalar_query("SELECT count(*) FROM `tracks` WHERE `game_id` = {$context->get_game_id()} AND `id` = {$track_id}");
-
-    Logger::debug("Picked random track ID {$track_id} of length {$track_length}", __FILE__, $context);
-
-    return $track_id;
-}
-
 function bot_register_new_group($context) {
     Logger::debug("Attempting to register new group for user {$context->get_user_id()}", __FILE__, $context);
 
@@ -63,6 +49,113 @@ function bot_register_new_group($context) {
     return true;
 }
 
+/*** TRACKS AND ASSIGNMENTS ***/
+
+/**
+ * Assigns a random track to a group.
+ * @return The track ID on success, false otherwise.
+ */
+function bot_assign_random_track_id($context, $group_id = null) {
+    if($group_id === null) {
+        $group_id = $context->get_group_id();
+    }
+
+    Logger::debug("Assigning random track ID to group {$group_id}", __FILE__, $context);
+
+    if(db_perform_action("LOCK TABLES `tracks` READ, `status` WRITE") === false) {
+        Logger::error('Unable to lock tables', __FILE__, $context);
+        return false;
+    }
+
+    $track_id = db_scalar_query("SELECT DISTINCT(id) FROM `tracks` WHERE `game_id` = {$context->get_game_id()} AND `id` NOT IN (SELECT DISTINCT(`track_id`) FROM `status` WHERE `track_id` IS NOT NULL) ORDER BY RAND() LIMIT 1");
+    if($track_id === null) {
+        db_perform_action("UNLOCK TABLES");
+
+        Logger::error('Unable to pick random track (no more free tracks in DB?)', __FILE__, $context);
+
+        return false;
+    }
+
+    if(db_perform_action("UPDATE `status` SET `track_id` = {$track_id} WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id}") !== 1) {
+        db_perform_action("UNLOCK TABLES");
+
+        Logger::error("Failure while assigning picked track to group", __FILE__, $context);
+
+        return false;
+    }
+
+    if(db_perform_action("UNLOCK TABLES") === false) {
+        Logger::fatal('Unable to unlock tables', __FILE__, $context);
+        return false;
+    }
+
+    //TODO: Safety check on track length
+    $track_length = db_scalar_query("SELECT count(*) FROM `tracks` WHERE `game_id` = {$context->get_game_id()} AND `id` = {$track_id}");
+
+    Logger::info("Assigned track ID {$track_id} of length {$track_length} to group {$group_id}", __FILE__, $context);
+
+    return $track_id;
+}
+
+/**
+ * Assigns the next location inside a track to the group.
+ * @return Newly assigned track ID on success,
+ *         'eot' if track is completed (no more locations in track),
+ *         False on failure.
+ */
+function bot_advance_track_location($context, $group_id = null, $track_id = null, $track_index = null) {
+    if($group_id === null) {
+        $group_id = $context->get_group_id();
+    }
+    if($track_id === null) {
+        if($context->get_track_id() === null) {
+            return false;
+        }
+        else {
+            $track_id = $context->get_track_id();
+        }
+    }
+    if($track_index === null) {
+        if($context->get_track_index() === null) {
+            return false;
+        }
+        else {
+            $track_index = $context->get_track_index();
+        }
+    }
+
+    $next_track_index = intval($track_index) + 1;
+
+    Logger::debug("Progressing group {$group_id} to location at index {$next_track_index} on track", __FILE__, $context);
+
+    //Get new location
+    $next_location_id = db_scalar_query("SELECT `location_id` FROM `tracks` WHERE `game_id` = {$context->get_game_id()} AND `id` = {$track_id} AND `order_index` = {$next_track_index}");
+    if($next_location_id === false) {
+        return false;
+    }
+    else if($next_location_id === null) {
+        Logger::debug("Reached end of track {$track_id}", __FILE__, $context);
+        return 'eot';
+    }
+
+    //Write new location
+    if(db_perform_action("INSERT INTO `assigned_locations` VALUES({$context->get_game_id()}, {$next_location_id}, {$group_id}, {$next_track_index}, NOW(), NULL)") === false) {
+        return false;
+    }
+    if(db_perform_action("UPDATE `status` SET `state` = " . STATE_GAME_LOCATION . ", `track_index` = {$next_track_index}, `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id}") === false) {
+        return false;
+    }
+
+    Logger::info("Group {$group_id} assigned to location {$next_location_id} (track index {$next_track_index})", __FILE__, $context);
+
+    return $next_location_id;
+}
+
+/*** GROUP UPDATING ***/
+
+/**
+ * Updates name for current group and refreshes context.
+ */
 function bot_update_group_name($context, $new_name) {
     $updates = db_perform_action("UPDATE `status` SET `name` = '" . db_escape($new_name) . "' WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
 
@@ -75,6 +168,9 @@ function bot_update_group_name($context, $new_name) {
     }
 }
 
+/**
+ * Updates participants count for current group.
+ */
 function bot_update_group_number($context, $new_number) {
     $updates = db_perform_action("UPDATE `status` SET `participants_count` = '" . $new_number . "' WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
 
@@ -87,11 +183,13 @@ function bot_update_group_number($context, $new_number) {
     }
 }
 
+/**
+ * Updates photo path for current group.
+ */
 function bot_update_group_photo($context, $new_photo_path) {
     $updates = db_perform_action("UPDATE `status` SET `photo_path` = '" . $new_photo_path . "' WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
 
     if($updates === 1) {
-        $context->refresh();
         return true;
     }
     else {
@@ -99,6 +197,9 @@ function bot_update_group_photo($context, $new_photo_path) {
     }
 }
 
+/**
+ * Updates state for current group and refreshes context.
+ */
 function bot_update_group_state($context, $new_state) {
     $updates = db_perform_action("UPDATE `status` SET `state` = {$new_state}, `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
 
@@ -111,6 +212,8 @@ function bot_update_group_state($context, $new_state) {
     }
 }
 
+/*** STATE PROMOTION ***/
+
 /**
  * Promotes reserved groups (verified, with name) to confirmed
  * groups that can complete the registration process.
@@ -118,6 +221,54 @@ function bot_update_group_state($context, $new_state) {
 function bot_promote_reserved_to_confirmed($context) {
     return db_perform_action("UPDATE `status` SET `state` = " . STATE_REG_CONFIRMED . ", `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `state` = " . STATE_REG_NAME);
 }
+
+/**
+ * Promotes the current group (if confirmed and ready) to active status.
+ * @return bool True on success, 'not_found' is group not found,
+ *              'invalid_state' if group is not currently confirmed,
+ *              'already_active' if group is already active,
+ *              False otherwise.
+ */
+function bot_promote_to_active($context) {
+    if($context->get_group_id() === null) {
+        return 'not_found';
+    }
+
+    $group_id = $context->get_group_id();
+    $group_state = $context->get_group_state();
+
+    if($group_state >= STATE_GAME_LOCATION) {
+        Logger::debug("Failed to promote group {$group_id} to active (is already in playing state)", __FILE__, $context);
+        return 'already_active';
+    }
+    else if($group_state !== STATE_REG_READY) {
+        Logger::debug("Failed to promote group {$group_id} to active (is in state {$group_state})", __FILE__, $context);
+        return 'invalid_state';
+    }
+
+    Logger::debug("Promoting group {$group_id} to active", __FILE__, $context);
+
+    $track_id = bot_assign_random_track_id($context);
+    if($track_id === false) {
+        return false;
+    }
+
+    $advance_result = bot_advance_track_location($context, $group_id, $track_id, -1);
+    switch($advance_result) {
+        case 'eot':
+            Logger::error("Assigned {$track_id} which doesn't contain a next location", __FILE__, $context);
+            return false;
+
+        case false:
+            return false;
+    }
+
+    Logger::info("Promoted group {$group_id} to active and assigned location {$advance_result} of track {$track_id}", __FILE__, $context, true);
+
+    return true;
+}
+
+/*** COUNTING AND AUXILIARY METHODS ***/
 
 /**
  * Gets the count of registered groups (verified and with name).

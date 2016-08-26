@@ -18,6 +18,9 @@
 
 const TEXT_UNNAMED_GROUP = "Senza nome";
 const TEXT_FAILURE_GENERAL = "Qualcosa è andato storto. Chi di dovere è stato avvertito.";
+const TEXT_FAILURE_GROUP_NOT_FOUND = "Non mi sembra tu ti sia registrato al gioco. 🤔\nSegui le [indicazioni descritte sul sito](http://codemooc.org/urbino-code-hunting/).";
+const TEXT_FAILURE_GROUP_ALREADY_ACTIVE = "Sei già pronto per giocare.";
+const TEXT_FAILURE_GROUP_INVALID_STATE = "Sembra che il tuo gruppo non sia pronto per giocare. 🙁 Segui le istruzioni.";
 
 // Response to "/help"
 const TEXT_CMD_HELP = "Messaggio di aiuto.";
@@ -59,6 +62,7 @@ const TEXT_REGISTRATION_READY_STATE = "Ci vediamo *venerdì 26 agosto* alle *20:
 
 // Advancement notifications
 const TEXT_ADVANCEMENT_CONFIRMED = "📢 È giunto il momento di completare la registrazione per il gruppo “%GROUP%”!\nInnanzitutto dichiara quante persone parteciperanno al gioco (te incluso).";
+const TEXT_ADVANCEMENT_ACTIVATED = "Tutto ok! 👍\nSegui le istruzioni.";
 
 // Default response for anything else
 const TEXT_FALLBACK_RESPONSE = "Scusa, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.";
