@@ -189,7 +189,7 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case STATE_REG_NUMBER:
-            if($context->get_message()->get_photo_large_id()){
+            if($context->get_message()->get_photo_large_id()) {
                 $file_path = getFilePath(getClient(), $context->get_message()->get_photo_large_id());
                 $photo_path = getPicture(getClient(), $file_path, $context->get_message()->get_photo_large_id(), PHOTO_AVATAR);
 
@@ -221,8 +221,9 @@ function msg_processing_handle_group_response($context) {
         /* GAME */
 
         case STATE_GAME_LOCATION:
-            // TODO: [puzzle solved], location assigned, waiting for qr code
-            // expecting deeplink
+            // We expect a deeplink that will come through the /start command
+            // Ignore everything
+            msg_processing_handle_group_state($context);
             return true;
 
         case STATE_GAME_SELFIE:
