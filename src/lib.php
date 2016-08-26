@@ -41,33 +41,8 @@ const STATE_ALL             = array(
     STATE_GAME_WON
 );
 
-const OP_LESSTHAN           = -2;
-const OP_LESSTHANEQUALS     = -1;
-const OP_EQUALS             =  0;
-const OP_GREATERTHANEQUALS  =  1;
-const OP_GREATERTHAN        =  2;
-
 const PHOTO_AVATAR          = 100;
 const PHOTO_SELFIE          = 101;
-
-/**
- * Converts an integer comparison operator to a valid SQL
- * string operator.
- */
-function op_to_sql($op) {
-    $intop = intval($op);
-
-    if($intop <= OP_LESSTHAN)
-        return '<';
-    else if($intop == OP_LESSTHANEQUALS)
-        return '<=';
-    else if($intop == OP_EQUALS)
-        return '=';
-    else if($intop == OP_GREATERTHANEQUALS)
-        return '>=';
-    else
-        return '>';
-}
 
 /**
  * Mixes together parameters for an HTTP request.
