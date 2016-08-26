@@ -128,7 +128,7 @@ function bot_assign_random_riddle($context, $group_id = null) {
 
     $context->refresh();
 
-    Logger::info("Group {$group_id} assigned to riddle {$riddle_id}", __FILE__, $context);
+    Logger::info("Riddle {$riddle_id} assigned to group {$group_id}", __FILE__, $context);
 
     return $riddle_id;
 }
