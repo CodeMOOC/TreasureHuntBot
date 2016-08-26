@@ -84,7 +84,7 @@ function msg_processing_commands($context) {
         return true;
     }
     else if($text === '/start ' . CODE_VICTORY) {
-        Logger::info("Group {$context->get_group_id() has reached the prize", __FILE__, $context, true);
+        Logger::info("Group {$context->get_group_id()} has reached the prize", __FILE__, $context, true);
 
         if($context->get_group_state() === STATE_GAME_LAST_PUZ) {
             $winning_group = bot_get_winning_group($context);
@@ -104,6 +104,8 @@ function msg_processing_commands($context) {
         else {
             $context->reply(TEXT_CMD_START_PRIZE_INVALID);
         }
+
+        return true;
     }
     else if(starts_with($text, '/start')) {
         Logger::debug("Start command with payload");
