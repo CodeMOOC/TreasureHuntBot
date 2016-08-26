@@ -35,10 +35,11 @@ const TEXT_CMD_START_REGISTERED = "Bentornato, %FULL_NAME%! Questo è il bot ded
 const TEXT_CMD_START_LOCATION_REACHED = "Location raggiunta! Fai selfie!";
 const TEXT_CMD_START_LOCATION_UNEXPECTED = "Stato != in cerca di location";
 const TEXT_CMD_START_LOCATION_WRONG = "Payload != codice location (QR code sbagliato?)";
+
 const TEXT_CMD_START_WRONG_PAYLOAD = "Whops!";
 
 // First response after receiving "/start REGISTER_CODE" command
-const TEXT_CMD_REGISTER_CONFIRM = "Perfetto! 🎉 Cerchiamo ora di registrare il tuo gruppo.";
+const TEXT_CMD_REGISTER_CONFIRM = "Benvenuto a *Urbino Code Hunting*! 🎉 Cerchiamo ora di registrare il tuo gruppo.";
 const TEXT_CMD_REGISTER_REGISTERED = "La tua domanda di registrazione è stata ricevuta. 👍";
 
 // States and messages for the registration process
@@ -60,7 +61,7 @@ const TEXT_REGISTRATION_CONFIRMED_RESPONSE_TOOMANY = "Il numero massimo di parte
 const TEXT_REGISTRATION_CONFIRMED_RESPONSE_OK = "Hai appena confemato per %NUMBER% partecipanti!";
 
 const TEXT_REGISTRATION_NUMBER_STATE = "Mi puoi mandare ora una foto o un’immagine da usare come icona del gruppo?";
-const TEXT_REGISTRATION_NUMBER_RESPONSE_OK = "Bella foto! Il gruppo “%GROUP%” è confermato. 👍";
+const TEXT_REGISTRATION_NUMBER_RESPONSE_OK = "Bella foto! Il gruppo “%GROUP_NAME%” è confermato. 👍";
 const TEXT_REGISTRATION_NUMBER_RESPONSE_INVALID = "Si è verificato un errore. Invia un’immagine da usare come icona del gruppo, per favore.";
 
 const TEXT_REGISTRATION_READY_STATE = "Ci vediamo *venerdì 26 agosto* alle *20:30* nel cortile del Collegio Raffaello per l’inizio della caccia al tesoro!";
