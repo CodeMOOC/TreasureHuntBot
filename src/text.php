@@ -32,7 +32,7 @@ const TEXT_CMD_RESET = "Comando di reset, non implementato.";
 const TEXT_CMD_START_NEW = "Ciao, %FULL_NAME%! Benvenuto alla caccia al tesoro *Urbino Code Hunting Game*. Per partecipare è necessario registrarsi, seguendo le [indicazioni descritte sul sito](http://codemooc.org/urbino-code-hunting/).";
 const TEXT_CMD_START_REGISTERED = "Bentornato, %FULL_NAME%! Questo è il bot dedicato alla caccia al tesoro *Urbino Code Hunting Game*.";
 
-const TEXT_CMD_START_LOCATION_REACHED = "Bravi, siete nel posto giusto! Ora dimostrate di esserci tutti.";
+const TEXT_CMD_START_LOCATION_REACHED = "Bravi, siete nel posto giusto!";
 const TEXT_CMD_START_LOCATION_UNEXPECTED = "Ok! Ma ora non mi serve sapere dove sei! Segui le istruzioni per piacere.";
 const TEXT_CMD_START_LOCATION_WRONG = "Sembra che tu abbia scansionato il QRCode sbagliato! Forse sei finito nel posto sbagliato? 😒😒😒";
 const TEXT_CMD_START_WRONG_PAYLOAD = "Non ho capito! Forse hai scritto a mano un link ma sarebbe bene che usassi i link contenuti nei QRCode così come sono.";
@@ -73,8 +73,8 @@ const TEXT_ADVANCEMENT_ACTIVATED = "Tutto ok! 👍\nSegui le istruzioni.";
 const TEXT_GAME_LOCATION_STATE_FIRST = "Aspetta altre istruzioni per piacere.";
 const TEXT_GAME_LOCATION_STATE = "Raggiungi il punto assegnato e trova il QRCode.";
 
-const TEXT_GAME_SELFIE_STATE = "Mandami un _selfie_ del tuo gruppo! (Sono ammesse smorfie.)";
-const TEXT_GAME_SELFIE_RESPONSE_OK = "Selfie ok!";
+const TEXT_GAME_SELFIE_STATE = "Mandami un _selfie_ del tuo gruppo per dimostrare di esserci tutti! (Sono ammesse smorfie.)";
+const TEXT_GAME_SELFIE_RESPONSE_OK = "Selfie ok! Ora domanda";
 const TEXT_GAME_SELFIE_FORWARD_CAPTION = "Il gruppo “%GROUP%” raggiunge la %INDEX%° tappa!";
 
 const TEXT_GAME_PUZZLE_STATE = "Scrivi qui la risposta al quesito appena inviato.";
