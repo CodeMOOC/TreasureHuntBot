@@ -22,8 +22,8 @@ $res = db_table_query($q);
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <!-- Local stylesheet -->
+        <link rel="stylesheet" href="src/css/frontend.css" type="text/css">
     </head>
     <body>
 
@@ -41,7 +41,7 @@ $res = db_table_query($q);
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="#">Gruppi</a></li>
-                        <li><a href="#about">About</a></li>
+                        <li><a href="status.php">Statistiche</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
@@ -51,13 +51,23 @@ $res = db_table_query($q);
 
             <div class="starter-template">
                 <?php
+                echo "<table style='width: 100%' cellpadding='3px' cellspacing='3px'>";
+                $row = 2;
                 foreach($res as $var){
-                    echo $var[2] . "</br>";
-                    echo "<div style=\"width:120px;height:160px;overflow:hidden\">";
-                    echo '<img src="src/' . $var[4] . '" style="height:160px;"/>';
-                    echo "</div>";
+                    if($row % 2 == 0){
+                        echo "<TR align='center'>";
+                    }
+                    //echo "<div style=\"width:120px;height:160px;overflow:hidden\">";
+                    echo '<TD><img class="avatar" src="src/' . $var[4] . '"/>';
                     echo "</br>";
+                    echo "<p class='name'>" . $var[2] . "</p></TD>";
+                    //echo "</div>";
+                    if($row % 2 == 1){
+                        echo "</TR>";
+                    }
+                    $row++;
                 }
+                echo "</table>";
                 ?>
             </div>
 
@@ -68,5 +78,7 @@ $res = db_table_query($q);
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     </body>
 </html>
