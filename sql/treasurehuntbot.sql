@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 26, 2016 at 09:27 AM
+-- Generation Time: Aug 26, 2016 at 11:56 AM
 -- Server version: 5.5.46-0+deb8u1
 -- PHP Version: 5.6.17-0+deb8u1
 
@@ -97,7 +97,7 @@ CREATE TABLE `log` (
 CREATE TABLE `riddles` (
   `game_id` int(11) NOT NULL,
   `id` int(11) NOT NULL,
-  `image_path` varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
+  `image_path` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
   `text` text COLLATE utf8_unicode_ci NOT NULL,
   `solution` text COLLATE utf8_unicode_ci NOT NULL,
   `hint` text COLLATE utf8_unicode_ci
