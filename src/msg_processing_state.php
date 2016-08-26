@@ -241,7 +241,7 @@ function msg_processing_handle_group_response($context) {
                 // Send out riddle
                 $riddle_info = bot_get_riddle_info($context, $riddle_id);
                 if($riddle_info[0]) {
-                    telegram_send_photo($context->get_chat_id(), $riddle_info[0], $riddle_info[1]);
+                    telegram_send_photo($context->get_chat_id(), 'riddles/' . $riddle_info[0], $riddle_info[1]);
                 }
                 else {
                     telegram_send_message($context->get_chat_id(), $riddle_info[1]);
