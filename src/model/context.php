@@ -20,6 +20,8 @@ class Context {
     private $group_id = null;
     private $group_name = null;
     private $group_state = null;
+    private $group_track_id = null;
+    private $group_track_index = 0;
 
     /**
      * Construct Context class.
@@ -78,6 +80,17 @@ class Context {
         return $this->group_state;
     }
 
+    function get_track_id() {
+        return $this->group_track_id;
+    }
+
+    function get_track_index() {
+        if($this->group_track_id === null)
+            return null;
+        else
+            return $this->group_track_index;
+    }
+
     /**
      * Replies to the current incoming message.
      * Enables markdown parsing and disables web previews by default.
@@ -113,7 +126,7 @@ class Context {
         $this->group_id = intval($identity[0]);
         $this->is_admin = (bool)$identity[2];
 
-        $state = db_row_query("SELECT `name`, `participants_count`, `state` FROM `status` WHERE `game_id` = " . CURRENT_GAME_ID . " AND `group_id` = {$this->group_id}");
+        $state = db_row_query("SELECT `name`, `participants_count`, `state`, `track_id`, `track_index` FROM `status` WHERE `game_id` = " . CURRENT_GAME_ID . " AND `group_id` = {$this->group_id}");
         if(!$state) {
             //No registration
             return;
@@ -126,6 +139,10 @@ class Context {
             $this->group_name = TEXT_UNNAMED_GROUP;
         }
         $this->group_state = intval($state[2]);
+        if($state[3] !== null) {
+            $this->group_track_id = intval($state[3]);
+        }
+        $this->group_track_index = intval($state[4]);
     }
 
 }
