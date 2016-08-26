@@ -84,6 +84,8 @@ function msg_processing_commands($context) {
         return true;
     }
     else if(starts_with($text, '/start')) {
+        Logger::debug("Start command with payload");
+
         $payload = extract_command_payload($text);
 
         // Naked /start message
