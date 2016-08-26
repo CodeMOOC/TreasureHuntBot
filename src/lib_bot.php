@@ -249,10 +249,6 @@ function bot_reach_location($context, $code) {
             return false;
         }
 
-        if(db_perform_action("UPDATE `status` SET `state` = " . STATE_GAME_SELFIE . ", `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}") === false) {
-            return false;
-        }
-
         if(!bot_update_group_state($context, STATE_GAME_SELFIE)) {
             return false;
         }
