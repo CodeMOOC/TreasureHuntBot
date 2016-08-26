@@ -80,7 +80,6 @@ const TEXT_GAME_PUZZLE_RESPONSE_WRONG = "Nope!";
 
 // Default response for anything else
 const TEXT_FALLBACK_RESPONSE = "Scusa, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.";
-const TEXT_UNSUPPORTED_PHOTO = " Ti prego di non inviarmi foto direttamente. Invia i _selfie_, quando richiesto, nella chat di gruppo.";
 const TEXT_UNREQUESTED_PHOTO = "Grazie per la foto, ma inviami i tuoi _selfie_ solo quando richiesto espressamente dal gioco.";
 const TEXT_UNSUPPORTED_OTHER = "Non gestisco questo tipo di messaggi, inviami solo messaggi testuali o foto.";
 
