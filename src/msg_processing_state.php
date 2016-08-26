@@ -273,7 +273,8 @@ function msg_processing_handle_group_response($context) {
                     $context->reply(TEXT_GAME_PUZZLE_RESPONSE_WRONG);
                 }
                 else if($result === true) {
-                    //TODO: GIVE OUT SECRET HINT HERE!
+                    // Give out secret hint of current track index
+                    $context->reply(CORRECT_ANSWER_PRIZE[$context->get_track_index()]);
 
                     $advance_result = bot_advance_track_location($context);
                     if($advance_result === false) {

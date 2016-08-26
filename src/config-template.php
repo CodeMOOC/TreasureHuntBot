@@ -40,4 +40,10 @@ define('CODE_ACTIVATE', '');
 define('CODE_VICTORY', '');
 define('LAST_LOCATION_ID', 0);
 
+/* Prizes for correct answers, must be as long as the track length */
+const CORRECT_ANSWER_PRIZE = array(
+    '',
+    ''
+);
+
 ?>
