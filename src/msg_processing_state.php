@@ -74,23 +74,23 @@ function msg_processing_handle_group_state($context) {
             return true;
 
         case STATE_GAME_SELFIE:
-            // TODO: waiting for selfie
+            $context->reply(TEXT_GAME_SELFIE_STATE);
             return true;
 
         case STATE_GAME_PUZZLE:
-            // TODO: send group puzzle
+            $context->reply(TEXT_GAME_PUZZLE_STATE);
             return true;
 
         case STATE_GAME_LAST_LOC:
-            // TODO:
+            $context->reply(TEXT_GAME_LAST_LOCATION_STATE);
             return true;
 
         case STATE_GAME_LAST_PUZ:
-            // TODO:
+            $context->reply(TEXT_GAME_LAST_PUZZLE_STATE);
             return true;
 
         case STATE_GAME_WON:
-            // TODO: group has finished the treasure hunt. Nothing to do.
+            $context->reply(TEXT_GAME_WON);
             return true;
     }
 
@@ -254,7 +254,7 @@ function msg_processing_handle_group_response($context) {
                 )));
             }
             else {
-                $context->reply(TEXT_GAME_SELFIE_RESPONSE_INVALID);
+                msg_processing_handle_group_state($context);
             }
             return true;
 
@@ -264,18 +264,18 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case STATE_GAME_LAST_LOC:
-            // TODO: puzzle solved, last location assigned, waiting for qr code
-            // expecting deeplink
+            // Expecting last location QR Code
+            msg_processing_handle_group_state($context);
             return true;
 
         case STATE_GAME_LAST_PUZ:
-            // TODO: qr code scanned, last puzzle assigned
-            // expecting deeplink
+            // Expecting last puzzle QR Code
+            msg_processing_handle_group_state($context);
             return true;
 
         case STATE_GAME_WON:
-            // TODO: final qrcode scanned, victory
-            // congratulate group and tell them rank & time
+            // Expect nothing, game is won
+            msg_processing_handle_group_state($context);
             return true;
     }
 

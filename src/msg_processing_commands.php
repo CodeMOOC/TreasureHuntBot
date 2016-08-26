@@ -114,6 +114,8 @@ function msg_processing_commands($context) {
             }
             else {
                 $context->reply(TEXT_CMD_START_LOCATION_REACHED);
+
+                msg_processing_handle_group_state($context);
             }
         }
         // Something else (?)

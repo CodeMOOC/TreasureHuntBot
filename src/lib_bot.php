@@ -232,16 +232,33 @@ function bot_reach_location($context, $code) {
         return 'wrong'
     }
 
-    // Location reached!
-    Logger::info("Group {$context->get_group_id()} reached its assigned location", __FILE__, $context);
+    if($state === STATE_GAME_LOCATION) {
+        Logger::info("Group {$context->get_group_id()} reached its " . ($context->get_track_index() + 1) . "th assigned location", __FILE__, $context, true);
 
-    $reached_rows = db_perform_action("UPDATE `assigned_locations` SET `reached_on` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()} AND `track_index` = {$context->get_track_index()}");
-    if($reached_rows !== 1) {
-        Logger::error("Marking location as reached updated {$reached_rows} rows", __FILE__, $context);
-        return false;
+        $reached_rows = db_perform_action("UPDATE `assigned_locations` SET `reached_on` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()} AND `track_index` = {$context->get_track_index()}");
+        if($reached_rows !== 1) {
+            Logger::error("Marking location as reached updated {$reached_rows} rows", __FILE__, $context);
+            return false;
+        }
+
+        if(db_perform_action("UPDATE `status` SET `state` = " . STATE_GAME_SELFIE . ", `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}") === false) {
+            return false;
+        }
+
+        if(!bot_update_group_state($context, STATE_GAME_SELFIE)) {
+            return false;
+        }
+    }
+    else if($state === STATE_GAME_LAST_LOC) {
+        Logger::info("Group {$context->get_group_id()} reached the final location", __FILE__, $context, true);
+
+        if(!bot_update_group_state($context, STATE_GAME_LAST_PUZ)) {
+            return false;
+        }
     }
 
-    if(db_perform_action("UPDATE `status` SET `state` = " . STATE_GAME_SELFIE . ", `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}") === false) {
+    return true;
+}
         return false;
     }
 
