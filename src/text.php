@@ -17,13 +17,13 @@
  */
 
 const TEXT_UNNAMED_GROUP = "Senza nome";
-const TEXT_FAILURE_GENERAL = "Qualcosa è andato storto. Chi di dovere è stato avvertito.";
-const TEXT_FAILURE_GROUP_NOT_FOUND = "Non mi sembra tu ti sia registrato al gioco. 🤔\nSegui le [indicazioni descritte sul sito](http://codemooc.org/urbino-code-hunting/).";
+const TEXT_FAILURE_GENERAL = "Oh! questo è imbarazzante... Qualcosa è andato storto! Chi di dovere è stato avvertito e si sta occupando dell'errore.";
+const TEXT_FAILURE_GROUP_NOT_FOUND = "Non mi sembra tu sia registrato al gioco. 🤔\nSegui le [indicazioni descritte su sito](http://codemooc.org/urbino-code-hunting/) e riprova!";
 const TEXT_FAILURE_GROUP_ALREADY_ACTIVE = "Sei già pronto per giocare.";
-const TEXT_FAILURE_GROUP_INVALID_STATE = "Sembra che il tuo gruppo non sia pronto per giocare. 🙁 Segui le istruzioni.";
+const TEXT_FAILURE_GROUP_INVALID_STATE = "Sembra che il tuo gruppo non sia pronto per giocare. 🙁 Segui le istruzioni che ti sono state date.";
 
 // Response to "/help"
-const TEXT_CMD_HELP = "Messaggio di aiuto.";
+const TEXT_CMD_HELP = "Il tuo gruppo è “%GROUP%”. Trovi le informazioni sul [sito della caccia al tesoro](http://codemooc.org/urbino-code-hunting/) oppure sul canale @urbinocodehunting.";
 
 // Response to "/reset"
 const TEXT_CMD_RESET = "Comando di reset, non implementato.";
@@ -32,11 +32,10 @@ const TEXT_CMD_RESET = "Comando di reset, non implementato.";
 const TEXT_CMD_START_NEW = "Ciao, %FULL_NAME%! Benvenuto alla caccia al tesoro *Urbino Code Hunting Game*. Per partecipare è necessario registrarsi, seguendo le [indicazioni descritte sul sito](http://codemooc.org/urbino-code-hunting/).";
 const TEXT_CMD_START_REGISTERED = "Bentornato, %FULL_NAME%! Questo è il bot dedicato alla caccia al tesoro *Urbino Code Hunting Game*.";
 
-const TEXT_CMD_START_LOCATION_REACHED = "Location raggiunta! Fai selfie!";
-const TEXT_CMD_START_LOCATION_UNEXPECTED = "Stato != in cerca di location";
-const TEXT_CMD_START_LOCATION_WRONG = "Payload != codice location (QR code sbagliato?)";
-
-const TEXT_CMD_START_WRONG_PAYLOAD = "Whops!";
+const TEXT_CMD_START_LOCATION_REACHED = "Location raggiunta! Scatta e inviami il selfie di gruppo!";
+const TEXT_CMD_START_LOCATION_UNEXPECTED = "Ok! Ma ora non mi serve sapere dove sei! Segui le istruzioni per piacere.";
+const TEXT_CMD_START_LOCATION_WRONG = "Sembra che tu abbia scansionato il QRCode sbagliato! Forse sei finito nel posto sbagliato? 😒😒😒";
+const TEXT_CMD_START_WRONG_PAYLOAD = "Non ho capito! Forse hai scritto a mano un link ma sarebbe bene che usassi i link contenuti nei QRCode così come sono.";
 
 // First response after receiving "/start REGISTER_CODE" command
 const TEXT_CMD_REGISTER_CONFIRM = "Benvenuto a *Urbino Code Hunting*! 🎉 Cerchiamo ora di registrare il tuo gruppo.";
@@ -67,24 +66,24 @@ const TEXT_REGISTRATION_NUMBER_RESPONSE_INVALID = "Si è verificato un errore. I
 const TEXT_REGISTRATION_READY_STATE = "Ci vediamo *venerdì 26 agosto* alle *20:30* nel cortile del Collegio Raffaello per l’inizio della caccia al tesoro!";
 
 // Advancement notifications
-const TEXT_ADVANCEMENT_CONFIRMED = "📢 È giunto il momento di completare la registrazione per il gruppo “%GROUP%”!\nInnanzitutto dichiara quante persone parteciperanno al gioco (te incluso).";
+const TEXT_ADVANCEMENT_CONFIRMED = "📢 È giunto il momento di completare la registrazione per il gruppo “%GROUP%”!\nPer prima cosa dimmi quante persone parteciperanno al gioco (te incluso), per piacere.";
 const TEXT_ADVANCEMENT_ACTIVATED = "Tutto ok! 👍\nSegui le istruzioni.";
 
 // States and responses for the game
-const TEXT_GAME_LOCATION_STATE_FIRST = "Aspetta ulteriori istruzioni.";
-const TEXT_GAME_LOCATION_STATE = "Raggiungi punto assegnato";
+const TEXT_GAME_LOCATION_STATE_FIRST = "Aspetta altre istruzioni per piacere.";
+const TEXT_GAME_LOCATION_STATE = "Dovresti raggiungere il punto assegnato";
 
-const TEXT_GAME_SELFIE_STATE = "Mandami selfie";
+const TEXT_GAME_SELFIE_STATE = "Mandami un _selfie_ del tuo gruppo!";
 const TEXT_GAME_SELFIE_RESPONSE_OK = "Selfie ok!";
 const TEXT_GAME_SELFIE_RESPONSE_INVALID = "Me devi da mannà er selfie";
 const TEXT_GAME_SELFIE_FORWARD_CAPTION = "Il gruppo “%GROUP%” raggiunge la %INDEX%° tappa!";
 
-const TEXT_GAME_PUZZLE_RESPONSE_OK = "Bravolone";
-const TEXT_GAME_PUZZLE_RESPONSE_WAIT = "Aspetta altri %SECONDS% secondi";
-const TEXT_GAME_PUZZLE_RESPONSE_WRONG = "Nope!";
+const TEXT_GAME_PUZZLE_RESPONSE_OK = "Bravissimo!";
+const TEXT_GAME_PUZZLE_RESPONSE_WAIT = "Devi aspettare altri %SECONDS% secondi prima di poter rispondere";
+const TEXT_GAME_PUZZLE_RESPONSE_WRONG = "Ehm... Non proprio! Purtroppo hai sbagliato 😩😩😩 e ora devi aspettare un minuto prima di poter dare un'altra risposta... \nGiusto il tempo di pensare alla soluzione corretta! 😉?";
 
 // Default response for anything else
-const TEXT_FALLBACK_RESPONSE = "Scusa, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.";
-const TEXT_UNREQUESTED_PHOTO = "Grazie per la foto, ma inviami i tuoi _selfie_ solo quando richiesto espressamente dal gioco.";
-const TEXT_UNSUPPORTED_OTHER = "Non gestisco questo tipo di messaggi, inviami solo messaggi testuali o foto.";
+const TEXT_FALLBACK_RESPONSE = "Scusami, non ho capito cosa intendi. Usa i comandi /start o /help per conversare.";
+const TEXT_UNREQUESTED_PHOTO = "Grazie per la foto! Ma inviami i tuoi _selfie_ solo quando richiesto espressamente dal gioco 😉";
+const TEXT_UNSUPPORTED_OTHER = "Piano Piano! Non sono così intelligente ancora!\n\nPurtroppo non gestisco questo tipo di messaggi\nInviami solo messaggi testuali o foto per piacere.";
 
