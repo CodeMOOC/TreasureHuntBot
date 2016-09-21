@@ -38,8 +38,13 @@ class QRCodeGenerator {
 
 
         $tmp_file_name = substr($code, stripos($code, '=')+1);
+        $relative_path_tmp_file_name = "../tmp/$tmp_file_name.png";
 
-        QRcode::png($code, "../tmp/$tmp_file_name.png", 'H', 50, 2);
+        if (!file_exists($tmp_file_name)) {
+            QRcode::png($code, $relative_path_tmp_file_name, 'H', 50, 2);
+        }
+
+        return $relative_path_tmp_file_name;
     }
 }
 
