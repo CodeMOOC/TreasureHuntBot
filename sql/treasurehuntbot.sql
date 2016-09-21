@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 26, 2016 at 11:56 AM
+-- Generation Time: Sep 21, 2016 at 11:11 PM
 -- Server version: 5.5.46-0+deb8u1
 -- PHP Version: 5.6.17-0+deb8u1
 
@@ -21,10 +21,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `assigned_locations` (
-  `game_id` int(11) NOT NULL,
-  `location_id` int(11) NOT NULL,
-  `group_id` int(11) NOT NULL,
-  `track_index` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `game_id` int(10) UNSIGNED NOT NULL,
+  `location_id` int(10) UNSIGNED NOT NULL,
+  `group_id` int(10) UNSIGNED NOT NULL,
   `assigned_on` datetime NOT NULL,
   `reached_on` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -36,12 +35,69 @@ CREATE TABLE `assigned_locations` (
 --
 
 CREATE TABLE `assigned_riddles` (
-  `game_id` int(11) NOT NULL,
-  `riddle_id` int(11) NOT NULL,
-  `group_id` int(11) NOT NULL,
+  `game_id` int(10) UNSIGNED NOT NULL,
+  `riddle_id` int(10) UNSIGNED NOT NULL,
+  `group_id` int(10) UNSIGNED NOT NULL,
   `assigned_on` datetime NOT NULL,
   `last_answer_on` datetime DEFAULT NULL,
   `solved_on` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `events`
+--
+
+CREATE TABLE `events` (
+  `event_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `logo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `registered_on` datetime NOT NULL,
+  `num_steps` tinyint(3) UNSIGNED NOT NULL DEFAULT '10',
+  `organizer_id` int(10) UNSIGNED NOT NULL,
+  `min_avg_distance` float DEFAULT NULL COMMENT 'Minimum average distance between locations (in kms)',
+  `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `games`
+--
+
+CREATE TABLE `games` (
+  `game_id` int(10) UNSIGNED NOT NULL,
+  `event_id` int(10) UNSIGNED NOT NULL,
+  `state` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `name` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `location_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `location_lat` float DEFAULT NULL,
+  `location_lng` float DEFAULT NULL,
+  `organizer_id` int(10) UNSIGNED DEFAULT NULL,
+  `organizer_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tmp_location_lat` float DEFAULT NULL,
+  `tmp_location_lng` float DEFAULT NULL,
+  `tmp_location_image_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tmp_location_description` text COLLATE utf8_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `groups`
+--
+
+CREATE TABLE `groups` (
+  `game_id` int(10) UNSIGNED NOT NULL,
+  `group_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `participants_count` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `photo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Path to the group''s photo',
+  `state` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `registration` datetime NOT NULL COMMENT 'Original generation timestamp',
+  `last_state_change` datetime NOT NULL COMMENT 'Timestamp of last state change'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -51,11 +107,11 @@ CREATE TABLE `assigned_riddles` (
 --
 
 CREATE TABLE `identities` (
-  `id` int(11) NOT NULL COMMENT 'Internal ID',
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'Internal ID',
   `telegram_id` int(11) NOT NULL,
+  `first_name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `full_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `last_registration` datetime NOT NULL COMMENT 'Last attempt at registering a group to a game',
-  `is_admin` bit(1) NOT NULL DEFAULT b'0'
+  `first_seen_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -65,12 +121,14 @@ CREATE TABLE `identities` (
 --
 
 CREATE TABLE `locations` (
-  `game_id` int(11) NOT NULL,
-  `id` int(11) NOT NULL,
-  `code` char(16) COLLATE utf8_unicode_ci NOT NULL,
+  `game_id` int(10) UNSIGNED NOT NULL,
+  `location_id` int(10) UNSIGNED NOT NULL,
+  `code` binary(16) NOT NULL,
+  `internal_note` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `lat` float NOT NULL,
   `lng` float NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL
+  `image_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -84,7 +142,7 @@ CREATE TABLE `log` (
   `tag` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `message` text COLLATE utf8_unicode_ci NOT NULL,
   `severity` tinyint(3) UNSIGNED NOT NULL,
-  `group_id` int(11) DEFAULT NULL,
+  `group_id` int(10) UNSIGNED DEFAULT NULL,
   `telegram_chat_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -95,44 +153,12 @@ CREATE TABLE `log` (
 --
 
 CREATE TABLE `riddles` (
-  `game_id` int(11) NOT NULL,
-  `id` int(11) NOT NULL,
+  `game_id` int(10) UNSIGNED NOT NULL,
+  `riddle_id` int(10) UNSIGNED NOT NULL,
   `image_path` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
   `text` text COLLATE utf8_unicode_ci NOT NULL,
   `solution` text COLLATE utf8_unicode_ci NOT NULL,
   `hint` text COLLATE utf8_unicode_ci
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `status`
---
-
-CREATE TABLE `status` (
-  `game_id` int(11) NOT NULL,
-  `group_id` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `participants_count` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
-  `photo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Path to the group''s photo',
-  `state` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
-  `track_id` int(11) DEFAULT NULL COMMENT 'Assigned track ID for the game',
-  `track_index` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Current progression index inside the track',
-  `registration` datetime NOT NULL COMMENT 'Original generation timestamp',
-  `last_state_change` datetime NOT NULL COMMENT 'Timestamp of last state change'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tracks`
---
-
-CREATE TABLE `tracks` (
-  `game_id` int(11) NOT NULL,
-  `id` int(11) NOT NULL,
-  `location_id` int(11) NOT NULL,
-  `order_index` tinyint(3) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -143,7 +169,7 @@ CREATE TABLE `tracks` (
 -- Indexes for table `assigned_locations`
 --
 ALTER TABLE `assigned_locations`
-  ADD PRIMARY KEY (`game_id`,`location_id`,`group_id`,`track_index`) USING BTREE,
+  ADD PRIMARY KEY (`game_id`,`location_id`,`group_id`) USING BTREE,
   ADD KEY `assloc_group_constraint` (`group_id`);
 
 --
@@ -152,6 +178,28 @@ ALTER TABLE `assigned_locations`
 ALTER TABLE `assigned_riddles`
   ADD PRIMARY KEY (`game_id`,`riddle_id`,`group_id`),
   ADD KEY `assriddles_group_constraint` (`group_id`);
+
+--
+-- Indexes for table `events`
+--
+ALTER TABLE `events`
+  ADD PRIMARY KEY (`event_id`),
+  ADD KEY `event_organizer_index` (`organizer_id`);
+
+--
+-- Indexes for table `games`
+--
+ALTER TABLE `games`
+  ADD PRIMARY KEY (`game_id`),
+  ADD KEY `game_event_index` (`event_id`),
+  ADD KEY `game_organizer_index` (`organizer_id`);
+
+--
+-- Indexes for table `groups`
+--
+ALTER TABLE `groups`
+  ADD PRIMARY KEY (`game_id`,`group_id`),
+  ADD KEY `status_group_constraint` (`group_id`);
 
 --
 -- Indexes for table `identities`
@@ -164,8 +212,8 @@ ALTER TABLE `identities`
 -- Indexes for table `locations`
 --
 ALTER TABLE `locations`
-  ADD PRIMARY KEY (`game_id`,`id`),
-  ADD UNIQUE KEY `location_code` (`game_id`,`code`) USING BTREE;
+  ADD PRIMARY KEY (`game_id`,`location_id`),
+  ADD UNIQUE KEY `location_code_index` (`game_id`,`code`) USING BTREE;
 
 --
 -- Indexes for table `log`
@@ -180,32 +228,27 @@ ALTER TABLE `log`
 -- Indexes for table `riddles`
 --
 ALTER TABLE `riddles`
-  ADD PRIMARY KEY (`game_id`,`id`);
-
---
--- Indexes for table `status`
---
-ALTER TABLE `status`
-  ADD PRIMARY KEY (`game_id`,`group_id`),
-  ADD UNIQUE KEY `status_track_constraint` (`game_id`,`track_id`) USING BTREE,
-  ADD KEY `status_group_constraint` (`group_id`);
-
---
--- Indexes for table `tracks`
---
-ALTER TABLE `tracks`
-  ADD PRIMARY KEY (`game_id`,`id`,`location_id`,`order_index`),
-  ADD KEY `track_location_constraint` (`game_id`,`location_id`);
+  ADD PRIMARY KEY (`game_id`,`riddle_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
+-- AUTO_INCREMENT for table `events`
+--
+ALTER TABLE `events`
+  MODIFY `event_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `games`
+--
+ALTER TABLE `games`
+  MODIFY `game_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `identities`
 --
 ALTER TABLE `identities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Internal ID', AUTO_INCREMENT=1;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Internal ID';
 --
 -- Constraints for dumped tables
 --
@@ -215,30 +258,29 @@ ALTER TABLE `identities`
 --
 ALTER TABLE `assigned_locations`
   ADD CONSTRAINT `assloc_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`),
-  ADD CONSTRAINT `assloc_location_constraint` FOREIGN KEY (`game_id`,`location_id`) REFERENCES `locations` (`game_id`, `id`);
+  ADD CONSTRAINT `assloc_location_constraint` FOREIGN KEY (`game_id`,`location_id`) REFERENCES `locations` (`game_id`, `location_id`);
 
 --
 -- Constraints for table `assigned_riddles`
 --
 ALTER TABLE `assigned_riddles`
   ADD CONSTRAINT `assriddles_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`),
-  ADD CONSTRAINT `assriddles_riddle_constraint` FOREIGN KEY (`game_id`,`riddle_id`) REFERENCES `riddles` (`game_id`, `id`);
+  ADD CONSTRAINT `assriddles_riddle_constraint` FOREIGN KEY (`game_id`,`riddle_id`) REFERENCES `riddles` (`game_id`, `riddle_id`);
+
+--
+-- Constraints for table `games`
+--
+ALTER TABLE `games`
+  ADD CONSTRAINT `game_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `groups`
+--
+ALTER TABLE `groups`
+  ADD CONSTRAINT `status_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`);
 
 --
 -- Constraints for table `log`
 --
 ALTER TABLE `log`
   ADD CONSTRAINT `log_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
-
---
--- Constraints for table `status`
---
-ALTER TABLE `status`
-  ADD CONSTRAINT `status_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`),
-  ADD CONSTRAINT `status_track_constraint` FOREIGN KEY (`game_id`,`track_id`) REFERENCES `tracks` (`game_id`, `id`);
-
---
--- Constraints for table `tracks`
---
-ALTER TABLE `tracks`
-  ADD CONSTRAINT `track_location_constraint` FOREIGN KEY (`game_id`,`location_id`) REFERENCES `locations` (`game_id`, `id`);
