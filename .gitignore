@@ -12,3 +12,5 @@ src/riddles/*
 *Thumbs.db
 src/composer.lock
 src/vendor/*
+src/vendor/autoload.php
+src/vendor/composer
