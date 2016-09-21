@@ -1,5 +1,12 @@
 {
     "require": {
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~6.0",
+        "setasign/fpdf": "1.8.1",
+        "aferrandini/phpqrcode": "1.0.1"
+    },
+    "config": {
+        "preferred-install": "dist",
+        "disable-tls": true,
+        "secure-http": false
     }
 }

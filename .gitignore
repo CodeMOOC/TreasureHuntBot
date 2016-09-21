@@ -9,3 +9,6 @@ src/selfies/*
 !src/selfies/default.jpg
 src/riddles/*
 !src/riddles/default.jpg
+*Thumbs.db
+src/composer.lock
+src/vendor/*
