@@ -55,7 +55,7 @@ CREATE TABLE `events` (
   `state` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
   `logo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `registered_on` datetime NOT NULL,
-  `min_num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '10' COMMENT 'Minimum number of locations',
+  `num_steps` tinyint(3) UNSIGNED NOT NULL DEFAULT '10' COMMENT 'Number of steps (i.e. total number of hints)',
   `max_num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '30' COMMENT 'Maximum number of locations',
   `organizer_id` int(10) UNSIGNED NOT NULL,
   `min_avg_distance` float DEFAULT NULL COMMENT 'Minimum average distance between locations (in kms)',
