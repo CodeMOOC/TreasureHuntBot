@@ -23,13 +23,13 @@ const TEXT_FAILURE_GROUP_ALREADY_ACTIVE = "You’re ready to play.";
 const TEXT_FAILURE_GROUP_INVALID_STATE = "It looks like your team is not ready to play. 🙁 Follow previous instructions.";
 
 // Response to "/help"
-const TEXT_CMD_HELP = "(No help message yet, sorry.)";
+const TEXT_CMD_HELP = "In order to register and perform other actions you will need specific QR Codes. If anything gets messed up, use /reset to start over.";
 
 // Response to "/reset"
 const TEXT_CMD_RESET = "Your state has been reset.";
 
 // Responses to "/start"
-const TEXT_CMD_START_NEW = "Hello, %FULL_NAME%! Welcome to the *Treasure Hunt DEMO* bot. In order to play, you’ll need to register first. Please follow the instructions you should have received (if you know about this bot).";
+const TEXT_CMD_START_NEW = "Hello, %FULL_NAME%! Welcome to the *Treasure Hunt Demo* bot. In order to play, you’ll need to register first, which can be done through a QR Code you should have received. 😉\nAlso, you may want to [subscribe to this bot’s public channel](https://telegram.me/codehuntingdemo).";
 const TEXT_CMD_START_REGISTERED = "Welcome back, %FULL_NAME%!";
 
 const TEXT_CMD_START_PRIZE_INVALID = "Hmmm, sembra che abbiate trovato il premio, ma che _non_ dovevate ancora trovarlo! 🤔";
