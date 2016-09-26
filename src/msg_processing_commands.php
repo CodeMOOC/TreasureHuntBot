@@ -56,7 +56,10 @@ function msg_processing_commands($context) {
         $result = bot_promote_to_active($context);
         switch($result) {
             case true:
-                $context->reply(TEXT_ADVANCEMENT_ACTIVATED);
+                // Demo mode: advance directly to selfie mode
+                bot_update_group_state($context, STATE_GAME_SELFIE);
+
+                msg_processing_handle_group_state($context);
                 break;
 
             case 'not_found':
