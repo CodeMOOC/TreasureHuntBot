@@ -46,6 +46,7 @@ function msg_processing_handle_group_state($context) {
             return true;
 
         case STATE_REG_NAME:
+            // Currently unused
             $context->reply(TEXT_REGISTRATION_NAME_STATE);
             return true;
 
@@ -133,7 +134,7 @@ function msg_processing_handle_group_response($context) {
                 $name = ucwords($context->get_response());
 
                 bot_update_group_name($context, $name);
-                bot_update_group_state($context, STATE_REG_NAME);
+                bot_update_group_state($context, STATE_REG_CONFIRMED);
 
                 $groups_count = bot_get_registered_groups($context);
 
@@ -152,7 +153,7 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case STATE_REG_NAME:
-            //Nop
+            // Currently unused
             msg_processing_handle_group_state($context);
             return true;
 
