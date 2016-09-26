@@ -90,21 +90,13 @@ function msg_processing_commands($context) {
         Logger::debug("Prize code scanned", __FILE__, $context);
 
         if($context->get_group_state() === STATE_GAME_LAST_PUZ) {
-            $winning_group = bot_get_winning_group($context);
-            if($winning_group !== false) {
-                $context->reply(TEXT_CMD_START_PRIZE_TOOLATE, array(
-                    '%GROUP%' => $winning_group
-                ));
-            }
-            else {
-                bot_update_group_state($context, STATE_GAME_WON);
+            bot_update_group_state($context, STATE_GAME_WON);
 
-                msg_processing_handle_group_state($context);
+            msg_processing_handle_group_state($context);
 
-                Logger::info("Group {$context->get_group_id()} has reached the prize and won", __FILE__, $context, true);
+            Logger::info("Group {$context->get_group_id()} has reached the prize and won", __FILE__, $context, true);
 
-                $context->channel(TEXT_GAME_WON_CHANNEL);
-            }
+            $context->channel(TEXT_GAME_WON_CHANNEL);
         }
         else {
             $context->reply(TEXT_CMD_START_PRIZE_INVALID);
