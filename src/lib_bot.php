@@ -89,30 +89,16 @@ function bot_assign_random_track_id($context, $group_id = null) {
 
     Logger::debug("Assigning random track ID to group {$group_id}", __FILE__, $context);
 
-    if(db_perform_action("LOCK TABLES `tracks` READ, `status` WRITE") === false) {
-        Logger::error('Unable to lock tables', __FILE__, $context);
-        return false;
-    }
-
-    $track_id = db_scalar_query("SELECT DISTINCT(id) FROM `tracks` WHERE `game_id` = {$context->get_game_id()} AND `id` NOT IN (SELECT DISTINCT(`track_id`) FROM `status` WHERE `track_id` IS NOT NULL) ORDER BY RAND() LIMIT 1");
+    $track_id = db_scalar_query("SELECT DISTINCT(id) FROM `tracks` WHERE `game_id` = {$context->get_game_id()} ORDER BY RAND() LIMIT 1");
     if($track_id === null) {
-        db_perform_action("UNLOCK TABLES");
-
         Logger::error('Unable to pick random track (no more free tracks in DB?)', __FILE__, $context);
 
         return false;
     }
 
     if(db_perform_action("UPDATE `status` SET `track_id` = {$track_id} WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id}") !== 1) {
-        db_perform_action("UNLOCK TABLES");
-
         Logger::error("Failure while assigning picked track to group", __FILE__, $context);
 
-        return false;
-    }
-
-    if(db_perform_action("UNLOCK TABLES") === false) {
-        Logger::fatal('Unable to unlock tables', __FILE__, $context);
         return false;
     }
 
