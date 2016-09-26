@@ -26,7 +26,7 @@ const TEXT_FAILURE_GROUP_INVALID_STATE = "It looks like your team is not ready t
 const TEXT_CMD_HELP = "(No help message yet, sorry.)";
 
 // Response to "/reset"
-const TEXT_CMD_RESET = "No resetting allowed yet, sorry.";
+const TEXT_CMD_RESET = "Your state has been reset.";
 
 // Responses to "/start"
 const TEXT_CMD_START_NEW = "Hello, %FULL_NAME%! Welcome to the *Treasure Hunt DEMO* bot. In order to play, you’ll need to register first. Please follow the instructions you should have received (if you know about this bot).";

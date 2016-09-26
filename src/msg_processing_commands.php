@@ -25,6 +25,8 @@ function msg_processing_commands($context) {
         return true;
     }
     else if(starts_with($text, '/reset')) {
+        bot_reset($context);
+
         $context->reply(TEXT_CMD_RESET);
 
         return true;

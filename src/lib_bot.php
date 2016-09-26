@@ -76,6 +76,22 @@ function bot_register_new_group($context) {
     return true;
 }
 
+/**
+ * Registers all groups for the current user.
+ */
+function bot_reset($context) {
+    if($context->get_group_id() !== NULL) {
+        Logger::debug("Resetting data for user {$context->get_user_id()} and group {$context->get_group_id()}", __FILE__, $context);
+
+        $res_status = db_perform_action("DELETE FROM `status` WHERE `group_id` = {$context->get_group_id()}");
+
+        Logger::info("Reset performed for user {$context->get_user_id()} (deleted {$res_status} groups)", __FILE__, $context, true);
+    }
+    else {
+        Logger::debug("Cannot reset data for user (no group)", __FILE__, $context);
+    }
+}
+
 /*** TRACKS, PUZZLES, AND ASSIGNMENTS ***/
 
 /**
