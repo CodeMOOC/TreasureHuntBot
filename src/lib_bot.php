@@ -85,6 +85,10 @@ function bot_reset($context) {
 
         $res_status = db_perform_action("DELETE FROM `status` WHERE `group_id` = {$context->get_group_id()}");
 
+        $res_status = $res_status && db_perform_action("DELETE FROM `assigned_riddles` WHERE `group_id` = {$context->get_group_id()}");
+
+        $res_status = $res_status && db_perform_action("DELETE FROM `assigned_locations` WHERE `group_id` = {$context->get_group_id()}");
+
         Logger::info("Reset performed for user {$context->get_user_id()} (deleted {$res_status} groups)", __FILE__, $context, true);
     }
     else {
