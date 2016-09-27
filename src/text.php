@@ -46,7 +46,7 @@ const TEXT_CMD_REGISTER_CONFIRM = "Welcome to the *Treasure Hunt demo*! 🎉 Let
 const TEXT_CMD_REGISTER_REGISTERED = "Your registration request has been received. 👍";
 
 // States and messages for the registration process
-const TEXT_REGISTRATION_NEW_STATE = "Are you truly ready for the game? Just to be sure, I’ll send you a very easy game to get started. (My questions are always based on the [CodyRoby](http://codemooc.org/codyroby/) gaming cards.)";
+const TEXT_REGISTRATION_NEW_STATE = "But, are you truly ready for the game? Just to be sure, I’ll send you a very easy game to get started. (My questions are always based on the [CodyRoby](http://codemooc.org/codyroby/) gaming cards.)";
 const TEXT_REGISTRATION_NEW_STATE_CAPTION = "Where does Roby end up based on the cards displayed? (A, B, o C)";
 const TEXT_REGISTRATION_NEW_RESPONSE_CORRECT = "_Right!_\nYou’re a sentient human. (Or a well-disguised robot, who knows. 🤖)";
 const TEXT_REGISTRATION_NEW_RESPONSE_WRONG = "_Wrong!_\nCheck the picture carefully and try again.";
