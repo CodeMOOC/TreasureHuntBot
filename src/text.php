@@ -67,7 +67,7 @@ const TEXT_REGISTRATION_NUMBER_STATE = "Please send a nice picture that will rep
 const TEXT_REGISTRATION_NUMBER_RESPONSE_OK = "Nice picture! Team “%GROUP_NAME%” is registered correctly and ready to play. 👍";
 const TEXT_REGISTRATION_NUMBER_RESPONSE_INVALID = "Something didn’t work right. Please send a picture for your team.";
 
-const TEXT_REGISTRATION_READY_STATE = "Proceed to the _activation_ step.";
+const TEXT_REGISTRATION_READY_STATE = "Proceed to the _activation_ step. (By the way, did you already [subscribe to this bot’s public channel](https://telegram.me/codehuntingdemo)?)";
 
 // Advancement notifications
 const TEXT_ADVANCEMENT_CONFIRMED = "📢 È giunto il momento di completare la registrazione per il gruppo “%GROUP%”!\nPer prima cosa dimmi quante persone parteciperanno al gioco (te incluso), per piacere.";
