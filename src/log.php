@@ -24,6 +24,7 @@ class Logger {
     private static $messages = array();
     private static $last_user_id = null;
     private static $last_group_id = null;
+    private static $last_input_text = null;
 
     public static function debug($message, $tag = '', $context = null) {
         self::common(self::SEVERITY_DEBUG, $message, $tag, $context);
@@ -88,6 +89,7 @@ class Logger {
 
             self::$last_group_id = $group_id;
             self::$last_user_id = $from_id;
+            self::$last_input_text = $context->get_message()->text;
         }
         else {
             $group_id = 'NULL';
@@ -111,6 +113,9 @@ class Logger {
             }
             if(self::$last_group_id && self::$last_user_id) {
                 $report .= "\n_Group #" . self::$last_group_id . " User #" . self::$last_user_id . "_";
+            }
+            if(self::$last_input_text) {
+                $report .= "\n_Input:_ " . escape_markdown(self::$last_input_text);
             }
 
             telegram_send_message(CHAT_GROUP_DEBUG, $report, array(
