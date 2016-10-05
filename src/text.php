@@ -46,7 +46,7 @@ const TEXT_CMD_REGISTER_CONFIRM = "Welcome to the *Treasure Hunt demo*! 🎉 Let
 const TEXT_CMD_REGISTER_REGISTERED = "Your registration request has been received. 👍";
 
 // States and messages for the registration process
-const TEXT_REGISTRATION_NEW_STATE = "But, are you truly ready for the game? Just to be sure, I’ll send you a very easy game to get started. (My questions are always based on the [CodyRoby](http://codemooc.org/codyroby/) gaming cards.)";
+const TEXT_REGISTRATION_NEW_STATE = "But, are you truly ready for the game? Just to be sure, I’ll send you a very easy coding puzzle to get started. (My questions are always based on the [CodyRoby](http://codemooc.org/codyroby/) gaming cards.)";
 const TEXT_REGISTRATION_NEW_STATE_CAPTION = "Where does Roby end up based on the cards displayed? (A, B, o C)";
 const TEXT_REGISTRATION_NEW_RESPONSE_CORRECT = "_Right!_\nYou’re a sentient human. (Or a well-disguised robot, who knows. 🤖)";
 const TEXT_REGISTRATION_NEW_RESPONSE_WRONG = "_Wrong!_\nCheck the picture carefully and try again.";
@@ -67,7 +67,7 @@ const TEXT_REGISTRATION_NUMBER_STATE = "Please send a nice picture that will rep
 const TEXT_REGISTRATION_NUMBER_RESPONSE_OK = "Nice picture! Team “%GROUP_NAME%” is registered correctly and ready to play. 👍";
 const TEXT_REGISTRATION_NUMBER_RESPONSE_INVALID = "Something didn’t work right. Please send a picture for your team.";
 
-const TEXT_REGISTRATION_READY_STATE = "Proceed to the _activation_ step. (By the way, did you already [subscribe to this bot’s public channel](https://telegram.me/codehuntingdemo)?)";
+const TEXT_REGISTRATION_READY_STATE = "Please show up on ```start_date``` at ```start_time``` in ```start_location``` and look for the _activation_ QR Code in order to start playing. (By the way, did you already [subscribe to this bot’s public channel](https://telegram.me/codehuntingdemo)?)";
 
 // Advancement notifications
 const TEXT_ADVANCEMENT_CONFIRMED = "📢 È giunto il momento di completare la registrazione per il gruppo “%GROUP%”!\nPer prima cosa dimmi quante persone parteciperanno al gioco (te incluso), per piacere.";
