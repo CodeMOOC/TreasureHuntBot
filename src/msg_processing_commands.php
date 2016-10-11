@@ -97,8 +97,6 @@ function msg_processing_commands($context) {
             msg_processing_handle_group_state($context);
 
             Logger::info("Group {$context->get_group_id()} has reached the prize and won", __FILE__, $context, true);
-
-            $context->channel(TEXT_GAME_WON_CHANNEL);
         }
         else {
             $context->reply(TEXT_CMD_START_PRIZE_INVALID);

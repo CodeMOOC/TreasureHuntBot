@@ -249,12 +249,6 @@ function msg_processing_handle_group_response($context) {
                 else {
                     telegram_send_message($context->get_chat_id(), $riddle_info[1]);
                 }
-
-                // Forward selfie to channel
-                telegram_send_photo(CHAT_CHANNEL, $photo_path, hydrate(TEXT_GAME_SELFIE_FORWARD_CAPTION, array(
-                    '%GROUP%' => $context->get_group_name(),
-                    '%INDEX%' => $context->get_track_index() + 1
-                )));
             }
             else {
                 msg_processing_handle_group_state($context);
