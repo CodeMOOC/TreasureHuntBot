@@ -41,6 +41,18 @@ const STATE_ALL             = array(
     STATE_GAME_WON
 );
 
+const GAME_STATE_NEW                = 0; // newly created
+const GAME_STATE_REG_NAME           = 1; // name registered
+const GAME_STATE_REG_LOCATION       = 2; // location given [ask for address confirmation]
+const GAME_STATE_REG_LOCATION_OK    = 3; // location name confirmed [ask for email]
+const GAME_STATE_REG_EMAIL          = 4; // e-mail given
+const GAME_STATE_REG_CHANNEL        = 5; // channel given
+const GAME_STATE_LOCATION           = 10; // collecting info about a location
+const GAME_STATE_LOCATION_OK        = 11; // accepting a location as completed
+const GAME_STATE_READY              = 20; // all info collected
+const GAME_STATE_ACTIVE             = 128; // ready to accept users, play, etc.
+const GAME_STATE_DEAD               = 255; // game is over
+
 const PHOTO_AVATAR          = 100;
 const PHOTO_SELFIE          = 101;
 

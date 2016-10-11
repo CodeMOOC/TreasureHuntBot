@@ -75,6 +75,7 @@ CREATE TABLE `games` (
   `game_id` int(10) UNSIGNED NOT NULL,
   `event_id` int(10) UNSIGNED NOT NULL,
   `state` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `registration_code` binary(16) NOT NULL,
   `name` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `location_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `location_lat` float DEFAULT NULL,
@@ -213,6 +214,7 @@ ALTER TABLE `events`
 --
 ALTER TABLE `games`
   ADD PRIMARY KEY (`game_id`),
+  ADD UNIQUE KEY `registration_code_index` (`registration_code`),
   ADD KEY `game_event_index` (`event_id`),
   ADD KEY `game_organizer_index` (`organizer_id`);
 
