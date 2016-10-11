@@ -53,6 +53,9 @@ CREATE TABLE `events` (
   `event_id` int(10) UNSIGNED NOT NULL,
   `name` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `state` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `registration_code` binary(16) NOT NULL,
+  `activate_code` binary(16) NOT NULL,
+  `victory_code` binary(16) NOT NULL,
   `logo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `registered_on` datetime NOT NULL,
   `num_steps` tinyint(3) UNSIGNED NOT NULL DEFAULT '10' COMMENT 'Number of steps (i.e. total number of hints)',
@@ -200,6 +203,9 @@ ALTER TABLE `assigned_riddles`
 --
 ALTER TABLE `events`
   ADD PRIMARY KEY (`event_id`),
+  ADD UNIQUE KEY `registration_code_index` (`registration_code`),
+  ADD UNIQUE KEY `activate_code_index` (`activate_code`),
+  ADD UNIQUE KEY `victory_code_index` (`victory_code`),
   ADD KEY `event_organizer_index` (`organizer_id`);
 
 --

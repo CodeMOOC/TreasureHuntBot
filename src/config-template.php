@@ -28,22 +28,7 @@ define('DATABASE_USERNAME', '');
 define('DATABASE_PASSWORD', '');
 
 /* Settings constant */
-define('CURRENT_GAME_ID', 1);
 define('CHAT_GROUP_DEBUG', 0);
 define('CHAT_CHANNEL', '');
 define('DEBUG_TO_DB', false);
 define('DEBUG_TO_BOT', false);
-
-/* Pre-set codes (16 characters) */
-define('CODE_REGISTER', '');
-define('CODE_ACTIVATE', '');
-define('CODE_VICTORY', '');
-define('LAST_LOCATION_ID', 0);
-
-/* Prizes for correct answers, must be as long as the track length */
-const CORRECT_ANSWER_PRIZE = array(
-    '',
-    ''
-);
-
-?>
