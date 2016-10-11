@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 23, 2016 at 02:00 PM
+-- Generation Time: Oct 11, 2016 at 02:04 PM
 -- Server version: 5.5.46-0+deb8u1
 -- PHP Version: 5.6.17-0+deb8u1
 
@@ -58,7 +58,7 @@ CREATE TABLE `events` (
   `victory_code` binary(16) NOT NULL,
   `logo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `registered_on` datetime NOT NULL,
-  `num_steps` tinyint(3) UNSIGNED NOT NULL DEFAULT '10' COMMENT 'Number of steps (i.e. total number of hints)',
+  `min_num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '10' COMMENT 'Minimum number of locations and number of hints/steps',
   `max_num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '30' COMMENT 'Maximum number of locations',
   `organizer_id` int(10) UNSIGNED NOT NULL,
   `min_avg_distance` float DEFAULT NULL COMMENT 'Minimum average distance between locations (in kms)',
