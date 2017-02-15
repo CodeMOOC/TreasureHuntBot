@@ -25,9 +25,6 @@ const TEXT_FAILURE_GROUP_INVALID_STATE = "Sembra che il tuo gruppo non sia pront
 // Response to "/help"
 const TEXT_CMD_HELP = "Trovi le informazioni sul [sito della caccia al tesoro](http://codemooc.org/urbino-code-hunting/) oppure sul canale @urbinocodehunting.";
 
-// Response to "/reset"
-const TEXT_CMD_RESET = "Comando di reset, non implementato.";
-
 // Responses to "/start"
 const TEXT_CMD_START_NEW = "Ciao, %FULL_NAME%! Benvenuto alla caccia al tesoro *Urbino Code Hunting Game*. Per partecipare è necessario registrarsi, seguendo le [indicazioni descritte sul sito](http://codemooc.org/urbino-code-hunting/).";
 const TEXT_CMD_START_REGISTERED = "Bentornato, %FULL_NAME%! Questo è il bot dedicato alla caccia al tesoro *Urbino Code Hunting Game*.";

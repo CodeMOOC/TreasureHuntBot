@@ -91,7 +91,6 @@ class Context {
 
     /**
      * Replies to the current incoming message.
-     * Enables markdown parsing and disables web previews by default.
      */
     function reply($message, $additional_values = null, $additional_parameters = null) {
         return $this->send($this->get_telegram_chat_id(), $message, $additional_values, $additional_parameters);
@@ -198,6 +197,43 @@ class Context {
         }
 
         Logger::debug("User is not administering or playing any game", __FILE__, $this);
+    }
+
+    /**
+     * Gets whether the user is registered for a given game.
+     */
+    function is_registered($game_id) {
+        return ($this->game_id == $game_id && $this->group_name != null);
+    }
+
+    /**
+     * Registers the user for a game.
+     */
+    function register($game_id) {
+        $game_id = intval($game_id);
+
+        if($this->is_registered($game_id)) {
+            Logger::warning("User already registered for game #{$game_id}", __FILE__, $this);
+            return 'already_registered';
+        }
+
+        if($this->group_name != null) {
+            Logger::debug("User is already registered for another game (#{$this->game_id})", __FILE__, $this);
+            // Ignore now
+        }
+
+        Logger::debug("Attempting to register new group for user #{$this->internal_id} for game #{$game_id}", __FILE__, $this);
+
+        if(db_perform_action("INSERT INTO `groups` (`game_id`, `group_id`, `state`, `registered_on`, `last_state_change`) VALUES({$game_id}, {$this->internal_id}, " . STATE_NEW . ", NOW(), NOW())") === false) {
+            Logger::error("Failed to register group status", __FILE__, $this);
+            return false;
+        }
+
+        $this->refresh();
+
+        Logger::info("New group registered for user #{$this->internal_id} in game #{$game_id}", __FILE__, $this);
+
+        return true;
     }
 
 }

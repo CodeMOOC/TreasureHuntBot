@@ -7,6 +7,32 @@
  * Default command message processing.
  */
 
+function handle_registration_code($context, $code) {
+    $game_id = db_scalar_query("SELECT `game_id` FROM `games` WHERE `registration_code` = '" . db_escape($code) . "' LIMIT 1");
+
+    if($game_id != null) {
+        // Registration code found
+        Logger::debug("Registration code for game #{$game_id}", __FILE__, $context);
+
+        $result = $context->register($game_id);
+        if($result === true) {
+            $context->reply(TEXT_CMD_REGISTER_CONFIRM);
+            msg_processing_handle_group_state($context);
+        }
+        else if($result === 'already_registered') {
+            $context->reply(TEXT_CMD_REGISTER_REGISTERED);
+            msg_processing_handle_group_state($context);
+        }
+        else {
+            $context->reply(TEXT_FAILURE_GENERAL);
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
 /*
  * Processes commands in text messages.
  * @param $context Context.
@@ -17,93 +43,6 @@ function msg_processing_commands($context) {
 
     if(starts_with($text, '/help')) {
         $context->reply(TEXT_CMD_HELP);
-
-        return true;
-    }
-    else if(starts_with($text, '/reset')) {
-        $context->reply(TEXT_CMD_RESET);
-
-        return true;
-    }
-    else if($text === '/start ' . CODE_REGISTER) {
-        // Registration command
-
-        if(null === $context->get_group_state()) {
-            if(!bot_register_new_group($context)) {
-                $context->reply(TEXT_FAILURE_GENERAL);
-            }
-            else {
-                $context->reply(TEXT_CMD_REGISTER_CONFIRM);
-
-                msg_processing_handle_group_state($context);
-            }
-        }
-        else {
-            $context->reply(TEXT_CMD_REGISTER_REGISTERED);
-
-            msg_processing_handle_group_state($context);
-        }
-
-        return true;
-    }
-    else if($text === '/start ' . CODE_ACTIVATE) {
-        // Activation command
-
-        $result = bot_promote_to_active($context);
-        switch($result) {
-            case true:
-                $context->reply(TEXT_ADVANCEMENT_ACTIVATED);
-                break;
-
-            case 'not_found':
-                $context->reply(TEXT_FAILURE_GROUP_NOT_FOUND);
-                break;
-
-            case 'already_active':
-                $context->reply(TEXT_FAILURE_GROUP_ALREADY_ACTIVE);
-
-                msg_processing_handle_group_state($context);
-                break;
-
-            case 'invalid_state':
-                $context->reply(TEXT_FAILURE_GROUP_INVALID_STATE);
-
-                msg_processing_handle_group_state($context);
-                break;
-
-            case false:
-            default:
-                $context->reply(TEXT_FAILURE_GENERAL);
-                break;
-        }
-
-        return true;
-    }
-    else if($text === '/start ' . CODE_VICTORY) {
-        Logger::debug("Prize code scanned", __FILE__, $context);
-
-        if($context->get_group_state() === STATE_GAME_LAST_PUZ) {
-            $winning_group = bot_get_winning_group($context);
-            if($winning_group !== false) {
-                $context->reply(TEXT_CMD_START_PRIZE_TOOLATE, array(
-                    '%GROUP%' => $winning_group
-                ));
-            }
-            else {
-                bot_update_group_state($context, STATE_GAME_WON);
-
-                msg_processing_handle_group_state($context);
-
-                Logger::info("Group {$context->get_group_id()} has reached the prize and won", __FILE__, $context, true);
-
-                $context->channel(TEXT_GAME_WON_CHANNEL);
-            }
-        }
-        else {
-            $context->reply(TEXT_CMD_START_PRIZE_INVALID);
-
-            Logger::warning("Group {$context->get_group_id()} has reached the prize but is in state {$context->get_group_state()}", __FILE__, $context);
-        }
 
         return true;
     }
@@ -123,12 +62,16 @@ function msg_processing_commands($context) {
                 $context->reply(TEXT_CMD_START_NEW);
             }
         }
-        // Secret location code
-        else if(mb_strlen($payload) === 16) {
+
+        // Location or special code
+        else if(mb_strlen($payload) === 8) {
             Logger::debug("Treasure hunt code: '{$payload}'", __FILE__, $context);
 
-            $result = bot_reach_location($context, $payload);
+            if(handle_registration_code($context, $payload)) {
+                return true;
+            }
 
+            $result = bot_reach_location($context, $payload);
             if($result === false) {
                 $context->reply(TEXT_FAILURE_GENERAL);
             }
@@ -160,5 +103,3 @@ function msg_processing_commands($context) {
 
     return false;
 }
-
- ?>

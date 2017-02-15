@@ -47,35 +47,6 @@ function bot_get_winning_group($context) {
     return (string)$count;
 }
 
-/**
- * Registers new group for current user.
- */
-function bot_register_new_group($context) {
-    Logger::debug("Attempting to register new group for user {$context->get_user_id()}", __FILE__, $context);
-
-    $group_id = db_scalar_query("SELECT `id` FROM `identities` WHERE `telegram_id` = {$context->get_user_id()}");
-    if($group_id === null) {
-        Logger::debug('Registering new identity', __FILE__, $context);
-
-        $group_id = db_perform_action("INSERT INTO `identities` (`id`, `telegram_id`, `full_name`, `last_registration`) VALUES(DEFAULT, {$context->get_user_id()}, '" . db_escape($context->get_message()->get_full_sender_name()) . "', NOW())");
-    }
-    if($group_id === false) {
-        Logger::error("Failed to register new group for user {$context->get_user_id()}", __FILE__, $context);
-        return false;
-    }
-
-    if(db_perform_action("INSERT INTO `status` VALUES({$context->get_game_id()}, {$group_id}, NULL, 0, NULL, " . STATE_NEW . ", NULL, 0, NOW(), NOW())") === false) {
-        Logger::error("Failed to register group status for group {$group_id}", __FILE__, $context);
-        return false;
-    }
-
-    $context->refresh();
-
-    Logger::info("New group registered for user {$context->get_user_id()}", __FILE__, $context);
-
-    return true;
-}
-
 /*** TRACKS, PUZZLES, AND ASSIGNMENTS ***/
 
 /**
