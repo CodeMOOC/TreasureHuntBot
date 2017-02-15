@@ -280,69 +280,6 @@ function bot_give_solution($context, $solution) {
     return true;
 }
 
-/*** GROUP UPDATING ***/
-
-/**
- * Updates name for current group and refreshes context.
- */
-function bot_update_group_name($context, $new_name) {
-    $updates = db_perform_action("UPDATE `status` SET `name` = '" . db_escape($new_name) . "' WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
-
-    if($updates === 1) {
-        $context->refresh();
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-/**
- * Updates participants count for current group.
- */
-function bot_update_group_number($context, $new_number) {
-    $updates = db_perform_action("UPDATE `status` SET `participants_count` = '" . $new_number . "' WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
-
-    if($updates === 1) {
-        $context->refresh();
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-/**
- * Updates photo path for current group.
- */
-function bot_update_group_photo($context, $new_photo_path) {
-    $updates = db_perform_action("UPDATE `status` SET `photo_path` = '" . $new_photo_path . "' WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
-
-    if($updates === 1) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-/**
- * Updates state for current group and refreshes context.
- */
-function bot_update_group_state($context, $new_state) {
-    $updates = db_perform_action("UPDATE `status` SET `state` = {$new_state}, `last_state_change` = NOW() WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_group_id()}");
-
-    Logger::debug("Group status update to {$new_state} updated {$updates} rows", __FILE__, $context);
-
-    if($updates === 1) {
-        $context->refresh();
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
 /*** STATE PROMOTION ***/
 
 /**
@@ -405,14 +342,14 @@ function bot_promote_to_active($context) {
  * Gets the count of registered groups (verified and with name).
  */
 function bot_get_registered_groups($context) {
-    return db_scalar_query("SELECT count(*) FROM `status` WHERE `game_id` = {$context->get_game_id()} AND `state` >= " . STATE_REG_NAME);
+    return db_scalar_query("SELECT count(*) FROM `groups` WHERE `game_id` = {$context->get_game_id()} AND `state` >= " . STATE_REG_NAME);
 }
 
 /**
  * Gets the count of ready groups (verified, with name, participants, and avatars).
  */
 function bot_get_ready_groups($context) {
-    return db_scalar_query("SELECT count(*) FROM `status` WHERE `game_id` = {$context->get_game_id()} AND `state` >= " . STATE_REG_READY);
+    return db_scalar_query("SELECT count(*) FROM `groups` WHERE `game_id` = {$context->get_game_id()} AND `state` >= " . STATE_REG_READY);
 }
 
 /**

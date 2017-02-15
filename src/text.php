@@ -49,16 +49,14 @@ const TEXT_REGISTRATION_NEW_RESPONSE_CORRECT = "_Esatto!_\nSei un umano senzient
 const TEXT_REGISTRATION_NEW_RESPONSE_WRONG = "_Sbagliato!_\nVerifica attentamente e ritenta.";
 
 const TEXT_REGISTRATION_VERIFIED_STATE = "Ora devi soltanto assegnare un nome avvincente al tuo gruppo. Qualcosa che incuta terrore agli avversari, forse. Che nome scegli?";
-const TEXT_REGISTRATION_VERIFIED_RESPONSE_OK = "Ok, “%GROUP%” suona bene! Questo è il %COUNT%° gruppo a registrarsi per l’evento.";
+const TEXT_REGISTRATION_VERIFIED_RESPONSE_OK = "Ok, “%GROUP_NAME%” suona bene! Questo è il %GROUP_COUNT%° gruppo a registrarsi per l’evento.";
 const TEXT_REGISTRATION_VERIFIED_RESPONSE_INVALID = "Non mi sembra un nome valido. Come vuoi che il tuo gruppo si chiami?";
 
-const TEXT_REGISTRATION_NAME_STATE = "Il gruppo “%GROUP_NAME%” è prenotato. Nei prossimi giorni riceverai un messaggio per confermare la partecipazione della tua squadra. Solo se risponderai a quel messaggio di conferma tra i primi 30 la tua squadra sarà effettivamente registrata e potrà partecipare… non rimane che aspettare e studiare il [regolamento](http://codemooc.org/urbino-code-hunting/)! ⏰";
-
-const TEXT_REGISTRATION_CONFIRMED_STATE = "Mi puoi scrivere quanti componenti ci sono nel tuo gruppo?";
-const TEXT_REGISTRATION_CONFIRMED_RESPONSE_INVALID = "Specifica il numero di partecipanti in cifre, per favore.";
-const TEXT_REGISTRATION_CONFIRMED_RESPONSE_TOOFEW = "Il numero minimo di partecipanti per squadra è *2*!";
-const TEXT_REGISTRATION_CONFIRMED_RESPONSE_TOOMANY = "Il numero massimo di partecipanti per squadra è *6*!";
-const TEXT_REGISTRATION_CONFIRMED_RESPONSE_OK = "Hai appena confemato per %NUMBER% partecipanti!";
+const TEXT_REGISTRATION_NAME_STATE = "Mi puoi scrivere quanti componenti ci sono nel tuo gruppo?";
+const TEXT_REGISTRATION_NAME_RESPONSE_INVALID = "Specifica il numero di partecipanti in cifre, per favore.";
+const TEXT_REGISTRATION_NAME_RESPONSE_TOOFEW = "Il numero minimo di partecipanti per squadra è *2*!";
+const TEXT_REGISTRATION_NAME_RESPONSE_TOOMANY = "Il numero massimo di partecipanti per squadra è *10*!";
+const TEXT_REGISTRATION_NAME_RESPONSE_OK = "Hai appena confemato per %NUMBER% partecipanti!";
 
 const TEXT_REGISTRATION_NUMBER_STATE = "Mi puoi mandare ora una foto o un’immagine da usare come icona del gruppo?";
 const TEXT_REGISTRATION_NUMBER_RESPONSE_OK = "Bella foto! Il gruppo “%GROUP_NAME%” è confermato. 👍";

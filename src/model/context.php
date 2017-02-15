@@ -246,4 +246,60 @@ class Context {
         return true;
     }
 
+    /*
+     * *** UPDATING ***
+     */
+
+    /**
+    * Updates name for the current user in the current game.
+    */
+    function set_group_name($new_name) {
+        $updates = db_perform_action("UPDATE `groups` SET `name` = '" . db_escape($new_name) . "' WHERE `game_id` = {$this->game_id} AND `group_id` = {$this->internal_id}");
+
+        if($updates === 1) {
+            $this->group_name = $new_name;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+    * Updates participants count for current group.
+    */
+    function set_group_participants($new_number) {
+        $new_number = intval($new_number);
+
+        $updates = db_perform_action("UPDATE `groups` SET `participants_count` = {$new_number} WHERE `game_id` = {$this->game_id} AND `group_id` = {$this->internal_id}");
+
+        return ($updates === 1);
+    }
+
+    /**
+    * Updates photo path for current group.
+    */
+    function set_group_photo($new_photo_path) {
+        $updates = db_perform_action("UPDATE `groups` SET `photo_path` = '" . db_escape($new_photo_path) . "' WHERE `game_id` = {$this->game_id} AND `group_id` = {$this->internal_id}");
+
+        return ($updates === 1);
+    }
+
+    /**
+    * Updates state for current group and refreshes context.
+    */
+    function set_state($new_state) {
+        $updates = db_perform_action("UPDATE `groups` SET `state` = {$new_state}, `last_state_change` = NOW() WHERE `game_id` = {$this->game_id} AND `group_id` = {$this->internal_id}");
+
+        Logger::debug("User status ==> {$new_state} (updated {$updates} rows)", __FILE__, $this);
+
+        if($updates === 1) {
+            $this->group_state = $new_state;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }
