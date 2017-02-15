@@ -131,7 +131,7 @@ class Context {
             'parse_mode' => 'HTML',
             'disable_web_page_preview' => true
         );
-        if($receiver != CHAT_CHANNEL) {
+        if($receiver != $this->game_channel_name) {
             // "Hide keyboard" is added by default to all messages because
             // of a bug in Telegram that doesn't hide "one-time" keyboards after use
             $default_parameters['reply_markup'] = array(

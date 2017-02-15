@@ -23,6 +23,5 @@ define('DATABASE_PASSWORD', '');
 
 /* Settings constant */
 define('CHAT_GROUP_DEBUG', 0);
-define('CHAT_CHANNEL', '');
 define('DEBUG_TO_DB', false);
 define('DEBUG_TO_BOT', false);
