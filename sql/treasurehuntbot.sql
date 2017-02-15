@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 15, 2017 at 07:56 PM
+-- Generation Time: Feb 15, 2017 at 08:22 PM
 -- Server version: 5.5.53-0+deb8u1
 -- PHP Version: 5.6.27-0+deb8u1
 
@@ -160,13 +160,13 @@ CREATE TABLE `locations` (
 --
 
 CREATE TABLE `log` (
-  `timestamp` datetime NOT NULL,
+  `log_id` int(10) UNSIGNED NOT NULL,
+  `severity` tinyint(3) UNSIGNED NOT NULL,
   `tag` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `message` text COLLATE utf8_unicode_ci NOT NULL,
-  `severity` tinyint(3) UNSIGNED NOT NULL,
-  `event_id` int(10) UNSIGNED DEFAULT NULL,
-  `group_id` int(10) UNSIGNED DEFAULT NULL,
-  `telegram_chat_id` int(11) DEFAULT NULL
+  `timestamp` datetime NOT NULL,
+  `identity_id` int(10) UNSIGNED DEFAULT NULL,
+  `game_id` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -251,11 +251,11 @@ ALTER TABLE `locations`
 -- Indexes for table `log`
 --
 ALTER TABLE `log`
+  ADD PRIMARY KEY (`log_id`),
   ADD KEY `timestamp` (`timestamp`),
   ADD KEY `tag` (`tag`),
-  ADD KEY `telegram_chat_id` (`telegram_chat_id`),
-  ADD KEY `group_id` (`group_id`),
-  ADD KEY `log_event_constraint` (`event_id`);
+  ADD KEY `log_context_index` (`identity_id`,`game_id`),
+  ADD KEY `log_game_constraint` (`game_id`);
 
 --
 -- Indexes for table `riddles`
@@ -282,6 +282,11 @@ ALTER TABLE `games`
 --
 ALTER TABLE `identities`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Internal ID', AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `log`
+--
+ALTER TABLE `log`
+  MODIFY `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
@@ -329,8 +334,8 @@ ALTER TABLE `locations`
 -- Constraints for table `log`
 --
 ALTER TABLE `log`
-  ADD CONSTRAINT `log_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `log_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `log_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `log_identity_constraint` FOREIGN KEY (`identity_id`) REFERENCES `identities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `riddles`

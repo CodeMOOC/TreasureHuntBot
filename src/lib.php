@@ -8,6 +8,7 @@
  */
 
 require_once('config.php');
+require_once('model/context.php');
 require_once('lib_utility.php');
 require_once('lib_log.php');
 require_once('lib_http.php');
