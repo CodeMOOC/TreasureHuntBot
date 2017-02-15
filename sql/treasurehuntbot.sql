@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 15, 2017 at 08:22 PM
+-- Generation Time: Feb 15, 2017 at 10:19 PM
 -- Server version: 5.5.53-0+deb8u1
 -- PHP Version: 5.6.27-0+deb8u1
 
@@ -80,6 +80,7 @@ CREATE TABLE `games` (
   `location_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `location_lat` float DEFAULT NULL,
   `location_lng` float DEFAULT NULL,
+  `num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of locations to reach in order to win',
   `organizer_id` int(10) UNSIGNED DEFAULT NULL,
   `organizer_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
