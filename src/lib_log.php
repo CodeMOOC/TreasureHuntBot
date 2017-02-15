@@ -48,7 +48,7 @@ class Logger {
     }
 
     private static function common($level, $message, $tag = '', $context = null) {
-        if(false && is_cli()) {
+        if(is_cli()) {
             // In CLI mode, output all logs to stderr
             fwrite(STDERR, self::severity_to_char($level) . '/' . $message . PHP_EOL);
         }
