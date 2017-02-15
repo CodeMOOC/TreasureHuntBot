@@ -11,14 +11,10 @@
 require_once('text.php');
 require_once('game.php');
 require_once('lib.php');
-require_once('model/context.php');
 
 require_once('msg_processing_admin.php');
 require_once('msg_processing_commands.php');
 require_once('msg_processing_state.php');
-
-// Set default timezone for date operations
-date_default_timezone_set('UTC');
 
 //Needs some error checking here
 $in = new IncomingMessage($message);
