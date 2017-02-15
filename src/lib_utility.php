@@ -8,8 +8,39 @@
  */
 
 /**
+ * Gets whether the script is running from the Command Line Interface.
+ *
+ * @return bool True if running from the CLI.
+ */
+function is_cli() {
+    return (php_sapi_name() === 'cli');
+}
+
+/**
+ * Mixes together parameters for an HTTP request.
+ *
+ * @param array $orig_params Original parameters or null.
+ * @param array $add_params Additional parameters or null.
+ * @return array Final mixed parameters.
+ */
+function prepare_parameters($orig_params, $add_params) {
+    if(!$orig_params || !is_array($orig_params)) {
+        $orig_params = array();
+    }
+
+    if($add_params && is_array($add_params)) {
+        foreach ($add_params as $key => &$val) {
+            $orig_params[$key] = $val;
+        }
+    }
+
+    return $orig_params;
+}
+
+/**
  * Checks whether a text string starts with another.
  * Performs a case-insensitive check.
+ *
  * @param $text String to search in.
  * @param $substring String to search for.
  * @return bool True if $text starts with $substring.
@@ -20,6 +51,9 @@ function starts_with($text = '', $substring = '') {
 
 /**
  * Extracts the command payload from a string.
+ * Returns the string following the first command in a string (i.e., given
+ * input "/start 123", returns "123").
+ *
  * @param $text String to search in.
  * @return string Command payload, if any, or empty string.
  */
@@ -63,13 +97,3 @@ function unite_arrays($a, $b) {
 
     return $a;
 }
-
-/**
- * Escapes Markdown reserved characters so non-Markdown text can be
- * embedded in a Markdown message without issues.
- */
-function escape_markdown($text) {
-    return mb_ereg_replace('([_*\[\]\(\)])', '\\\1', $text);
-}
-
-?>

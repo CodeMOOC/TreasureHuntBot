@@ -77,11 +77,11 @@ function db_open_connection($quick = false) {
 
 /**
  * Performs an "action query" (UPDATE, INSERT, REPLACE, or similar)
- * and returns the number of rows affected on success.
+ * and returns the number of rows affected on success or the ID.
  * @param string $sql SQL query to perform.
  * @return bool | int Auto-generated ID for INSERT or UPDATE queries, if
- *                    applicable, otherwise the number of affected rows
- *                    or false on failure.
+ *                    applicable, otherwise the number of affected rows.
+ *                    Returns false on failure.
  */
 function db_perform_action($sql) {
     $connection = db_open_connection();
@@ -242,5 +242,3 @@ function db_row_query($sql) {
 function db_escape($s) {
     return mysqli_real_escape_string(db_open_connection(true), (string)$s);
 }
-
-?>
