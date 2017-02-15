@@ -7,10 +7,6 @@
  * Default command message processing.
  */
 
-require_once('lib.php');
-require_once('msg_processing_state.php');
-require_once('model/context.php');
-
 /*
  * Processes commands in text messages.
  * @param $context Context.

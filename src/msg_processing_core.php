@@ -9,8 +9,10 @@
  */
 
 require_once('text.php');
-require_once('log.php');
+require_once('game.php');
+require_once('lib.php');
 require_once('model/context.php');
+
 require_once('msg_processing_admin.php');
 require_once('msg_processing_commands.php');
 require_once('msg_processing_state.php');
@@ -21,8 +23,6 @@ date_default_timezone_set('UTC');
 //Needs some error checking here
 $in = new IncomingMessage($message);
 $context = new Context($in);
-
-Logger::debug("Current group state: {$context->get_group_state()}", __FILE__, $context);
 
 if($in->is_group()) {
     // Group (TODO)

@@ -8,20 +8,22 @@
  */
 
 require_once('lib.php');
-
 require_once('incoming_message.php');
 
 class Context {
 
     private $message;
 
-    private $is_admin = false;
+    private $internal_id = null;
 
-    private $group_id = null;
+    private $is_game_admin = false;
+    private $game_id = 1;
+    private $event_id = null;
+    private $game_state = 128;
+    private $game_channel_name = null;
+
     private $group_name = null;
     private $group_state = null;
-    private $group_track_id = null;
-    private $group_track_index = 0;
 
     /**
      * Construct Context class.
@@ -35,24 +37,31 @@ class Context {
         $this->refresh();
     }
 
-    /* True if the talking user is an admin */
-    function is_admin() {
-        return $this->is_admin;
-    }
+    /*
+     * *** GENERIC ACCESSORS ***
+     */
 
     /* The running game ID */
     function get_game_id() {
-        return CURRENT_GAME_ID;
+        return $this->game_id;
     }
 
+    /* Get the user's internal ID */
     function get_user_id() {
+        return $this->internal_id;
+    }
+
+    /* Get the incoming message's sender ID */
+    function get_telegram_user_id() {
         return $this->message->from_id;
     }
 
-    function get_chat_id() {
+    /* Get the incoming message's chat ID */
+    function get_telegram_chat_id() {
         return $this->message->chat_id;
     }
 
+    /* Get the full incoming message */
     function get_message() {
         return $this->message;
     }
@@ -68,10 +77,6 @@ class Context {
             return '';
     }
 
-    function get_group_id() {
-        return $this->group_id;
-    }
-
     function get_group_name() {
         return $this->group_name;
     }
@@ -80,90 +85,119 @@ class Context {
         return $this->group_state;
     }
 
-    function get_track_id() {
-        return $this->group_track_id;
-    }
-
-    function get_track_index() {
-        if($this->group_track_id === null)
-            return null;
-        else
-            return $this->group_track_index;
-    }
+    /*
+     * *** MESSAGE SENDING ***
+     */
 
     /**
      * Replies to the current incoming message.
      * Enables markdown parsing and disables web previews by default.
      */
-    function reply($message, $additional_values = null) {
-        $hydration_values = array(
-            '%FULL_NAME%' => $this->get_message()->get_full_sender_name(),
-            '%GROUP_NAME%' => $this->get_group_name()
-        );
-
-        $hydrated = hydrate($message, unite_arrays($hydration_values, $additional_values));
-
-        return telegram_send_message(
-            $this->get_chat_id(),
-            $hydrated,
-            array(
-                'parse_mode' => 'Markdown',
-                'disable_web_page_preview' => true
-            )
-        );
+    function reply($message, $additional_values = null, $additional_parameters = null) {
+        return $this->send($this->get_telegram_chat_id(), $message, $additional_values, $additional_parameters);
     }
 
     /**
      * Sends out a message on the channel.
      */
     function channel($message, $additional_values = null) {
+        if(!$this->game_channel_name) {
+            Logger::error("Cannot send message to channel (channel not set)", __FILE__, $this);
+            return;
+        }
+
+        return $this->send($this->game_channel_name, $message, $additional_values, null);
+    }
+
+    function send($receiver, $message, $additional_values = null, $additional_parameters = null) {
+        if(!$receiver) {
+            Logger::error("Receiver not set", __FILE__, $this);
+            return false;
+        }
+        if($message === null) {
+            Logger::info("Message is null", __FILE__, $this);
+            return false;
+        }
+
         $hydration_values = array(
-            '%FULL_NAME%' => $this->get_message()->get_full_sender_name(),
+            '%FIRST_NAME%' => $this->get_message()->get_sender_first_name(),
+            '%FULL_NAME%' => $this->get_message()->get_sender_full_name(),
             '%GROUP_NAME%' => $this->get_group_name()
+            /*'%WEEKDAY%' => TEXT_WEEKDAYS[intval(strftime('%w'))]*/
         );
 
         $hydrated = hydrate($message, unite_arrays($hydration_values, $additional_values));
+        $default_parameters = array(
+            'parse_mode' => 'HTML',
+            'disable_web_page_preview' => true
+        );
+        if($receiver != CHAT_CHANNEL) {
+            // "Hide keyboard" is added by default to all messages because
+            // of a bug in Telegram that doesn't hide "one-time" keyboards after use
+            $default_parameters['reply_markup'] = array(
+                'hide_keyboard' => true
+            );
+        }
 
         return telegram_send_message(
-            CHAT_CHANNEL,
+            $receiver,
             $hydrated,
-            array(
-                'parse_mode' => 'Markdown',
-                'disable_web_page_preview' => true
-            )
+            unite_arrays($default_parameters, $additional_parameters)
         );
     }
 
+    /*
+     * *** STATUS HANDLING ***
+     */
+
     /**
      * Refreshes information about the context from the DB.
+     * Optionally registers the user.
      */
     function refresh() {
-        $identity = db_row_query("SELECT `id`, `full_name`, `is_admin` FROM `identities` WHERE `telegram_id` = {$this->get_user_id()}");
-        if(!$identity) {
-            //No identity registered
+        $this->internal_id = db_scalar_query("SELECT `id` FROM `identities` WHERE `telegram_id` = {$this->get_telegram_user_id()}");
+        if(!$this->internal_id) {
+            Logger::debug('Registering new identity', __FILE__, $this);
+
+            // No identity registered, register now
+            $this->internal_id = db_perform_action("INSERT INTO `identities` (`id`, `telegram_id`, `first_name`, `full_name`, `first_seen_on`, `last_access`) VALUES(DEFAULT, {$this->get_telegram_user_id()}, '" . db_escape($this->get_message()->get_sender_first_name()) . "', '" . db_escape($this->get_message()->get_sender_full_name()) . "', NOW(), NOW())");
+
             return;
         }
 
-        $this->group_id = intval($identity[0]);
-        $this->is_admin = (bool)$identity[2];
+        // Update last access time
+        db_perform_action("UPDATE `identities` SET `last_access` = NOW() WHERE `id` = {$this->get_user_id()}");
 
-        $state = db_row_query("SELECT `name`, `participants_count`, `state`, `track_id`, `track_index` FROM `status` WHERE `game_id` = " . CURRENT_GAME_ID . " AND `group_id` = {$this->group_id}");
-        if(!$state) {
-            //No registration
+        // Get administered games, if any
+        $game = db_row_query("SELECT `game_id`, `event_id`, `state`, `telegram_channel` FROM `games` WHERE `organizer_id` = {$this->get_user_id()} AND `state` != " . GAME_STATE_DEAD . " ORDER BY `registered_on` DESC LIMIT 1");
+        if($game !== null) {
+            $this->is_game_admin = true;
+            $this->game_id = intval($game[0]);
+            $this->event_id = ($game[1] != null) ? intval($game[1]) : null;
+            $this->game_state = intval($game[2]);
+            $this->game_channel_name = $game[3];
+
+            Logger::debug("User is administering game #{$this->game_id} (state {$this->game_state}) in event {$this->event_id}", __FILE__, $this);
+
             return;
         }
 
-        if($state[0]) {
-            $this->group_name = $state[0];
+        // Get played games, if any
+        $group = db_row_query("SELECT `groups`.`game_id`, `groups`.`name`, `groups`.`state`, `games`.`event_id`, `games`.`state`, `games`.`telegram_channel` FROM `groups` LEFT OUTER JOIN `games` ON `groups`.`game_id` = `games`.`game_id` WHERE `group_id` = {$this->get_user_id()} ORDER BY `groups`.`registered_on` DESC LIMIT 1");
+        if($group !== null) {
+            $this->game_id = intval($group[0]);
+            $this->event_id = ($group[3] != null) ? intval($group[3]) : null;
+            $this->game_state = intval($group[4]);
+            $this->group_name = ($group[1] != null) ? $group[1] : TEXT_UNNAMED_GROUP;
+            $this->group_state = intval($group[2]);
+            $this->game_channel_name = $group[5];
+
+            Logger::debug("User is playing game #{$this->game_id} (state {$this->game_state}) in event {$this->event_id}, with group {$this->group_name} (state {$this->group_state})", __FILE__, $this);
+
+            return;
         }
-        else {
-            $this->group_name = TEXT_UNNAMED_GROUP;
-        }
-        $this->group_state = intval($state[2]);
-        if($state[3] !== null) {
-            $this->group_track_id = intval($state[3]);
-        }
-        $this->group_track_index = intval($state[4]);
+
+        Logger::debug("User is not administering or playing any game", __FILE__, $this);
     }
 
 }

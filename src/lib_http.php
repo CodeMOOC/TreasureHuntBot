@@ -55,7 +55,7 @@ function prepare_curl_api_request($url, $method, $parameters = null, $body = nul
         $url .= '?' . $query_string;
     }
 
-    Logger::info("HTTP request to {$url}", __FILE__);
+    Logger::debug("HTTP request to {$url}", __FILE__);
 
     // Prepare cURL handle
     $handle = curl_init($url);

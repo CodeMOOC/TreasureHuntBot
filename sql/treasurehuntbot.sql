@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 11, 2016 at 02:04 PM
--- Server version: 5.5.46-0+deb8u1
--- PHP Version: 5.6.17-0+deb8u1
+-- Generation Time: Feb 15, 2017 at 07:56 PM
+-- Server version: 5.5.53-0+deb8u1
+-- PHP Version: 5.6.27-0+deb8u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -58,7 +58,7 @@ CREATE TABLE `events` (
   `victory_code` binary(16) NOT NULL,
   `logo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `registered_on` datetime NOT NULL,
-  `min_num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '10' COMMENT 'Minimum number of locations and number of hints/steps',
+  `min_num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '10' COMMENT 'Minimum number of locations',
   `max_num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '30' COMMENT 'Maximum number of locations',
   `organizer_id` int(10) UNSIGNED NOT NULL,
   `min_avg_distance` float DEFAULT NULL COMMENT 'Minimum average distance between locations (in kms)',
@@ -73,9 +73,9 @@ CREATE TABLE `events` (
 
 CREATE TABLE `games` (
   `game_id` int(10) UNSIGNED NOT NULL,
-  `event_id` int(10) UNSIGNED NOT NULL,
+  `event_id` int(10) UNSIGNED DEFAULT NULL,
   `state` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
-  `registration_code` binary(16) NOT NULL,
+  `registration_code` char(8) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
   `name` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `location_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `location_lat` float DEFAULT NULL,
@@ -83,6 +83,7 @@ CREATE TABLE `games` (
   `organizer_id` int(10) UNSIGNED DEFAULT NULL,
   `organizer_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `registered_on` datetime NOT NULL,
   `tmp_location_lat` float DEFAULT NULL,
   `tmp_location_lng` float DEFAULT NULL,
   `tmp_location_image_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -129,7 +130,8 @@ CREATE TABLE `identities` (
   `telegram_id` int(11) NOT NULL,
   `first_name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `full_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `first_seen_on` datetime NOT NULL
+  `first_seen_on` datetime NOT NULL,
+  `last_access` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -141,7 +143,7 @@ CREATE TABLE `identities` (
 CREATE TABLE `locations` (
   `game_id` int(10) UNSIGNED NOT NULL,
   `location_id` int(10) UNSIGNED NOT NULL,
-  `code` binary(16) NOT NULL,
+  `code` char(8) CHARACTER SET ascii COLLATE ascii_bin NOT NULL COMMENT 'Unique identifying code',
   `internal_note` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `lat` float NOT NULL,
   `lng` float NOT NULL,
@@ -274,12 +276,12 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT for table `games`
 --
 ALTER TABLE `games`
-  MODIFY `game_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `game_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `identities`
 --
 ALTER TABLE `identities`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Internal ID';
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Internal ID', AUTO_INCREMENT=2;
 --
 -- Constraints for dumped tables
 --
@@ -295,9 +297,9 @@ ALTER TABLE `assigned_locations`
 -- Constraints for table `assigned_riddles`
 --
 ALTER TABLE `assigned_riddles`
-  ADD CONSTRAINT `assriddle_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `assriddles_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `assriddles_riddle_constraint` FOREIGN KEY (`event_id`,`riddle_id`) REFERENCES `riddles` (`event_id`, `riddle_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `assriddles_riddle_constraint` FOREIGN KEY (`event_id`,`riddle_id`) REFERENCES `riddles` (`event_id`, `riddle_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `assriddle_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `games`
@@ -309,13 +311,19 @@ ALTER TABLE `games`
 -- Constraints for table `groups`
 --
 ALTER TABLE `groups`
-  ADD CONSTRAINT `status_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`);
+  ADD CONSTRAINT `groups_identity_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`);
 
 --
 -- Constraints for table `hints`
 --
 ALTER TABLE `hints`
   ADD CONSTRAINT `hint_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `locations`
+--
+ALTER TABLE `locations`
+  ADD CONSTRAINT `location_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `log`

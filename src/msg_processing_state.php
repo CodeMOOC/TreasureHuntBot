@@ -7,11 +7,6 @@
  * State process message processing.
  */
 
-require_once('lib.php');
-require_once('model/context.php');
-require_once('vendor/autoload.php');
-require_once('file_downloader/get_file.php');
-
 /**
  * Handles the group's current registration state,
  * sending out a question to the user if needed.
@@ -34,7 +29,7 @@ function msg_processing_handle_group_state($context) {
             $context->reply(TEXT_REGISTRATION_NEW_STATE);
 
             telegram_send_photo(
-                $context->get_chat_id(),
+                $context->get_telegram_chat_id(),
                 'images/quiz-captcha.png',
                 TEXT_REGISTRATION_NEW_STATE_CAPTION
             );
@@ -243,10 +238,10 @@ function msg_processing_handle_group_response($context) {
                 // Send out riddle
                 $riddle_info = bot_get_riddle_info($context, $riddle_id);
                 if($riddle_info[0]) {
-                    telegram_send_photo($context->get_chat_id(), 'riddles/' . $riddle_info[0], $riddle_info[1]);
+                    telegram_send_photo($context->get_telegram_chat_id(), 'riddles/' . $riddle_info[0], $riddle_info[1]);
                 }
                 else {
-                    telegram_send_message($context->get_chat_id(), $riddle_info[1]);
+                    telegram_send_message($context->get_telegram_chat_id(), $riddle_info[1]);
                 }
 
                 // Forward selfie to channel
@@ -288,7 +283,7 @@ function msg_processing_handle_group_response($context) {
 
                     $location_info = bot_get_location_info($context, $advance_result);
 
-                    telegram_send_location($context->get_chat_id(), $location_info[0], $location_info[1]);
+                    telegram_send_location($context->get_telegram_chat_id(), $location_info[0], $location_info[1]);
 
                     msg_processing_handle_group_state($context);
                 }
