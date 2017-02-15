@@ -23,7 +23,7 @@ function admin_broadcast($context, $message, $min_group_state = STATE_NEW, $max_
         ));
 
         if(telegram_send_message($group[0], $hydrated, array(
-            'parse_mode' => 'Markdown'
+            'parse_mode' => 'HTML'
         )) === false) {
             Logger::error("Broadcast failed to ID {$group[0]} ({$group[1]}, group {$group[2]})");
         }
@@ -72,7 +72,7 @@ function msg_processing_admin($context) {
         Logger::info("Sending '{$message}' to group #{$group_id} (Telegram ID {$telegram_id})", __FILE__, $context, true);
 
         if(telegram_send_message($telegram_id, $message, array(
-            'parse_mode' => 'Markdown',
+            'parse_mode' => 'HTML',
         )) === false) {
             $context->reply("Failed to send message.");
         }

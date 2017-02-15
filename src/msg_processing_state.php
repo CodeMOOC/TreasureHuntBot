@@ -14,10 +14,6 @@
  * @return bool True if handled, false if no need.
  */
 function msg_processing_handle_group_state($context) {
-    if(null === $context->get_group_id()) {
-        //No group
-        return false;
-    }
     if(null === $context->get_group_state()) {
         //No state
         return false;
