@@ -19,6 +19,7 @@ class Context {
     private $is_game_admin = false;
     private $game_id = 1;
     private $event_id = null;
+    private $event_channel_name = null;
     private $game_state = 128;
     private $game_channel_name = null;
     private $game_num_locations = 0;
@@ -54,6 +55,11 @@ class Context {
         return $this->game_id;
     }
 
+    /* The running game's event ID */
+    function get_event_id() {
+        return $this->event_id;
+    }
+
     /* Get the user's internal ID */
     function get_user_id() {
         return $this->internal_id;
@@ -85,10 +91,18 @@ class Context {
             return '';
     }
 
+    /**
+     * Gets the current user's group name (if any).
+     * Returns null if no group registered.
+     */
     function get_group_name() {
         return $this->group_name;
     }
 
+    /**
+     * Gets the current user's group state (if any).
+     * Returns null if no group registered.
+     */
     function get_group_state() {
         return $this->group_state;
     }
@@ -105,7 +119,7 @@ class Context {
     }
 
     /**
-     * Sends out a message on the channel.
+     * Sends out a message on the game-specific channel.
      */
     function channel($message, $additional_values = null) {
         if(!$this->game_channel_name) {
@@ -114,6 +128,18 @@ class Context {
         }
 
         return $this->send($this->game_channel_name, $message, $additional_values, null);
+    }
+
+    /**
+     * Sends out a message on the event channel.
+     */
+    function event_channel($message, $additional_values = null) {
+        if(!$this->event_channel_name) {
+            Logger::error("Cannot send message to event channel (channel not set)", __FILE__, $this);
+            return;
+        }
+
+        return $this->send($this->event_channel_name, $message, $additional_values, null);
     }
 
     function send($receiver, $message, $additional_values = null, $additional_parameters = null) {
