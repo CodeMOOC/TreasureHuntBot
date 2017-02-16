@@ -28,5 +28,6 @@ else {
     }
     else {
         // Unknown type of update
+        Logger::info("Unknown type of update", __FILE__);
     }
 }

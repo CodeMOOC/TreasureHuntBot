@@ -43,10 +43,11 @@ Logger::debug('New update received: ' . print_r($first_update, true), __FILE__);
 $update_id = $first_update['update_id'];
 file_put_contents(dirname(__FILE__) . '/pull-last-update.txt', $update_id);
 
-if (isset($update['message'])) {
+if (isset($first_update['message'])) {
     $message = $first_update['message'];
     include 'msg_processing_core.php';
 }
 else {
     // Unknown type of update
+    Logger::info("Unknown type of update", __FILE__);
 }
