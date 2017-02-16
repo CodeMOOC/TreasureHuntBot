@@ -27,6 +27,6 @@ else {
         include 'msg_processing_core.php';
     }
     else {
-        Logger::fatal('Bad message received (no message field)', __FILE__);
+        // Unknown type of update
     }
 }

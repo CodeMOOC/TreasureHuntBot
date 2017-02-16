@@ -39,10 +39,14 @@ Logger::debug('New update received: ' . print_r($first_update, true), __FILE__);
 //     }
 // ]
 
-$update_id = $first_update['update_id'];
-$message = $first_update['message'];
-
 // Update persistent store with latest update ID received
+$update_id = $first_update['update_id'];
 file_put_contents(dirname(__FILE__) . '/pull-last-update.txt', $update_id);
 
-include 'msg_processing_core.php';
+if (isset($update['message'])) {
+    $message = $first_update['message'];
+    include 'msg_processing_core.php';
+}
+else {
+    // Unknown type of update
+}
