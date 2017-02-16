@@ -83,7 +83,7 @@ function msg_processing_admin($context) {
     /* Status */
     if(starts_with($text, '/status')) {
         $states = bot_get_group_count_by_state($context);
-        $participants_count = bot_get_participants_count($context);
+        $participants_count = bot_get_ready_participants_count($context);
 
         $context->reply(
             "*Group registration* ✍\n" .
