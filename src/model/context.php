@@ -172,8 +172,8 @@ class Context {
             return;
         }
 
-        // Update last access time
-        db_perform_action("UPDATE `identities` SET `last_access` = NOW() WHERE `id` = {$this->get_user_id()}");
+        // Update last access time and names
+        db_perform_action("UPDATE `identities` SET `first_name` = '" . db_escape($this->get_message()->get_sender_first_name()) . "', `full_name` = '" . db_escape($this->get_message()->get_sender_full_name()) . "', `last_access` = NOW() WHERE `id` = {$this->internal_id}");
 
         // Get administered games, if any
         $game = db_row_query("SELECT `game_id`, `event_id`, `state`, `telegram_channel`, `num_locations` FROM `games` WHERE `organizer_id` = {$this->get_user_id()} AND `state` != " . GAME_STATE_DEAD . " ORDER BY `registered_on` DESC LIMIT 1");
