@@ -52,12 +52,7 @@ function msg_processing_handle_group_state($context) {
 
         case STATE_GAME_LOCATION:
             // Group has an assigned location to reach
-            if($context->get_track_index() === 0) {
-                $context->reply(TEXT_GAME_LOCATION_STATE_FIRST);
-            }
-            else {
-                $context->reply(TEXT_GAME_LOCATION_STATE);
-            }
+            $context->reply(TEXT_GAME_LOCATION_STATE);
             return true;
 
         case STATE_GAME_SELFIE:
@@ -204,10 +199,18 @@ function msg_processing_handle_group_response($context) {
         case STATE_GAME_SELFIE:
             // Expecting photo taken at reached location
             if($context->get_message()->get_photo_large_id()) {
-                $file_path = getFilePath(getClient(), $context->get_message()->get_photo_large_id());
-                $photo_path = getPicture(getClient(), $file_path, $context->get_message()->get_photo_large_id(), PHOTO_SELFIE);
+                $reached_locations_count = bot_get_count_of_reached_locations($context) + 1;
 
+                $file_info = telegram_get_file_info($context->get_message()->get_photo_large_id());
+                $file_path = $file_info['file_path'];
+                $local_path = "{$context->get_game_id()}-{$context->get_user_id()}-{$reached_locations_count}.jpg";
+                telegram_download_file($file_path, "../selfies/$local_path");
+
+                // Process and forward
                 $context->reply(TEXT_GAME_SELFIE_RESPONSE_OK);
+                $context->channel_picture($file_info['file_id'], TEXT_GAME_SELFIE_FORWARD_CAPTION, array(
+                    '%INDEX%' => $reached_locations_count
+                ));
 
                 $riddle_id = bot_assign_random_riddle($context);
                 if($riddle_id === false || $riddle_id === null) {
@@ -218,17 +221,11 @@ function msg_processing_handle_group_response($context) {
                 // Send out riddle
                 $riddle_info = bot_get_riddle_info($context, $riddle_id);
                 if($riddle_info[0]) {
-                    telegram_send_photo($context->get_telegram_chat_id(), 'riddles/' . $riddle_info[0], $riddle_info[1]);
+                    $context->picture("../riddles/{$riddle_info[0]}", (string)$riddle_info[1]);
                 }
                 else {
-                    telegram_send_message($context->get_telegram_chat_id(), $riddle_info[1]);
+                    $context->reply((string)$riddle_info[1]);
                 }
-
-                // Forward selfie to channel
-                telegram_send_photo(CHAT_CHANNEL, $photo_path, hydrate(TEXT_GAME_SELFIE_FORWARD_CAPTION, array(
-                    '%GROUP%' => $context->get_group_name(),
-                    '%INDEX%' => $context->get_track_index() + 1
-                )));
             }
             else {
                 msg_processing_handle_group_state($context);
@@ -249,20 +246,16 @@ function msg_processing_handle_group_response($context) {
                 }
                 else if($result === true) {
                     // Give out secret hint of current track index
-                    $context->reply(CORRECT_ANSWER_PRIZE[$context->get_track_index()]);
+                    //$context->reply(CORRECT_ANSWER_PRIZE[$context->get_track_index()]);
 
                     $advance_result = bot_advance_track_location($context);
                     if($advance_result === false) {
                         $context->reply(TEXT_FAILURE_GENERAL);
                     }
-                    else if($advance_result === 'eot') {
-                        // All done! Set location as last one
-                        bot_update_group_state($context, STATE_GAME_LAST_LOC);
-                        $advance_result = LAST_LOCATION_ID;
-                    }
 
                     $location_info = bot_get_location_info($context, $advance_result);
 
+                    // TODO: send out image, if set! Otherwise, send location
                     telegram_send_location($context->get_telegram_chat_id(), $location_info[0], $location_info[1]);
 
                     msg_processing_handle_group_state($context);

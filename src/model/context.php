@@ -107,6 +107,13 @@ class Context {
         return $this->group_state;
     }
 
+    /**
+     * Gets the current game's number of locations to win.
+     */
+    function get_game_num_locations() {
+        return $this->game_num_locations;
+    }
+
     /*
      * *** MESSAGE SENDING ***
      */
@@ -119,6 +126,17 @@ class Context {
     }
 
     /**
+     * Replies to the current incoming message with a picture.
+     */
+    function picture($photo_id, $message, $additional_values = null) {
+        telegram_send_photo(
+            $this->get_telegram_chat_id(),
+            $photo_id,
+            $this->hydrate_text($message, $additional_values)
+        );
+    }
+
+    /**
      * Sends out a message on the game-specific channel.
      */
     function channel($message, $additional_values = null) {
@@ -128,6 +146,22 @@ class Context {
         }
 
         return $this->send($this->game_channel_name, $message, $additional_values, null);
+    }
+
+    /**
+     * Sends out a picture on the game-specific channel.
+     */
+    function channel_picture($photo_id, $message, $additional_values = null) {
+        if(!$this->game_channel_name) {
+            Logger::error("Cannot send picture to channel (channel not set)", __FILE__, $this);
+            return;
+        }
+
+        telegram_send_photo(
+            $this->game_channel_name,
+            $photo_id,
+            $this->hydrate_text($message, $additional_values)
+        );
     }
 
     /**
@@ -152,14 +186,6 @@ class Context {
             return false;
         }
 
-        $hydration_values = array(
-            '%FIRST_NAME%' => $this->get_message()->get_sender_first_name(),
-            '%FULL_NAME%' => $this->get_message()->get_sender_full_name(),
-            '%GROUP_NAME%' => $this->get_group_name()
-            /*'%WEEKDAY%' => TEXT_WEEKDAYS[intval(strftime('%w'))]*/
-        );
-
-        $hydrated = hydrate($message, unite_arrays($hydration_values, $additional_values));
         $default_parameters = array(
             'parse_mode' => 'HTML',
             'disable_web_page_preview' => true
@@ -174,9 +200,20 @@ class Context {
 
         return telegram_send_message(
             $receiver,
-            $hydrated,
+            $this->hydrate_text($message, $additional_values),
             unite_arrays($default_parameters, $additional_parameters)
         );
+    }
+
+    private function hydrate_text($message, $additional_values = null) {
+        $hydration_values = array(
+            '%FIRST_NAME%' => $this->get_message()->get_sender_first_name(),
+            '%FULL_NAME%' => $this->get_message()->get_sender_full_name(),
+            '%GROUP_NAME%' => $this->get_group_name()
+            /*'%WEEKDAY%' => TEXT_WEEKDAYS[intval(strftime('%w'))]*/
+        );
+
+        return hydrate($message, unite_arrays($hydration_values, $additional_values));
     }
 
     /*
@@ -197,6 +234,7 @@ class Context {
 
             return;
         }
+        $this->internal_id = intval($this->internal_id);
 
         // Update last access time and names
         db_perform_action("UPDATE `identities` SET `first_name` = '" . db_escape($this->get_message()->get_sender_first_name()) . "', `full_name` = '" . db_escape($this->get_message()->get_sender_full_name()) . "', `last_access` = NOW() WHERE `id` = {$this->internal_id}");

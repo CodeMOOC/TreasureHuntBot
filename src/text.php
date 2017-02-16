@@ -69,12 +69,11 @@ const TEXT_ADVANCEMENT_CONFIRMED = "📢 È giunto il momento di completare la r
 const TEXT_ADVANCEMENT_ACTIVATED = "Tutto ok! 👍\nSeguite le istruzioni.";
 
 // States and responses for the game
-const TEXT_GAME_LOCATION_STATE_FIRST = "Aspettate altre istruzioni per piacere.";
-const TEXT_GAME_LOCATION_STATE = "Raggiungete il punto assegnato e trovate il QRCode.";
+const TEXT_GAME_LOCATION_STATE = "Raggiungete il punto assegnato e trovate il QR Code!";
 
 const TEXT_GAME_SELFIE_STATE = "Mandatemi un _selfie_ del gruppo per dimostrare di esserci tutti! (Sono ammesse smorfie.)";
 const TEXT_GAME_SELFIE_RESPONSE_OK = "Bellissima foto! Ecco l’indovinello da risolvere a questa tappa.";
-const TEXT_GAME_SELFIE_FORWARD_CAPTION = "Il gruppo “%GROUP%” raggiunge la %INDEX%° tappa!";
+const TEXT_GAME_SELFIE_FORWARD_CAPTION = "Il gruppo “%GROUP_NAME%” raggiunge la %INDEX%° tappa!";
 
 const TEXT_GAME_PUZZLE_STATE = "Scrivete qui la risposta al quesito appena inviato.";
 const TEXT_GAME_PUZZLE_RESPONSE_WAIT = "Dovete aspettare altri %SECONDS% secondi prima di poter rispondere.";
