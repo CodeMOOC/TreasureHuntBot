@@ -36,15 +36,15 @@ function bot_get_location_info($context, $location_id) {
 
 /**
  * Get whether the game has been won by a group.
- * @return The winning game's name or false otherwise.
+ * Returns group ID and name, if game is won. Returns false otherwise.
  */
 function bot_get_winning_group($context) {
-    $count = db_scalar_query("SELECT `name` FROM `status` WHERE `game_id` = {$context->get_game_id()} AND `state` = " . STATE_GAME_WON);
+    $group = db_row_query("SELECT `group_id`, `name` FROM `groups` WHERE `game_id` = {$context->get_game_id()} AND `state` = " . STATE_GAME_WON);
 
-    if($count === null || $count === false)
+    if($group === null || $group === false)
         return false;
 
-    return (string)$count;
+    return $group;
 }
 
 /*** TRACKS, PUZZLES, AND ASSIGNMENTS ***/

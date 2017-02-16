@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 15, 2017 at 10:19 PM
+-- Generation Time: Feb 16, 2017 at 10:53 AM
 -- Server version: 5.5.53-0+deb8u1
 -- PHP Version: 5.6.27-0+deb8u1
 
@@ -53,9 +53,8 @@ CREATE TABLE `events` (
   `event_id` int(10) UNSIGNED NOT NULL,
   `name` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `state` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
-  `registration_code` binary(16) NOT NULL,
-  `activate_code` binary(16) NOT NULL,
-  `victory_code` binary(16) NOT NULL,
+  `registration_code` char(8) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  `victory_code` char(8) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
   `logo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `registered_on` datetime NOT NULL,
   `min_num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '10' COMMENT 'Minimum number of locations',
@@ -81,7 +80,7 @@ CREATE TABLE `games` (
   `location_lat` float DEFAULT NULL,
   `location_lng` float DEFAULT NULL,
   `num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of locations to reach in order to win',
-  `organizer_id` int(10) UNSIGNED DEFAULT NULL,
+  `organizer_id` int(10) UNSIGNED NOT NULL,
   `organizer_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
   `registered_on` datetime NOT NULL,
@@ -208,7 +207,6 @@ ALTER TABLE `assigned_riddles`
 ALTER TABLE `events`
   ADD PRIMARY KEY (`event_id`),
   ADD UNIQUE KEY `registration_code_index` (`registration_code`),
-  ADD UNIQUE KEY `activate_code_index` (`activate_code`),
   ADD UNIQUE KEY `victory_code_index` (`victory_code`),
   ADD KEY `event_organizer_index` (`organizer_id`);
 
@@ -272,7 +270,7 @@ ALTER TABLE `riddles`
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `event_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `event_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `games`
 --
@@ -282,7 +280,7 @@ ALTER TABLE `games`
 -- AUTO_INCREMENT for table `identities`
 --
 ALTER TABLE `identities`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Internal ID', AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Internal ID', AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `log`
 --
@@ -306,6 +304,12 @@ ALTER TABLE `assigned_riddles`
   ADD CONSTRAINT `assriddles_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `assriddles_riddle_constraint` FOREIGN KEY (`event_id`,`riddle_id`) REFERENCES `riddles` (`event_id`, `riddle_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `assriddle_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `events`
+--
+ALTER TABLE `events`
+  ADD CONSTRAINT `events_identity_constraint` FOREIGN KEY (`organizer_id`) REFERENCES `identities` (`id`);
 
 --
 -- Constraints for table `games`

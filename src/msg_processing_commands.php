@@ -7,6 +7,9 @@
  * Default command message processing.
  */
 
+/**
+ * Handle registration to a new game.
+ */
 function handle_registration_code($context, $code) {
     $game_id = db_scalar_query("SELECT `game_id` FROM `games` WHERE `registration_code` = '" . db_escape($code) . "' LIMIT 1");
 
@@ -25,6 +28,52 @@ function handle_registration_code($context, $code) {
         }
         else {
             $context->reply(TEXT_FAILURE_GENERAL);
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Handle victory codes for an event.
+ */
+function handle_victory_code($context, $code) {
+    if($context->get_event_id() == null) {
+        return false;
+    }
+
+    $victory_code = db_scalar_query("SELECT `victory_code` FROM `events` WHERE `event_id` = {$context->get_event_id()} LIMIT 1");
+    if(!$victory_code) {
+        Logger::error("Event #{$context->get_event_id()} has no victory code", __FILE__, $context);
+        return false;
+    }
+
+    if(strcmp($victory_code, $code) == 0) {
+        Logger::debug("Prize code scanned", __FILE__, $context);
+
+        if($context->get_group_state() >= STATE_GAME_LAST_LOC) {
+            // Check for previous winners
+            $winning_group = bot_get_winning_group($context);
+            if($winning_group !== false) {
+                Logger::info("Group has reached the prize but game is already won", __FILE__, $context);
+
+                $context->reply(TEXT_CMD_START_PRIZE_TOOLATE, array(
+                    '%WINNING_GROUP%' => $winning_group[1]
+                ));
+            }
+            else {
+                Logger::info("Group has reached the prize and won", __FILE__, $context);
+
+                $context->set_state(STATE_GAME_WON);
+                $context->channel(TEXT_GAME_WON_CHANNEL);
+
+                msg_processing_handle_group_state($context);
+            }
+        }
+        else {
+            $context->reply(TEXT_CMD_START_PRIZE_INVALID);
         }
 
         return true;
@@ -68,6 +117,10 @@ function msg_processing_commands($context) {
             Logger::debug("Treasure hunt code: '{$payload}'", __FILE__, $context);
 
             if(handle_registration_code($context, $payload)) {
+                return true;
+            }
+
+            if(handle_victory_code($context, $payload)) {
                 return true;
             }
 

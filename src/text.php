@@ -30,7 +30,7 @@ const TEXT_CMD_START_NEW = "Ciao, %FULL_NAME%! Benvenuto alla caccia al tesoro *
 const TEXT_CMD_START_REGISTERED = "Bentornato, %FULL_NAME%! Questo è il bot dedicato alla caccia al tesoro *Urbino Code Hunting Game*.";
 
 const TEXT_CMD_START_PRIZE_INVALID = "Hmmm, sembra che abbiate trovato il premio, ma che _non_ dovevate ancora trovarlo! 🤔";
-const TEXT_CMD_START_PRIZE_TOOLATE = "Mi dispiace, ma il gruppo “%GROUP%” ha raggiunto il premio prima di voi! 😱";
+const TEXT_CMD_START_PRIZE_TOOLATE = "Mi dispiace, ma il gruppo “%WINNING_GROUP%” ha raggiunto il premio prima di voi! 😱";
 
 const TEXT_CMD_START_LOCATION_REACHED = "Bravi, siete nel posto giusto!";
 const TEXT_CMD_START_LOCATION_UNEXPECTED = "Ok! Ma ora non mi serve sapere dove sei! Segui le istruzioni per piacere.";

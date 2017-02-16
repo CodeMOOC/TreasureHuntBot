@@ -44,6 +44,3 @@ const GAME_STATE_LOCATION_OK        = 11; // accepting a location as completed
 const GAME_STATE_READY              = 20; // all info collected
 const GAME_STATE_ACTIVE             = 128; // ready to accept users, play, etc.
 const GAME_STATE_DEAD               = 255; // game is over
-
-const PHOTO_AVATAR          = 100;
-const PHOTO_SELFIE          = 101;
