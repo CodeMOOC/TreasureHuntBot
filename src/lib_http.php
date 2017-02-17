@@ -95,7 +95,7 @@ function prepare_curl_download_request($url, $output_path) {
         return false;
     }
 
-    Logger::info("HTTP download request to {$url}", __FILE__);
+    Logger::debug("HTTP download request to {$url}", __FILE__);
 
     // Prepare cURL handle
     $handle = curl_init($url);

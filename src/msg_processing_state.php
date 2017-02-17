@@ -168,7 +168,7 @@ function msg_processing_handle_group_response($context) {
 
                 $groups_count = bot_get_ready_groups($context);
 
-                Logger::info("Group '{$context->get_group_name()}' is ready for the game ({$groups_count}th)", __FILE__, $context, true);
+                Logger::info("Group '{$context->get_group_name()}' is ready for the game ({$groups_count}th)", __FILE__, $context);
 
                 $context->reply(TEXT_REGISTRATION_NUMBER_RESPONSE_OK, array(
                     '%GROUP_COUNT%' => $groups_count
