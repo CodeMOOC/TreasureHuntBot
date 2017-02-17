@@ -15,23 +15,23 @@ class Logger {
     const SEVERITY_ERROR = 255;
 
     public static function debug($message, $tag = '', $context = null) {
-        self::common(self::SEVERITY_DEBUG, $message, $tag);
+        self::common(self::SEVERITY_DEBUG, $message, $tag, $context);
     }
 
     public static function info($message, $tag = '', $context = null) {
-        self::common(self::SEVERITY_INFO, $message, $tag);
+        self::common(self::SEVERITY_INFO, $message, $tag, $context);
     }
 
     public static function warning($message, $tag = '', $context = null) {
-        self::common(self::SEVERITY_WARNING, $message, $tag);
+        self::common(self::SEVERITY_WARNING, $message, $tag, $context);
     }
 
     public static function error($message, $tag = '', $context = null) {
-        self::common(self::SEVERITY_ERROR, $message, $tag);
+        self::common(self::SEVERITY_ERROR, $message, $tag, $context);
     }
 
     public static function fatal($message, $tag = '', $context = null) {
-        self::error($message, $tag);
+        self::error($message, $tag, $context);
 
         die();
     }
