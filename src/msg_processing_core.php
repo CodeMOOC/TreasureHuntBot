@@ -33,6 +33,11 @@ else if($in->is_private()) {
             }
         }
 
+        if(DEACTIVATED) {
+            $context->reply(TEXT_DEACTIVATED);
+            return;
+        }
+
         // Base commands
         if(msg_processing_commands($context)) {
             return;

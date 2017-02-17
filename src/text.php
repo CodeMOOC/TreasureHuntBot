@@ -90,3 +90,5 @@ const TEXT_GAME_WON_CHANNEL = "<b>Il gruppo “%GROUP_NAME%” ha raggiunto la t
 const TEXT_FALLBACK_RESPONSE = "Scusami, non ho capito cosa intendi.";
 const TEXT_UNREQUESTED_PHOTO = "Grazie per la foto! Ma inviami i tuoi <i>selfie</i> solo quando richiesto espressamente dal gioco. 😉";
 const TEXT_UNSUPPORTED_OTHER = "Piano Piano! Non sono così intelligente ancora!\nPurtroppo non gestisco questo tipo di messaggi. Inviami solo messaggi testuali o foto per piacere.";
+
+const TEXT_DEACTIVATED = "Al momento non ci sono cacce al tesoro attive. Presto torneremo con altre novità, nel frattempo <a href=\"http://informatica.uniurb.it/una-caccia-al-tesoro-guidata-da-un-bot/\">leggi la storia di questo bot</a>.\n<i>A presto!</i>\n\n🇬🇧 No treasure hunt game running at the moment. We’ll be back soon, in the meanti me you can <a href=\"http://informatica.uniurb.it/en/treasurehuntbot/\">read the story of this bot</a>.\n<i>Stay tuned!</i>";
