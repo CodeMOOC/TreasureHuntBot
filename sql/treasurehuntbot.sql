@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 16, 2017 at 10:53 AM
+-- Generation Time: Feb 28, 2017 at 07:15 PM
 -- Server version: 5.5.53-0+deb8u1
 -- PHP Version: 5.6.27-0+deb8u1
 
@@ -79,7 +79,6 @@ CREATE TABLE `games` (
   `location_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `location_lat` float DEFAULT NULL,
   `location_lng` float DEFAULT NULL,
-  `num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of locations to reach in order to win',
   `organizer_id` int(10) UNSIGNED NOT NULL,
   `organizer_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -88,6 +87,19 @@ CREATE TABLE `games` (
   `tmp_location_lng` float DEFAULT NULL,
   `tmp_location_image_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `tmp_location_description` text COLLATE utf8_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `game_location_clusters`
+--
+
+CREATE TABLE `game_location_clusters` (
+  `game_id` int(10) UNSIGNED NOT NULL,
+  `cluster_id` tinyint(3) UNSIGNED NOT NULL,
+  `num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of locations to reach in this cluster',
+  `description` text COLLATE utf8_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -143,6 +155,7 @@ CREATE TABLE `identities` (
 CREATE TABLE `locations` (
   `game_id` int(10) UNSIGNED NOT NULL,
   `location_id` int(10) UNSIGNED NOT NULL,
+  `cluster_id` tinyint(3) UNSIGNED NOT NULL,
   `code` char(8) CHARACTER SET ascii COLLATE ascii_bin NOT NULL COMMENT 'Unique identifying code',
   `internal_note` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `lat` float NOT NULL,
@@ -220,6 +233,12 @@ ALTER TABLE `games`
   ADD KEY `game_organizer_index` (`organizer_id`);
 
 --
+-- Indexes for table `game_location_clusters`
+--
+ALTER TABLE `game_location_clusters`
+  ADD PRIMARY KEY (`game_id`,`cluster_id`);
+
+--
 -- Indexes for table `groups`
 --
 ALTER TABLE `groups`
@@ -244,7 +263,9 @@ ALTER TABLE `identities`
 --
 ALTER TABLE `locations`
   ADD PRIMARY KEY (`game_id`,`location_id`),
-  ADD UNIQUE KEY `location_code_index` (`game_id`,`code`) USING BTREE;
+  ADD UNIQUE KEY `location_code_index` (`game_id`,`code`) USING BTREE,
+  ADD KEY `cluster_id` (`cluster_id`),
+  ADD KEY `location_cluster_constraint` (`game_id`,`cluster_id`);
 
 --
 -- Indexes for table `log`
@@ -270,17 +291,17 @@ ALTER TABLE `riddles`
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `event_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `event_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `games`
 --
 ALTER TABLE `games`
-  MODIFY `game_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `game_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `identities`
 --
 ALTER TABLE `identities`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Internal ID', AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Internal ID';
 --
 -- AUTO_INCREMENT for table `log`
 --
@@ -318,6 +339,12 @@ ALTER TABLE `games`
   ADD CONSTRAINT `game_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `game_location_clusters`
+--
+ALTER TABLE `game_location_clusters`
+  ADD CONSTRAINT `game_location_clusters_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `groups`
 --
 ALTER TABLE `groups`
@@ -333,6 +360,7 @@ ALTER TABLE `hints`
 -- Constraints for table `locations`
 --
 ALTER TABLE `locations`
+  ADD CONSTRAINT `location_cluster_constraint` FOREIGN KEY (`game_id`,`cluster_id`) REFERENCES `game_location_clusters` (`game_id`, `cluster_id`),
   ADD CONSTRAINT `location_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

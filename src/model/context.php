@@ -22,7 +22,9 @@ class Context {
     private $event_channel_name = null;
     private $game_state = 128;
     private $game_channel_name = null;
-    private $game_num_locations = 0;
+
+    // Rows of cluster_id, num_locations, and description
+    private $game_location_clusters = null;
 
     private $group_name = null;
     private $group_state = null;
@@ -111,7 +113,41 @@ class Context {
      * Gets the current game's number of locations to win.
      */
     function get_game_num_locations() {
-        return $this->game_num_locations;
+        if($this->game_location_clusters == null) {
+            return 0;
+        }
+
+        $acc = 0;
+        foreach($this->game_location_clusters as $cluster) {
+            $acc += intval($cluster[1]);
+        }
+
+        return $acc;
+    }
+
+    /**
+     * Gets the cluster ID for the next location.
+     * @param $num_reached_locations Number of reached locations.
+     * @return Cluster ID of the next location to fetch or null if no location can/must be reached.
+     */
+    function get_next_location_cluster_id($num_reached_locations = 0) {
+        if($this->game_location_clusters == null) {
+            Logger::warning("Get next location cluster without having clusters", __FILE__, $this);
+            return null;
+        }
+        if(count($this->game_location_clusters) == 0) {
+            Logger::error("No clusters defined for game #{$this->get_game_id()}", __FILE__, $this);
+            return null;
+        }
+
+        foreach($this->game_location_clusters as $cluster) {
+            if($num_reached_locations <= 0) {
+                Logger:debug("Picking cluster #{$cluster[0]} ({$cluster[2]}) for next location", __FILE__, $this);
+                return intval($cluster[0]);
+            }
+
+            $num_reached_locations -= intval($cluster[1]);
+        }
     }
 
     /*
@@ -240,37 +276,39 @@ class Context {
         db_perform_action("UPDATE `identities` SET `first_name` = '" . db_escape($this->get_message()->get_sender_first_name()) . "', `full_name` = '" . db_escape($this->get_message()->get_sender_full_name()) . "', `last_access` = NOW() WHERE `id` = {$this->internal_id}");
 
         // Get administered games, if any
-        $game = db_row_query("SELECT `game_id`, `event_id`, `state`, `telegram_channel`, `num_locations` FROM `games` WHERE `organizer_id` = {$this->get_user_id()} AND `state` != " . GAME_STATE_DEAD . " ORDER BY `registered_on` DESC LIMIT 1");
+        $game = db_row_query("SELECT `game_id`, `event_id`, `state`, `telegram_channel` FROM `games` WHERE `organizer_id` = {$this->get_user_id()} AND `state` != " . GAME_STATE_DEAD . " ORDER BY `registered_on` DESC LIMIT 1");
         if($game !== null) {
             $this->is_game_admin = true;
             $this->game_id = intval($game[0]);
             $this->event_id = ($game[1] != null) ? intval($game[1]) : null;
             $this->game_state = intval($game[2]);
             $this->game_channel_name = $game[3];
-            $this->game_num_locations = intval($game[4]);
 
             Logger::debug("User is administering game #{$this->game_id} (state {$this->game_state}) in event {$this->event_id}", __FILE__, $this);
+        }
+        else {
+            // Get played games, if any
+            $group = db_row_query("SELECT `groups`.`game_id`, `groups`.`name`, `groups`.`state`, `games`.`event_id`, `games`.`state`, `games`.`telegram_channel` FROM `groups` LEFT OUTER JOIN `games` ON `groups`.`game_id` = `games`.`game_id` WHERE `group_id` = {$this->get_user_id()} ORDER BY `groups`.`registered_on` DESC LIMIT 1");
+            if($group !== null) {
+                $this->game_id = intval($group[0]);
+                $this->event_id = ($group[3] != null) ? intval($group[3]) : null;
+                $this->game_state = intval($group[4]);
+                $this->group_name = ($group[1] != null) ? $group[1] : TEXT_UNNAMED_GROUP;
+                $this->group_state = intval($group[2]);
+                $this->game_channel_name = $group[5];
 
-            return;
+                Logger::debug("User is playing game #{$this->game_id} (state {$this->game_state}) in event {$this->event_id}, with group {$this->group_name} (state {$this->group_state})", __FILE__, $this);
+            }
         }
 
-        // Get played games, if any
-        $group = db_row_query("SELECT `groups`.`game_id`, `groups`.`name`, `groups`.`state`, `games`.`event_id`, `games`.`state`, `games`.`telegram_channel`, `games`.`num_locations` FROM `groups` LEFT OUTER JOIN `games` ON `groups`.`game_id` = `games`.`game_id` WHERE `group_id` = {$this->get_user_id()} ORDER BY `groups`.`registered_on` DESC LIMIT 1");
-        if($group !== null) {
-            $this->game_id = intval($group[0]);
-            $this->event_id = ($group[3] != null) ? intval($group[3]) : null;
-            $this->game_state = intval($group[4]);
-            $this->group_name = ($group[1] != null) ? $group[1] : TEXT_UNNAMED_GROUP;
-            $this->group_state = intval($group[2]);
-            $this->game_channel_name = $group[5];
-            $this->game_num_locations = intval($group[6]);
-
-            Logger::debug("User is playing game #{$this->game_id} (state {$this->game_state}) in event {$this->event_id}, with group {$this->group_name} (state {$this->group_state})", __FILE__, $this);
-
-            return;
+        if($this->game_id != null) {
+            // Load location clusters for current game
+            $this->game_location_clusters = db_table_query("SELECT `cluster_id`, `num_locations`, `description` FROM `game_location_clusters` WHERE `game_id` = {$this->game_id} ORDER BY `cluster_id` ASC");
+            Logger::debug('Game has ' . count($this->game_location_clusters) . ' location clusters', __FILE__, $this);
         }
-
-        Logger::debug("User is not administering or playing any game", __FILE__, $this);
+        else {
+            Logger::debug("User is not administering or playing any game", __FILE__, $this);
+        }
     }
 
     /**
