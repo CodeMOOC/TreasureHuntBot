@@ -140,12 +140,15 @@ class Context {
             return null;
         }
 
+        Logger::debug("Seeking next location for {$num_reached_locations} reached locations", __FILE__, $this);
+
         foreach($this->game_location_clusters as $cluster) {
-            if($num_reached_locations <= 0) {
-                Logger:debug("Picking cluster #{$cluster[0]} ({$cluster[2]}) for next location", __FILE__, $this);
+            if($num_reached_locations < $cluster[1]) {
+                Logger::debug("Picking cluster #{$cluster[0]} ({$cluster[2]}) for next location", __FILE__, $this);
                 return intval($cluster[0]);
             }
 
+            Logger::debug("Skipping cluster #{$cluster[0]} (with {$cluster[1]} locations)", __FILE__, $this);
             $num_reached_locations -= intval($cluster[1]);
         }
     }

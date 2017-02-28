@@ -83,6 +83,7 @@ function bot_assign_random_riddle($context, $user_id = null) {
         return false;
     }
     else if($riddle_id === null) {
+        Logger::error("No unassigned riddle found for user", __FILE__, $context);
         return null;
     }
 
@@ -108,10 +109,11 @@ function bot_advance_track_location($context, $group_id = null) {
     }
     $target_locations = $context->get_game_num_locations();
     $count_locations = bot_get_count_of_reached_locations($context);
+    $next_cluster_id = $context->get_next_location_cluster_id($count_locations);
 
-    Logger::info("Progressing group to next location (reached {$count_locations}/{$target_locations} locations)", __FILE__, $context);
+    Logger::info("Progressing group to next location (reached {$count_locations}/{$target_locations} locations) in cluster #{$next_cluster_id}", __FILE__, $context);
 
-    if($count_locations >= $target_locations - 1) {
+    if($next_cluster_id == null) {
         // This is the end, my only friend
         Logger::info("Reached end of track", __FILE__, $context);
 
@@ -120,7 +122,7 @@ function bot_advance_track_location($context, $group_id = null) {
         return bot_get_last_location_id($context);
     }
     else {
-        $next_location_id = db_scalar_query("SELECT `location_id` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `location_id` NOT IN (SELECT `location_id` FROM `assigned_locations` WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id}) ORDER BY RAND() LIMIT 1");
+        $next_location_id = db_scalar_query("SELECT `location_id` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `cluster_id` = {$next_cluster_id} AND `location_id` NOT IN (SELECT `location_id` FROM `assigned_locations` WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id}) ORDER BY RAND() LIMIT 1");
 
         if(!$next_location_id) {
             Logger::error("Failed to find next location", __FILE__, $context);
