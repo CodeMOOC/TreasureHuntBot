@@ -179,7 +179,18 @@ function bot_get_expected_location_code($context) {
  * Group reaches location through a code.
  */
 function bot_reach_location($context, $code) {
+    $matches = array();
+    if(preg_match('/^loc-([0-9]*)-([0-9]*)-(.{8})$/', $code, $matches) !== 1) {
+        Logger::warning("Code {$code} does not match a location code", __FILE__, $context);
+        return false;
+    }
+    if($matches[1] != $context->get_game_id()) {
+        Logger::warning("Location code does not match currently played event", __FILE__, $context);
+        return false;
+    }
+
     $expected_payload = bot_get_expected_location_code($context);
+    Logger::debug("Expecting payload {$expected_payload}", __FILE__, $context);
 
     if($expected_payload === false) {
         return false;
@@ -187,7 +198,7 @@ function bot_reach_location($context, $code) {
     else if($expected_payload === null) {
         return 'unexpected';
     }
-    else if($code !== $expected_payload) {
+    else if($matches[3] !== $expected_payload) {
         return 'wrong';
     }
 
