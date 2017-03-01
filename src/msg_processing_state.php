@@ -248,12 +248,12 @@ function msg_processing_handle_group_response($context) {
                     // Give out secret hint of current track index
                     //$context->reply(CORRECT_ANSWER_PRIZE[$context->get_track_index()]);
 
-                    $advance_result = bot_advance_track_location($context);
-                    if($advance_result === false) {
+                    $target_location_id = bot_advance_track_location($context);
+                    if($target_location_id === false) {
                         $context->reply(TEXT_FAILURE_GENERAL);
                     }
 
-                    $location_info = bot_get_location_info($context, $advance_result);
+                    $location_info = bot_get_location_info($context, $target_location_id);
 
                     // TODO: send out image, if set! Otherwise, send location
                     telegram_send_location($context->get_telegram_chat_id(), $location_info[0], $location_info[1]);

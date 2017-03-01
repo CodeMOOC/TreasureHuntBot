@@ -111,7 +111,7 @@ function bot_advance_track_location($context, $group_id = null) {
     $count_locations = bot_get_count_of_reached_locations($context);
     $next_cluster_id = $context->get_next_location_cluster_id($count_locations);
 
-    Logger::info("Progressing group to next location (reached {$count_locations}/{$target_locations} locations) in cluster #{$next_cluster_id}", __FILE__, $context);
+    Logger::info("Attempting to progress group to next location (reached {$count_locations}/{$target_locations} locations)", __FILE__, $context);
 
     if($next_cluster_id == null) {
         // This is the end, my only friend
@@ -133,7 +133,7 @@ function bot_advance_track_location($context, $group_id = null) {
             return false;
         }
 
-        Logger::info("Assigned location #{$next_location_id}", __FILE__, $context);
+        Logger::info("Assigned location #{$next_location_id} in cluster #{$next_cluster_id}", __FILE__, $context);
 
         $context->set_state(STATE_GAME_LOCATION);
 

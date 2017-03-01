@@ -136,7 +136,7 @@ class Context {
             return null;
         }
         if(count($this->game_location_clusters) == 0) {
-            Logger::error("No clusters defined for game #{$this->get_game_id()}", __FILE__, $this);
+            Logger::error("No clusters defined", __FILE__, $this);
             return null;
         }
 
