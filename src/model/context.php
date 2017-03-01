@@ -110,7 +110,7 @@ class Context {
     }
 
     /**
-     * Gets the current game's number of locations to win.
+     * Gets the current game's number of required locations to win.
      */
     function get_game_num_locations() {
         if($this->game_location_clusters == null) {
@@ -307,7 +307,7 @@ class Context {
         if($this->game_id != null) {
             // Load location clusters for current game
             $this->game_location_clusters = db_table_query("SELECT `cluster_id`, `num_locations`, `description` FROM `game_location_clusters` WHERE `game_id` = {$this->game_id} ORDER BY `cluster_id` ASC");
-            Logger::debug('Game has ' . count($this->game_location_clusters) . ' location clusters', __FILE__, $this);
+            Logger::debug("Game #{$this->game_id} has " . count($this->game_location_clusters) . ' location clusters', __FILE__, $this);
         }
         else {
             Logger::debug("User is not administering or playing any game", __FILE__, $this);

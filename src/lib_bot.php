@@ -237,10 +237,14 @@ function bot_give_solution($context, $solution) {
     $correct_answer = $riddle_info[1];
     $riddle_id = intval($riddle_info[2]);
     if($correct_answer != $solution) {
+        Logger::debug("Wrong answer ('{$correct_answer}' expected)", __FILE__, $context);
+
         db_perform_action("UPDATE `assigned_riddles` SET `last_answer_on` = NOW() WHERE `event_id` = {$context->get_event_id()} AND `riddle_id` = {$riddle_id} AND `group_id` = {$context->get_user_id()}");
 
         return 'wrong';
     }
+
+    Logger::debug('Correct answer', __FILE__, $context);
 
     if(db_perform_action("UPDATE `assigned_riddles` SET `last_answer_on` = NOW(), `solved_on` = NOW() WHERE `event_id` = {$context->get_event_id()} AND `riddle_id` = {$riddle_id} AND `group_id` = {$context->get_user_id()}") === false) {
         return false;

@@ -26,7 +26,7 @@ function msg_processing_handle_group_state($context) {
 
             telegram_send_photo(
                 $context->get_telegram_chat_id(),
-                realpath(dirname(__FILE__) . '/../images/quiz-captcha.png'),
+                '../images/quiz-captcha.png',
                 TEXT_REGISTRATION_NEW_STATE_CAPTION
             );
             return true;
