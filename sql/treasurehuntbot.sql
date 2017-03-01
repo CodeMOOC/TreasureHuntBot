@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 28, 2017 at 07:36 PM
+-- Generation Time: Mar 01, 2017 at 06:56 PM
 -- Server version: 5.5.53-0+deb8u1
 -- PHP Version: 5.6.27-0+deb8u1
 
@@ -82,6 +82,7 @@ CREATE TABLE `games` (
   `organizer_id` int(10) UNSIGNED NOT NULL,
   `organizer_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `telegram_channel_censor_photo` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Set if pictures should not be sent on the channel',
   `registered_on` datetime NOT NULL,
   `tmp_location_lat` float DEFAULT NULL,
   `tmp_location_lng` float DEFAULT NULL,
@@ -336,8 +337,8 @@ ALTER TABLE `events`
 -- Constraints for table `games`
 --
 ALTER TABLE `games`
-  ADD CONSTRAINT `game_organizer_constraint` FOREIGN KEY (`organizer_id`) REFERENCES `identities` (`id`),
-  ADD CONSTRAINT `game_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `game_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `game_organizer_constraint` FOREIGN KEY (`organizer_id`) REFERENCES `identities` (`id`);
 
 --
 -- Constraints for table `game_location_clusters`

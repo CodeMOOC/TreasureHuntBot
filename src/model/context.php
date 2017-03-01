@@ -22,6 +22,7 @@ class Context {
     private $event_channel_name = null;
     private $game_state = 128;
     private $game_channel_name = null;
+    private $game_channel_censor = false;
 
     // Rows of cluster_id, num_locations, and description
     private $game_location_clusters = null;
@@ -225,11 +226,17 @@ class Context {
             return;
         }
 
-        telegram_send_photo(
-            $this->game_channel_name,
-            $photo_id,
-            $this->hydrate_text($message, $additional_values)
-        );
+        if($this->game_channel_censor) {
+            Logger::debug('Photo not sent to channel because of censorship settings', __FILE__, $this);
+            $this->channel($message, $additional_values);
+        }
+        else {
+            telegram_send_photo(
+                $this->game_channel_name,
+                $photo_id,
+                $this->hydrate_text($message, $additional_values)
+            );
+        }
     }
 
     /**
@@ -308,19 +315,20 @@ class Context {
         db_perform_action("UPDATE `identities` SET `first_name` = '" . db_escape($this->get_message()->get_sender_first_name()) . "', `full_name` = '" . db_escape($this->get_message()->get_sender_full_name()) . "', `last_access` = NOW() WHERE `id` = {$this->internal_id}");
 
         // Get administered games, if any
-        $game = db_row_query("SELECT `game_id`, `event_id`, `state`, `telegram_channel` FROM `games` WHERE `organizer_id` = {$this->get_user_id()} AND `state` != " . GAME_STATE_DEAD . " ORDER BY `registered_on` DESC LIMIT 1");
+        $game = db_row_query("SELECT `game_id`, `event_id`, `state`, `telegram_channel`, `telegram_channel_censor_photo` FROM `games` WHERE `organizer_id` = {$this->get_user_id()} AND `state` != " . GAME_STATE_DEAD . " ORDER BY `registered_on` DESC LIMIT 1");
         if($game !== null) {
             $this->is_game_admin = true;
             $this->game_id = intval($game[0]);
             $this->event_id = ($game[1] != null) ? intval($game[1]) : null;
             $this->game_state = intval($game[2]);
             $this->game_channel_name = $game[3];
+            $this->game_channel_censor = (bool)$game[4];
 
             Logger::debug("User is administering game #{$this->game_id} (state {$this->game_state}) in event {$this->event_id}", __FILE__, $this);
         }
         else {
             // Get played games, if any
-            $group = db_row_query("SELECT `groups`.`game_id`, `groups`.`name`, `groups`.`state`, `games`.`event_id`, `games`.`state`, `games`.`telegram_channel` FROM `groups` LEFT OUTER JOIN `games` ON `groups`.`game_id` = `games`.`game_id` WHERE `group_id` = {$this->get_user_id()} ORDER BY `groups`.`registered_on` DESC LIMIT 1");
+            $group = db_row_query("SELECT `groups`.`game_id`, `groups`.`name`, `groups`.`state`, `games`.`event_id`, `games`.`state`, `games`.`telegram_channel`, `games`.`telegram_channel_censor_photo` FROM `groups` LEFT OUTER JOIN `games` ON `groups`.`game_id` = `games`.`game_id` WHERE `group_id` = {$this->get_user_id()} ORDER BY `groups`.`registered_on` DESC LIMIT 1");
             if($group !== null) {
                 $this->game_id = intval($group[0]);
                 $this->event_id = ($group[3] != null) ? intval($group[3]) : null;
@@ -328,6 +336,7 @@ class Context {
                 $this->group_name = ($group[1] != null) ? $group[1] : TEXT_UNNAMED_GROUP;
                 $this->group_state = intval($group[2]);
                 $this->game_channel_name = $group[5];
+                $this->game_channel_censor = (bool)$group[6];
 
                 Logger::debug("User is playing game #{$this->game_id} (state {$this->game_state}) in event {$this->event_id}, with group {$this->group_name} (state {$this->group_state})", __FILE__, $this);
             }
