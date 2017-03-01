@@ -160,7 +160,7 @@ function bot_get_expected_location_code($context) {
 
     if($state === STATE_GAME_LOCATION) {
         // General case, directed to a location
-        return db_scalar_query("SELECT l.`code` FROM `assigned_locations` AS ass LEFT JOIN `locations` AS l ON ass.`location_id` = l.`location_id` WHERE ass.`game_id` = {$context->get_game_id()} AND ass.`group_id` = {$context->get_user_id()} AND ass.`reached_on` IS NULL LIMIT 1");
+        return db_scalar_query("SELECT l.`code` FROM `assigned_locations` AS ass LEFT JOIN `locations` AS l ON ass.`location_id` = l.`location_id` WHERE ass.`game_id` = {$context->get_game_id()} AND ass.`group_id` = {$context->get_user_id()} AND ass.`reached_on` IS NULL ORDER BY ass.`assigned_on` DESC LIMIT 1");
     }
     else if($state === STATE_REG_READY) {
         // Directed to first location
