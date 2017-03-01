@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 01, 2017 at 06:56 PM
+-- Generation Time: Mar 01, 2017 at 08:09 PM
 -- Server version: 5.5.53-0+deb8u1
 -- PHP Version: 5.6.27-0+deb8u1
 
@@ -316,14 +316,14 @@ ALTER TABLE `log`
 -- Constraints for table `assigned_locations`
 --
 ALTER TABLE `assigned_locations`
-  ADD CONSTRAINT `assloc_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`),
+  ADD CONSTRAINT `assloc_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `assloc_location_constraint` FOREIGN KEY (`game_id`,`location_id`) REFERENCES `locations` (`game_id`, `location_id`);
 
 --
 -- Constraints for table `assigned_riddles`
 --
 ALTER TABLE `assigned_riddles`
-  ADD CONSTRAINT `assriddles_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `assriddles_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `assriddles_riddle_constraint` FOREIGN KEY (`event_id`,`riddle_id`) REFERENCES `riddles` (`event_id`, `riddle_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `assriddle_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE;
 
