@@ -153,6 +153,35 @@ class Context {
         }
     }
 
+    /**
+     * Gets whether the next location starts a cluster (i.e., is the first location
+     * inside a new cluster for the current user).
+     * @param $num_reached_locations Number of reached locations.
+     * @return True if the next location starts a cluster.
+     */
+    function next_location_starts_cluster($num_reached_locations = 0) {
+        if($this->game_location_clusters == null) {
+            Logger::warning("Get next location cluster without having clusters", __FILE__, $this);
+            return false;
+        }
+        if(count($this->game_location_clusters) == 0) {
+            Logger::error("No clusters defined", __FILE__, $this);
+            return false;
+        }
+
+        foreach($this->game_location_clusters as $cluster) {
+            if($num_reached_locations == 0) {
+                Logger::debug("Cluster #{$cluster[0]} starts a new cluster", __FILE__, $this);
+                return true;
+            }
+
+            $num_reached_locations -= intval($cluster[1]);
+        }
+
+        Logger::debug("Cluster #{$cluster[0]} does not start a new cluster", __FILE__, $this);
+        return false;
+    }
+
     /*
      * *** MESSAGE SENDING ***
      */

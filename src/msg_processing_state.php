@@ -248,15 +248,46 @@ function msg_processing_handle_group_response($context) {
                     // Give out secret hint of current track index
                     //$context->reply(CORRECT_ANSWER_PRIZE[$context->get_track_index()]);
 
-                    $target_location_id = bot_advance_track_location($context);
-                    if($target_location_id === false) {
+                    $advance_result = bot_advance_track_location($context);
+                    if($advance_result === false) {
                         $context->reply(TEXT_FAILURE_GENERAL);
                     }
 
+                    // Prepare target location information
+                    $target_location_id = $advance_result['location_id'];
                     $location_info = bot_get_location_info($context, $target_location_id);
 
-                    // TODO: send out image, if set! Otherwise, send location
-                    telegram_send_location($context->get_telegram_chat_id(), $location_info[0], $location_info[1]);
+                    $send_location = false;
+                    if($context->next_location_starts_cluster($advance_result['reached_locations'])) {
+                        // Starting a new cluster, force next location to be shown
+                        $send_location = true;
+
+                        // TODO: add other cluster information here
+                    }
+                    if(!$location_info[2] || !$location_info[3]) {
+                        $send_location = true;
+                    }
+
+                    // Send out target location information
+                    if($send_location) {
+                        // Exact location
+                        telegram_send_location(
+                            $context->get_telegram_chat_id(),
+                            $location_info[0],
+                            $location_info[1]
+                        );
+                    }
+                    if($location_info[3]) {
+                        // Image with optional caption
+                        $context->picture(
+                            '../locations/' . $location_info[3],
+                            ($location_info[2]) ? $location_info[2] : null
+                        );
+                    }
+                    else if($location_info[2]) {
+                        // Textual riddle
+                        $context->reply($location_info[2]);
+                    }
 
                     msg_processing_handle_group_state($context);
                 }

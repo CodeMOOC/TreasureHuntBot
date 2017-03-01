@@ -100,8 +100,8 @@ function bot_assign_random_riddle($context, $user_id = null) {
 
 /**
  * Assigns the next location to a group and updates group state.
- * @return Newly assigned location ID on success,
- *         false on failure.
+ * @return Associative array ('location_id', 'cluster_id', 'reached_locations', 'end_of_track')
+ *         or false on failure.
  */
 function bot_advance_track_location($context, $group_id = null) {
     if($group_id == null) {
@@ -119,7 +119,11 @@ function bot_advance_track_location($context, $group_id = null) {
 
         $context->set_state(STATE_GAME_LAST_LOC);
 
-        return bot_get_last_location_id($context);
+        return array(
+            'location_id' => bot_get_last_location_id($context),
+            'end_of_track' => true,
+            'reached_locations' => $count_locations
+        );
     }
     else {
         $next_location_id = db_scalar_query("SELECT `location_id` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `cluster_id` = {$next_cluster_id} AND `location_id` NOT IN (SELECT `location_id` FROM `assigned_locations` WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id}) ORDER BY RAND() LIMIT 1");
@@ -137,7 +141,12 @@ function bot_advance_track_location($context, $group_id = null) {
 
         $context->set_state(STATE_GAME_LOCATION);
 
-        return $next_location_id;
+        return array(
+            'location_id' => $next_location_id,
+            'cluster_id' => $next_cluster_id,
+            'end_of_track' => false,
+            'reached_locations' => $count_locations
+        );
     }
 }
 
