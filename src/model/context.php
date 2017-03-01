@@ -287,6 +287,9 @@ class Context {
             '%GROUP_NAME%' => $this->get_group_name()
             /*'%WEEKDAY%' => TEXT_WEEKDAYS[intval(strftime('%w'))]*/
         );
+        if($this->game_channel_name) {
+            $hydration_values['%GAME_CHANNEL%'] = $this->game_channel_name;
+        }
 
         return hydrate($message, unite_arrays($hydration_values, $additional_values));
     }

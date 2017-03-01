@@ -23,7 +23,7 @@ const TEXT_FAILURE_GROUP_ALREADY_ACTIVE = "Sei già pronto per giocare.";
 const TEXT_FAILURE_GROUP_INVALID_STATE = "Sembra che il tuo gruppo non sia pronto per giocare. 🙁 Segui le istruzioni che ti sono state date.";
 
 // Response to "/help"
-const TEXT_CMD_HELP = "Trovi le informazioni sul canale @uniurblab.";
+const TEXT_CMD_HELP = "Trovi le informazioni sul canale %GAME_CHANNEL%.";
 
 // Responses to "/start"
 const TEXT_CMD_START_NEW = "Ciao, %FULL_NAME%! Benvenuto alla caccia al tesoro <b>Urbino Code Hunting Game</b>. Per partecipare è necessario registrarsi, seguendo le indicazioni date dagli organizzatori dell’evento.";
@@ -62,7 +62,7 @@ const TEXT_REGISTRATION_NUMBER_STATE = "Mi puoi mandare ora una foto o un’imma
 const TEXT_REGISTRATION_NUMBER_RESPONSE_OK = "Bella foto! Il gruppo “%GROUP_NAME%” è registrato. 👍";
 const TEXT_REGISTRATION_NUMBER_RESPONSE_INVALID = "Si è verificato un errore. Invia un’immagine da usare come icona del gruppo, per favore.";
 
-const TEXT_REGISTRATION_READY_STATE = "Tutto ok! Assicuratevi di essere iscritti al canale @uniurblab e seguite le istruzioni che vi verranno date.";
+const TEXT_REGISTRATION_READY_STATE = "Tutto ok! Assicuratevi di essere iscritti al canale %GAME_CHANNEL% e seguite le istruzioni che vi verranno date.";
 
 // Advancement notifications
 const TEXT_ADVANCEMENT_CONFIRMED = "📢 È giunto il momento di completare la registrazione per il gruppo “%GROUP%”!\nPer prima cosa dimmi quante persone parteciperanno al gioco (te incluso), per piacere.";
@@ -83,7 +83,7 @@ const TEXT_GAME_LAST_LOCATION_STATE = "Manca pochissimo per trovare il tesoro…
 
 const TEXT_GAME_LAST_PUZZLE_STATE = "Siete giunti all’ultimo quesito… ora, con la mappa in mano, avete tutto il necessario per raggiungere la meta finale! Considerate *attentamente* lo svolgimento del gioco fino a questo momento e saprete trovare il percorso che vi porterà al tesoro! 😉";
 
-const TEXT_GAME_WON = "🎉 <b>Complimenti!</b> 🎉\n“%GROUP_NAME%”, siete stati i primi a trovare il tesoro ed avete vinto! Godetevi il premio! 🏆";
+const TEXT_GAME_WON = "🎉 <b>Complimenti!</b> 🎉\n“%GROUP_NAME%”, siete stati i primi a trovare il tesoro ed avete vinto! 🏆";
 const TEXT_GAME_WON_CHANNEL = "<b>Il gruppo “%GROUP_NAME%” ha raggiunto la tappa finale e vince il gioco!</b> 🎉";
 
 // Default response for anything else
