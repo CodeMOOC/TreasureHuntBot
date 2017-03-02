@@ -55,7 +55,7 @@ const TEXT_REGISTRATION_VERIFIED_RESPONSE_INVALID = "Non mi sembra un nome valid
 const TEXT_REGISTRATION_NAME_STATE = "Mi puoi scrivere quanti componenti ci sono nel gruppo?";
 const TEXT_REGISTRATION_NAME_RESPONSE_INVALID = "Specifica il numero di partecipanti in cifre, per favore.";
 const TEXT_REGISTRATION_NAME_RESPONSE_TOOFEW = "Il numero minimo di partecipanti per squadra è <b>2</b>!";
-const TEXT_REGISTRATION_NAME_RESPONSE_TOOMANY = "Il numero massimo di partecipanti per squadra è <b>10</b>!";
+const TEXT_REGISTRATION_NAME_RESPONSE_TOOMANY = "Il numero massimo di partecipanti per squadra è <b>20</b>!";
 const TEXT_REGISTRATION_NAME_RESPONSE_OK = "Hai appena confermato per %NUMBER% partecipanti!";
 
 const TEXT_REGISTRATION_NUMBER_STATE = "Mi puoi mandare ora una foto o un’immagine da usare come icona del gruppo?";

@@ -138,7 +138,7 @@ function msg_processing_handle_group_response($context) {
                 $context->reply(TEXT_REGISTRATION_NAME_RESPONSE_TOOFEW);
                 return true;
             }
-            else if($number > 10) {
+            else if($number > 20) {
                 $context->reply(TEXT_REGISTRATION_NAME_RESPONSE_TOOMANY);
                 return true;
             }
