@@ -126,7 +126,7 @@ function bot_advance_track_location($context, $group_id = null) {
         );
     }
     else {
-        $next_location_id = db_scalar_query("SELECT `location_id` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `cluster_id` = {$next_cluster_id} AND `location_id` NOT IN (SELECT `location_id` FROM `assigned_locations` WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id}) ORDER BY RAND() LIMIT 1");
+        $next_location_id = db_scalar_query("SELECT `location_id` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `cluster_id` = {$next_cluster_id} AND `is_start` = 0 AND `is_end` = 0 AND `location_id` NOT IN (SELECT `location_id` FROM `assigned_locations` WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id}) ORDER BY RAND() LIMIT 1");
 
         if(!$next_location_id) {
             Logger::error("Failed to find next location", __FILE__, $context);
