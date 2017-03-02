@@ -274,7 +274,7 @@ function msg_processing_handle_group_response($context) {
 
                         // TODO: add other cluster information here
                     }
-                    if(!$location_info[2] || !$location_info[3]) {
+                    if(!$location_info[2] && !$location_info[3]) {
                         $send_location = true;
                     }
 
