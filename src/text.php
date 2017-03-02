@@ -71,7 +71,8 @@ const TEXT_ADVANCEMENT_ACTIVATED = "Tutto ok! 👍\nSeguite le istruzioni.";
 // States and responses for the game
 const TEXT_GAME_LOCATION_STATE = "Raggiungete il punto assegnato e trovate il QR Code!";
 
-const TEXT_GAME_SELFIE_STATE = "Mandatemi un <i>selfie</i> del gruppo per dimostrare di esserci tutti! (Sono ammesse smorfie.)";
+const TEXT_GAME_SELFIE_STATE = "Mandatemi un bel <i>selfie</i> di gruppo! (Sono ammesse smorfie e assicuratevi di essere al centro della foto.)";
+const TEXT_GAME_SELFIE_RESPONSE_BADGE = "Bellissima foto! Ecco il distintivo per la tappa raggiunta.";
 const TEXT_GAME_SELFIE_RESPONSE_OK = "Bellissima foto! Ecco l’indovinello da risolvere a questa tappa.";
 const TEXT_GAME_SELFIE_FORWARD_CAPTION = "Il gruppo “%GROUP_NAME%” raggiunge la %INDEX%° tappa!";
 
@@ -79,7 +80,7 @@ const TEXT_GAME_PUZZLE_STATE = "Scrivete qui la risposta al quesito appena invia
 const TEXT_GAME_PUZZLE_RESPONSE_WAIT = "Dovete aspettare altri %SECONDS% secondi prima di poter rispondere.";
 const TEXT_GAME_PUZZLE_RESPONSE_WRONG = "Ehm… Non proprio! 😩 Purtroppo avete sbagliato e dovrete aspettare un minuto prima di poter dare un’altra risposta…\nGiusto il tempo di pensare alla soluzione corretta! 😉";
 
-const TEXT_GAME_LAST_LOCATION_STATE = "Manca pochissimo per trovare il tesoro… Raggiungete la posizione assegnata!";
+const TEXT_GAME_LAST_LOCATION_STATE = "Manca pochissimo alla conclusione della gara… Forza!";
 
 const TEXT_GAME_LAST_PUZZLE_STATE = "Siete giunti all’ultimo quesito… ora, con la mappa in mano, avete tutto il necessario per raggiungere la meta finale! Considerate *attentamente* lo svolgimento del gioco fino a questo momento e saprete trovare il percorso che vi porterà al tesoro! 😉";
 

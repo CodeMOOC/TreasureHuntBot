@@ -203,11 +203,21 @@ function msg_processing_handle_group_response($context) {
 
                 $file_info = telegram_get_file_info($context->get_message()->get_photo_large_id());
                 $file_path = $file_info['file_path'];
-                $local_path = "{$context->get_game_id()}-{$context->get_user_id()}-{$reached_locations_count}.jpg";
-                telegram_download_file($file_path, "../selfies/$local_path");
+                $local_path = "{$context->get_game_id()}-{$context->get_user_id()}-{$reached_locations_count}";
+                telegram_download_file($file_path, "../selfies/{$local_path}.jpg");
 
-                // Process and forward
-                $context->reply(TEXT_GAME_SELFIE_RESPONSE_OK);
+                // Process selfie and optional badge
+                if(true) {
+                    $rootdir = realpath(dirname(__FILE__) . '/..');
+                    exec("convert {$rootdir}/selfies/{$local_path}.jpg -resize 1600x1600^ -gravity center -crop 1600x1600+0+0 +repage {$rootdir}/images/badge-codytrip.png -composite {$rootdir}/badges/{$local_path}.jpg");
+
+                    $context->picture("../badges/{$local_path}.jpg", TEXT_GAME_SELFIE_RESPONSE_BADGE);
+                }
+                else {
+                    $context->reply(TEXT_GAME_SELFIE_RESPONSE_OK);
+                }
+
+                // Post notice on channel
                 $context->channel_picture($file_info['file_id'], TEXT_GAME_SELFIE_FORWARD_CAPTION, array(
                     '%INDEX%' => $reached_locations_count
                 ));
