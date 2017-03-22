@@ -1,0 +1,40 @@
+.end-block {
+    margin-bottom: 30px;
+}
+
+
+.nobackground{
+    background-color:#fff;
+}
+
+/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+#map {
+    height: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.labels {
+    color: #00bcff;
+    font-weight:600;
+    font-family: "Lucida Grande", "Arial", sans-serif;
+    font-size: 16px;
+    text-align: center;
+    width: 300px;
+    text-shadow: 2px 2px 4px rgba(50, 107, 104, 0.5);
+    white-space: nowrap;
+}
+
+.location-chart{
+    width: 100%;
+    height: 200px;
+}
+
+.vertical-bottom-space {
+    margin-bottom: 75px;
+}
