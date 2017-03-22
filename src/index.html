@@ -35,6 +35,7 @@
     <!-- Chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -85,6 +86,7 @@
             <div id="map" style="width:100%; height:500px;"></div>
             <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCxUCY2sqyWHtSTR259z-4wHSqv7aQ-hU0"></script>
             <script type="text/javascript" src="web/js/markerwithlabel.js"></script>
+
             <script>
 
                 var markers =  [];
@@ -266,35 +268,41 @@
                     });
                 }
 
+                function getData(callback){
+
+                    $.get("http://www.s-delpriori.it/teamsStatus.php", function(data, status) {
+                        //alert("Data: " + data + "\nStatus: " + status);
+                        if (data && status == 'success') {
+                            callback(data);
+                        }
+                    });
+
+                    /*$.post("web/teamStatus.php", function(data, status) {
+                        alert("Data: " + data + "\nStatus: " + status);
+                        if (data) {
+                            callback(data);
+                        }
+                    });*/
+                }
+
                 function setup() {
 
-                    //TODO: post call here
-                    var data = [{team: "Team 1", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
-                        {team: "Team 10", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
-                        {team: "Team 100", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
-                        {team: "Team 1k", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12}];
+                    getData(function (data) {
 
-                    //prepare data
-                    var winner = getWinner(data);
-                    var labels = getLabels(data);
-                    var chartDataset = getChartDataset(data);
+                        //prepare data
+                        var winner = getWinner(data);
+                        var labels = getLabels(data);
+                        var chartDataset = getChartDataset(data);
 
-                    updateWinner(winner, data.length);
-                    setupChart(labels, chartDataset);
-                    setupMap(data);
+                        updateWinner(winner, data.length);
+                        setupChart(labels, chartDataset);
+                        setupMap(data);
 
-                    setInterval(function(){
-                        //TODO: post call here
-                        var data = [{team: "Team 1", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
-                            {team: "Team 10", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
-                            {team: "Team 100", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
-                            {team: "Team 110", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
-                            {team: "Team 1k", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12}];
+                        setInterval(function () {
+                            getData(updateUI);
 
-                        updateUI(data);
-
-                    }, 5000);
-
+                        }, 5000);
+                    });
                 }
             </script>
         </div>
