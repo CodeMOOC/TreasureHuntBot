@@ -42,7 +42,7 @@
     <![endif]-->
 </head>
 
-<body onload="initMap()">
+<body onload="setup()">
 
 <div class="container">
 
@@ -63,8 +63,8 @@
     </div>
 
     <div id="winner" class="row jumbotron nobackground">
-        <p class="lead">There are N teams playing right now!</p>
-        <p class="lead">The current winner is: <span class="text-primary">Pappapero</span></p>
+        <p class="lead">There are <span id="team-count">N</span> teams playing right now!</p>
+        <p class="lead">The current winner is: <span id="winner-team" class="text-primary">Pappapero</span></p>
     </div>
 
     <div id="stops" class="row vertical-bottom-space">
@@ -72,42 +72,162 @@
             <h2>Teams last known stops</h2>
             <canvas id="teamChart" class="location-chart"></canvas>
             <script>
-                var ctx = document.getElementById("teamChart").getContext("2d");
-                ctx.canvas.height = 250;
-                var teamChart = new Chart(ctx, {
-                    type: 'horizontalBar',
-                    data: {
-                        labels: ["Team 1", "Team 2", "Team 3", "Team 4"],
-                        datasets: [{
-                            label: 'last known stop',
-                            data: [12, 19, 3, 5],
-                            backgroundColor: [
-                                'rgba(255, 99, 132, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(255, 206, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgba(255,99,132,1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        legend: {
-                            display: false
-                        },
-                        scales: {
-                            yAxes: [{
-                                barPercentage: 0.7,
-                                categoryPercentage:1.0
-                            }]
+
+
+                function getRandColor(brightness){
+                    // Six levels of brightness from 0 to 5, 0 being the darkest
+                    var rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256];
+                    var mix = [brightness*51, brightness*51, brightness*51]; //51 => 255/5
+                    var mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){ return Math.round(x/2.0)})
+                    return mixedrgb;
+                }
+
+                function getRGBA(color, opacity){
+                    return "rgba(" + color.join(",") + "," + opacity + ")";
+                }
+
+                function addMarkers(locations, markers, map) {
+                    for(var i = 0; i < locations.length; i++){
+                        var image = 'web/images/teams-ico.png'; //may be the groups' icon
+                        markers[i] = new MarkerWithLabel({
+                            position: {lat: locations[i].lat, lng: locations[i].lng},
+                            map: map,
+                            icon: image,
+                            //animation: google.maps.Animation.DROP,
+                            labelContent: locations[i].team,
+                            labelAnchor: new google.maps.Point(150, 0),
+                            labelClass: "labels"
+                        });
+                    }
+                }
+
+                function cleanMarkers(markers){
+                    for(var i = 0; i < markers.length; i++){
+                        markers[i].setMap(null);
+                    }
+                    markers = [];
+                }
+
+                function getWinner(data){
+                    var winner = "";
+                    var max_pos = 0;
+
+                    for(var i = 0; i < data.length; i++){
+                        if(max_pos < data[i].pos){
+                            winner = data[i].team;
+                            max_pos = data[i].pos;
                         }
                     }
-                });
+
+                    return winner;
+                }
+
+                function getLabels(data){
+                    var labels = [];
+
+                    for(var i = 0; i < data.length; i++){
+                        labels[i] = data[i].team;
+                    }
+
+                    return labels;
+                }
+
+                function getChartDataset(data){
+                    var dataset = [];
+
+                    for(var i = 0; i < data.length; i++){
+                        dataset[i] = data[i].pos;
+                    }
+
+                    return dataset;
+                }
+
+                function updateWinner(winner, team_count){
+                    document.getElementById("team-count").textContent = team_count;
+                    document.getElementById("winner-team").textContent = winner;
+                }
+
+                function updateChart(labels, chartDataset){
+                    teamChart.data.labels = labels;
+                    teamChart.data.datasets[0].data = chartDataset;
+                    teamChart.update();
+                }
+
+                function updateMap(data) {
+                    cleanMarkers(markers);
+                    addMarkers(data, markers, map);
+                }
+
+                function updateUI(data){
+
+                    //prepare data
+                    var winner = getWinner(data);
+                    var labels = getLabels(data);
+                    var chartDataset = getChartDataset(data);
+
+                    updateWinner(winner, data.length);
+                    updateChart(labels, chartDataset);
+                    updateMap(data);
+                }
+
+
+                function setupMap(locations){
+                    var mapCenter = {lat: 43.726276, lng: 12.635762};
+
+                    map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 15,
+                        center: mapCenter
+                    });
+
+                    addMarkers(locations, markers, map);
+                }
+
+                function generateBarColors(count){
+
+                    var data = {backgroundColor:[], borderColor:[]};
+
+                    for(var i = 0; i < count; i++){
+                        var c = getRandColor(5);
+                        data.backgroundColor[i] = getRGBA(c,0.2) + "";
+                        data.borderColor[i] = getRGBA(c,1.0) + "";
+                    }
+
+                    return data;
+
+                }
+
+                function setupChart(labels, chartDataset){
+
+                    var colors = generateBarColors(labels.length);
+
+                    var ctx = document.getElementById("teamChart").getContext("2d");
+                    ctx.canvas.height = 50 * labels.length;
+
+                    teamChart = new Chart(ctx, {
+                        type: 'horizontalBar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'last known stop',
+                                data: chartDataset,
+                                backgroundColor: colors.backgroundColor,
+                                borderColor: colors.borderColor,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            legend: {
+                                display: false
+                            },
+                            scales: {
+                                yAxes: [{
+                                    barPercentage: 0.7,
+                                    categoryPercentage:1.0
+                                }]
+                            }
+                        }
+                    });
+                }
 
             </script>
         </div>
@@ -121,30 +241,38 @@
             <script type="text/javascript" src="web/js/markerwithlabel.js"></script>
             <script>
 
-                function initMap() {
-                    var mapCenter = {lat: 43.726276, lng: 12.635762};
-                    var teamsLKL = [{lat: 43.728306, lng: 12.634442},
-                        {lat: 43.725189, lng: 12.635708},
-                        {lat: 43.723034, lng: 12.637940},
-                        {lat: 43.727732, lng: 12.636995}];
+                var markers =  [];
+                var map;
+                var teamChart;
 
-                    var map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: 15,
-                        center: mapCenter
-                    });
+                function setup() {
 
-                    for(var i = 0; i < teamsLKL.length; i++){
-                        var image = 'web/images/teams-ico.png'; //may be the groups' icon
-                        var beachMarker = new MarkerWithLabel({
-                            position: teamsLKL[i],
-                            map: map,
-                            icon: image,
-                            animation: google.maps.Animation.DROP,
-                            labelContent: 'TEAM '+i,
-                            labelAnchor: new google.maps.Point(150, 0),
-                            labelClass: "labels",
-                        });
-                    }
+                    //TODO: post call here
+                    var data = [{team: "Team 1", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
+                        {team: "Team 10", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
+                        {team: "Team 100", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
+                        {team: "Team 1k", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12}];
+
+                    //prepare data
+                    var winner = getWinner(data);
+                    var labels = getLabels(data);
+                    var chartDataset = getChartDataset(data);
+
+                    updateWinner(winner, data.length);
+                    setupChart(labels, chartDataset);
+                    setupMap(data);
+
+                    setInterval(function(){
+                        //TODO: post call here
+                        var data = [{team: "Team 1", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
+                            {team: "Team 10", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
+                            {team: "Team 100", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
+                            {team: "Team 1k", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12}];
+
+                        updateUI(data);
+
+                    }, 5000);
+
                 }
             </script>
         </div>
