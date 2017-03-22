@@ -74,12 +74,28 @@
             <script>
 
 
+
+            </script>
+        </div>
+    </div>
+
+    <div id="locations" class="row vertical-bottom-space">
+        <div class="col-lg-12">
+            <h2>Teams last known locations</h2>
+            <div id="map" style="width:100%; height:500px;"></div>
+            <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCxUCY2sqyWHtSTR259z-4wHSqv7aQ-hU0"></script>
+            <script type="text/javascript" src="web/js/markerwithlabel.js"></script>
+            <script>
+
+                var markers =  [];
+                var map;
+                var teamChart;
+
                 function getRandColor(brightness){
                     // Six levels of brightness from 0 to 5, 0 being the darkest
                     var rgb = [Math.random() * 256, Math.random() * 256, Math.random() * 256];
                     var mix = [brightness*51, brightness*51, brightness*51]; //51 => 255/5
-                    var mixedrgb = [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){ return Math.round(x/2.0)})
-                    return mixedrgb;
+                    return [rgb[0] + mix[0], rgb[1] + mix[1], rgb[2] + mix[2]].map(function(x){ return Math.round(x/2.0)})
                 }
 
                 function getRGBA(color, opacity){
@@ -148,6 +164,12 @@
                 }
 
                 function updateChart(labels, chartDataset){
+
+                    var colors = adaptColors(labels.length, teamChart.data.datasets[0].backgroundColor, teamChart.data.datasets[0].borderColor);
+
+                    teamChart.data.datasets[0].backgroundColor = colors.backgroundColor;
+                    teamChart.data.datasets[0].borderColor = colors.borderColor;
+
                     teamChart.data.labels = labels;
                     teamChart.data.datasets[0].data = chartDataset;
                     teamChart.update();
@@ -193,15 +215,30 @@
                     }
 
                     return data;
+                }
 
+                function adaptColors(count, backgroundColors, borderColors){
+                    if(count <= backgroundColors.length){
+                        return {backgroundColor: backgroundColors, borderColor: borderColors};
+                    }
+
+                    var diff_count = count -  backgroundColors.length;
+                    var new_c = generateBarColors(diff_count);
+
+                    return {backgroundColor: backgroundColors.concat(new_c.backgroundColor),
+                        borderColor: borderColors.concat(new_c.borderColor)};
+                }
+
+                function updateChartSize(labels, ctx){
+                    ctx.canvas.height = 50 * labels.length;
+                    return ctx;
                 }
 
                 function setupChart(labels, chartDataset){
 
                     var colors = generateBarColors(labels.length);
-
                     var ctx = document.getElementById("teamChart").getContext("2d");
-                    ctx.canvas.height = 50 * labels.length;
+                    updateChartSize(labels, ctx);
 
                     teamChart = new Chart(ctx, {
                         type: 'horizontalBar',
@@ -229,22 +266,6 @@
                     });
                 }
 
-            </script>
-        </div>
-    </div>
-
-    <div id="locations" class="row vertical-bottom-space">
-        <div class="col-lg-12">
-            <h2>Teams last known locations</h2>
-            <div id="map" style="width:100%; height:500px;"></div>
-            <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCxUCY2sqyWHtSTR259z-4wHSqv7aQ-hU0"></script>
-            <script type="text/javascript" src="web/js/markerwithlabel.js"></script>
-            <script>
-
-                var markers =  [];
-                var map;
-                var teamChart;
-
                 function setup() {
 
                     //TODO: post call here
@@ -267,6 +288,7 @@
                         var data = [{team: "Team 1", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
                             {team: "Team 10", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
                             {team: "Team 100", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
+                            {team: "Team 110", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12},
                             {team: "Team 1k", lat: 43.72 + (Math.random()*0.01), lng: 12.63 + (Math.random()*0.01), pos: Math.random()*12}];
 
                         updateUI(data);
