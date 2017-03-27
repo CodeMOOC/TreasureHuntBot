@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4
+-- version 4.6.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 01, 2017 at 08:09 PM
--- Server version: 5.5.53-0+deb8u1
--- PHP Version: 5.6.27-0+deb8u1
+-- Generation Time: Mar 27, 2017 at 06:54 PM
+-- Server version: 5.7.17-0ubuntu0.16.04.1
+-- PHP Version: 7.0.15-0ubuntu0.16.04.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -46,6 +46,21 @@ CREATE TABLE `assigned_riddles` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `code_lookup`
+--
+
+CREATE TABLE `code_lookup` (
+  `code` varchar(16) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  `type` enum('creation','registration','location','victory') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'location',
+  `event_id` int(10) UNSIGNED DEFAULT NULL,
+  `game_id` int(10) UNSIGNED DEFAULT NULL,
+  `location_id` int(10) UNSIGNED DEFAULT NULL,
+  `is_disabled` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Marks code as disabled'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `events`
 --
 
@@ -53,8 +68,6 @@ CREATE TABLE `events` (
   `event_id` int(10) UNSIGNED NOT NULL,
   `name` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `state` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
-  `registration_code` char(8) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
-  `victory_code` char(8) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
   `logo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `registered_on` datetime NOT NULL,
   `min_num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '10' COMMENT 'Minimum number of locations',
@@ -74,7 +87,6 @@ CREATE TABLE `games` (
   `game_id` int(10) UNSIGNED NOT NULL,
   `event_id` int(10) UNSIGNED DEFAULT NULL,
   `state` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
-  `registration_code` char(8) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
   `name` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `location_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `location_lat` float DEFAULT NULL,
@@ -157,7 +169,6 @@ CREATE TABLE `locations` (
   `game_id` int(10) UNSIGNED NOT NULL,
   `location_id` int(10) UNSIGNED NOT NULL,
   `cluster_id` tinyint(3) UNSIGNED NOT NULL,
-  `code` char(8) CHARACTER SET ascii COLLATE ascii_bin NOT NULL COMMENT 'Unique identifying code',
   `internal_note` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `lat` float NOT NULL,
   `lng` float NOT NULL,
@@ -216,12 +227,20 @@ ALTER TABLE `assigned_riddles`
   ADD KEY `assriddles_group_constraint` (`group_id`);
 
 --
+-- Indexes for table `code_lookup`
+--
+ALTER TABLE `code_lookup`
+  ADD PRIMARY KEY (`code`),
+  ADD KEY `event_id` (`event_id`),
+  ADD KEY `game_id` (`game_id`),
+  ADD KEY `location_id` (`location_id`),
+  ADD KEY `code_lookup_location_constraint` (`game_id`,`location_id`);
+
+--
 -- Indexes for table `events`
 --
 ALTER TABLE `events`
   ADD PRIMARY KEY (`event_id`),
-  ADD UNIQUE KEY `registration_code_index` (`registration_code`),
-  ADD UNIQUE KEY `victory_code_index` (`victory_code`),
   ADD KEY `event_organizer_index` (`organizer_id`);
 
 --
@@ -229,7 +248,6 @@ ALTER TABLE `events`
 --
 ALTER TABLE `games`
   ADD PRIMARY KEY (`game_id`),
-  ADD UNIQUE KEY `registration_code_index` (`registration_code`),
   ADD KEY `game_event_index` (`event_id`),
   ADD KEY `game_organizer_index` (`organizer_id`);
 
@@ -264,7 +282,6 @@ ALTER TABLE `identities`
 --
 ALTER TABLE `locations`
   ADD PRIMARY KEY (`game_id`,`location_id`),
-  ADD UNIQUE KEY `location_code_index` (`game_id`,`code`) USING BTREE,
   ADD KEY `cluster_id` (`cluster_id`),
   ADD KEY `location_cluster_constraint` (`game_id`,`cluster_id`);
 
@@ -323,9 +340,17 @@ ALTER TABLE `assigned_locations`
 -- Constraints for table `assigned_riddles`
 --
 ALTER TABLE `assigned_riddles`
+  ADD CONSTRAINT `assriddle_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `assriddles_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `assriddles_riddle_constraint` FOREIGN KEY (`event_id`,`riddle_id`) REFERENCES `riddles` (`event_id`, `riddle_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `assriddle_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `assriddles_riddle_constraint` FOREIGN KEY (`event_id`,`riddle_id`) REFERENCES `riddles` (`event_id`, `riddle_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `code_lookup`
+--
+ALTER TABLE `code_lookup`
+  ADD CONSTRAINT `code_look_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `code_lookup_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `code_lookup_location_constraint` FOREIGN KEY (`game_id`,`location_id`) REFERENCES `locations` (`game_id`, `location_id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Constraints for table `events`
