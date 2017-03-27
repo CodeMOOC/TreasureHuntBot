@@ -38,3 +38,7 @@ html, body {
 .vertical-bottom-space {
     margin-bottom: 75px;
 }
+
+#winner-team {
+    margin-top: 45px;
+}

@@ -64,8 +64,12 @@
     </div>
 
     <div id="winner" class="row jumbotron nobackground">
-        <p class="lead">There are <span id="team-count">N</span> teams playing right now!</p>
-        <p class="lead">The current winner is: <span id="winner-team" class="text-primary">Pappapero</span></p>
+        <div class="col-md-6" >
+            <p class="lead">There are <span id="team-count">N</span> teams playing right now!</p>
+            <p class="lead">The current winner is:</p>
+            <h2 id="winner-team" class="text-primary">Pappapero</h2>
+        </div>
+        <div class="col-md-6"><img id="winner-avatar" src=""/></div>
     </div>
 
     <div id="stops" class="row vertical-bottom-space">
@@ -110,7 +114,7 @@
                         markers[i] = new MarkerWithLabel({
                             position: {lat: locations[i].lat, lng: locations[i].lng},
                             map: map,
-                            icon: image,
+                            icon: getAvatarUrl(locations[i].team, "70x70"),
                             //animation: google.maps.Animation.DROP,
                             labelContent: locations[i].team,
                             labelAnchor: new google.maps.Point(150, 0),
@@ -160,19 +164,27 @@
                     return dataset;
                 }
 
+                function getAvatarUrl(team, size) {
+
+                    size = size || "100x100";
+
+                    return "https://robohash.org/" + encodeURIComponent(team) + ".png?size=" + size;
+                }
+
                 function updateWinner(winner, team_count){
                     document.getElementById("team-count").textContent = team_count;
                     document.getElementById("winner-team").textContent = winner;
+                    document.getElementById("winner-avatar").src = getAvatarUrl(winner, "150x150");
                 }
 
-                function updateChart(labels, chartDataset){
+                function updateChart(avatars, chartDataset){
 
-                    var colors = adaptColors(labels.length, teamChart.data.datasets[0].backgroundColor, teamChart.data.datasets[0].borderColor);
+                    var colors = adaptColors(avatars.length, teamChart.data.datasets[0].backgroundColor, teamChart.data.datasets[0].borderColor);
 
                     teamChart.data.datasets[0].backgroundColor = colors.backgroundColor;
                     teamChart.data.datasets[0].borderColor = colors.borderColor;
 
-                    teamChart.data.labels = labels;
+                    teamChart.data.labels = avatars;
                     teamChart.data.datasets[0].data = chartDataset;
                     teamChart.update();
                 }
@@ -187,6 +199,7 @@
                     //prepare data
                     var winner = getWinner(data);
                     var labels = getLabels(data);
+                    var avatars = labels.map(getAvatarUrl);
                     var chartDataset = getChartDataset(data);
 
                     updateWinner(winner, data.length);
