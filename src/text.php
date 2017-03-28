@@ -33,7 +33,13 @@ const TEXT_CMD_START_PRIZE_INVALID = "Hmmm, sembra che abbiate trovato il premio
 const TEXT_CMD_START_PRIZE_TOOLATE = "Mi dispiace, ma il gruppo “%WINNING_GROUP%” ha raggiunto il premio prima di voi! 😱";
 
 const TEXT_CMD_START_LOCATION_REACHED_FIRST = "Iniziamo col gioco! 🎉";
-const TEXT_CMD_START_LOCATION_REACHED = "Bravi, avete trovato il posto giusto!";
+const TEXT_CMD_START_LOCATION_REACHED = [
+    "Bravi, avete trovato il posto giusto!",
+    "Ottimo, avete trovato il codice giusto!",
+    "Trovato!",
+    "👍",
+    "Tappa raggiunta!"
+];
 const TEXT_CMD_START_LOCATION_REACHED_LAST = "Bravi, avete raggiunto l’<b>ultima tappa</b>!";
 const TEXT_CMD_START_LOCATION_UNEXPECTED = "Ok! Ma ora non mi serve sapere dove sei! Segui le istruzioni per piacere.";
 const TEXT_CMD_START_LOCATION_WRONG = "Sembra che tu abbia scansionato il QR Code sbagliato! Forse sei finito nel posto sbagliato? 😒";

@@ -335,10 +335,10 @@ function bot_get_group_count_of_assigned_locations($context, $group_id) {
  *
  * @param $context
  * @param $group_id
- * @return array List of (Location Id, Lat, Lng)
+ * @return array List of (Location Id, Lat, Lng, Internal note)
  */
 function bot_get_group_last_assigned_location($context, $group_id) {
-    return db_table_query("SELECT al.`location_id`,`lat`,`lng` FROM locations RIGHT JOIN (SELECT * FROM assigned_locations WHERE game_id = {$context->get_game_id()}  AND group_id = {$group_id} AND assigned_on IS NOT NULL ORDER BY assigned_on DESC LIMIT 1) AS al ON al.location_id = locations.location_id LIMIT 1;");
+    return db_table_query("SELECT al.`location_id`, `lat`, `lng`, `internal_note` FROM locations RIGHT JOIN (SELECT * FROM assigned_locations WHERE game_id = {$context->get_game_id()}  AND group_id = {$group_id} AND assigned_on IS NOT NULL ORDER BY assigned_on DESC LIMIT 1) AS al ON al.location_id = locations.location_id LIMIT 1;");
 }
 
 /**
@@ -346,10 +346,10 @@ function bot_get_group_last_assigned_location($context, $group_id) {
  *
  * @param $context
  * @param $group_id
- * @return array List of (Location Id, Lat, Lng)
+ * @return array List of (Location Id, Lat, Lng, Internal note)
  */
 function bot_get_group_last_reached_location($context, $group_id) {
-    return db_table_query("SELECT al.`location_id`,`lat`,`lng` FROM locations RIGHT JOIN (SELECT * FROM assigned_locations WHERE game_id = {$context->get_game_id()}  AND group_id = {$group_id} AND reached_on IS NOT NULL ORDER BY reached_on DESC LIMIT 1) AS al ON al.location_id = locations.location_id LIMIT 1;");
+    return db_table_query("SELECT al.`location_id`, `lat`, `lng`, `internal_note` FROM locations RIGHT JOIN (SELECT * FROM assigned_locations WHERE game_id = {$context->get_game_id()}  AND group_id = {$group_id} AND reached_on IS NOT NULL ORDER BY reached_on DESC LIMIT 1) AS al ON al.location_id = locations.location_id LIMIT 1;");
 }
 
 /**
