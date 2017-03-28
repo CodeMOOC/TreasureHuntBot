@@ -23,6 +23,7 @@ class Context {
     private $game_state = 128;
     private $game_channel_name = null;
     private $game_channel_censor = false;
+    private $game_timed_out = false;
 
     // Rows of cluster_id, num_locations, and description
     private $game_location_clusters = null;
@@ -212,6 +213,13 @@ class Context {
         return false;
     }
 
+    /**
+     * Returns whether the game is timed out.
+     */
+    function is_timed_out() {
+        return $this->game_timed_out;
+    }
+
     /*
      * *** MESSAGE SENDING ***
      */
@@ -364,7 +372,7 @@ class Context {
         }
         else {
             // Get played game (last one registered to), if any
-            $group = db_row_query("SELECT `groups`.`game_id`, `groups`.`name`, `groups`.`state`, `games`.`event_id`, `games`.`state`, `games`.`telegram_channel`, `games`.`telegram_channel_censor_photo` FROM `groups` LEFT OUTER JOIN `games` ON `groups`.`game_id` = `games`.`game_id` WHERE `group_id` = {$this->get_user_id()} ORDER BY `groups`.`registered_on` DESC LIMIT 1");
+            $group = db_row_query("SELECT `groups`.`game_id`, `groups`.`name`, `groups`.`state`, `games`.`event_id`, `games`.`state`, `games`.`telegram_channel`, `games`.`telegram_channel_censor_photo`, TIMEDIFF(NOW(), `groups`.`timeout_absolute`) > 0 AS `timed_out` FROM `groups` LEFT OUTER JOIN `games` ON `groups`.`game_id` = `games`.`game_id` WHERE `group_id` = {$this->get_user_id()} ORDER BY `groups`.`registered_on` DESC LIMIT 1");
             if($group !== null) {
                 $this->game_id = intval($group[0]);
                 $this->event_id = ($group[3] != null) ? intval($group[3]) : null;
@@ -373,6 +381,7 @@ class Context {
                 $this->group_state = intval($group[2]);
                 $this->game_channel_name = $group[5];
                 $this->game_channel_censor = (bool)$group[6];
+                $this->game_timed_out = (bool)$group[7];
 
                 Logger::debug("User is playing game #{$this->game_id} (state {$this->game_state}) in event {$this->event_id}, with group {$this->group_name} (state {$this->group_state})", __FILE__, $this);
             }
@@ -424,7 +433,21 @@ class Context {
 
         Logger::debug("Attempting to register new group for user #{$this->internal_id} for game #{$game_id}", __FILE__, $this);
 
-        if(db_perform_action("INSERT INTO `groups` (`game_id`, `group_id`, `state`, `registered_on`, `last_state_change`) VALUES({$game_id}, {$this->internal_id}, " . STATE_NEW . ", NOW(), NOW())") === false) {
+        // Query game timeout
+        $game_info = db_row_query("SELECT `timeout_absolute`, `timeout_interval` FROM `games` WHERE `game_id` = {$game_id}");
+        if($game_info === false || $game_info == null) {
+            Logger::error("Game #{$game_id} does not exist", __FILE__, $this);
+            return false;
+        }
+        $game_timeout = 'NULL';
+        if($game_info[0]) {
+            $game_timeout = "'{$game_info[0]}'";
+        }
+        else if($game_info[1]) {
+            $game_timeout = "DATE_ADD(NOW(), INTERVAL {$game_info[1]} MINUTE)";
+        }
+
+        if(db_perform_action("INSERT INTO `groups` (`game_id`, `group_id`, `state`, `registered_on`, `last_state_change`, `timeout_absolute`) VALUES({$game_id}, {$this->internal_id}, " . STATE_NEW . ", NOW(), NOW(), {$game_timeout})") === false) {
             Logger::error("Failed to register group status", __FILE__, $this);
             return false;
         }

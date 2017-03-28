@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 27, 2017 at 06:54 PM
+-- Generation Time: Mar 28, 2017 at 08:34 PM
 -- Server version: 5.7.17-0ubuntu0.16.04.1
 -- PHP Version: 7.0.15-0ubuntu0.16.04.4
 
@@ -95,6 +95,8 @@ CREATE TABLE `games` (
   `organizer_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telegram_channel_censor_photo` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Set if pictures should not be sent on the channel',
+  `timeout_absolute` datetime DEFAULT NULL COMMENT 'Absolute timeout when game ends',
+  `timeout_interval` smallint(6) DEFAULT NULL COMMENT 'Relative timeout in seconds from start',
   `registered_on` datetime NOT NULL,
   `tmp_location_lat` float DEFAULT NULL,
   `tmp_location_lng` float DEFAULT NULL,
@@ -129,7 +131,8 @@ CREATE TABLE `groups` (
   `participants_count` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   `photo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Path to the group''s photo',
   `registered_on` datetime NOT NULL COMMENT 'Original generation timestamp',
-  `last_state_change` datetime NOT NULL COMMENT 'Timestamp of last state change'
+  `last_state_change` datetime NOT NULL COMMENT 'Timestamp of last state change',
+  `timeout_absolute` datetime DEFAULT NULL COMMENT 'Absolute timeout when game ends for this group'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
