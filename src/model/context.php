@@ -32,7 +32,7 @@ class Context {
 
     /**
      * Construct Context class.
-     * @param §message IncomingMessage.
+     * @param $message IncomingMessage.
      */
     function __construct($message) {
 
@@ -288,6 +288,10 @@ class Context {
         if($message === null) {
             Logger::info("Message is null", __FILE__, $this);
             return false;
+        }
+
+        if(is_array($message)) {
+            $message = $message[array_rand($message)];
         }
 
         $default_parameters = array(

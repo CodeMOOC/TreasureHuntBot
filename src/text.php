@@ -17,7 +17,7 @@
  */
 
 const TEXT_UNNAMED_GROUP = "Senza nome";
-const TEXT_FAILURE_GENERAL = "Oh! Questo è imbarazzante… Qualcosa è andato storto!\nChi di dovere è stato avvertito e si sta occupando dell’errore.";
+const TEXT_FAILURE_GENERAL = "Oh! Questo è imbarazzante… Qualcosa è andato storto! Chi di dovere è stato avvertito e si sta occupando dell’errore.\nRitenta tra poco.";
 const TEXT_FAILURE_GROUP_NOT_FOUND = "Non mi sembra tu sia registrato al gioco. 🤔";
 const TEXT_FAILURE_GROUP_ALREADY_ACTIVE = "Sei già pronto per giocare.";
 const TEXT_FAILURE_GROUP_INVALID_STATE = "Sembra che il tuo gruppo non sia pronto per giocare. 🙁 Segui le istruzioni che ti sono state date.";
@@ -34,7 +34,7 @@ const TEXT_CMD_START_PRIZE_TOOLATE = "Mi dispiace, ma il gruppo “%WINNING_GROU
 
 const TEXT_CMD_START_LOCATION_REACHED = "Bravi, siete nel posto giusto!";
 const TEXT_CMD_START_LOCATION_UNEXPECTED = "Ok! Ma ora non mi serve sapere dove sei! Segui le istruzioni per piacere.";
-const TEXT_CMD_START_LOCATION_WRONG = "Sembra che tu abbia scansionato il QRCode sbagliato! Forse sei finito nel posto sbagliato? 😒";
+const TEXT_CMD_START_LOCATION_WRONG = "Sembra che tu abbia scansionato il QR Code sbagliato! Forse sei finito nel posto sbagliato? 😒";
 
 const TEXT_CMD_START_WRONG_PAYLOAD = "Non ho capito! Forse hai scritto a mano un link? Sarebbe bene che usassi i link contenuti nei QR Code così come sono.";
 
