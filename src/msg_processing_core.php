@@ -8,13 +8,13 @@
  * used by both pull and push scripts.
  */
 
-require_once('text.php');
-require_once('game.php');
-require_once('lib.php');
+require_once(dirname(__FILE__) . '/text.php');
+require_once(dirname(__FILE__) . '/game.php');
+require_once(dirname(__FILE__) . '/lib.php');
 
-require_once('msg_processing_admin.php');
-require_once('msg_processing_commands.php');
-require_once('msg_processing_state.php');
+require_once(dirname(__FILE__) . '/msg_processing_admin.php');
+require_once(dirname(__FILE__) . '/msg_processing_commands.php');
+require_once(dirname(__FILE__) . '/msg_processing_state.php');
 
 //Needs some error checking here
 $in = new IncomingMessage($message);

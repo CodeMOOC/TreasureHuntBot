@@ -7,7 +7,7 @@
  * Bot control logic.
  */
 
-require_once('model/context.php');
+require_once(dirname(__FILE__) . '/model/context.php');
 
 /**
  * Get the Telegram ID of a group.

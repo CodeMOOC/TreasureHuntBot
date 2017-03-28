@@ -7,7 +7,7 @@
  * Basic message processing in pull mode for your bot.
  */
 
-require_once('lib.php');
+require_once(dirname(__FILE__) . '/lib.php');
 
 // Reload latest update ID received (if any) from persistent store
 $last_update = @file_get_contents(dirname(__FILE__) . '/pull-last-update.txt');

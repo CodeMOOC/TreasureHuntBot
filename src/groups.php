@@ -1,6 +1,6 @@
 <?php
-require_once('log.php');
-require_once('lib.php');
+require_once(dirname(__FILE__) . '/log.php');
+require_once(dirname(__FILE__) . '/lib.php');
 
 $q = "SELECT * FROM status WHERE state >= 20";
 $res = db_table_query($q);
