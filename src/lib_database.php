@@ -145,6 +145,16 @@ function db_scalar_query($sql) {
 
     // Extract first row
     $row = mysqli_fetch_row($result);
+
+    // Check for single (first) field type
+    // Field type values from: http://php.net/manual/en/mysqli-result.fetch-field.php#106064
+    $field_info = mysqli_fetch_field($result);
+    if($field_info !== false) {
+        if(in_array($field_info->type, [ 16, 1, 1, 2, 9, 3, 8 ])) {
+            $is_integer = true;
+        }
+    }
+
     mysqli_free_result($result);
 
     //Error checking on results (just for the sake of it)
@@ -158,6 +168,9 @@ function db_scalar_query($sql) {
     }
 
     // Extract and return first field
+    if($is_integer) {
+        return intval($row[0]);
+    }
     return $row[0];
 }
 
