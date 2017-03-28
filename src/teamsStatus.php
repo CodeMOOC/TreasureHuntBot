@@ -36,7 +36,7 @@ foreach ($playing_groups as $pg) {
         $group_data['next_lng'] = floatval($last_assigned_loc[0][2]);
     }
 
-    if(true || count($group_data) > 4) {
+    if(count($group_data) > 4) {
         $data [] = (object)$group_data;
     }
 }
