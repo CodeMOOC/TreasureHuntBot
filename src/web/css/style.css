@@ -42,3 +42,7 @@ html, body {
 #winner-team {
     margin-top: 45px;
 }
+
+.move-up {
+    margin-top: -10px;
+}

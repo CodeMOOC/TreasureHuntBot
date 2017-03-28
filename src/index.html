@@ -74,15 +74,27 @@
         <div class="col-md-6"><img id="winner-avatar" src=""/></div>
     </div>
 
+    <div id="rank" class="row vertical-bottom-space">
+        <div class="col-lg-12">
+            <h2>Rank</h2>
+            <div class="list-group">
+                <div class="list-group-item clearfix">
+                    <div class="col-xs-3">
+                        <img class="move-up" src="https://robohash.org/ciaone.png?size=70x70"/>
+                    </div>
+                    <div class="col-xs-9">
+                        <h3 class="list-group-item-heading">Second List Group Item Heading</h3>
+                        <p class="">List Group Item Text</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="stops" class="row vertical-bottom-space">
         <div class="col-lg-12">
             <h2>Teams last known stops</h2>
             <canvas id="teamChart" class="location-chart"></canvas>
-            <script>
-
-
-
-            </script>
         </div>
     </div>
 
@@ -208,6 +220,23 @@
                             document.getElementById("winner-avatar").src = getAvatarUrl(winner, "150x150");
                         }
 
+                        function updateRank(data){
+                            $("#rank .list-group").html("");
+
+                            for(var i=0; i < data.length; i++){
+
+                                $("#rank .list-group").append('<div class="list-group-item clearfix">'+
+                                '<div class="col-xs-1">'+
+                                '    <img class="move-up" src="'+getAvatarUrl(data[i].team, '70x70')+'"/>'+
+                                '    </div>'+
+                                '    <div class="col-xs-11">'+
+                                '    <h3 class="list-group-item-heading">'+data[i].team+'</h3>'+
+                                '<p class="">' + getStatusMessage(data[i].status) + '</p>'+
+                                '</div>'+
+                                '</div>');
+                            }
+                        }
+
                         function updateChart(avatars, chartDataset){
 
                             var colors = adaptColors(avatars.length, teamChart.data.datasets[0].backgroundColor, teamChart.data.datasets[0].borderColor);
@@ -239,6 +268,7 @@
                             var chartDataset = getChartDataset(data);
 
                             updateWinner(winner, data.length);
+                            updateRank(data);
                             updateChart(labels, chartDataset);
                             updateMap(data);
                             var nextLocsData = getNextLocData(data);
@@ -279,6 +309,28 @@
                             }
 
                             return data;
+                        }
+
+                        function getStatusMessage(status) {
+                            var message = "";
+                            switch (status){
+                                case 30:
+                                    message = 'is reaching a new stop';
+                                    break;
+                                case 32:
+                                    message = 'is taking a selfie';
+                                    break;
+                                case 34:
+                                    message = 'is struggling with a quiz';
+                                    break;
+                                case 40:
+                                    message = 'is reaching the last stop';
+                                    break;
+                                case 99:
+                                    message = 'has completed the treasure hunt!';
+                                    break;
+                            }
+                            return message;
                         }
 
                         function adaptColors(count, backgroundColors, borderColors){
@@ -357,6 +409,7 @@
                                 var chartDataset = getChartDataset(data);
 
                                 updateWinner(winner, data.length);
+                                updateRank(data);
                                 setupChart(labels, chartDataset);
                                 setupMap(data);
                                 var nextLocsData = getNextLocData(data);

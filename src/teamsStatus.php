@@ -10,10 +10,10 @@ require_once('game.php');
 require_once('lib.php');
 require_once('web/backend_lib.php');
 
-
+define(GAME_ID, 2);
 
 $data = [];
-$context = new Context(2);
+$context = new Context(GAME_ID);
 $playing_groups = bot_get_current_chart_of_playing_groups($context);
 
 foreach ($playing_groups as $pg) {
@@ -23,6 +23,8 @@ foreach ($playing_groups as $pg) {
     );
 
     $group_data['pos'] = bot_get_group_count_of_reached_locations($context, $group_data['team_id']);
+
+    $group_data['status'] = bot_get_group_status($context, $group_data['team_id']);
 
     $last_reached_loc = bot_get_group_last_reached_location($context, $group_data['team_id']);
     if($last_reached_loc && count($last_reached_loc) > 0) {
