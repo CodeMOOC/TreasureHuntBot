@@ -18,6 +18,8 @@ for($i = 0; $i < 5; $i++) {
     $data[] = (object)array('team' => 'Team '.random()*10,
         'lat' => 43.72 + (random()*0.01),
         'lng' => 12.63 + (random()*0.01),
+        'next_lat' => 43.72 + (random()*0.01),
+        'next_lng' => 12.63 + (random()*0.01),
         'pos' => random()*18);
 }
 
