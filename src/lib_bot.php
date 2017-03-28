@@ -107,9 +107,9 @@ function bot_advance_track_location($context, $group_id = null) {
     $count_locations = bot_get_count_of_reached_locations($context);
     $next_cluster_id = $context->get_next_location_cluster_id($count_locations);
 
-    Logger::info("Attempting to progress group to next location (reached {$count_locations}/{$target_locations} locations)", __FILE__, $context);
+    Logger::info("Attempting to progress group to next location (reached {$count_locations}/{$target_locations} locations, timed out: {$context->is_timed_out()})", __FILE__, $context);
 
-    if($next_cluster_id == null) {
+    if($next_cluster_id == null || $context->is_timed_out()) {
         // This is the end, my only friend
         Logger::info("Reached end of track", __FILE__, $context);
 
