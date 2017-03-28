@@ -44,15 +44,11 @@ function bot_get_first_location_id($context) {
 
 /**
  * Get whether the game has been won by a group.
- * Returns group ID and name, if game is won. Returns false otherwise.
+ * Returns group ID and name, if game is won. Returns null if no group has won yet.
+ * Returns false on error.
  */
 function bot_get_winning_group($context) {
-    $group = db_row_query("SELECT `group_id`, `name` FROM `groups` WHERE `game_id` = {$context->get_game_id()} AND `state` = " . STATE_GAME_WON);
-
-    if($group === null || $group === false)
-        return false;
-
-    return $group;
+    return db_row_query("SELECT `group_id`, `name` FROM `groups` WHERE `game_id` = {$context->get_game_id()} AND `state` = " . STATE_GAME_WON);
 }
 
 /**
@@ -302,13 +298,77 @@ function bot_get_ready_participants_count($context) {
  * @param $min_state_level Minimum level the groups must have.
  * @return array List of (Telegram ID, Leader name, Group name).
  */
-function bot_get_telegram_ids_of_groups($context, $min_state_level = STATE_NEW, $max_state_level = STATE_GAME_WON, $is_admin = false) {
-    $sql = "SELECT i.`telegram_id`, i.`full_name`, s.`name` FROM `status` AS s LEFT JOIN `identities` AS i ON s.`group_id` = i.`id` WHERE s.`game_id` = {$context->get_game_id()} AND s.`state` >= {$min_state_level} AND s.`state` <= {$max_state_level}";
-    if($is_admin) {
-        $sql .= " AND i.`is_admin` = 1";
-    }
+function bot_get_telegram_ids_of_groups($context, $min_state_level = STATE_NEW, $max_state_level = STATE_GAME_WON) {
+    $sql = "SELECT i.`telegram_id`, s.`group_id`,  i.`full_name`, s.`name` FROM `groups` AS s LEFT JOIN `identities` AS i ON s.`group_id` = i.`id` WHERE s.`game_id` = {$context->get_game_id()} AND s.`state` >= {$min_state_level} AND s.`state` <= {$max_state_level};";
 
     return db_table_query($sql);
+}
+
+/**
+ * Gets a list of Telegram IDs and names of all playing groups.
+ *
+ * Please note that as "playing" group is intended a group which,
+ * at least, already had an assigned location to reach.
+ *
+ * @return array List of (Telegram ID, Leader name, Group name).
+ */
+function bot_get_telegram_ids_of_playing_groups($context) {
+    return bot_get_telegram_ids_of_groups($context, STATE_GAME_LOCATION);
+}
+
+/**
+ * Gets the number of reached location for a specific group.
+ */
+function bot_get_group_count_of_reached_locations($context, $group_id) {
+    return db_scalar_query("SELECT COUNT(*) from `assigned_locations` where `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id} AND `reached_on` IS NOT NULL");
+}
+
+/**
+ * Gets the number of assigned location for a specific group.
+ */
+function bot_get_group_count_of_assigned_locations($context, $group_id) {
+    return db_scalar_query("SELECT COUNT(*) from `assigned_locations` where `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id} AND `assigned_on` IS NOT NULL");
+}
+
+
+/**
+ * Gets the last assigned location.
+ *
+ * @param $context
+ * @param $group_id
+ * @return array List of (Location Id, Lat, Lng)
+ */
+function bot_get_group_last_assigned_location($context, $group_id) {
+    return db_table_query("SELECT al.`location_id`,`lat`,`lng` FROM locations RIGHT JOIN (SELECT * FROM assigned_locations WHERE game_id = {$context->get_game_id()}  AND group_id = {$group_id} AND assigned_on IS NOT NULL ORDER BY assigned_on DESC LIMIT 1) AS al ON al.location_id = locations.location_id LIMIT 1;");
+}
+
+/**
+ * Gets the last reached location.
+ *
+ * @param $context
+ * @param $group_id
+ * @return array List of (Location Id, Lat, Lng)
+ */
+function bot_get_group_last_reached_location($context, $group_id) {
+    return db_table_query("SELECT al.`location_id`,`lat`,`lng` FROM locations RIGHT JOIN (SELECT * FROM assigned_locations WHERE game_id = {$context->get_game_id()}  AND group_id = {$group_id} AND reached_on IS NOT NULL ORDER BY reached_on DESC LIMIT 1) AS al ON al.location_id = locations.location_id LIMIT 1;");
+}
+
+/**
+ * Gets the amount of reached locations for all playing group.
+ */
+function bot_get_count_of_reached_location_for_playing_groups($context) {
+    return  db_table_query("SELECT i.`telegram_id`, i.`id`, g.`name`, l.c FROM groups AS g LEFT JOIN `identities` AS i ON g.`group_id` = i.`id`INNER JOIN (SELECT group_id, game_id, COUNT(*) AS c FROM assigned_locations WHERE game_id = {$context->get_game_id()} AND reached_on IS NOT NULL GROUP BY group_id) AS l ON l.group_id = g.group_id WHERE g.name IS NOT NULL ORDER BY l.`c` DESC;");
+}
+
+function bot_get_current_chart_of_playing_groups($context) {
+    return db_table_query("SELECT i.`telegram_id`, i.`id`, g.`name`, l.c, g.state, g.last_state_change FROM groups AS g LEFT JOIN `identities` AS i ON g.`group_id` = i.`id`INNER JOIN (SELECT group_id, game_id, COUNT(*) AS c FROM assigned_locations WHERE game_id = {$context->get_game_id()} AND reached_on IS NOT NULL GROUP BY group_id) AS l ON l.group_id = g.group_id WHERE g.name IS NOT NULL ORDER BY l.`c`DESC, g.`state` DESC, g.last_state_change ASC");
+}
+
+/**
+ * Gets the amount of assigned locations for all playing group.
+ */
+function bot_get_count_of_assigned_location_for_playing_groups($context) {
+    return  db_table_query("SELECT i.`telegram_id`, i.`id`, g.`name`, l.c FROM groups AS g LEFT JOIN `identities` AS i ON g.`group_id` = i.`id`INNER JOIN (SELECT group_id, game_id, COUNT(*) AS c FROM assigned_locations WHERE game_id = {$context->get_game_id()} AND assigned_on IS NOT NULL GROUP BY group_id) AS l ON l.group_id = g.group_id WHERE g.name IS NOT NULL ORDER BY l.`c` DESC;");
 }
 
 /**

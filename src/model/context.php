@@ -35,11 +35,40 @@ class Context {
      * @param §message IncomingMessage.
      */
     function __construct($message) {
-        if(!($message instanceof IncomingMessage))
-            die('Message variable is not an IncomingMessage instance');
 
-        $this->message = $message;
-        $this->refresh();
+        if(is_integer($message)){
+            $this->message = $this->build_dummy_message();
+            $this->is_game_admin = true;
+            $this->game_id = $message;
+
+        }else {
+            if (!($message instanceof IncomingMessage))
+                die('Message variable is not an IncomingMessage instance');
+
+            $this->message = $message;
+            $this->refresh();
+        }
+
+    }
+
+    private function build_dummy_message(){
+
+        $fake_message = array(
+            IncomingMessage::TELEGRAM_MESSAGE => 1,
+            IncomingMessage::TELEGRAM_DATE => 1490710298,
+            IncomingMessage::TELEGRAM_CHAT => array(
+                IncomingMessage::TELEGRAM_ID => 1,
+                IncomingMessage::TELEGRAM_FIRSTNAME => '',
+                IncomingMessage::TELEGRAM_LASTNAME => '',
+            ),
+            IncomingMessage::TELEGRAM_FROM => array(
+                IncomingMessage::TELEGRAM_ID => 1,
+                IncomingMessage::TELEGRAM_FIRSTNAME => '',
+                IncomingMessage::TELEGRAM_LASTNAME => '',
+            )
+        );
+
+        return new IncomingMessage($fake_message);
     }
 
     /*

@@ -250,7 +250,7 @@
                             var mapCenter = {lat: 43.726276, lng: 12.635762};
 
                             map = new google.maps.Map(document.getElementById('map'), {
-                                zoom: 15,
+                                zoom: 16,
                                 center: mapCenter
                             });
 
@@ -261,7 +261,7 @@
                             var mapCenter = {lat: 43.726276, lng: 12.635762};
 
                             mapNext = new google.maps.Map(document.getElementById('map-next'), {
-                                zoom: 15,
+                                zoom: 16,
                                 center: mapCenter
                             });
 
@@ -332,7 +332,7 @@
 
                         function getData(callback){
 
-                            $.get("http://www.s-delpriori.it/teamsStatus.php", function(data, status) {
+                            $.get("../teamsStatus.php", function(data, status) {
                                 //alert("Data: " + data + "\nStatus: " + status);
                                 if (data && status == 'success') {
                                     callback(data);
