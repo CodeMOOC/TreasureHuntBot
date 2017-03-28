@@ -151,24 +151,24 @@ function bot_advance_track_location($context, $group_id = null) {
 }
 
 /**
- * Gets the expected location code for the current group.
- * @return Location code as string, null if no location assigned,
- *         False on failure.
+ * Gets the expected location ID for the current group.
+ * @return Location ID as an integer, null if no location assigned,
+ *         false on failure.
  */
-function bot_get_expected_location_code($context) {
+function bot_get_expected_location_id($context) {
     $state = $context->get_group_state();
 
     if($state === STATE_GAME_LOCATION) {
         // General case, directed to a location
-        return db_scalar_query("SELECT l.`code` FROM `assigned_locations` AS ass LEFT JOIN `locations` AS l ON ass.`location_id` = l.`location_id` WHERE ass.`game_id` = {$context->get_game_id()} AND ass.`group_id` = {$context->get_user_id()} AND ass.`reached_on` IS NULL ORDER BY ass.`assigned_on` DESC LIMIT 1");
+        return db_scalar_query("SELECT l.`location_id` FROM `assigned_locations` AS ass LEFT JOIN `locations` AS l ON ass.`location_id` = l.`location_id` WHERE ass.`game_id` = {$context->get_game_id()} AND ass.`group_id` = {$context->get_user_id()} AND ass.`reached_on` IS NULL ORDER BY ass.`assigned_on` DESC LIMIT 1");
     }
     else if($state === STATE_REG_READY) {
         // Directed to first location
-        return db_scalar_query("SELECT `code` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `is_start` = 1 LIMIT 1");
+        return db_scalar_query("SELECT `location_id` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `is_start` = 1 LIMIT 1");
     }
     else if($state === STATE_GAME_LAST_LOC) {
         // Directed to last location
-        return db_scalar_query("SELECT `code` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `is_end` = 1 LIMIT 1");
+        return db_scalar_query("SELECT `location_id` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `is_end` = 1 LIMIT 1");
     }
     else {
         return null;
@@ -178,27 +178,22 @@ function bot_get_expected_location_code($context) {
 /**
  * Group reaches location through a code.
  */
-function bot_reach_location($context, $code) {
-    $matches = array();
-    if(preg_match('/^loc-([0-9]*)-([0-9]*)-(.{8})$/', $code, $matches) !== 1) {
-        Logger::warning("Code {$code} does not match a location code", __FILE__, $context);
-        return false;
-    }
-    if($matches[1] != $context->get_game_id()) {
-        Logger::warning("Location code does not match currently played event", __FILE__, $context);
+function bot_reach_location($context, $location_id, $game_id) {
+    if($game_id != $context->get_game_id()) {
+        Logger::warning("Location code does not match currently played game", __FILE__, $context);
         return false;
     }
 
-    $expected_payload = bot_get_expected_location_code($context);
-    Logger::debug("Expecting payload {$expected_payload}", __FILE__, $context);
+    $expected_id = bot_get_expected_location_id($context);
+    Logger::debug("Expecting location ID {$expected_id}", __FILE__, $context);
 
-    if($expected_payload === false) {
+    if($expected_id === false) {
         return false;
     }
-    else if($expected_payload === null) {
+    else if($expected_id == null) {
         return 'unexpected';
     }
-    else if($matches[3] !== $expected_payload) {
+    else if($location_id !== $expected_id) {
         return 'wrong';
     }
 
@@ -215,6 +210,8 @@ function bot_reach_location($context, $code) {
         if(!$context->set_state(STATE_GAME_SELFIE)) {
             return false;
         }
+
+        return true;
     }
     else if($state === STATE_REG_READY) {
         Logger::info("Group reached first location", __FILE__, $context);
@@ -222,6 +219,8 @@ function bot_reach_location($context, $code) {
         if(!$context->set_state(STATE_GAME_SELFIE)) {
             return false;
         }
+
+        return 'first';
     }
     else if($state === STATE_GAME_LAST_LOC) {
         Logger::info("Group reached the final location", __FILE__, $context);
@@ -229,9 +228,9 @@ function bot_reach_location($context, $code) {
         if(!$context->set_state(STATE_GAME_LAST_PUZ)) {
             return false;
         }
-    }
 
-    return true;
+        return 'last';
+    }
 }
 
 /**

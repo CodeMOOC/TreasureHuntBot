@@ -32,7 +32,9 @@ const TEXT_CMD_START_REGISTERED = "Bentornato, %FULL_NAME%! Questo è il bot ded
 const TEXT_CMD_START_PRIZE_INVALID = "Hmmm, sembra che abbiate trovato il premio, ma che <i>non</i> dovevate ancora trovarlo! 🤔";
 const TEXT_CMD_START_PRIZE_TOOLATE = "Mi dispiace, ma il gruppo “%WINNING_GROUP%” ha raggiunto il premio prima di voi! 😱";
 
-const TEXT_CMD_START_LOCATION_REACHED = "Bravi, siete nel posto giusto!";
+const TEXT_CMD_START_LOCATION_REACHED_FIRST = "Iniziamo col gioco! 🎉";
+const TEXT_CMD_START_LOCATION_REACHED = "Bravi, avete trovato il posto giusto!";
+const TEXT_CMD_START_LOCATION_REACHED_LAST = "Bravi, avete raggiunto l’<b>ultima tappa</b>!";
 const TEXT_CMD_START_LOCATION_UNEXPECTED = "Ok! Ma ora non mi serve sapere dove sei! Segui le istruzioni per piacere.";
 const TEXT_CMD_START_LOCATION_WRONG = "Sembra che tu abbia scansionato il QRCode sbagliato! Forse sei finito nel posto sbagliato? 😒";
 
