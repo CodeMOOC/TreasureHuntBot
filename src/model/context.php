@@ -359,7 +359,7 @@ class Context {
             Logger::debug("User is administering game #{$this->game_id} (state {$this->game_state}) in event {$this->event_id}", __FILE__, $this);
         }
         else {
-            // Get played games, if any
+            // Get played game (last one registered to), if any
             $group = db_row_query("SELECT `groups`.`game_id`, `groups`.`name`, `groups`.`state`, `games`.`event_id`, `games`.`state`, `games`.`telegram_channel`, `games`.`telegram_channel_censor_photo` FROM `groups` LEFT OUTER JOIN `games` ON `groups`.`game_id` = `games`.`game_id` WHERE `group_id` = {$this->get_user_id()} ORDER BY `groups`.`registered_on` DESC LIMIT 1");
             if($group !== null) {
                 $this->game_id = intval($group[0]);
@@ -388,7 +388,14 @@ class Context {
      * Gets whether the user is registered for a given game.
      */
     function is_registered($game_id) {
-        return ($this->game_id == $game_id && $this->group_name != null);
+        if ($this->game_id == $game_id && $this->group_name != null) {
+            // User is currently playing this game
+            return true;
+        }
+
+        $registration_count = db_scalar_query("SELECT count(*) FROM `groups` WHERE `group_id` = {$this->get_user_id()} AND `game_id` = {$game_id}");
+
+        return ($registration_count >= 1);
     }
 
     /**
@@ -398,7 +405,11 @@ class Context {
         $game_id = intval($game_id);
 
         if($this->is_registered($game_id)) {
-            Logger::warning("User already registered for game #{$game_id}", __FILE__, $this);
+            Logger::info("User already registered for game #{$game_id}", __FILE__, $this);
+
+            // Update registration timestamp, to make this game the currently played one
+            db_perform_action("UPDATE `groups` SET `registered_on` = NOW() WHERE `game_id` = {$game_id} AND `group_id` = {$this->internal_id}");
+
             return 'already_registered';
         }
 
