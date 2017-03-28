@@ -199,7 +199,7 @@ function msg_processing_handle_group_response($context) {
         case STATE_GAME_SELFIE:
             // Expecting photo taken at reached location
             if($context->get_message()->get_photo_large_id()) {
-                $reached_locations_count = bot_get_count_of_reached_locations($context) + 1;
+                $reached_locations_count = bot_get_count_of_reached_locations($context);
 
                 $file_info = telegram_get_file_info($context->get_message()->get_photo_large_id());
                 $file_path = $file_info['file_path'];
@@ -208,6 +208,7 @@ function msg_processing_handle_group_response($context) {
 
                 // Process selfie and optional badge
                 if(true) {
+                    // TODO: if this game has a badge overlay
                     $rootdir = realpath(dirname(__FILE__) . '/..');
                     exec("convert {$rootdir}/selfies/{$local_path}.jpg -resize 1600x1600^ -gravity center -crop 1600x1600+0+0 +repage {$rootdir}/images/badge-codytrip.png -composite {$rootdir}/badges/{$local_path}.jpg");
 
@@ -218,9 +219,11 @@ function msg_processing_handle_group_response($context) {
                 }
 
                 // Post notice on channel
-                $context->channel_picture($file_info['file_id'], TEXT_GAME_SELFIE_FORWARD_CAPTION, array(
-                    '%INDEX%' => $reached_locations_count
-                ));
+                if($reached_locations_count > 0) {
+                    $context->channel_picture($file_info['file_id'], TEXT_GAME_SELFIE_FORWARD_CAPTION, array(
+                        '%INDEX%' => $reached_locations_count
+                    ));
+                }
 
                 $riddle_id = bot_assign_random_riddle($context);
                 if($riddle_id === false || $riddle_id === null) {
