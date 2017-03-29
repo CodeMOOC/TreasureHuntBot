@@ -81,29 +81,35 @@ function msg_processing_admin($context) {
         $payload = extract_command_payload($text);
         $split_pos = strpos($payload, ' ');
         if($split_pos === false || $split_pos === 0) {
-            $context->reply("Specify group ID and message, separated by space.");
+            $context->reply('Use /send <code>group_id</code> <code>message</code>, separated by space.');
             return true;
         }
 
         $group_id = intval(substr($payload, 0, $split_pos));
+        if($group_id === 0) {
+            $context->reply('Use /send <code>group_id</code> <code>message</code>, with numeric ID.');
+            return true;
+        }
         $message = substr($payload, $split_pos + 1);
         if(empty($message)) {
-            $context->reply("Specify a valid message to send.");
+            $context->reply("Use /send <code>group_id</code> <code>message</code>, with a non-empty message.");
             return true;
         }
 
         $telegram_id = bot_get_telegram_id($context, $group_id);
-        if(!$telegram_id) {
-            $context->reply("Group with ID {$group_id} not found.");
+        if($telegram_id === false) {
+            $context->reply(TEXT_FAILURE_QUERY);
+            return true;
+        }
+        else if($telegram_id == null) {
+            $context->reply("No group with that ID in current game (#%GAME_ID%).");
             return true;
         }
 
-        Logger::info("Sending '{$message}' to group #{$group_id} (Telegram ID {$telegram_id})", __FILE__, $context, true);
+        Logger::info("Sending '{$message}' to group #{$group_id} @ Telegram ID {$telegram_id}", __FILE__, $context);
 
-        if(telegram_send_message($telegram_id, $message, array(
-            'parse_mode' => 'HTML',
-        )) === false) {
-            $context->reply("Failed to send message.");
+        if($context->send($telegram_id, $message) === false) {
+            $context->reply('Failed to send.');
         }
 
         return true;
