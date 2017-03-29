@@ -36,16 +36,20 @@ function msg_processing_commands($context) {
                 $context->reply(TEXT_CMD_START_NEW);
             }
         }
-        else if(mb_strlen($payload) <= 16) {
+        else {
             $code_info = db_row_query("SELECT `type`, `event_id`, `game_id`, `location_id`, `is_disabled` FROM `code_lookup` WHERE `code` = '" . db_escape($payload) . "'");
 
             if($code_info === false) {
                 $context->reply(TEXT_FAILURE_GENERAL);
                 return true;
             }
-
-            if($code_info == null || $code_info[4] == 1) {
-                // Not found or disabled
+            if($code_info == null) {
+                Logger::warning("Unknown /start payload received: '{$payload}'", __FILE__, $context);
+                $context->reply(TEXT_CMD_START_WRONG_PAYLOAD);
+                return true;
+            }
+            else if($code_info[4] == 1) {
+                // Code has been disabled
                 $context->reply(TEXT_CMD_START_WRONG_PAYLOAD);
                 return true;
             }
@@ -152,12 +156,6 @@ function msg_processing_commands($context) {
                     $context->reply(TEXT_CMD_START_WRONG_PAYLOAD);
                     return true;
             }
-        }
-        else {
-            // Something else (?)
-            Logger::warning("Unsupported /start payload received: '{$payload}'", __FILE__, $context);
-
-            $context->reply(TEXT_CMD_START_WRONG_PAYLOAD);
         }
 
         return true;

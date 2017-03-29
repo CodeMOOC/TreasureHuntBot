@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 28, 2017 at 08:34 PM
+-- Generation Time: Mar 29, 2017 at 06:50 PM
 -- Server version: 5.7.17-0ubuntu0.16.04.1
 -- PHP Version: 7.0.15-0ubuntu0.16.04.4
 
@@ -50,7 +50,7 @@ CREATE TABLE `assigned_riddles` (
 --
 
 CREATE TABLE `code_lookup` (
-  `code` varchar(16) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+  `code` varchar(20) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
   `type` enum('creation','registration','location','victory') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'location',
   `event_id` int(10) UNSIGNED DEFAULT NULL,
   `game_id` int(10) UNSIGNED DEFAULT NULL,
