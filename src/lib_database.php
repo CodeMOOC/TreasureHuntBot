@@ -148,6 +148,7 @@ function db_scalar_query($sql) {
 
     // Check for single (first) field type
     // Field type values from: http://php.net/manual/en/mysqli-result.fetch-field.php#106064
+    $is_integer = false;
     $field_info = mysqli_fetch_field($result);
     if($field_info !== false) {
         if(in_array($field_info->type, [ 16, 1, 1, 2, 9, 3, 8 ])) {

@@ -22,7 +22,7 @@ foreach ($playing_groups as $pg) {
         'team_id' => $pg[1]
     );
 
-    $group_data['pos'] = bot_get_group_count_of_reached_locations($context, $group_data['team_id']);
+    $group_data['pos'] = bot_get_count_of_reached_locations($context, $group_data['team_id']);
 
     $group_data['status'] = bot_get_group_status($context, $group_data['team_id']);
 

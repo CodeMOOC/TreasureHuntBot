@@ -34,29 +34,18 @@ function bot_get_location_info($context, $location_id) {
     return db_row_query("SELECT `lat`, `lng`, `description`, `image_path`, `internal_note` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `location_id` = {$location_id}");
 }
 
-function bot_get_last_location_id($context) {
-    return db_scalar_query("SELECT `location_id` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `is_end` = 1 LIMIT 1");
-}
-
+/**
+ * Get ID of the first location of the game.
+ */
 function bot_get_first_location_id($context) {
     return db_scalar_query("SELECT `location_id` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `is_start` = 1 LIMIT 1");
 }
 
 /**
- * Get whether the game has been won by a group.
- * Returns group ID and name, if game is won. Returns null if no group has won yet.
- * Returns false on error.
+ * Get ID of the last location of the game.
  */
-function bot_get_winning_group($context) {
-    return db_row_query("SELECT `group_id`, `name` FROM `groups` WHERE `game_id` = {$context->get_game_id()} AND `state` = " . STATE_GAME_WON);
-}
-
-/**
- * Gets the count of reached locations by a group.
- * @param $group_id ID of the group or null for the current group.
- */
-function bot_get_count_of_reached_locations($context, $group_id = null) {
-    return db_scalar_query("SELECT count(*) FROM `assigned_locations` WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$context->get_user_id()} AND `reached_on` IS NOT NULL");
+function bot_get_last_location_id($context) {
+    return db_scalar_query("SELECT `location_id` FROM `locations` WHERE `game_id` = {$context->get_game_id()} AND `is_end` = 1 LIMIT 1");
 }
 
 /*** TRACKS, PUZZLES, AND ASSIGNMENTS ***/
@@ -316,17 +305,24 @@ function bot_get_telegram_ids_of_playing_groups($context) {
 }
 
 /**
- * Gets the number of reached location for a specific group.
+ * Get whether the game has been won by a group.
+ * Returns group ID and name, if game is won. Returns null if no group has won yet.
+ * Returns false on error.
  */
-function bot_get_group_count_of_reached_locations($context, $group_id) {
-    return db_scalar_query("SELECT COUNT(*) from `assigned_locations` where `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id} AND `reached_on` IS NOT NULL");
+function bot_get_winning_group($context) {
+    return db_row_query("SELECT `group_id`, `name` FROM `groups` WHERE `game_id` = {$context->get_game_id()} AND `state` = " . STATE_GAME_WON);
 }
 
 /**
- * Gets the number of assigned location for a specific group.
+ * Gets the count of reached locations by a group.
+ * @param $group_id ID of the group or null for the current group.
  */
-function bot_get_group_count_of_assigned_locations($context, $group_id) {
-    return db_scalar_query("SELECT COUNT(*) from `assigned_locations` where `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id} AND `assigned_on` IS NOT NULL");
+function bot_get_count_of_reached_locations($context, $group_id = null) {
+    if($group_id == null) {
+        $group_id = $context->get_user_id();
+    }
+
+    return db_scalar_query("SELECT count(*) FROM `assigned_locations` WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id} AND `reached_on` IS NOT NULL");
 }
 
 
