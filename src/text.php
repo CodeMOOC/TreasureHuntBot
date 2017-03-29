@@ -21,6 +21,7 @@ const TEXT_FAILURE_GENERAL = "Oh! Questo è imbarazzante… Qualcosa è andato s
 const TEXT_FAILURE_GROUP_NOT_FOUND = "Non mi sembra tu sia registrato al gioco. 🤔";
 const TEXT_FAILURE_GROUP_ALREADY_ACTIVE = "Sei già pronto per giocare.";
 const TEXT_FAILURE_GROUP_INVALID_STATE = "Sembra che il tuo gruppo non sia pronto per giocare. 🙁 Segui le istruzioni che ti sono state date.";
+const TEXT_FAILURE_QUERY = "Query failed.";
 
 // Response to "/help"
 const TEXT_CMD_HELP = "Trovi le informazioni sul canale %GAME_CHANNEL%.";

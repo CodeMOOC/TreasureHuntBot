@@ -7,6 +7,35 @@
  * Administrator command message processing.
  */
 
+function admin_translate_group_state($state) {
+    switch($state) {
+        case STATE_NEW:
+            return "Newly registered";
+        case STATE_REG_VERIFIED:
+            return "Captcha verified";
+        case STATE_REG_NAME:
+            return "Name recorded";
+        case STATE_REG_NUMBER:
+            return "Participants recorded";
+        case STATE_REG_READY:
+            return "Ready to play";
+        case STATE_GAME_LOCATION:
+            return "Reaching location";
+        case STATE_GAME_SELFIE:
+            return "Snapping selfie";
+        case STATE_GAME_PUZZLE:
+            return "Solving puzzle";
+        case STATE_GAME_LAST_LOC:
+            return "Reaching last location";
+        case STATE_GAME_LAST_PUZ:
+            return "Solving last puzzle";
+        case STATE_GAME_WON:
+            return "Won the game";
+    }
+
+    return "Other (?)";
+}
+
 function admin_broadcast($context, $message, $min_group_state = STATE_NEW, $max_group_state = STATE_GAME_WON, $admins = false) {
     $payload = extract_command_payload($message);
     if(!$payload) {
@@ -92,7 +121,7 @@ function msg_processing_admin($context) {
             "3) Reserved (name ok): {$states[STATE_REG_NAME]}\n" .
             "5) Counted (participants ok): {$states[STATE_REG_NUMBER]}\n" .
             "6) Ready (avatar ok): {$states[STATE_REG_READY]}\n" .
-            "<b>Game status</b> 🗺\n" .
+            "<b>Game status</b>\n" .
             "Moving to location: {$states[STATE_GAME_LOCATION]}\n" .
             "Taking selfie: {$states[STATE_GAME_SELFIE]}\n" .
             "Solving puzzle: {$states[STATE_GAME_PUZZLE]}\n" .
@@ -102,6 +131,53 @@ function msg_processing_admin($context) {
             "<b>{$participants_count} participants</b> 👥 (ready/playing)\n" .
             "(Data does <i>not</i> include groups by administrators.)"
         );
+
+        return true;
+    }
+
+    if(starts_with($text, '/info')) {
+        $payload = extract_command_payload($text);
+        $group_id = intval($payload);
+
+        if($group_id === 0) {
+            $context->reply('Use "/info <code>group_id</code>"!');
+            return true;
+        }
+
+        $info = bot_get_group_info($context, $group_id);
+        if($info === false) {
+            $context->reply(TEXT_FAILURE_QUERY);
+            return true;
+        }
+        if($info == null) {
+            $context->reply("No group with that ID in current game (#%GAME_ID%).");
+            return true;
+        }
+
+        $outbound =
+            "👥 <b>Group #{$group_id} '{$info[1]}'</b>\n" .
+            "Led by {$info[2]}, with {$info[5]} participants.\n" .
+            admin_translate_group_state(intval($info[3])) . " ({$info[3]}), {$info[4]} minutes ago.\n";
+
+        if($info[3] == STATE_GAME_LOCATION) {
+            $location_info = bot_get_last_assigned_location($context, $group_id);
+            if($location_info) {
+                $outbound .= "Assigned location #{$location_info[0]} {$location_info[3]}.\n";
+            }
+        }
+        else if($info[3] == STATE_GAME_PUZZLE) {
+            $riddle_info = bot_get_current_assigned_riddle($context, $group_id);
+            if($riddle_info) {
+                $outbound .= "Riddle #{$riddle_info[2]} (solution <code>{$riddle_info[1]}</code>).\n";
+            }
+        }
+
+        $last_location_info = bot_get_last_reached_location($context, $group_id);
+        if($last_location_info) {
+            $outbound .= "Last seen in location #{$last_location_info[0]} {$last_location_info[3]}, {$last_location_info[4]} minutes ago.\n";
+        }
+
+        $context->reply($outbound);
 
         return true;
     }

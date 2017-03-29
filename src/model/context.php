@@ -325,7 +325,8 @@ class Context {
         $hydration_values = array(
             '%FIRST_NAME%' => $this->get_message()->get_sender_first_name(),
             '%FULL_NAME%' => $this->get_message()->get_sender_full_name(),
-            '%GROUP_NAME%' => $this->get_group_name()
+            '%GROUP_NAME%' => $this->get_group_name(),
+            '%GAME_ID%' => $this->get_game_id(),
             /*'%WEEKDAY%' => TEXT_WEEKDAYS[intval(strftime('%w'))]*/
         );
         if($this->game_channel_name) {

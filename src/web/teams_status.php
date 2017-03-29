@@ -26,20 +26,20 @@ foreach ($playing_groups as $pg) {
 
     $group_data['status'] = bot_get_group_status($context, $group_data['team_id']);
 
-    $last_reached_loc = bot_get_group_last_reached_location($context, $group_data['team_id']);
-    if($last_reached_loc && count($last_reached_loc) > 0) {
-        $group_data['lat'] = floatval($last_reached_loc[0][1]);
-        $group_data['lng'] = floatval($last_reached_loc[0][2]);
-        $group_data['reached_id'] = $last_reached_loc[0][0];
-        $group_data['reached_note'] = $last_reached_loc[0][3];
+    $last_reached_loc = bot_get_last_reached_location($context, $group_data['team_id']);
+    if($last_reached_loc) {
+        $group_data['lat'] = floatval($last_reached_loc[1]);
+        $group_data['lng'] = floatval($last_reached_loc[2]);
+        $group_data['reached_id'] = $last_reached_loc[0];
+        $group_data['reached_note'] = $last_reached_loc[3];
     }
 
-    $last_assigned_loc = bot_get_group_last_assigned_location($context, $group_data['team_id']);
-    if($last_assigned_loc && count($last_assigned_loc) > 0) {
-        $group_data['next_lat'] = floatval($last_assigned_loc[0][1]);
-        $group_data['next_lng'] = floatval($last_assigned_loc[0][2]);
-        $group_data['next_id'] = $last_assigned_loc[0][0];
-        $group_data['next_note'] = $last_assigned_loc[0][3];
+    $last_assigned_loc = bot_get_last_assigned_location($context, $group_data['team_id']);
+    if($last_assigned_loc) {
+        $group_data['next_lat'] = floatval($last_assigned_loc[1]);
+        $group_data['next_lng'] = floatval($last_assigned_loc[2]);
+        $group_data['next_id'] = $last_assigned_loc[0];
+        $group_data['next_note'] = $last_assigned_loc[3];
     }
 
     if(count($group_data) > 4) {

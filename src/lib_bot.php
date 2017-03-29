@@ -21,10 +21,23 @@ function bot_get_telegram_id($context, $group_id = null) {
 }
 
 /**
- * Gets image path and text for a riddle, by ID.
+ * Gets information about a group in the current game.
+ * @return array Row with (ID, group name, team leader name, state, minutes since
+ *               last state change, participants, registration timestamp).
+ */
+function bot_get_group_info($context, $group_id = null) {
+    if($group_id == null) {
+        $group_id = $context->get_user_id();
+    }
+
+    return db_row_query("SELECT `groups`.`group_id`, `groups`.`name`, `identities`.`full_name`, `groups`.`state`, TIMESTAMPDIFF(MINUTE, `groups`.`last_state_change`, NOW()), `groups`.`participants_count`, `groups`.`registered_on` FROM `groups` LEFT OUTER JOIN `identities` ON `groups`.`group_id` = `identities`.`id` WHERE `groups`.`game_id` = {$context->get_game_id()} AND `groups`.`group_id` = {$group_id}");
+}
+
+/**
+ * Gets image path, text, and solution for a riddle, by ID.
  */
 function bot_get_riddle_info($context, $riddle_id) {
-    return db_row_query("SELECT `image_path`, `text` FROM `riddles` WHERE `event_id` = {$context->get_event_id()} AND `riddle_id` = {$riddle_id}");
+    return db_row_query("SELECT `image_path`, `text`, `solution` FROM `riddles` WHERE `event_id` = {$context->get_event_id()} AND `riddle_id` = {$riddle_id}");
 }
 
 /**
@@ -226,8 +239,8 @@ function bot_reach_location($context, $location_id, $game_id) {
  *         false otherwise.
  */
 function bot_give_solution($context, $solution) {
-    $riddle_info = db_row_query("SELECT TIMESTAMPDIFF(SECOND, ass.`last_answer_on`, NOW()), r.`solution`, r.`riddle_id` FROM `assigned_riddles` AS ass LEFT JOIN `riddles` AS r ON ass.`riddle_id` = r.`riddle_id` WHERE ass.`event_id` = {$context->get_event_id()} AND ass.`group_id` = {$context->get_user_id()} AND ass.`solved_on` IS NULL ORDER BY `assigned_on` DESC LIMIT 1");
-    if($riddle_info === null || $riddle_info === false) {
+    $riddle_info = bot_get_current_assigned_riddle($context);
+    if($riddle_info == null || $riddle_info === false) {
         Logger::error("Unable to load current riddle info", __FILE__, $context);
         return false;
     }
@@ -325,27 +338,28 @@ function bot_get_count_of_reached_locations($context, $group_id = null) {
     return db_scalar_query("SELECT count(*) FROM `assigned_locations` WHERE `game_id` = {$context->get_game_id()} AND `group_id` = {$group_id} AND `reached_on` IS NOT NULL");
 }
 
-
 /**
- * Gets the last assigned location.
- *
- * @param $context
- * @param $group_id
- * @return array List of (Location Id, Lat, Lng, Internal note)
+ * Gets the last assigned location for a group, if any.
+ * @return array Row of (Location Id, Lat, Lng, Internal note)
  */
-function bot_get_group_last_assigned_location($context, $group_id) {
-    return db_table_query("SELECT al.`location_id`, `lat`, `lng`, `internal_note` FROM locations RIGHT JOIN (SELECT * FROM assigned_locations WHERE game_id = {$context->get_game_id()}  AND group_id = {$group_id} AND assigned_on IS NOT NULL ORDER BY assigned_on DESC LIMIT 1) AS al ON al.location_id = locations.location_id LIMIT 1;");
+function bot_get_last_assigned_location($context, $group_id = null) {
+    if($group_id == null) {
+        $group_id = $context->get_user_id();
+    }
+
+    return db_row_query("SELECT al.`location_id`, `lat`, `lng`, `internal_note` FROM locations RIGHT JOIN (SELECT * FROM assigned_locations WHERE game_id = {$context->get_game_id()} AND group_id = {$group_id} ORDER BY assigned_on DESC LIMIT 1) AS al ON al.location_id = locations.location_id LIMIT 1");
 }
 
 /**
- * Gets the last reached location.
- *
- * @param $context
- * @param $group_id
- * @return array List of (Location Id, Lat, Lng, Internal note)
+ * Gets the last reached location for a group, if any.
+ * @return array Row of (Location Id, Lat, Lng, Internal note, minutes since reached)
  */
-function bot_get_group_last_reached_location($context, $group_id) {
-    return db_table_query("SELECT al.`location_id`, `lat`, `lng`, `internal_note` FROM locations RIGHT JOIN (SELECT * FROM assigned_locations WHERE game_id = {$context->get_game_id()}  AND group_id = {$group_id} AND reached_on IS NOT NULL ORDER BY reached_on DESC LIMIT 1) AS al ON al.location_id = locations.location_id LIMIT 1;");
+function bot_get_last_reached_location($context, $group_id) {
+    if($group_id == null) {
+        $group_id = $context->get_user_id();
+    }
+
+    return db_row_query("SELECT `locations`.`location_id`, `locations`.`lat`, `locations`.`lng`, `locations`.`internal_note`, TIMESTAMPDIFF(MINUTE, `assigned_locations`.`reached_on`, NOW()) FROM `assigned_locations` LEFT JOIN `locations` ON `locations`.`location_id` = `assigned_locations`.`location_id` AND `locations`.`game_id` = `assigned_locations`.`game_id` WHERE `assigned_locations`.`game_id` = {$context->get_game_id()} AND `assigned_locations`.`group_id` = {$group_id} AND `assigned_locations`.`reached_on` IS NOT NULL ORDER BY `assigned_locations`.`reached_on` DESC LIMIT 1");
 }
 
 /**
@@ -353,6 +367,19 @@ function bot_get_group_last_reached_location($context, $group_id) {
  */
 function bot_get_count_of_reached_location_for_playing_groups($context) {
     return  db_table_query("SELECT i.`telegram_id`, i.`id`, g.`name`, l.c FROM groups AS g LEFT JOIN `identities` AS i ON g.`group_id` = i.`id`INNER JOIN (SELECT group_id, game_id, COUNT(*) AS c FROM assigned_locations WHERE game_id = {$context->get_game_id()} AND reached_on IS NOT NULL GROUP BY group_id) AS l ON l.group_id = g.group_id WHERE g.name IS NOT NULL ORDER BY l.`c` DESC;");
+}
+
+/**
+ * Gets the currently assigned riddle to the group, if any.
+ * @param $group_id int Optional group ID.
+ * @return array Seconds since last answer, correct solution, riddle ID.
+ */
+function bot_get_current_assigned_riddle($context, $group_id = null) {
+    if($group_id == null) {
+        $group_id = $context->get_user_id();
+    }
+
+    return db_row_query("SELECT TIMESTAMPDIFF(SECOND, ass.`last_answer_on`, NOW()), r.`solution`, r.`riddle_id` FROM `assigned_riddles` AS ass LEFT JOIN `riddles` AS r ON ass.`riddle_id` = r.`riddle_id` WHERE ass.`event_id` = {$context->get_event_id()} AND ass.`group_id` = {$group_id} AND ass.`solved_on` IS NULL ORDER BY `assigned_on` DESC LIMIT 1");
 }
 
 /**
