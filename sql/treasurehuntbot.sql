@@ -96,7 +96,7 @@ CREATE TABLE `games` (
   `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telegram_channel_censor_photo` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Set if pictures should not be sent on the channel',
   `timeout_absolute` datetime DEFAULT NULL COMMENT 'Absolute timeout when game ends',
-  `timeout_interval` smallint(6) DEFAULT NULL COMMENT 'Relative timeout in seconds from start',
+  `timeout_interval` smallint(6) DEFAULT NULL COMMENT 'Relative timeout in minutes from start',
   `registered_on` datetime NOT NULL,
   `tmp_location_lat` float DEFAULT NULL,
   `tmp_location_lng` float DEFAULT NULL,
