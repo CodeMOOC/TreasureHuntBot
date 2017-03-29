@@ -86,22 +86,21 @@ function msg_processing_admin($context) {
         $participants_count = bot_get_ready_participants_count($context);
 
         $context->reply(
-            "*Group registration* ✍\n" .
+            "<b>Group registration</b> ✍\n" .
             "1) New: {$states[STATE_NEW]}\n" .
             "2) Verified (puzzle ok): {$states[STATE_REG_VERIFIED]}\n" .
             "3) Reserved (name ok): {$states[STATE_REG_NAME]}\n" .
-            "4) Confirmed: {$states[STATE_REG_CONFIRMED]}\n" .
             "5) Counted (participants ok): {$states[STATE_REG_NUMBER]}\n" .
             "6) Ready (avatar ok): {$states[STATE_REG_READY]}\n" .
-            "*Game status* 🗺\n" .
+            "<b>Game status</b> 🗺\n" .
             "Moving to location: {$states[STATE_GAME_LOCATION]}\n" .
             "Taking selfie: {$states[STATE_GAME_SELFIE]}\n" .
             "Solving puzzle: {$states[STATE_GAME_PUZZLE]}\n" .
             "Moving to last location: {$states[STATE_GAME_LAST_LOC]}\n" .
             "Solving last puzzle: {$states[STATE_GAME_LAST_PUZ]}\n" .
             "Won: {$states[STATE_GAME_WON]} 🏆\n\n" .
-            "*{$participants_count} participants* 👥 (ready/playing)\n\n" .
-            "(Data does _not_ include groups by administrators.)"
+            "<b>{$participants_count} participants</b> 👥 (ready/playing)\n" .
+            "(Data does <i>not</i> include groups by administrators.)"
         );
 
         return true;
@@ -130,36 +129,6 @@ function msg_processing_admin($context) {
     }
     if(starts_with($text, '/broadcast')) {
         $context->reply("Pick one of the following commands: /broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, /broadcast\_all, or /broadcast\_admin. See /help for more info.");
-        return true;
-    }
-
-    if(starts_with($text, '/channel')) {
-        $payload = extract_command_payload($text);
-        if(!$payload) {
-            return false;
-        }
-
-        if($context->channel($payload) === false) {
-            $context->reply(TEXT_FAILURE_GENERAL);
-        }
-
-        return true;
-    }
-
-    /* Group state */
-    if(starts_with($text, '/confirm ok')) {
-        $confirm_response = bot_promote_reserved_to_confirmed($context);
-        if($confirm_response === false || $confirm_response === null) {
-            $context->reply(TEXT_FAILURE_GENERAL);
-            return true;
-        }
-        Logger::info("{$confirm_response} groups promoted to confirmed status", __FILE__, $context, true);
-
-        if($confirm_response > 0) {
-            // Notify promoted users
-            admin_broadcast($context, TEXT_ADVANCEMENT_CONFIRMED, STATE_REG_CONFIRMED, STATE_REG_CONFIRMED, false);
-        }
-
         return true;
     }
 }

@@ -386,7 +386,7 @@ function bot_get_count_of_assigned_location_for_playing_groups($context) {
  * Excludes groups by administrators.
  */
 function bot_get_group_count_by_state($context) {
-    $data = db_table_query("SELECT s.`state`, count(*) FROM `status` AS s LEFT JOIN `identities` AS i ON s.`group_id` = i.`id` WHERE s.`game_id` = {$context->get_game_id()} AND i.`is_admin` = 0 GROUP BY s.`state` ORDER BY s.`state` ASC");
+    $data = db_table_query("SELECT `groups`.`state`, count(*) FROM `groups` WHERE `groups`.`game_id` = {$context->get_game_id()} AND `groups`.`group_id` NOT IN (SELECT `organizer_id` FROM `games` WHERE `game_id` = {$context->get_game_id()}) GROUP BY `groups`.`state` ORDER BY `groups`.`state` ASC");
 
     $map = array();
     foreach(STATE_ALL as $c) {
