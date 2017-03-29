@@ -77,7 +77,7 @@ function msg_processing_admin($context) {
     }
 
     /* Text messages */
-    if(starts_with($text, '/send')) {
+    else if(starts_with($text, '/send')) {
         $payload = extract_command_payload($text);
         $split_pos = strpos($payload, ' ');
         if($split_pos === false || $split_pos === 0) {
@@ -110,7 +110,7 @@ function msg_processing_admin($context) {
     }
 
     /* Status */
-    if(starts_with($text, '/status')) {
+    else if(starts_with($text, '/status')) {
         $states = bot_get_group_count_by_state($context);
         $participants_count = bot_get_ready_participants_count($context);
 
@@ -135,7 +135,7 @@ function msg_processing_admin($context) {
         return true;
     }
 
-    if(starts_with($text, '/info')) {
+    else if(starts_with($text, '/info')) {
         $payload = extract_command_payload($text);
         $group_id = intval($payload);
 
@@ -182,28 +182,41 @@ function msg_processing_admin($context) {
         return true;
     }
 
+    else if(starts_with($text, '/groups')) {
+        $groups = bot_get_current_chart_of_playing_groups($context);
+
+        $outbound = "👥 <b>Playing groups</b>";
+        foreach($groups as $group) {
+            $outbound .= "\n<b>· {$group[2]}</b> (#{$group[1]}): {$group[3]} loc’s, " . mb_strtolower(admin_translate_group_state($group[4])) . " ({$group[5]} minutes ago).";
+        }
+
+        $context->reply($outbound);
+
+        return true;
+    }
+
     /* Broadcasting */
-    if(starts_with($text, '/broadcast_reserved')) {
+    else if(starts_with($text, '/broadcast_reserved')) {
         admin_broadcast($context, $text, STATE_REG_NAME, STATE_REG_NAME);
         return true;
     }
-    if(starts_with($text, '/broadcast_ready')) {
+    else if(starts_with($text, '/broadcast_ready')) {
         admin_broadcast($context, $text, STATE_REG_READY, STATE_REG_READY);
         return true;
     }
-    if(starts_with($text, '/broadcast_playing')) {
+    else if(starts_with($text, '/broadcast_playing')) {
         admin_broadcast($context, $text, STATE_GAME_LOCATION, STATE_GAME_LAST_PUZ);
         return true;
     }
-    if(starts_with($text, '/broadcast_all')) {
+    else if(starts_with($text, '/broadcast_all')) {
         admin_broadcast($context, $text);
         return true;
     }
-    if(starts_with($text, '/broadcast_admin')) {
+    else if(starts_with($text, '/broadcast_admin')) {
         admin_broadcast($context, $text, STATE_NEW, STATE_GAME_WON, true);
         return true;
     }
-    if(starts_with($text, '/broadcast')) {
+    else if(starts_with($text, '/broadcast')) {
         $context->reply("Pick one of the following commands: /broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, /broadcast\_all, or /broadcast\_admin. See /help for more info.");
         return true;
     }
