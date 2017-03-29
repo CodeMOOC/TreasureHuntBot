@@ -36,15 +36,17 @@ function admin_translate_group_state($state) {
     return "Other (?)";
 }
 
-function admin_broadcast($context, $message, $min_group_state = STATE_NEW, $max_group_state = STATE_GAME_WON, $admins = false) {
+function admin_broadcast($context, $message, $min_group_state = STATE_NEW, $max_group_state = STATE_GAME_WON) {
     $payload = extract_command_payload($message);
     if(!$payload) {
+        $context->reply("No message given.");
         return;
     }
 
     Logger::debug("Broadcasting to groups with state {$min_group_state}-{$max_group_state}: {$payload}", __FILE__, $context);
 
     $groups = bot_get_telegram_ids_of_groups($context, $min_group_state, $max_group_state, $admins);
+    $failures = 0;
     foreach($groups as $group) {
         $hydrated = hydrate($payload, array(
             '%NAME%' => $group[1],
@@ -54,11 +56,15 @@ function admin_broadcast($context, $message, $min_group_state = STATE_NEW, $max_
         if(telegram_send_message($group[0], $hydrated, array(
             'parse_mode' => 'HTML'
         )) === false) {
-            Logger::error("Broadcast failed to ID {$group[0]} ({$group[1]}, group {$group[2]})");
+            $failures++;
+            Logger::error("Broadcast failed to group #{$group[0]}", __FILE__, $context);
         }
     }
 
-    Logger::info("Sent broadcast message to " . sizeof($groups) . " groups", __FILE__, $context, true);
+    Logger::info("Sent broadcast message '{$message}' to " . count($groups) . " groups ({$failures} failures)", __FILE__, $context);
+    $context->reply("Broadcast message sent to " . count($groups) . " ({$failures} failures)");
+
+    return true;
 }
 
 function msg_processing_admin($context) {
@@ -66,12 +72,12 @@ function msg_processing_admin($context) {
 
     if(starts_with($text, '/help')) {
         $context->reply(
-            "👑 *Administration commands*\n" .
-            "/send id message: sends a message to a group by ID.\n" .
-            "/status: status of the game and group statistics.\n" .
-            "/channel: sends a message to the channel.\n" .
-            "/confirm ok: confirms all reserved groups and starts 2nd step of registration.\n" .
-            "/broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, /broadcast\_all, /broadcast\_admin: broadcasts following text to reserved, ready, playing, all, or admin-owned groups respectively. You may use _%NAME%_ (leader’s name) and _%GROUP%_ (group name) placeholders in the message."
+            "👑 <b>Administration commands</b>\n" .
+            "/send <code>id</code> <code>message</code>: sends a message to a group by ID.\n" .
+            "/status: status of the game and group states.\n" .
+            "/groups: leaderbord of playing groups.\n" .
+            "/info <code>id</code>: get info about a group.\n" .
+            "/broadcast_ready, /broadcast_playing, /broadcast_all: broadcasts following text to ready, playing, or all groups respectively. You may use HTML and <code>%NAME%</code> (leader’s name) and <code>%GROUP%</code> (group name) placeholders in the message."
         );
         return true;
     }
@@ -202,28 +208,20 @@ function msg_processing_admin($context) {
     }
 
     /* Broadcasting */
-    else if(starts_with($text, '/broadcast_reserved')) {
-        admin_broadcast($context, $text, STATE_REG_NAME, STATE_REG_NAME);
-        return true;
-    }
     else if(starts_with($text, '/broadcast_ready')) {
         admin_broadcast($context, $text, STATE_REG_READY, STATE_REG_READY);
         return true;
     }
     else if(starts_with($text, '/broadcast_playing')) {
-        admin_broadcast($context, $text, STATE_GAME_LOCATION, STATE_GAME_LAST_PUZ);
+        admin_broadcast($context, $text, STATE_GAME_LOCATION, STATE_GAME_WON);
         return true;
     }
     else if(starts_with($text, '/broadcast_all')) {
         admin_broadcast($context, $text);
         return true;
     }
-    else if(starts_with($text, '/broadcast_admin')) {
-        admin_broadcast($context, $text, STATE_NEW, STATE_GAME_WON, true);
-        return true;
-    }
     else if(starts_with($text, '/broadcast')) {
-        $context->reply("Pick one of the following commands: /broadcast\_reserved, /broadcast\_ready, /broadcast\_playing, /broadcast\_all, or /broadcast\_admin. See /help for more info.");
+        $context->reply("Pick one of the following commands: /broadcast_ready, /broadcast_playing, or /broadcast_all. See /help for more info.");
         return true;
     }
 }
