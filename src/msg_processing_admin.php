@@ -224,4 +224,49 @@ function msg_processing_admin($context) {
         $context->reply("Pick one of the following commands: /broadcast_ready, /broadcast_playing, or /broadcast_all. See /help for more info.");
         return true;
     }
+
+    /* Code debugging */
+    else if(starts_with($text, '/start')) {
+        $payload = extract_command_payload($text);
+
+        $code_info = db_row_query("SELECT `type`, `event_id`, `game_id`, `location_id`, `is_disabled` FROM `code_lookup` WHERE `code` = '" . db_escape($payload) . "'");
+        if($code_info === false) {
+            $context->reply(TEXT_FAILURE_QUERY);
+            return true;
+        }
+        if($code_info == null) {
+            $context->reply('Unknown code.');
+            return true;
+        }
+
+        $event_id = intval($code_info[1]);
+        $game_id = intval($code_info[2]);
+        $location_id = intval($code_info[3]);
+        $is_disabled = ($code_info[4] == 1);
+
+        $outbound = "<b>{$payload}</b>\nType: <code>{$code_info[0]}</code>";
+        if($event_id !== 0) $outbound .= "\nEvent #{$event_id}";
+        if($game_id !== 0) $outbound .= "\nGame #{$game_id}";
+        if($location_id !== 0) $outbound .= "\nLocation #{$location_id}";
+
+        if($game_id === $context->get_game_id() && $location_id !== 0) {
+            // Location info
+            $location_info = bot_get_location_info($context, $location_id);
+            if($location_info == null || $location_info === false) {
+                $outbound .= " (Linked location does not exist in game! ⚠️)";
+            }
+            else {
+                $outbound .= " ({$location_info[4]})";
+            }
+        }
+
+        $context->reply($outbound);
+
+        // Location position, if set
+        if(isset($location_info)) {
+            telegram_send_location($context->get_telegram_chat_id(), $location_info[0], $location_info[1]);
+        }
+
+        return true;
+    }
 }
