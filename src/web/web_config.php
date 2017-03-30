@@ -6,4 +6,4 @@
  * Time: 15:14
  */
 
-define('GAME_ID', 2);
+define('GAME_ID', 3);
