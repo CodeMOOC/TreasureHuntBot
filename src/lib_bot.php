@@ -425,3 +425,11 @@ function bot_get_group_count_by_state($context) {
 
     return $map;
 }
+
+function bot_get_game_absolute_timeout($context){
+    return db_scalar_query("SELECT timeout_absolute FROM games WHERE game_id = {$context->get_game_id()};");
+}
+
+function bot_get_group_absolute_timeout($context, $group_id){
+    return db_scalar_query("SELECT timeout_absolute FROM groups WHERE game_id = {$context->get_game_id()} AND group_id = {$group_id};");
+}

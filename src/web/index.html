@@ -74,7 +74,15 @@
         <div class="col-md-6"><img id="winner-avatar" src=""/></div>
     </div>
 
-    <div id="rank" class="row vertical-bottom-space">
+    <div id="timeout" class="row vertical-bottom-space hidden">
+        <div class="col-lg-12" >
+            <h2>Countdown</h2>
+            <p class="lead">Remaining time to complete the treasure hunt: <div id="countdown"><span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span></div></p>
+
+        </div>
+    </div>
+
+    <div id="rank" class="row ">
         <div class="col-lg-12">
             <h2>Leaderboard</h2>
             <div class="list-group">
@@ -316,7 +324,7 @@
 
                             switch (data.status){
                                 case 30:
-                                    message = 'is reaching a new stop (#' + data.next_id + ' ' + data.next_note + ')';
+                                    message = 'is reaching a new stop';
                                     break;
                                 case 32:
                                     message = 'is taking a selfie';
@@ -388,24 +396,97 @@
                             });
                         }
 
+                        function zeroFill( number, width )
+                        {
+                            width -= number.toString().length;
+                            if ( width > 0 )
+                            {
+                                return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+                            }
+                            return number + ""; // always return a string
+                        }
+
+                        function updateTimeot(timeout) {
+                            var now = new Date();
+                            var diffMs = (timeout - now); // milliseconds between now & Christmas
+                            var diffDays = Math.floor(diffMs / 86400000); // days
+                            var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+                            var diffMins = Math.floor(((diffMs % 86400000) % 3600000) / 60000); // minutes
+                            var diffSecs = Math.floor((((diffMs % 86400000) % 3600000) % 60000) / 1000); // minutes
+
+                            //console.log("mancano: " + "days: " + diffDays + "  " + diffHrs + ":" + diffMins + ":" + diffSecs);
+
+                            if(diffHrs < 0 || diffMins < 0 || diffSecs < 0){
+                                $('#countdown').html("FINISHED!");
+                            } else {
+                                $('#hours').html(zeroFill(diffHrs, 2));
+                                $('#minutes').html(zeroFill(diffMins, 2));
+                                $('#seconds').html(zeroFill(diffSecs, 2));
+                            }
+                        }
+
+                        function setupTimeout(data){
+                            if(data.is_timeout_th){
+
+                                var timeout = new Date(Date.parse(data.timeout_value));
+                                //var timeout = new Date(2017, 2, 30, 16, 1-1);
+
+                                var timeout_date = new Date(Date.UTC(timeout.getFullYear(),
+                                    timeout.getMonth(),
+                                    timeout.getDate(),
+                                    timeout.getHours(),
+                                    timeout.getMinutes(),
+                                    timeout.getSeconds()));
+
+                                updateTimeot(timeout_date);
+
+                                $("#timeout").removeClass('hidden');
+
+                                setInterval(function () {
+                                    updateTimeot(timeout_date);
+
+                                }, 1000);
+                            }
+                        }
+
                         function getData(callback){
-
-                            $.get("teams_status.php", function(data, status) {
-                                //alert("Data: " + data + "\nStatus: " + status);
-                                if (data && status == 'success') {
-                                    callback(data);
-                                }
-                            });
-
-                            /*$.post("teamStatus.php", function(data, status) {
+                            try {
+                                $.get("teams_status.php", function (data, status) {
+                                    //alert("Data: " + data + "\nStatus: " + status);
+                                    if (data && status == 'success') {
+                                        callback(data);
+                                    } else {
+                                        console.error(status);
+                                        console.error(data);
+                                    }
+                                });
+                                /*$.post("teamStatus.php", function(data, status) {
                                 alert("Data: " + data + "\nStatus: " + status);
                                 if (data) {
                                     callback(data);
                                 }
                             });*/
+                            }catch(ex){
+                                console.log(ex);
+                            }
+                        }
+
+                        function getTimeout(callback) {
+                            $.get("timeout_status.php", function (data, status){
+                                if(data && status == 'success'){
+                                    callback(data);
+                                }else{
+                                    console.error(status);
+                                    console.error(data);
+                                }
+                            });
                         }
 
                         function setup() {
+
+                            getTimeout(function (data){
+                                setupTimeout(data);
+                            });
 
                             getData(function (data) {
 
@@ -426,6 +507,7 @@
 
                                 }, 10000);
                             });
+
                         }
                     </script>
         </div>

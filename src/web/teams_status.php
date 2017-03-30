@@ -9,8 +9,8 @@
 require_once(dirname(__FILE__) . '/../game.php');
 require_once(dirname(__FILE__) . '/../lib.php');
 require_once(dirname(__FILE__) . '/backend_lib.php');
+require_once(dirname(__FILE__) . '/web_config.php');
 
-define('GAME_ID', 2);
 
 $data = [];
 $context = new Context(GAME_ID);
