@@ -65,16 +65,22 @@
         </div>
     </div>
 
-    <div id="winner" class="row jumbotron nobackground">
+    <div id="no-player" class="row jumbotron nobackground when-inactive">
+        <div class="col-md-12" >
+            <p class="lead">Nobody is playing right now...</p>
+        </div>
+    </div>
+
+    <div id="winner" class="row jumbotron nobackground when-active">
         <div class="col-md-6" >
             <p class="lead">There are <span id="team-count">?</span> teams playing right now!</p>
-            <p class="lead">The current winner is:</p>
-            <h2 id="winner-team" class="text-primary">???</h2>
+                <p class="lead">The current winner is:</p>
+                <h2 id="winner-team" class="text-primary">???</h2>
         </div>
         <div class="col-md-6"><img id="winner-avatar" src=""/></div>
     </div>
 
-    <div id="timeout" class="row vertical-bottom-space hidden">
+    <div id="timeout" class="row vertical-bottom-space hidden when-active">
         <div class="col-lg-12" >
             <h2>Countdown</h2>
             <p class="lead">Remaining time to complete the treasure hunt: <div id="countdown"><span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span></div></p>
@@ -82,7 +88,7 @@
         </div>
     </div>
 
-    <div id="rank" class="row ">
+    <div id="rank" class="row when-active">
         <div class="col-lg-12">
             <h2>Leaderboard</h2>
             <div class="list-group">
@@ -99,14 +105,14 @@
         </div>
     </div>
 
-    <div id="stops" class="row vertical-bottom-space">
+    <div id="stops" class="row vertical-bottom-space when-active">
         <div class="col-lg-12">
             <h2>Reached stops</h2>
             <canvas id="teamChart" class="location-chart"></canvas>
         </div>
     </div>
 
-    <div id="locations" class="row vertical-bottom-space">
+    <div id="locations" class="row vertical-bottom-space when-active">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#home">Last locations</a></li>
             <li ><a data-toggle="tab" href="#map-next-tab">Next locations</a></li>

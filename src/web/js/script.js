@@ -356,6 +356,26 @@ function getTimeout(callback) {
     });
 }
 
+function hideTreasureHunt() {
+    $('.when-active').hide();
+    $('.when-inactive').show();
+}
+
+function showTreasureHunt() {
+    $('.when-active').show();
+    $('.when-inactive').hide();
+
+}
+
+function checkTreasureHuntActivation(data) {
+
+    if(data.length == 0) {
+        hideTreasureHunt();
+    }else {
+        showTreasureHunt();
+    }
+}
+
 function setup() {
 
     getTimeout(function (data){
@@ -363,6 +383,8 @@ function setup() {
     });
 
     getData(function (data) {
+
+        checkTreasureHuntActivation(data);
 
         //prepare data
         var winner = getWinner(data);

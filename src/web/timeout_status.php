@@ -9,7 +9,7 @@
 header("access-control-allow-origin: *");
 $data = array(
 'is_timeout_th' => 1,
-'timeout_value' => '2017-03-28T21:50:22.000Z');
+'timeout_value' => '2017-03-30T16:00:00.000Z');
 echo json_encode((object)$data);
 return;
 */
