@@ -179,7 +179,7 @@ function bot_get_expected_location_id($context) {
 function bot_reach_location($context, $location_id, $game_id) {
     if($game_id != $context->get_game_id()) {
         Logger::warning("Location code does not match currently played game", __FILE__, $context);
-        return false;
+        return 'wrong';
     }
 
     $expected_id = bot_get_expected_location_id($context);
