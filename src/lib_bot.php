@@ -347,7 +347,7 @@ function bot_get_last_assigned_location($context, $group_id = null) {
         $group_id = $context->get_user_id();
     }
 
-    return db_row_query("SELECT al.`location_id`, `lat`, `lng`, `internal_note` FROM locations RIGHT JOIN (SELECT * FROM assigned_locations WHERE game_id = {$context->get_game_id()} AND group_id = {$group_id} ORDER BY assigned_on DESC LIMIT 1) AS al ON al.location_id = locations.location_id LIMIT 1");
+    return db_row_query("SELECT al.`location_id`, `lat`, `lng`, `internal_note` FROM locations RIGHT JOIN (SELECT * FROM assigned_locations WHERE game_id = {$context->get_game_id()} AND group_id = {$group_id} ORDER BY assigned_on DESC LIMIT 1) AS al ON al.location_id = locations.location_id  WHERE locations.game_id = {$context->get_game_id()} LIMIT 1");
 }
 
 /**
