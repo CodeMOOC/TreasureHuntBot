@@ -129,7 +129,12 @@ function msg_processing_commands($context) {
                     if($context->get_group_state() >= STATE_GAME_LAST_LOC) {
                         // Check for previous winners
                         $winning_group = bot_get_winning_group($context);
-                        if($winning_group !== false) {
+                        if($winning_group === false) {
+                            $context->reply(TEXT_FAILURE_GENERAL);
+                            return true;
+                        }
+                        else if($winning_group != null && !$context->has_timeout()) {
+                            // Game has no timeout (simultaneous winners) and a winning group exists
                             Logger::info("Group has reached the prize but game is already won", __FILE__, $context);
 
                             $context->reply(TEXT_CMD_START_PRIZE_TOOLATE, array(

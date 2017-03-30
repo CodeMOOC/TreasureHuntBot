@@ -93,8 +93,8 @@ const TEXT_GAME_LAST_LOCATION_STATE = "Manca pochissimo alla conclusione della g
 
 const TEXT_GAME_LAST_PUZZLE_STATE = "Siete giunti all’ultimo quesito… ora, con la mappa in mano, avete tutto il necessario per raggiungere la meta finale! Considerate *attentamente* lo svolgimento del gioco fino a questo momento e saprete trovare il percorso che vi porterà al tesoro! 😉";
 
-const TEXT_GAME_WON = "🎉 <b>Complimenti!</b> 🎉\n“%GROUP_NAME%”, siete stati i primi a trovare il tesoro ed avete vinto! 🏆";
-const TEXT_GAME_WON_CHANNEL = "<b>Il gruppo “%GROUP_NAME%” ha raggiunto la tappa finale e vince il gioco!</b> 🎉";
+const TEXT_GAME_WON = "🎉 <b>Complimenti!</b> 🎉\n“%GROUP_NAME%”, avete trovato il tesoro ed avete completato il gioco! 🏁";
+const TEXT_GAME_WON_CHANNEL = "<b>Il gruppo “%GROUP_NAME%” ha raggiunto la tappa finale!</b> 🏁";
 
 // Default response for anything else
 const TEXT_FALLBACK_RESPONSE = "Scusami, non ho capito cosa intendi.";
