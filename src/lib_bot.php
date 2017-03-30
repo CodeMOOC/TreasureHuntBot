@@ -394,7 +394,7 @@ function bot_get_current_assigned_riddle($context, $group_id = null) {
  *                    group state, last state change) or false on failure.
  */
 function bot_get_current_chart_of_playing_groups($context) {
-    return db_table_query("SELECT i.`telegram_id`, i.`id`, g.`name`, l.c, g.`state`, TIMESTAMPDIFF(MINUTE, g.`last_state_change`, NOW()) FROM groups AS g LEFT JOIN `identities` AS i ON g.`group_id` = i.`id`INNER JOIN (SELECT group_id, game_id, COUNT(*) AS c FROM assigned_locations WHERE game_id = {$context->get_game_id()} AND reached_on IS NOT NULL GROUP BY group_id) AS l ON l.group_id = g.group_id WHERE g.name IS NOT NULL ORDER BY l.`c`DESC, g.`state` DESC, g.last_state_change ASC");
+    return db_table_query("SELECT i.`telegram_id`, i.`id`, g.`name`, l.c, g.`state`, TIMESTAMPDIFF(MINUTE, g.`last_state_change`, NOW()) FROM groups AS g LEFT JOIN `identities` AS i ON g.`group_id` = i.`id`INNER JOIN (SELECT group_id, game_id, COUNT(*) AS c FROM assigned_locations WHERE game_id = {$context->get_game_id()} AND reached_on IS NOT NULL GROUP BY group_id) AS l ON l.group_id = g.group_id WHERE g.name IS NOT NULL AND g.game_id = {$context->get_game_id()} ORDER BY l.`c`DESC, g.`state` DESC, g.last_state_change ASC");
 }
 
 function bot_get_group_status($context, $group_id) {
