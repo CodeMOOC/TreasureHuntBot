@@ -323,7 +323,7 @@ function bot_get_telegram_ids_of_playing_groups($context) {
  * Returns false on error.
  */
 function bot_get_winning_group($context) {
-    return db_row_query("SELECT `group_id`, `name` FROM `groups` WHERE `game_id` = {$context->get_game_id()} AND `state` = " . STATE_GAME_WON);
+    return db_row_query("SELECT `group_id`, `name` FROM `groups` WHERE `game_id` = {$context->get_game_id()} AND `state` = " . STATE_GAME_WON . ' ORDER BY `last_state_change` ASC LIMIT 1');
 }
 
 /**

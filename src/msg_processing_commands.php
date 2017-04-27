@@ -134,7 +134,7 @@ function msg_processing_commands($context) {
                             return true;
                         }
                         else if($winning_group != null && !$context->has_timeout()) {
-                            // Game has no timeout (simultaneous winners) and a winning group exists
+                            // Game has no timeout (i.e., only one winner) and a winning group exists
                             Logger::info("Group has reached the prize but game is already won", __FILE__, $context);
 
                             $context->reply(TEXT_CMD_START_PRIZE_TOOLATE, array(
@@ -142,7 +142,7 @@ function msg_processing_commands($context) {
                             ));
                         }
                         else {
-                            Logger::info("Group has reached the prize and won", __FILE__, $context);
+                            Logger::info("Group has reached the prize", __FILE__, $context);
 
                             $context->set_state(STATE_GAME_WON);
                             $context->channel(TEXT_GAME_WON_CHANNEL);
