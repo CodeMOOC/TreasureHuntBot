@@ -133,7 +133,7 @@ function db_scalar_query($sql) {
         return false;
     }
     $num_rows = mysqli_num_rows($result);
-    if($num_rows > 1) {
+    if($num_rows > 1 && DEBUG) {
         mysqli_free_result($result);
         Logger::error("Query ($sql) generated more than one row of results (non-scalar)", __FILE__);
         return false;
@@ -233,7 +233,7 @@ function db_row_query($sql) {
     }
 
     $num_rows = mysqli_num_rows($result);
-    if($num_rows > 1) {
+    if($num_rows > 1 && DEBUG) {
         mysqli_free_result($result);
         Logger::error("Query ($sql) generated more than one row of results", __FILE__);
         return false;

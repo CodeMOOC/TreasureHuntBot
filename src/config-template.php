@@ -22,6 +22,7 @@ define('DATABASE_USERNAME', '');
 define('DATABASE_PASSWORD', '');
 
 /* Settings constant */
+define('DEBUG', false);
 define('CHAT_GROUP_DEBUG', 0);
 define('DEBUG_TO_DB', false);
 define('DEBUG_TO_BOT', false);
