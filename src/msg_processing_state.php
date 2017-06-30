@@ -210,7 +210,7 @@ function msg_processing_handle_group_response($context) {
                 if(true) {
                     // TODO: if this game has a badge overlay
                     $rootdir = realpath(dirname(__FILE__) . '/..');
-                    exec("convert {$rootdir}/selfies/{$local_path}.jpg -resize 1600x1600^ -gravity center -crop 1600x1600+0+0 +repage {$rootdir}/images/badge-codytrip.png -composite {$rootdir}/badges/{$local_path}.jpg");
+                    exec("convert {$rootdir}/selfies/{$local_path}.jpg -resize 1600x1600^ -gravity center -crop 1600x1600+0+0 +repage {$rootdir}/images/badge-codeeu-2017-06-30.png -composite {$rootdir}/badges/{$local_path}.jpg");
 
                     $context->picture("../badges/{$local_path}.jpg", TEXT_GAME_SELFIE_RESPONSE_BADGE);
                 }
