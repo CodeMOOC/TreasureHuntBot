@@ -8,7 +8,7 @@
  * used by both pull and push scripts.
  */
 
-require_once(dirname(__FILE__) . '/text.php');
+require_once(dirname(__FILE__) . '/text_en.php');
 require_once(dirname(__FILE__) . '/game.php');
 require_once(dirname(__FILE__) . '/lib.php');
 
