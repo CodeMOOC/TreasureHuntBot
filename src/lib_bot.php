@@ -379,7 +379,7 @@ function bot_get_current_assigned_riddle($context, $group_id = null) {
         $group_id = $context->get_user_id();
     }
 
-    return db_row_query("SELECT TIMESTAMPDIFF(SECOND, ass.`last_answer_on`, NOW()), r.`solution`, r.`riddle_id` FROM `assigned_riddles` AS ass LEFT JOIN `riddles` AS r ON ass.`riddle_id` = r.`riddle_id` WHERE ass.`event_id` = {$context->get_event_id()} AND ass.`group_id` = {$group_id} AND ass.`solved_on` IS NULL ORDER BY `assigned_on` DESC LIMIT 1");
+    return db_row_query("SELECT TIMESTAMPDIFF(SECOND, ass.`last_answer_on`, NOW()), r.`solution`, r.`riddle_id` FROM `assigned_riddles` AS ass LEFT JOIN `riddles` AS r ON ass.`riddle_id` = r.`riddle_id` AND `ass`.`event_id` = r.`event_id` WHERE ass.`event_id` = {$context->get_event_id()} AND ass.`group_id` = {$group_id} AND ass.`solved_on` IS NULL ORDER BY `assigned_on` DESC LIMIT 1");
 }
 
 /**
