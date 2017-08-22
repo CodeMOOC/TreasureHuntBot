@@ -213,7 +213,7 @@ function msg_processing_admin($context) {
         return true;
     }
     else if(starts_with($text, '/broadcast_playing')) {
-        admin_broadcast($context, $text, STATE_GAME_LOCATION, STATE_GAME_WON);
+        admin_broadcast($context, $text, STATE_GAME_LOCATION, STATE_GAME_LAST_PUZ);
         return true;
     }
     else if(starts_with($text, '/broadcast_all')) {
