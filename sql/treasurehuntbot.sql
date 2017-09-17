@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.7.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 29, 2017 at 09:38 PM
--- Server version: 5.7.17-0ubuntu0.16.04.1
--- PHP Version: 7.0.15-0ubuntu0.16.04.4
+-- Generation Time: Sep 17, 2017 at 01:36 AM
+-- Server version: 10.1.23-MariaDB-9+deb9u1
+-- PHP Version: 7.0.22-1~dotdeb+8.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 --
@@ -56,6 +58,18 @@ CREATE TABLE `code_lookup` (
   `game_id` int(10) UNSIGNED DEFAULT NULL,
   `location_id` int(10) UNSIGNED DEFAULT NULL,
   `is_disabled` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Marks code as disabled'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `conversation_memories`
+--
+
+CREATE TABLE `conversation_memories` (
+  `telegram_id` int(11) NOT NULL,
+  `data` text COLLATE utf8_unicode_ci NOT NULL,
+  `last_update` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -240,6 +254,12 @@ ALTER TABLE `code_lookup`
   ADD KEY `code_lookup_location_constraint` (`game_id`,`location_id`);
 
 --
+-- Indexes for table `conversation_memories`
+--
+ALTER TABLE `conversation_memories`
+  ADD UNIQUE KEY `telegram_id` (`telegram_id`);
+
+--
 -- Indexes for table `events`
 --
 ALTER TABLE `events`
@@ -406,3 +426,4 @@ ALTER TABLE `log`
 --
 ALTER TABLE `riddles`
   ADD CONSTRAINT `riddle_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE;
+COMMIT;
