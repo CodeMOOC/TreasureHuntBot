@@ -1,0 +1,233 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"PO-Revision-Date: 2017-09-14 13:16+02\n"
+"Last-Translator: Lorenz Cuno Klopfenstein <lck@klopfenstein>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.3\n"
+"POT-Creation-Date: 2017-09-15 10:27+0200\n"
+
+# Name of any group before having a name assigned
+msgid "unnamed_group"
+msgstr ""
+
+# General failure message
+msgid "failure_general"
+msgstr ""
+
+# Failure: user is not registered to the game with a group
+msgid "failure_group_not_found"
+msgstr ""
+
+# Failure: user team is already registered and ready
+msgid "failure_group_already_active"
+msgstr ""
+
+# Failure: user team is not ready to play and attempted to play
+msgid "failure_group_invalid_state"
+msgstr ""
+
+# Failure: internal error of a DB query
+msgid "failure_query"
+msgstr ""
+
+# Response to /help command
+msgid "cmd_help"
+msgstr ""
+
+# Response to naked /start command: greeting and general instructions
+msgid "cmd_start_new"
+msgstr ""
+
+# Response to naked /start command: user is already registered for a game
+msgid "cmd_start_registered"
+msgstr ""
+
+# Response to victory code in invalid state
+msgid "cmd_start_prize_invalid"
+msgstr ""
+
+# Response to victory code (first of game)
+msgid "cmd_start_prize_first"
+msgstr ""
+
+# Response to victory code (not first of game, %WINNING_GROUP% first group, %INDEX% arrival position)
+msgid "cmd_start_prize_not_first"
+msgstr ""
+
+# Response to first victory code on public channel (%GROUP_NAME% name)
+msgid "cmd_start_prize_channel_first"
+msgstr ""
+
+# Response to victory code on public channel (%GROUP_NAME% name, %INDEX%, arrival position)
+msgid "cmd_start_prize_channel_not_first"
+msgstr ""
+
+# Response to start location reached
+msgid "cmd_start_location_reached_first"
+msgstr ""
+
+# Response to any successive location reached
+msgid "cmd_start_location_reached"
+msgstr ""
+
+# Response to last location reached
+msgid "cmd_start_location_reached_last"
+msgstr ""
+
+# Unexpcted location code (not requested)
+msgid "cmd_start_location_unexpected"
+msgstr ""
+
+# Response to wrong location reached (different location than intended)
+msgid "cmd_start_location_wrong"
+msgstr ""
+
+# Unknown payload (invalid QR Code, other game, etc.)
+msgid "cmd_start_wrong_payload"
+msgstr ""
+
+# First response after registration code, welcome to game
+msgid "cmd_register_confirm"
+msgstr ""
+
+# Successive responses to registration of same game
+msgid "cmd_register_registered"
+msgstr ""
+
+# Registration: captcha quiz for verification
+msgid "registration_new_state"
+msgstr ""
+
+# Registration: captcha quiz caption with instructions
+msgid "registration_new_state_caption"
+msgstr ""
+
+# Registration: captcha quiz correct
+msgid "registration_new_response_correct"
+msgstr ""
+
+# Registration: captcha quiz wrong
+msgid "registration_new_response_wrong"
+msgstr ""
+
+# Registration: name choice prompt
+msgid "registration_verified_state"
+msgstr ""
+
+# Registration: name choice confirmation (%GROUP_NAME% name, %GROUP_COUNT% prog. count)
+msgid "registration_verified_response_ok"
+msgstr ""
+
+# Registration: name choice not valid
+msgid "registration_verified_response_invalid"
+msgstr ""
+
+# Registration: number of participants prompt
+msgid "registration_name_state"
+msgstr ""
+
+# Registration: number of participants not valid
+msgid "registration_name_response_invalid"
+msgstr ""
+
+# Registration: number of participants too few
+msgid "registration_name_response_toofew"
+msgstr ""
+
+# Registration: number of participants too many
+msgid "registration_name_response_toomany"
+msgstr ""
+
+# Registration: number of participants confirmation
+msgid "registration_name_response_ok"
+msgstr ""
+
+# Registration: avatar prompt
+msgid "registration_number_state"
+msgstr ""
+
+# Registration: avatar confirmation
+msgid "registration_number_response_ok"
+msgstr ""
+
+# Registration: avatar not valid
+msgid "registration_number_response_invalid"
+msgstr ""
+
+# Registration: final confirmation and instructions (%GAME_CHANNEL% Telegram channel)
+msgid "registration_ready_state_with_channel"
+msgstr ""
+
+# Registration: final confirmation and instructions
+msgid "registration_ready_state_without_channel"
+msgstr ""
+
+# Game state: reach assigned location and look for QR Code
+msgid "game_location_state"
+msgstr ""
+
+# Game state: snap selfie
+msgid "game_selfie_state"
+msgstr ""
+
+# Game state: selfie confirmation with badge
+msgid "game_selfie_response_badge"
+msgstr ""
+
+# Game state: selfie confirmation
+msgid "game_selfie_response_ok"
+msgstr ""
+
+# Game state: selfie forwarding caption for public channel (%GROUP_NAME% name, %INDEX% location number)
+msgid "game_selfie_forward_caption"
+msgstr ""
+
+# Game state: solve puzzle
+msgid "game_puzzle_state"
+msgstr ""
+
+# Game state: too quick puzzle response, wait %SECONDS% more for next answer
+msgid "game_puzzle_response_wait"
+msgstr ""
+
+# Game state: puzzle solution wrong, wait 60 seconds
+msgid "game_puzzle_response_wrong"
+msgstr ""
+
+# Game state: reach last location
+msgid "game_last_location_state"
+msgstr ""
+
+# Game state: solve last puzzle, with instructions
+msgid "game_last_puzzle_state"
+msgstr ""
+
+# Instructions for solving last puzzle, sent first time together with puzzle image
+msgid "game_last_puzzle_instructions"
+msgstr ""
+
+# Last puzzle solution given is wrong
+msgid "game_last_puzzle_wrong"
+msgstr ""
+
+# Default response for any other message
+msgid "fallback_response"
+msgstr ""
+
+# Photo was unexpected
+msgid "unrequested_photo"
+msgstr ""
+
+# Unsupported kind of message (location, audio, etc.)
+msgid "unsupported_other"
+msgstr ""
+
+# Bot is currently deactivated
+msgid "deactivated"
+msgstr ""

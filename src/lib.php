@@ -8,6 +8,7 @@
  */
 
 require_once(dirname(__FILE__) . '/config.php');
+require_once(dirname(__FILE__) . '/lib_localization.php');
 require_once(dirname(__FILE__) . '/model/context.php');
 require_once(dirname(__FILE__) . '/lib_utility.php');
 require_once(dirname(__FILE__) . '/lib_log.php');
