@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 17, 2017 at 01:36 AM
+-- Generation Time: Sep 24, 2017 at 05:03 PM
 -- Server version: 10.1.23-MariaDB-9+deb9u1
 -- PHP Version: 7.0.22-1~dotdeb+8.1
 
@@ -173,7 +173,9 @@ CREATE TABLE `identities` (
   `first_name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `full_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `first_seen_on` datetime NOT NULL,
-  `last_access` datetime NOT NULL
+  `last_access` datetime NOT NULL,
+  `is_admin` tinyint(1) NOT NULL DEFAULT '0',
+  `active_game` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
