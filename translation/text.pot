@@ -204,7 +204,19 @@ msgstr ""
 msgid "game_last_location_state"
 msgstr ""
 
-# Game state: solve last puzzle, with instructions
+# Game state: please snap last selfie
+msgid "game_last_selfie_state"
+msgstr ""
+
+# Last selfie received
+msgid "game_last_selfie_response_ok"
+msgstr ""
+
+# Last selfie caption for public channel
+msgid "game_last_selfie_forward_caption"
+msgstr ""
+
+# Game state: solve last puzzle prompt
 msgid "game_last_puzzle_state"
 msgstr ""
 
@@ -214,6 +226,10 @@ msgstr ""
 
 # Last puzzle solution given is wrong
 msgid "game_last_puzzle_wrong"
+msgstr ""
+
+# Game state: the game is over, thank you very much
+msgid "game_won_state"
 msgstr ""
 
 # Default response for any other message

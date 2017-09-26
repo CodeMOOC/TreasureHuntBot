@@ -40,7 +40,7 @@ msgstr ""
 msgid "creation_set_channel_write_attempt"
 msgstr ""
 
-# Confirmation of public channel
+# Confirmation of public channel write attempt
 msgid "creation_set_channel_confirm"
 msgstr ""
 

@@ -14,3 +14,5 @@ selfies/*
 riddles/*
 !riddles/default.jpg
 src/vendor/*
+translation/**/*.mo
+translation/**/*.po
