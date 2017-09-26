@@ -95,9 +95,10 @@ function bot_assign_random_riddle($context, $user_id = null) {
     Logger::debug("Assigning random riddle to group of user #{$user_id}", __FILE__, $context);
 
     $riddle_id = db_scalar_query(sprintf(
-        'SELECT `riddle_id` FROM `riddles` WHERE `event_id` = %1$d AND `riddle_id` NOT IN (SELECT `riddle_id` FROM `assigned_riddles` WHERE `event_id` = %1$d AND `group_id` = %2$d) ORDER BY RAND() LIMIT 1',
-        $context->game->event_id,
-        $user_id
+        'SELECT `riddle_id` FROM `riddles` WHERE `event_id` = %3$d AND `riddle_id` NOT IN (SELECT `riddle_id` FROM `assigned_riddles` WHERE `event_id` = %3$d AND `game_id` = %1$d AND `group_id` = %2$d) ORDER BY RAND() LIMIT 1',
+        $context->game->game_id,
+        $user_id,
+        $context->game->event_id
     ));
     if($riddle_id === false) {
         return false;
@@ -109,8 +110,9 @@ function bot_assign_random_riddle($context, $user_id = null) {
 
     // Write new riddle
     if(db_perform_action(sprintf(
-        "INSERT INTO `assigned_riddles` (`event_id`, `riddle_id`, `group_id`, `assigned_on`) VALUES(%d, %d, %d, NOW())",
+        "INSERT INTO `assigned_riddles` (`event_id`, `game_id`, `riddle_id`, `group_id`, `assigned_on`) VALUES(%d, %d, %d, %d, NOW())",
         $context->game->event_id,
+        $context->game->game_id,
         $riddle_id,
         $user_id
     )) === false) {
@@ -308,8 +310,9 @@ function bot_give_solution($context, $solution) {
         Logger::info("Wrong answer '{$solution}' ('{$correct_answer}' expected)", __FILE__, $context);
 
         db_perform_action(sprintf(
-            "UPDATE `assigned_riddles` SET `last_answer_on` = NOW() WHERE `event_id` = %d AND `riddle_id` = %d AND `group_id` = %d",
+            "UPDATE `assigned_riddles` SET `last_answer_on` = NOW() WHERE `event_id` = %d AND `game_id` = %d AND `riddle_id` = %d AND `group_id` = %d",
             $context->game->event_id,
+            $context->game->game_id,
             $riddle_id,
             $context->get_internal_id()
         ));
@@ -320,8 +323,9 @@ function bot_give_solution($context, $solution) {
     Logger::debug('Correct answer', __FILE__, $context);
 
     if(db_perform_action(sprintf(
-        "UPDATE `assigned_riddles` SET `last_answer_on` = NOW(), `solved_on` = NOW() WHERE `event_id` = %d AND `riddle_id` = %d AND `group_id` = %d",
+        "UPDATE `assigned_riddles` SET `last_answer_on` = NOW(), `solved_on` = NOW() WHERE `event_id` = %d AND `game_id` = %d AND `riddle_id` = %d AND `group_id` = %d",
         $context->game->event_id,
+        $context->game->game_id,
         $riddle_id,
         $context->get_internal_id()
     )) === false) {
@@ -475,8 +479,9 @@ function bot_get_current_assigned_riddle($context, $group_id = null) {
     }
 
     return db_row_query(sprintf(
-        "SELECT TIMESTAMPDIFF(SECOND, ass.`last_answer_on`, NOW()), r.`solution`, r.`riddle_id` FROM `assigned_riddles` AS ass LEFT JOIN `riddles` AS r ON ass.`riddle_id` = r.`riddle_id` AND `ass`.`event_id` = r.`event_id` WHERE ass.`event_id` = %d AND ass.`group_id` = %d AND ass.`solved_on` IS NULL ORDER BY `assigned_on` DESC LIMIT 1",
+        "SELECT TIMESTAMPDIFF(SECOND, ass.`last_answer_on`, NOW()), r.`solution`, r.`riddle_id` FROM `assigned_riddles` AS ass LEFT JOIN `riddles` AS r ON ass.`riddle_id` = r.`riddle_id` AND `ass`.`event_id` = r.`event_id` WHERE ass.`event_id` = %d AND ass.`game_id` = %d AND ass.`group_id` = %d AND ass.`solved_on` IS NULL ORDER BY `assigned_on` DESC LIMIT 1",
         $context->game->event_id,
+        $context->game->game_id,
         $group_id
     ));
 }

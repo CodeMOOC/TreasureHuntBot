@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 24, 2017 at 05:03 PM
+-- Generation Time: Sep 26, 2017 at 08:10 PM
 -- Server version: 10.1.23-MariaDB-9+deb9u1
 -- PHP Version: 7.0.22-1~dotdeb+8.1
 
@@ -38,6 +38,7 @@ CREATE TABLE `assigned_locations` (
 
 CREATE TABLE `assigned_riddles` (
   `event_id` int(10) UNSIGNED NOT NULL,
+  `game_id` int(10) UNSIGNED NOT NULL,
   `riddle_id` int(10) UNSIGNED NOT NULL,
   `group_id` int(10) UNSIGNED NOT NULL,
   `assigned_on` datetime NOT NULL,
@@ -242,8 +243,10 @@ ALTER TABLE `assigned_locations`
 -- Indexes for table `assigned_riddles`
 --
 ALTER TABLE `assigned_riddles`
-  ADD PRIMARY KEY (`event_id`,`riddle_id`,`group_id`),
-  ADD KEY `assriddles_group_constraint` (`group_id`);
+  ADD PRIMARY KEY (`event_id`,`game_id`,`riddle_id`,`group_id`) USING BTREE,
+  ADD KEY `assriddles_group_index` (`group_id`) USING BTREE,
+  ADD KEY `assriddle_group_constraint` (`game_id`,`group_id`),
+  ADD KEY `assriddle_riddle_constraint` (`event_id`,`riddle_id`);
 
 --
 -- Indexes for table `code_lookup`
@@ -358,16 +361,17 @@ ALTER TABLE `log`
 -- Constraints for table `assigned_locations`
 --
 ALTER TABLE `assigned_locations`
-  ADD CONSTRAINT `assloc_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `assloc_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`),
   ADD CONSTRAINT `assloc_location_constraint` FOREIGN KEY (`game_id`,`location_id`) REFERENCES `locations` (`game_id`, `location_id`);
 
 --
 -- Constraints for table `assigned_riddles`
 --
 ALTER TABLE `assigned_riddles`
-  ADD CONSTRAINT `assriddle_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `assriddles_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `assriddles_riddle_constraint` FOREIGN KEY (`event_id`,`riddle_id`) REFERENCES `riddles` (`event_id`, `riddle_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `assriddle_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`),
+  ADD CONSTRAINT `assriddle_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`),
+  ADD CONSTRAINT `assriddle_group_constraint` FOREIGN KEY (`game_id`,`group_id`) REFERENCES `groups` (`game_id`, `group_id`),
+  ADD CONSTRAINT `assriddle_riddle_constraint` FOREIGN KEY (`event_id`,`riddle_id`) REFERENCES `riddles` (`event_id`, `riddle_id`);
 
 --
 -- Constraints for table `code_lookup`
