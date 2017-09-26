@@ -13,44 +13,47 @@
  * @return bool True if processed.
  */
 function msg_processing_commands($context) {
-    $text = $context->get_message()->text;
+    $text = $context->message->text;
 
-    if(starts_with($text, '/help')) {
-        $context->reply(TEXT_CMD_HELP);
+    if($text === '/help') {
+        $context->comm->reply(__('cmd_help'));
 
         return true;
     }
-    else if(starts_with($text, '/start')) {
+    else if(starts_with($text, '/start ')) {
         $payload = extract_command_payload($text);
 
-        Logger::debug("Start command with payload '{$payload}'");
+        Logger::debug("Start command with payload '{$payload}'", __FILE__, $context);
 
         if($payload === '') {
             // Naked /start message
-            if(null !== $context->get_group_state()) {
-                $context->reply(TEXT_CMD_START_REGISTERED);
+            if($context->game->group_state) {
+                $context->comm->reply(__('cmd_start_registered'));
 
                 msg_processing_handle_group_state($context);
             }
             else {
-                $context->reply(TEXT_CMD_START_NEW);
+                $context->comm->reply(__('cmd_start_new'));
             }
         }
         else {
-            $code_info = db_row_query("SELECT `type`, `event_id`, `game_id`, `location_id`, `is_disabled` FROM `code_lookup` WHERE `code` = '" . db_escape($payload) . "'");
+            $code_info = db_row_query(sprintf(
+                "SELECT `type`, `event_id`, `game_id`, `location_id`, `is_disabled` FROM `code_lookup` WHERE `code` = '%s'",
+                db_escape($payload)
+            ));
 
             if($code_info === false) {
-                $context->reply(TEXT_FAILURE_GENERAL);
+                $context->comm->reply(__('failure_general'));
                 return true;
             }
             if($code_info == null) {
                 Logger::warning("Unknown /start payload received: '{$payload}'", __FILE__, $context);
-                $context->reply(TEXT_CMD_START_WRONG_PAYLOAD);
+                $context->comm->reply(__('cmd_start_wrong_payload'));
                 return true;
             }
             else if($code_info[4] == 1) {
                 // Code has been disabled
-                $context->reply(TEXT_CMD_START_WRONG_PAYLOAD);
+                $context->comm->reply(__('cmd_start_wrong_payload'));
                 return true;
             }
 
@@ -71,17 +74,17 @@ function msg_processing_commands($context) {
                 case 'registration':
                     Logger::debug("Registration code scanned for game #{$game_id}", __FILE__, $context);
 
-                    $result = $context->register($game_id);
+                    $result = bot_register($context, $game_id);
                     if($result === true) {
-                        $context->reply(TEXT_CMD_REGISTER_CONFIRM);
+                        $context->comm->reply(__('cmd_register_confirm'));
                         msg_processing_handle_group_state($context);
                     }
                     else if($result === 'already_registered') {
-                        $context->reply(TEXT_CMD_REGISTER_REGISTERED);
+                        $context->comm->reply(__('cmd_register_registered'));
                         msg_processing_handle_group_state($context);
                     }
                     else {
-                        $context->reply(TEXT_FAILURE_GENERAL);
+                        $context->comm->reply(__('failure_general'));
                     }
                     break;
 
@@ -90,28 +93,28 @@ function msg_processing_commands($context) {
 
                     $result = bot_reach_location($context, $location_id, $game_id);
                     if($result === false) {
-                        $context->reply(TEXT_FAILURE_GENERAL);
+                        $context->comm->reply(__('failure_general'));
                     }
                     else if($result === 'unexpected') {
-                        $context->reply(TEXT_CMD_START_LOCATION_UNEXPECTED);
+                        $context->comm->reply(__('cmd_start_location_unexpected'));
                     }
                     else if($result === 'wrong') {
-                        $context->reply(TEXT_CMD_START_LOCATION_WRONG);
+                        $context->comm->reply(__('cmd_start_location_wrong'));
                     }
                     else {
                         if($result === 'first') {
-                            $context->reply(TEXT_CMD_START_LOCATION_REACHED_FIRST);
+                            $context->comm->reply(__('cmd_start_location_reached_first'));
                         }
                         else if($result === 'last') {
-                            $context->reply(TEXT_CMD_START_LOCATION_REACHED_LAST);
+                            $context->comm->reply(__('cmd_start_location_reached_last'));
                         }
                         else {
-                            $context->reply(TEXT_CMD_START_LOCATION_REACHED);
+                            $context->comm->reply(__('cmd_start_location_reached'));
                         }
 
                         msg_processing_handle_group_state($context);
 
-                        if($context->get_group_state() === STATE_GAME_LAST_PUZ) {
+                        if($context->game->group_state === STATE_GAME_LAST_PUZ) {
                             // TODO warn others!
                         }
                     }
@@ -120,45 +123,50 @@ function msg_processing_commands($context) {
                 case 'victory':
                     Logger::debug("Victory code scanned for event #{$event_id}", __FILE__, $context);
 
-                    if($event_id != $context->get_event_id()) {
+                    if($event_id != $context->game->event_id) {
                         Logger::warning("Victory code does not match currently played event", __FILE__, $context);
-                        $context->reply(TEXT_CMD_START_WRONG_PAYLOAD);
+                        $context->comm->reply(__('cmd_start_wrong_payload'));
                         return true;
                     }
 
-                    if($context->get_group_state() >= STATE_GAME_LAST_LOC) {
+                    if($context->game->group_state === STATE_GAME_LAST_PUZ) {
                         // Check for previous winners
-                        $winning_group = bot_get_winning_group($context);
-                        if($winning_group === false) {
-                            $context->reply(TEXT_FAILURE_GENERAL);
+                        $winning_groups = bot_get_winning_groups($context);
+                        if($winning_groups === false) {
+                            $context->comm->reply(__('failure_general'));
                             return true;
                         }
-                        else if($winning_group != null && !$context->has_timeout()) {
-                            // Game has no timeout (i.e., only one winner) and a winning group exists
-                            Logger::info("Group has reached the prize but game is already won", __FILE__, $context);
 
-                            $context->reply(TEXT_CMD_START_PRIZE_TOOLATE, array(
-                                '%WINNING_GROUP%' => $winning_group[1]
-                            ));
+                        bot_set_group_state($context, STATE_GAME_WON);
+
+                        if($winning_groups == null) {
+                            // Game has no winning group
+                            Logger::info("Group has reached the prize first", __FILE__, $context);
+
+                            $context->comm->reply(__('cmd_start_prize_first'));
+                            $context->comm->channel(__('cmd_start_prize_channel_first'));
                         }
                         else {
-                            Logger::info("Group has reached the prize", __FILE__, $context);
+                            Logger::info("Group has reached the prize (not first)", __FILE__, $context);
 
-                            $context->set_state(STATE_GAME_WON);
-                            $context->channel(TEXT_GAME_WON_CHANNEL);
-
-                            msg_processing_handle_group_state($context);
+                            $context->comm->reply(__('cmd_start_prize_not_first'), array(
+                                '%WINNING_GROUP%' => $winning_groups[0][1],
+                                '%INDEX%' => count($winning_groups) + 1
+                            ));
+                            $context->comm->channel(__('cmd_start_prize_channel_not_first'), array(
+                                '%INDEX%' => count($winning_groups) + 1
+                            ));
                         }
                     }
                     else {
-                        // Invalid state, cannot win game yet
-                        $context->reply(TEXT_CMD_START_PRIZE_INVALID);
+                        // Invalid state, cannot win game yet/again
+                        $context->comm->reply(__('cmd_start_prize_invalid'));
                     }
                     break;
 
                 default:
                     Logger::error("Code '{$payload}' matches unknown type {$code_info[0]}", __FILE__, $context);
-                    $context->reply(TEXT_CMD_START_WRONG_PAYLOAD);
+                    $context->comm->reply(__('cmd_start_wrong_payload'));
                     return true;
             }
         }

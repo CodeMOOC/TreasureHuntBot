@@ -17,6 +17,13 @@ function is_cli() {
 }
 
 /**
+ * Converts a boolean to string.
+ */
+function b2s($b) {
+    return ($b) ? 'TRUE' : 'FALSE';
+}
+
+/**
  * Mixes together parameters for an HTTP request.
  *
  * @param array $orig_params Original parameters or null.

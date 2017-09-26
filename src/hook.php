@@ -22,12 +22,5 @@ if (!$update) {
     Logger::fatal('Bad message received (not JSON)', __FILE__);
 }
 else {
-    if (isset($update['message'])) {
-        $message = $update['message'];
-        include 'msg_processing_core.php';
-    }
-    else {
-        // Unknown type of update
-        Logger::debug("Unknown type of update", __FILE__);
-    }
+    include 'msg_processing_core.php';
 }

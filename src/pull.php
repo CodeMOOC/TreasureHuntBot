@@ -25,9 +25,9 @@ if(count($content) == 0) {
     exit;
 }
 
-$first_update = $content[0];
+$update = $content[0];
 
-Logger::debug('New update received: ' . print_r($first_update, true), __FILE__);
+Logger::debug('New update received: ' . print_r($update, true), __FILE__);
 
 // Updates have the following structure:
 // [
@@ -40,14 +40,7 @@ Logger::debug('New update received: ' . print_r($first_update, true), __FILE__);
 // ]
 
 // Update persistent store with latest update ID received
-$update_id = $first_update['update_id'];
+$update_id = $update['update_id'];
 file_put_contents(dirname(__FILE__) . '/pull-last-update.txt', $update_id);
 
-if (isset($first_update['message'])) {
-    $message = $first_update['message'];
-    include 'msg_processing_core.php';
-}
-else {
-    // Unknown type of update
-    Logger::debug("Unknown type of update", __FILE__);
-}
+include 'msg_processing_core.php';
