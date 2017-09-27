@@ -59,8 +59,8 @@ function bot_creation_init($context, $event_id) {
         return false;
     }
 
-    $context->memory->gameCreationMinLocations = (int)$event_data[0];
-    $context->memory->gameCreationMinDistance = ($event_data[1]) ? floatval($event_data[1]) : null;
+    $context->memory['creation_min_locations'] = (int)$event_data[0];
+    $context->memory['creation_min_distance'] = ($event_data[1]) ? floatval($event_data[1]) : null;
 
     // Create new entries
     $game_id = db_perform_action(sprintf(
@@ -80,7 +80,7 @@ function bot_creation_init($context, $event_id) {
         'INSERT INTO `game_location_clusters` (`game_id`, `cluster_id`, `num_locations`) VALUES(%d, %d, %d)',
         $game_id,
         1,
-        $context->memory->gameCreationMinLocations
+        $context->memory['creation_min_locations']
     )) === false) {
         Logger::error("Failed inserting new game cluster", __FILE__, $context);
         return false;
@@ -107,10 +107,109 @@ function bot_creation_abort($context) {
     return true;
 }
 
+/**
+ * Confirms the creation of a new game.
+ */
 function bot_creation_confirm($context) {
     if(!bot_creation_verify($context)) {
         return false;
     }
 
-    return bot_creation_update_state($context, GAME_STATE_REG_NAME);
+    if($context->game->game_state == GAME_STATE_NEW) {
+        return bot_creation_update_state($context, GAME_STATE_REG_NAME);
+    }
+
+    return true;
+}
+
+/**
+ * Advances game creation setting a new name.
+ */
+function bot_creation_set_name($context, $name) {
+    if(!bot_creation_verify($context)) {
+        return false;
+    }
+
+    if(!$name) {
+        Logger::debug("No valid name provided", __FILE__, $context);
+        return 'not_set';
+    }
+    else if(strlen($name) <= 4) {
+        return 'too_short';
+    }
+
+    Logger::debug("Setting game name to '{$name}'", __FILE__, $context);
+
+    $updates = db_perform_action(sprintf(
+        'UPDATE `games` SET `name` = \'%s\' WHERE `game_id` = %d',
+        db_escape($name),
+        $context->game->game_id
+    ));
+    if($updates !== 1) {
+        return false;
+    }
+
+    if($context->game->game_state == GAME_STATE_REG_NAME) {
+        bot_creation_update_state($context, GAME_STATE_REG_CHANNEL);
+    }
+
+    return true;
+}
+
+/**
+ * Advances game creation setting a public channel.
+ */
+function bot_creation_set_channel($context, $channel_name) {
+    if(!bot_creation_verify($context)) {
+        return false;
+    }
+
+    if(!$channel_name || mb_substr($channel_name, 0, 1) !== '@') {
+        return 'invalid';
+    }
+
+    Logger::debug("Attempting to send message to '{$channel_name}'", __FILE__, $context);
+
+    if(!telegram_send_message($channel_name, "Test. Remove this message.")) {
+        // TODO: provide better details about error (check for #403 code), etc.
+        //       requires better error signaling in telegram_send_message.
+        return 'fail_send';
+    }
+
+    $updates = db_perform_action(sprintf(
+        'UPDATE `games` SET `telegram_channel` = \'%s\' WHERE `game_id` = %d',
+        db_escape($channel_name),
+        $context->game->game_id
+    ));
+    if($updates !== 1) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Advances game creation setting censorship options on the channel.
+ */
+ function bot_creation_set_channel_censorship($context, $censor) {
+    if(!bot_creation_verify($context)) {
+        return false;
+    }
+
+    Logger::debug("Setting censorship status to " . b2s($censor), __FILE__, $context);
+
+    $updates = db_perform_action(sprintf(
+        'UPDATE `games` SET `telegram_channel_censor_photo` = %d WHERE `game_id` = %d',
+        (int)$censor,
+        $context->game->game_id
+    ));
+    if($updates !== 1) {
+        return false;
+    }
+
+    if($context->game->game_state == GAME_STATE_REG_CHANNEL) {
+        bot_creation_update_state($context, GAME_STATE_REG_EMAIL);
+    }
+
+    return true;
 }

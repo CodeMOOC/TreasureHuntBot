@@ -19,14 +19,6 @@ require_once(dirname(__FILE__) . '/msg_processing_creation.php');
 require_once(dirname(__FILE__) . '/msg_processing_state.php');
 
 function process_update($context) {
-    if($context->game && $context->game->is_admin && $context->game->game_state < GAME_STATE_ACTIVE) {
-        Logger::debug("Game setup process still running", __FILE__, $context);
-
-        if(msg_processing_handle_game_creation($context)) {
-            return;
-        }
-    }
-
     if($context->game->is_admin) {
         // TODO: admin commands
     }
@@ -36,12 +28,21 @@ function process_update($context) {
         return;
     }
 
-    // Base commands (take precedence over game playing)
+    // Base commands (take precedence over anything else)
     if($context->is_message() && msg_processing_commands($context)) {
         return;
     }
 
-    // Registration and game process
+    // Game creation process
+    if($context->game && $context->game->is_admin && $context->game->game_state < GAME_STATE_ACTIVE) {
+        Logger::debug("Game setup process still running", __FILE__, $context);
+
+        if(msg_processing_handle_game_creation($context)) {
+            return;
+        }
+    }
+
+    // Registration and play process
     if($context->game && $context->game->game_id !== null && !$context->game->is_admin) {
         if($context->game->game_state == GAME_STATE_ACTIVE) {
             if(msg_processing_handle_group_response($context)) {

@@ -67,23 +67,7 @@ function msg_processing_commands($context) {
                 case 'creation':
                     Logger::debug("Creation code scanned for event #{$event_id}", __FILE__, $context);
 
-                    if(!bot_creation_init($context, $event_id)) {
-                        $context->comm->reply(__('failure_general'));
-                    }
-                    else {
-                        $context->memorize_callback($context->comm->reply(
-                            "Welcome to the game creation process. Do you want to proceed creating a new game for the '%EVENT_NAME%' event?",
-                            null,
-                            array("reply_markup" => array(
-                                "inline_keyboard" => array(
-                                    array(
-                                        array("text" => "Yes!", "callback_data" => "confirm"),
-                                        array("text" => "Cancel", "callback_data" => "cancel")
-                                    )
-                                )
-                            ))
-                        ));
-                    }
+                    msg_processing_init_game_creation($context, $event_id);
 
                     break;
 

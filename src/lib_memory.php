@@ -15,15 +15,17 @@ function memory_load_for_user($telegram_id) {
     $data = db_scalar_query("SELECT `data` FROM `conversation_memories` WHERE `telegram_id` = {$telegram_id}");
 
     if($data === false || $data === null) {
-        return new stdClass();
+        return array();
     }
 
-    return json_decode($data, false);
+    Logger::debug("Memory load: '{$data}'", __FILE__);
+
+    return json_decode($data, true);
 }
 
 function memory_persist($telegram_id, $data) {
     // Clean-up data, removing null entries
-    $data = (object)array_filter((array)$data, function($val) {
+    $data = array_filter($data, function($val) {
         return !is_null($val);
     });
 
@@ -36,4 +38,6 @@ function memory_persist($telegram_id, $data) {
     )) === false) {
         Logger::warning('Failed to store conversation memory', __FILE__);
     }
+
+    Logger::debug("Memory store: '{$encoded}'", __FILE__);
 }

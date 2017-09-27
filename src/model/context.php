@@ -201,7 +201,7 @@ class Context {
             $message_id = (int)$result['message_id'];
 
             Logger::debug("Memorizing {$message_id} as message ID for callback", __FILE__, $this);
-            $this->memory->lastCallbackMessageId = $message_id;
+            $this->memory['last_callback_message_id'] = $message_id;
         }
         else {
             Logger::warning("Invalid result values from Telegram, unable to memorize message ID for callback", __FILE__, $this);
@@ -219,13 +219,13 @@ class Context {
             return false;
         }
 
-        if(!isset($this->memory->lastCallbackMessageId)) {
+        if(!isset($this->memory['last_callback_message_id'])) {
             Logger::debug("Message ID for callback not set", __FILE__, $this);
             return false;
         }
 
-        if($this->memory->lastCallbackMessageId === $this->callback->message_id) {
-            $this->memory->lastCallbackMessageId = null;
+        if($this->memory['last_callback_message_id'] === $this->callback->message_id) {
+            $this->memory['last_callback_message_id'] = null;
             return true;
         }
         else {
