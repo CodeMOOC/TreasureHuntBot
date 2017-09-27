@@ -50,6 +50,8 @@ class Context {
      * Force reload context from database.
      */
     public function reload() {
+        $this->close();
+
         if(isset($this->update['message'])) {
             $this->message = new Message($this->update['message']);
         }
