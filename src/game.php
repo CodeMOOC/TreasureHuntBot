@@ -60,6 +60,7 @@ const GAME_STATE_REG_EMAIL          = 10;  // channel ok, asked for e-mail
 const GAME_STATE_LOCATIONS_FIRST    = 30;  // asked for first location
 const GAME_STATE_LOCATIONS_LAST     = 40;  // asked for last location
 const GAME_STATE_LOCATIONS          = 50;  // asked for location
+const GAME_STATE_READY              = 127; // all set, ready to open
 const GAME_STATE_ACTIVE             = 128; // ready to accept users, play, etc.
 const GAME_STATE_DEAD               = 255; // game is over
 
@@ -71,6 +72,7 @@ const GAME_STATE_ALL                = array(
     GAME_STATE_LOCATIONS_FIRST,
     GAME_STATE_LOCATIONS_LAST,
     GAME_STATE_LOCATIONS,
+    GAME_STATE_READY,
     GAME_STATE_ACTIVE,
     GAME_STATE_DEAD
 );
@@ -83,6 +85,7 @@ const GAME_STATE_MAP                = array(
     30      => 'GAME_STATE_LOCATIONS_FIRST',
     40      => 'GAME_STATE_LOCATIONS_LAST',
     50      => 'GAME_STATE_LOCATIONS',
+    127     => 'GAME_STATE_READY',
     128     => 'GAME_STATE_ACTIVE',
     255     => 'GAME_STATE_DEAD'
 );
