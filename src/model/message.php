@@ -20,6 +20,9 @@ class Message implements iContent {
     private $photo;
     private $caption;
 
+    public $latitude;
+    public $longitude;
+
     function __construct($payload) {
         $this->payload = $payload;
 
@@ -34,6 +37,10 @@ class Message implements iContent {
         }
         if(isset($payload['caption'])){
             $this->caption = $payload['caption'];
+        }
+        if(isset($payload['location'])) {
+            $this->latitude = $payload['location']['latitude'];
+            $this->longitude = $payload['location']['longitude'];
         }
     }
 
@@ -73,6 +80,10 @@ class Message implements iContent {
         else {
             return null;
         }
+    }
+
+    function is_location() {
+        return (isset($this->latitude) && isset($this->longitude));
     }
 
     // Begin iContent interface
