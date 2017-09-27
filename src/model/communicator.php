@@ -116,11 +116,17 @@ class Communicator {
             );
         }
 
-        return telegram_send_message(
+        $final_parameters = unite_arrays($default_parameters, $additional_parameters);
+        $result = telegram_send_message(
             $receiver,
             $this->hydrate_text($message, $additional_values),
-            unite_arrays($default_parameters, $additional_parameters)
+            $final_parameters
         );
+
+        if(isset($final_parameters['reply_markup']['inline_keyboard'])) {
+            // New inline keyboard set with message, memorize for callback verification
+            $this->owning_context->memorize_callback($result);
+        }
     }
 
     private function hydrate_text($message, $additional_values = null) {

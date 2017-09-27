@@ -11,8 +11,10 @@
  * Purge the bot's memory from previous registration attempts.
  */
 function msg_processing_purge_game_creation($context) {
-    $context->memory['creation_channel_tested'] = null;
-    $context->memory['creation_channel_name'] = null;
+    $context->memory[MEMORY_CREATION_MIN_LOCATIONS] = null;
+    $context->memory[MEMORY_CREATION_MIN_DISTANCE] = null;
+    $context->memory[MEMORY_CREATION_CHANNEL_TESTED] = null;
+    $context->memory[MEMORY_CREATION_CHANNEL_NAME] = null;
 }
 
 /**
@@ -25,7 +27,7 @@ function msg_processing_init_game_creation($context, $event_id) {
         $context->comm->reply(__('failure_general'));
     }
     else {
-        $context->memorize_callback($context->comm->reply(
+        $context->comm->reply(
             "Welcome to the game creation process. Do you want to proceed creating a new game for the '%EVENT_NAME%' event?",
             null,
             array("reply_markup" => array(
@@ -36,17 +38,13 @@ function msg_processing_init_game_creation($context, $event_id) {
                     )
                 )
             ))
-        ));
+        );
     }
 }
 
 $msg_processing_creation_handlers = array(
     GAME_STATE_NEW => function($context) {
         if($context->callback) {
-            if(!$context->verify_callback()) {
-                return;
-            }
-
             if($context->callback->data !== 'confirm') {
                 bot_creation_abort($context);
                 $context->comm->reply("Nevermind then.");
@@ -135,7 +133,7 @@ $msg_processing_creation_handlers = array(
                 return;
             }
             else {
-                $context->memory['creation_channel_tested'] = true;
+                $context->memory[MEMORY_CREATION_CHANNEL_TESTED] = true;
 
                 $context->comm->reply(
                     "Great! Do you with to publish the <i>selfies</i> of your participants on the public channel automatically?",
@@ -152,11 +150,11 @@ $msg_processing_creation_handlers = array(
             }
         };
 
-        if(!isset($context->memory['creation_channel_tested'])) {
+        if(!isset($context->memory[MEMORY_CREATION_CHANNEL_TESTED])) {
             // Channel not tested yet
             if($context->message) {
                 $channel_name = $context->message->text;
-                $context->memory['creation_channel_name'] = $channel_name;
+                $context->memory[MEMORY_CREATION_CHANNEL_NAME] = $channel_name;
 
                 $context->comm->reply("Testing now…");
 
@@ -171,7 +169,7 @@ $msg_processing_creation_handlers = array(
                 else if($context->callback->data === 'tryagain') {
                     $context->comm->reply("Testing again…");
 
-                    $handler_func($context, $context->memory['creation_channel_name']);
+                    $handler_func($context, $context->memory[MEMORY_CREATION_CHANNEL_NAME]);
                 }
             }
         }
@@ -192,19 +190,154 @@ $msg_processing_creation_handlers = array(
     },
 
     GAME_STATE_REG_EMAIL => function($context) {
+        $result = bot_creation_set_email($context, $context->message->text);
+        if($result === 'invalid') {
+            $context->comm->reply("This doesn't look like a valid e-mail. Try again:");
+            return;
+        }
+        else if($result === false) {
+            $context->comm->reply(__('failure_general'));
+            return;
+        }
 
+        $context->comm->reply("Let's start defining the locations of your game. 🗺️");
+        $context->comm->reply("Send me the geographical position of where your game will <b>start</b> (this is where all players will gather just before the game).");
     },
 
     GAME_STATE_LOCATIONS_FIRST => function($context) {
+        if(!$context->message || !$context->message->is_location()) {
+            $context->comm->reply("Please send a geographical location (use Telegram's <i>share</i> button).");
+            return;
+        }
 
+        bot_creation_set_start($context, $context->message->latitude, $context->message->longitude);
+
+        $context->comm->reply("Very well. Now send the position of the <b>end</b> location (this is where players will go to complete the game).");
     },
 
     GAME_STATE_LOCATIONS_LAST => function($context) {
+        if(!$context->message || !$context->message->is_location()) {
+            $context->comm->reply("Please send a geographical location (use Telegram's <i>share</i> button).");
+            return;
+        }
 
+        bot_creation_set_end($context, $context->message->latitude, $context->message->longitude);
+
+        $context->comm->reply("Now, we'll have to create other locations that will be randomly selected by me during the game. You'll have to provide %NUM_LOCATIONS% locations at least. (<a href=\"https://github.com/CodeMOOC/TreasureHuntBot/wiki/Setting-up-game-locations\">More information</a>.)", array(
+            '%NUM_LOCATIONS%' => $context->memory[MEMORY_CREATION_MIN_LOCATIONS]
+        ));
+        $context->comm->reply("Start sending the geo-position for the first location.");
     },
 
     GAME_STATE_LOCATIONS => function($context) {
+        if($context->message) {
+            list($stop_conditions_met, $count) = bot_creation_check_location_conditions($context);
 
+            // User is sending an update (of any kind)
+            if($context->message->is_location()) {
+                $context->memory[MEMORY_CREATION_LOCATION_LAT] = $context->message->latitude;
+                $context->memory[MEMORY_CREATION_LOCATION_LNG] = $context->message->longitude;
+            }
+            else {
+                $context->memory[MEMORY_CREATION_LOCATION_NAME] = $context->message->text;
+            }
+
+            // Write out current location status from memory
+            $reply_text = "📍 Location <b>%NEXT_INDEX%</b> at %POSITION%, “%NAME%”.";
+            if(!isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) {
+                $reply_text .= ' ' . "Send the geo-position for the location.";
+            }
+            else if(!isset($context->memory[MEMORY_CREATION_LOCATION_NAME])) {
+                $reply_text .= ' ' . "Write the name of the location.";
+            }
+            else {
+                $reply_text .= ' ' . "All set? Send in a new position or a new name to update, otherwise tap on <i>Save</i>.";
+            }
+
+            $buttons = array();
+            if(isset($context->memory[MEMORY_CREATION_LOCATION_LAT]) && isset($context->memory[MEMORY_CREATION_LOCATION_NAME])) {
+                $buttons[] = array(array("text" => "💾 Save location", "callback_data" => "save"));
+            }
+            if($stop_conditions_met) {
+                $buttons[] = array(array("text" => "Done", "callback_data" => "stop"));
+            }
+
+            $context->comm->reply($reply_text, array(
+                '%NEXT_INDEX%' => $count + 1,
+                '%POSITION%' => (isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) ? sprintf("%.2F,%.2F", $context->memory[MEMORY_CREATION_LOCATION_LAT], $context->memory[MEMORY_CREATION_LOCATION_LNG]) : '???',
+                '%NAME%' => (isset($context->memory[MEMORY_CREATION_LOCATION_NAME])) ? $context->memory[MEMORY_CREATION_LOCATION_NAME] : '???'
+            ), array("reply_markup" => array(
+                "inline_keyboard" => $buttons
+            )));
+        }
+        else if($context->callback) {
+            if($context->callback->data === 'stop') {
+                // Attempt to terminate locations phase
+                $result = bot_creation_stop_location($context);
+                if($result === 'conditions_not_met') {
+                    $context->comm->reply("Minimum number of locations or minimum distance requirements not met.");
+                    return;
+                }
+                else if($result === false) {
+                    $context->comm->reply(__('failure_general'));
+                    return;
+                }
+
+                $context->comm->reply("Done! All locations have been registered.");
+                msg_processing_handle_game_creation($context); // reentrant
+            }
+            else if($context->callback->data === 'save') {
+                // Store current location from memory
+                if(bot_creation_save_location(
+                    $context,
+                    $context->memory[MEMORY_CREATION_LOCATION_LAT],
+                    $context->memory[MEMORY_CREATION_LOCATION_LNG],
+                    $context->memory[MEMORY_CREATION_LOCATION_NAME]
+                ) === false) {
+                    $context->comm->reply(__('failure_general'));
+                }
+                else {
+                    list($stop_conditions_met, $count) = bot_creation_check_location_conditions($context);
+
+                    $buttons = (!$stop_conditions_met) ? null : array("reply_markup" => array(
+                        "inline_keyboard" => array(
+                            array(
+                                array("text" => "I'm done", "callback_data" => "stop")
+                            )
+                        )
+                    ));
+                    $context->comm->reply("Ok! Send the next position please.", null, $buttons);
+
+                    $context->memory[MEMORY_CREATION_LOCATION_LAT] = null;
+                    $context->memory[MEMORY_CREATION_LOCATION_LNG] = null;
+                    $context->memory[MEMORY_CREATION_LOCATION_NAME] = null;
+                }
+            }
+        }
+    },
+
+    GAME_STATE_READY => function($context) {
+        if($context->callback) {
+            if($context->callback->data === 'activate') {
+                bot_creation_activate($context);
+
+                $context->comm->reply("Your game '%GAME_NAME%' is now active and players can start registering!");
+
+                return;
+            }
+        }
+
+        $context->comm->reply(
+            "Your game '%GAME_NAME%' is ready to be activated.",
+            null,
+            array("reply_markup" => array(
+                "inline_keyboard" => array(
+                    array(
+                        array("text" => "Let's go!", "callback_data" => "activate")
+                    )
+                )
+            ))
+        );
     }
 );
 
@@ -218,6 +351,13 @@ function msg_processing_handle_game_creation($context) {
 
     if(!$context->game || !$context->game->is_admin) {
         return false;
+    }
+
+    if($context->callback) {
+        if(!$context->verify_callback()) {
+            Logger::debug("Ignoring callback: does not match last inline keyboard", __FILE__, $context);
+            return;
+        }
     }
 
     $game_state = $context->game->game_state;
