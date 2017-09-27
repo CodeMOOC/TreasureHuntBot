@@ -19,7 +19,7 @@ require_once(dirname(__FILE__) . '/msg_processing_creation.php');
 require_once(dirname(__FILE__) . '/msg_processing_state.php');
 
 function process_update($context) {
-    if($context->game->is_admin) {
+    if($context->game && $context->game->is_admin) {
         // TODO: admin commands
     }
 

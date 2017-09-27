@@ -226,7 +226,7 @@ function bot_get_expected_location_id($context) {
  * Group reaches location through a code.
  */
 function bot_reach_location($context, $location_id, $game_id) {
-    if($game_id != $context->game->game_id) {
+    if(!$context->game || $game_id != $context->game->game_id) {
         Logger::warning("Location code does not match currently played game", __FILE__, $context);
         return 'wrong';
     }

@@ -126,14 +126,15 @@ class Communicator {
     private function hydrate_text($message, $additional_values = null) {
         $hydration_values = array(
             '%FIRST_NAME%' => $this->owning_context->sender->first_name,
-            '%FULL_NAME%' => $this->owning_context->sender->get_full_name(),
-            '%GROUP_NAME%' => $this->owning_context->game->group_name,
-            '%GAME_ID%' => $this->owning_context->game->game_id,
-            '%GAME_NAME%' => $this->owning_context->game->game_name,
-            '%EVENT_NAME%' => $this->owning_context->game->event_name
-
+            '%FULL_NAME%' => $this->owning_context->sender->get_full_name()
             /*'%WEEKDAY%' => TEXT_WEEKDAYS[intval(strftime('%w'))]*/
         );
+        if($this->owning_context->game) {
+            $hydration_values['%GROUP_NAME%'] = $this->owning_context->game->group_name;
+            $hydration_values['%GAME_ID%'] = $this->owning_context->game->game_id;
+            $hydration_values['%GAME_NAME%'] = $this->owning_context->game->game_name;
+            $hydration_values['%EVENT_NAME%'] = $this->owning_context->game->event_name;
+        }
         if($this->owning_context->game->game_channel_name) {
             $hydration_values['%GAME_CHANNEL%'] = $this->owning_context->game->game_channel_name;
         }
