@@ -15,14 +15,14 @@ require_once(dirname(__FILE__) . '/model/context.php');
 
 require_once(dirname(__FILE__) . '/msg_processing_admin.php');
 require_once(dirname(__FILE__) . '/msg_processing_commands.php');
+require_once(dirname(__FILE__) . '/msg_processing_creation.php');
 require_once(dirname(__FILE__) . '/msg_processing_state.php');
 
 function process_update($context) {
-    if($context->game != null && $context->game->is_admin && $context->game->game_state < GAME_STATE_ACTIVE) {
-        Logger::debug("Setting up game with admin", __FILE__, $context);
+    if($context->game && $context->game->is_admin && $context->game->game_state < GAME_STATE_ACTIVE) {
+        Logger::debug("Game setup process still running", __FILE__, $context);
 
-        if(false) {
-            // TODO: add game registration steps here (if admin for uncomplete game)
+        if(msg_processing_handle_game_creation($context)) {
             return;
         }
     }
@@ -36,14 +36,21 @@ function process_update($context) {
         return;
     }
 
-    // Base commands (always on)
+    // Base commands (take precedence over game playing)
     if($context->is_message() && msg_processing_commands($context)) {
         return;
     }
 
     // Registration and game process
-    if(/* is playing && */ $context->is_message() && msg_processing_handle_group_response($context)) {
-        return;
+    if($context->game && $context->game->game_id !== null && !$context->game->is_admin) {
+        if($context->game->game_state == GAME_STATE_ACTIVE) {
+            if(msg_processing_handle_group_response($context)) {
+                return;
+            }
+        }
+        else {
+            $context->comm->reply(__('failure_game_dead'));
+        }
     }
 
     $context->comm->reply(__('fallback_response'));

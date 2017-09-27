@@ -22,6 +22,7 @@ class Game {
     public  $game_timed_out = false;
 
     public  $event_id = null;
+    public  $event_name = null;
     public  $event_channel_name = null;
 
     // Rows of cluster_id, num_locations, and description
@@ -48,6 +49,7 @@ class Game {
         }
 
         // Game exists
+        $this->is_admin = $is_admin;
         $this->game_id = (int)$game_id;
         $this->game_name = $game_data[0];
         $this->game_state = (int)$game_data[2];
@@ -66,6 +68,7 @@ class Game {
         }
 
         //Event exists
+        $this->event_name = $event_data[0];
         $this->event_channel_name = $event_data[2];
 
         Logger::debug(sprintf(
@@ -92,6 +95,7 @@ class Game {
         $this->game_state = GAME_STATE_ACTIVE;
 
         $this->event_id = null;
+        $this->event_name = null;
 
         $this->group_state = STATE_INVALID;
     }

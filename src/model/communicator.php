@@ -129,7 +129,8 @@ class Communicator {
             '%FULL_NAME%' => $this->owning_context->sender->get_full_name(),
             '%GROUP_NAME%' => $this->owning_context->game->group_name,
             '%GAME_ID%' => $this->owning_context->game->game_id,
-            '%GAME_NAME%' => $this->owning_context->game->game_name
+            '%GAME_NAME%' => $this->owning_context->game->game_name,
+            '%EVENT_NAME%' => $this->owning_context->game->event_name
 
             /*'%WEEKDAY%' => TEXT_WEEKDAYS[intval(strftime('%w'))]*/
         );

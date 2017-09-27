@@ -4,7 +4,7 @@
  * ===================
  * UWiClab, University of Urbino
  * ===================
- * State process message processing.
+ * Game state process message processing.
  */
 
 /**

@@ -14,7 +14,7 @@ require_once(dirname(__FILE__) . '/lib_database.php');
 function memory_load_for_user($telegram_id) {
     $data = db_scalar_query("SELECT `data` FROM `conversation_memories` WHERE `telegram_id` = {$telegram_id}");
 
-    if(!$data) {
+    if($data === false || $data === null) {
         return new stdClass();
     }
 
@@ -29,7 +29,11 @@ function memory_persist($telegram_id, $data) {
 
     $encoded = json_encode($data);
 
-    if(db_perform_action("REPLACE INTO `conversation_memories` (`telegram_id`, `data`, `last_update`) VALUES({$telegram_id}, '" . db_escape($encoded) . "', NOW())") === false) {
+    if(db_perform_action(sprintf(
+        "REPLACE INTO `conversation_memories` (`telegram_id`, `data`, `last_update`) VALUES(%d, '%s', NOW())",
+        $telegram_id,
+        db_escape($encoded)
+    )) === false) {
         Logger::warning('Failed to store conversation memory', __FILE__);
     }
 }

@@ -36,6 +36,10 @@ msgstr ""
 msgid "failure_query"
 msgstr ""
 
+# Failure: current game has been closed and is over
+msgid "failure_game_dead"
+msgstr ""
+
 # Response to /help command
 msgid "cmd_help"
 msgstr ""
