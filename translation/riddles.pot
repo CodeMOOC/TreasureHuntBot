@@ -39,3 +39,7 @@ msgstr ""
 # Riddle type 7: what is the minimum number of actions needed to visit all grayed-out cells?
 msgid "riddle_type_7"
 msgstr ""
+
+# Final riddle: final coordinate reached by Roby based on previous hints received during the game
+msgid "riddle_type_final"
+msgstr ""
