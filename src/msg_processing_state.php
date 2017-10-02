@@ -247,11 +247,15 @@ function msg_processing_handle_group_response($context) {
 
                 // Send out riddle
                 $riddle_info = bot_get_riddle_info($context, $riddle_id);
-                if($riddle_info[0]) {
-                    $context->comm->picture("../riddles/{$riddle_info[0]}", (string)$riddle_info[1]);
+                $riddle_text = __('riddle_type_' . $riddle_info[0], 'riddles');
+                $riddle_hydration = array(
+                    '%RIDDLE_PARAM%' => $riddle_info[1]
+                );
+                if($riddle_info[2]) {
+                    $context->comm->picture("../riddles/{$riddle_info[2]}", $riddle_text, $riddle_hydration);
                 }
                 else {
-                    $context->comm->reply((string)$riddle_info[1]);
+                    $context->comm->reply($riddle_text, $riddle_hydration);
                 }
             }
             else {

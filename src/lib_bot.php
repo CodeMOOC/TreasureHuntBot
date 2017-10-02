@@ -38,11 +38,12 @@ function bot_get_group_info($context, $group_id = null) {
 }
 
 /**
- * Gets image path, text, and solution for a riddle, by ID.
+ * Gets information about a riddle:
+ * (riddle type, riddle template parameter, image path, solution).
  */
 function bot_get_riddle_info($context, $riddle_id) {
     return db_row_query(sprintf(
-        "SELECT `image_path`, `text`, `solution` FROM `riddles` WHERE `event_id` = %d AND `riddle_id` = %d",
+        "SELECT `riddle_type`, `riddle_param`, `image_path`, `solution` FROM `riddles` WHERE `event_id` = %d AND `riddle_id` = %d",
         $context->game->event_id,
         $riddle_id
     ));

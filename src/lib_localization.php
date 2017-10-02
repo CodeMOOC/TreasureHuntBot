@@ -86,5 +86,8 @@ bind_textdomain_codeset('text', 'UTF-8');
 bindtextdomain('admin', $target_dir);
 bind_textdomain_codeset('admin', 'UTF-8');
 
+bindtextdomain('riddles', $target_dir);
+bind_textdomain_codeset('riddles', 'UTF-8');
+
 // Set default locale
 localization_set_locale('');

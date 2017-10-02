@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 26, 2017 at 08:10 PM
+-- Generation Time: Oct 02, 2017 at 10:47 PM
 -- Server version: 10.1.23-MariaDB-9+deb9u1
 -- PHP Version: 7.0.22-1~dotdeb+8.1
 
@@ -112,11 +112,7 @@ CREATE TABLE `games` (
   `telegram_channel_censor_photo` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Set if pictures should not be sent on the channel',
   `timeout_absolute` datetime DEFAULT NULL COMMENT 'Absolute timeout when game ends',
   `timeout_interval` smallint(6) DEFAULT NULL COMMENT 'Relative timeout in minutes from start',
-  `registered_on` datetime NOT NULL,
-  `tmp_location_lat` float DEFAULT NULL,
-  `tmp_location_lng` float DEFAULT NULL,
-  `tmp_location_image_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `tmp_location_description` text COLLATE utf8_unicode_ci
+  `registered_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -223,8 +219,9 @@ CREATE TABLE `log` (
 CREATE TABLE `riddles` (
   `event_id` int(10) UNSIGNED NOT NULL,
   `riddle_id` int(10) UNSIGNED NOT NULL,
+  `riddle_type` tinyint(2) NOT NULL DEFAULT '1',
+  `riddle_param` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `image_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `text` text COLLATE utf8_unicode_ci NOT NULL,
   `solution` varchar(60) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
