@@ -43,3 +43,7 @@ msgstr ""
 # Final riddle: final coordinate reached by Roby based on previous hints received during the game
 msgid "riddle_type_final"
 msgstr ""
+
+# Final riddle: used for further steps of the same riddle, based on the same hints
+msgid "riddle_type_final_repeat"
+msgstr ""
