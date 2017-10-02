@@ -12,7 +12,6 @@
 
 <!-- Then we build the nav bar. -->
 <nav>
-    <ul>
     {% for entry in site.data.navigation %}
         {% if entry.url == current_page %}
             {% assign current = ' class="current"' %}
@@ -21,18 +20,6 @@
             {% assign current = null %}
         {% endif %}
         {% assign sublinks = entry.sublinks %}
-        {% if sublinks %}
-        <li{{ current }}>
-            <a href="{{ site.baseurl }}{{ entry.url }}">{{ entry.title }}</a>
-            <ul>
-                {% for sublink in sublinks %}
-                <li><a href="{{ site.baseurl }}{{ sublink.url }}">{{ sublink.title }}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
-        {% else %}
-        <li{{ current }}><a href="{{ site.baseurl }}{{ entry.url }}">{{ entry.title }}</a></li>
-        {% endif %}
+        <a href="{{ site.baseurl }}{{ entry.url }}" {{ current }}>{{ entry.title }}</a>
     {% endfor %}
-    </ul>
 </nav>
