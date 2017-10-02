@@ -1,0 +1,10 @@
+// Custom theme variation for Code Hunting Games
+
+@import "{{ site.theme }}";
+
+.page-header {
+    color: #fff;
+    text-align: center;
+    background-color: #1770D6 !important;
+    background-image: linear-gradient(120deg, #1770D6, #1AE776) !important;
+}
