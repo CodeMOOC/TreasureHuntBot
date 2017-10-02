@@ -2,9 +2,37 @@
 
 @import "{{ site.theme }}";
 
-.page-header {
+section.page-header {
     color: #fff;
     text-align: center;
     background-color: #1770D6 !important;
     background-image: linear-gradient(120deg, #1770D6, #1AE776) !important;
+
+    nav {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        > * {
+            flex-grow: 1;
+        }
+
+        a {
+            color: white;
+            font-weight: bold;
+            border-bottom: solid 3px white;
+            margin: 0 10px;
+            padding: 20px 0;
+            text-decoration: none;
+
+            width: 45%;
+            @media screen and (min-width: 64em) {
+                width: 20%;
+            }
+        }
+        a.current, a:hover {
+            border-color: #E7951A;
+            text-decoration: none;
+        }
+    }
 }

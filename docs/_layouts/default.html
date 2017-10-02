@@ -23,18 +23,17 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">{{ page.title | default: site.title }}</h1>
-      <h2 class="project-tagline">Coding-based treasure hunt.</h2>
+      <h2 class="project-tagline">A multiplayer <i>coding</i> treasure hunt via chatbot.</h2>
 
-        <a href="https://github.com/CodeMOOC/TreasureHuntBot" class="btn">View on GitHub</a>
+      {% include navigation.html %}
     </section>
-
-    {% include navigation.html %}
 
     <section class="main-content">
       {{ content }}
 
       <footer class="site-footer">
-
+        <p>Treasure Hunt Bot is published under a MIT license on <a href="https://github.com/CodeMOOC/TreasureHuntBot" title="Treasure Hunt bot on GitHub">GitHub</a>.</p>
+        <p>Developed at the University of Urbino.</p>
       </footer>
     </section>
 
