@@ -1,3 +1,3 @@
 ---
-title: Play Code Hunting Games
+title: Play
 ---

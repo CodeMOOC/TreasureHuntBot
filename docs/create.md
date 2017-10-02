@@ -1,3 +1,3 @@
 ---
-title: Create Code Hunting Games
+title: Create
 ---
