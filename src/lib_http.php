@@ -153,6 +153,7 @@ function perform_curl_request($handle) {
         }
     }
 
+    $effective_url = curl_getinfo($handle, CURLINFO_EFFECTIVE_URL);
     curl_close($handle);
 
     if ($http_code >= 500) {
@@ -164,7 +165,7 @@ function perform_curl_request($handle) {
         return false;
     }
     else if ($http_code != 200) {
-        Logger::warning("Request failure with code $http_code ($response)", __FILE__);
+        Logger::warning("Request failure with code $http_code ($response), URL {$effective_url}", __FILE__);
         return false;
     }
     else {
