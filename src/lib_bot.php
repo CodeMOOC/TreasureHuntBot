@@ -337,6 +337,32 @@ function bot_give_solution($context, $solution) {
 }
 
 /**
+ * Gets the current hint for the last solved riddle, if any.
+ */
+function bot_get_current_hint($context) {
+    // Hints are assigned for solved riddles, check count of currently solved riddles
+    $solved = db_scalar_query(sprintf(
+        'SELECT count(*) FROM `assigned_riddles` WHERE `solved_on` IS NOT NULL AND `event_id` = %d AND `game_id` = %d AND `group_id` = %d',
+        $context->game->event_id,
+        $context->game->game_id,
+        $context->get_internal_id()
+    ));
+    if($solved === false) {
+        return false;
+    }
+
+    if($solved === 0) {
+        return null;
+    }
+
+    return db_scalar_query(sprintf(
+        'SELECT `riddles_solved_count` FROM `hints` WHERE `event_id` = %d AND `riddles_solved_count` = %d',
+        $context->game->event_id,
+        $solver
+    ));
+}
+
+/**
  * Attempts to assign a direct victory to the player.
  * @param $event_id Event ID or null.
  * @param $game_id Game ID or null.

@@ -282,8 +282,12 @@ function msg_processing_handle_group_response($context) {
                     $context->comm->reply(__('game_puzzle_response_wrong'));
                 }
                 else if($result === true) {
-                    // TODO: Give out secret hint of current track index
-                    //$context->comm->reply(CORRECT_ANSWER_PRIZE[$context->get_track_index()]);
+                    $confirm_text = __('game_puzzle_response_correct');
+                    $current_hint = bot_get_current_hint($context);
+                    if($current_hint) {
+                        $confirm_text .= ' <code>' . $current_hint . '</code>';
+                    }
+                    $context->comm->reply($confirm_text);
 
                     $advance_result = bot_advance_track_location($context);
                     if($advance_result === false) {

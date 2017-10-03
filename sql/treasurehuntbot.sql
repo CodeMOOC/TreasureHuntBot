@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 02, 2017 at 10:47 PM
+-- Generation Time: Oct 03, 2017 at 03:49 PM
 -- Server version: 10.1.23-MariaDB-9+deb9u1
 -- PHP Version: 7.0.22-1~dotdeb+8.1
 
@@ -154,7 +154,7 @@ CREATE TABLE `groups` (
 
 CREATE TABLE `hints` (
   `event_id` int(10) UNSIGNED NOT NULL,
-  `order_index` tinyint(3) UNSIGNED NOT NULL,
+  `riddles_solved_count` tinyint(3) UNSIGNED NOT NULL,
   `content` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -293,7 +293,7 @@ ALTER TABLE `groups`
 -- Indexes for table `hints`
 --
 ALTER TABLE `hints`
-  ADD PRIMARY KEY (`event_id`,`order_index`);
+  ADD PRIMARY KEY (`event_id`,`riddles_solved_count`);
 
 --
 -- Indexes for table `identities`

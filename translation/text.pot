@@ -204,6 +204,10 @@ msgstr ""
 msgid "game_puzzle_response_wrong"
 msgstr ""
 
+# Game state: puzzle solution correct, congratulations
+msgid "game_puzzle_response_correct"
+msgstr ""
+
 # Game state: reach last location
 msgid "game_last_location_state"
 msgstr ""
