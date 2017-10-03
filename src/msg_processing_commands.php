@@ -121,46 +121,33 @@ function msg_processing_commands($context) {
                     break;
 
                 case 'victory':
-                    Logger::debug("Victory code scanned for event #{$event_id}", __FILE__, $context);
+                    Logger::debug("Victory code scanned for game #{$game_id}, event #{$event_id}", __FILE__, $context);
 
-                    if($event_id != $context->game->event_id) {
-                        Logger::warning("Victory code does not match currently played event", __FILE__, $context);
+                    $result = bot_direct_win($context, $game_id, $event_id);
+                    if($result === 'wrong') {
                         $context->comm->reply(__('cmd_start_wrong_payload'));
-                        return true;
                     }
-
-                    if($context->game->group_state === STATE_GAME_LAST_PUZ) {
-                        // Check for previous winners
-                        $winning_groups = bot_get_winning_groups($context);
-                        if($winning_groups === false) {
-                            $context->comm->reply(__('failure_general'));
-                            return true;
-                        }
-
-                        bot_set_group_state($context, STATE_GAME_WON);
-
-                        if($winning_groups == null) {
-                            // Game has no winning group
-                            Logger::info("Group has reached the prize first", __FILE__, $context);
-
+                    else if($result === 'too_soon') {
+                        // Invalid state, cannot win game yet/again
+                        $context->comm->reply(__('cmd_start_prize_invalid'));
+                    }
+                    else if(is_array($result)) {
+                        if($result[0] === 'first') {
                             $context->comm->reply(__('cmd_start_prize_first'));
                             $context->comm->channel(__('cmd_start_prize_channel_first'));
                         }
                         else {
-                            Logger::info("Group has reached the prize (not first)", __FILE__, $context);
-
                             $context->comm->reply(__('cmd_start_prize_not_first'), array(
-                                '%WINNING_GROUP%' => $winning_groups[0][1],
-                                '%INDEX%' => count($winning_groups) + 1
+                                '%WINNING_GROUP%' => $result[1],
+                                '%INDEX%' => $result[2]
                             ));
                             $context->comm->channel(__('cmd_start_prize_channel_not_first'), array(
-                                '%INDEX%' => count($winning_groups) + 1
+                                '%INDEX%' => $result[2]
                             ));
                         }
                     }
                     else {
-                        // Invalid state, cannot win game yet/again
-                        $context->comm->reply(__('cmd_start_prize_invalid'));
+                        $context->comm->reply(__('failure_general'));
                     }
                     break;
 

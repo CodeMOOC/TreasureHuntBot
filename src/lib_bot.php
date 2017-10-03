@@ -336,6 +336,46 @@ function bot_give_solution($context, $solution) {
     return true;
 }
 
+/**
+ * Attempts to assign a direct victory to the player.
+ * @param $event_id Event ID or null.
+ * @param $game_id Game ID or null.
+ * @return Variety of strings or false on error,
+ *         array (condition, winning group, arrival index) on success.
+ */
+function bot_direct_win($context, $event_id, $game_id) {
+    if($event_id != $context->game->event_id &&
+       $game_id  != $context->game->game_id) {
+        Logger::warning("Victory code does not match currently played event or game", __FILE__, $context);
+
+        return 'wrong';
+    }
+
+    if($context->game->group_state < STATE_GAME_LAST_LOC) {
+        return 'too_soon';
+    }
+
+    // Check for previous winners
+    $winning_groups = bot_get_winning_groups($context);
+    if($winning_groups === false) {
+        return false;
+    }
+
+    bot_set_group_state($context, STATE_GAME_WON);
+
+    if($winning_groups == null) {
+        // Game has no winning group
+        Logger::info("Group has reached the prize first", __FILE__, $context);
+
+        return array('first', null, 1);
+    }
+    else {
+        Logger::info("Group has reached the prize (not first)", __FILE__, $context);
+
+        return array('not_first', $winning_groups[0][1], count($winning_groups) + 1);
+    }
+}
+
 /*** COUNTING AND AUXILIARY METHODS ***/
 
 /**
