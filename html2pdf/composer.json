@@ -1,0 +1,6 @@
+{
+    "require": {
+        "dompdf/dompdf": "^0.8.1",
+        "endroid/qrcode": "^2.3"
+    }
+}

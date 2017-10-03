@@ -16,3 +16,4 @@ riddles/*
 src/vendor/*
 translation/**/*.mo
 translation/**/*.po
+html2pdf/vendor/
