@@ -13,6 +13,7 @@ require_once(dirname(__FILE__) . '/game.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/model/context.php');
 
+require_once(dirname(__FILE__) . '/msg_helpers.php');
 require_once(dirname(__FILE__) . '/msg_processing_admin.php');
 require_once(dirname(__FILE__) . '/msg_processing_commands.php');
 require_once(dirname(__FILE__) . '/msg_processing_creation.php');
