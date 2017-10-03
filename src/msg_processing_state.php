@@ -77,7 +77,15 @@ function msg_processing_handle_group_state($context) {
             return true;
 
         case STATE_GAME_LAST_PUZ:
-            $context->comm->reply(__('game_last_puzzle_state'));
+            $context->comm->picture(GAME_LAST_PUZZLE_1_IMAGE, __('riddle_type_final', 'riddles'));
+            return true;
+
+        case STATE_GAME_LAST_PUZ + 1:
+            $context->comm->picture(GAME_LAST_PUZZLE_2_IMAGE, __('riddle_type_final_repeat', 'riddles'));
+            return true;
+
+        case STATE_GAME_LAST_PUZ + 2:
+            $context->comm->picture(GAME_LAST_PUZZLE_3_IMAGE, __('riddle_type_final_repeat', 'riddles'));
             return true;
 
         case STATE_GAME_WON:
@@ -349,15 +357,43 @@ function msg_processing_handle_group_response($context) {
                 $context->comm->channel_picture($file_info['file_id'], __('game_last_selfie_forward_caption'));
 
                 $context->comm->reply(__('game_last_puzzle_instructions'));
+
+                bot_set_group_state($context, STATE_GAME_LAST_PUZ);
             }
-            else {
-                msg_processing_handle_group_state($context);
-            }
+
+            msg_processing_handle_group_state($context);
+
             return true;
 
         case STATE_GAME_LAST_PUZ:
-            // Expecting last puzzle QR Code
-            msg_processing_handle_group_state($context);
+            if($message_response === GAME_LAST_PUZZLE_1_SOLUTION) {
+                bot_set_group_state($context, STATE_GAME_LAST_PUZ + 1);
+
+                msg_processing_handle_group_state($context);
+            }
+            else {
+                $context->comm->reply(__('game_last_puzzle_wrong'));
+            }
+            return true;
+
+        case STATE_GAME_LAST_PUZ + 1:
+            if($message_response === GAME_LAST_PUZZLE_2_SOLUTION) {
+                bot_set_group_state($context, STATE_GAME_LAST_PUZ + 2);
+
+                msg_processing_handle_group_state($context);
+            }
+            else {
+                $context->comm->reply(__('game_last_puzzle_wrong'));
+            }
+            return true;
+
+        case STATE_GAME_LAST_PUZ + 2:
+            if($message_response === GAME_LAST_PUZZLE_3_SOLUTION) {
+                msg_process_victory($context);
+            }
+            else {
+                $context->comm->reply(__('game_last_puzzle_wrong'));
+            }
             return true;
 
         case STATE_GAME_WON:

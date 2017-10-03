@@ -43,12 +43,12 @@ class Communicator {
      * Sends out a message on the game-specific channel.
      */
     function channel($message, $additional_values = null) {
-        if(!$this->owning_context->game_channel_name) {
+        if(!$this->owning_context->game->game_channel_name) {
             Logger::error("Cannot send message to channel (channel not set)", __FILE__, $this);
             return;
         }
 
-        return $this->send($this->owning_context->game_channel_name, $message, $additional_values, null);
+        return $this->send($this->owning_context->game->game_channel_name, $message, $additional_values, null);
     }
 
     /**

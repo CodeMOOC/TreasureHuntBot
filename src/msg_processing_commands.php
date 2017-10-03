@@ -113,48 +113,22 @@ function msg_processing_commands($context) {
                         }
 
                         msg_processing_handle_group_state($context);
-
-                        if($context->game->group_state === STATE_GAME_LAST_PUZ) {
-                            // TODO warn others!
-                        }
                     }
                     break;
 
                 case 'victory':
                     Logger::debug("Victory code scanned for game #{$game_id}, event #{$event_id}", __FILE__, $context);
 
-                    $result = bot_direct_win($context, $game_id, $event_id);
-                    if($result === 'wrong') {
-                        $context->comm->reply(__('cmd_start_wrong_payload'));
-                    }
-                    else if($result === 'too_soon') {
-                        // Invalid state, cannot win game yet/again
-                        $context->comm->reply(__('cmd_start_prize_invalid'));
-                    }
-                    else if(is_array($result)) {
-                        if($result[0] === 'first') {
-                            $context->comm->reply(__('cmd_start_prize_first'));
-                            $context->comm->channel(__('cmd_start_prize_channel_first'));
-                        }
-                        else {
-                            $context->comm->reply(__('cmd_start_prize_not_first'), array(
-                                '%WINNING_GROUP%' => $result[1],
-                                '%INDEX%' => $result[2]
-                            ));
-                            $context->comm->channel(__('cmd_start_prize_channel_not_first'), array(
-                                '%INDEX%' => $result[2]
-                            ));
-                        }
-                    }
-                    else {
-                        $context->comm->reply(__('failure_general'));
-                    }
+                    msg_process_victory($context, $event_id, $game_id);
+
                     break;
 
                 default:
                     Logger::error("Code '{$payload}' matches unknown type {$code_info[0]}", __FILE__, $context);
+
                     $context->comm->reply(__('cmd_start_wrong_payload'));
-                    return true;
+
+                    break;
             }
         }
 
