@@ -60,8 +60,6 @@ $msg_processing_creation_handlers = array(
         }
 
         bot_creation_confirm($context);
-
-        $context->comm->reply("Ok! What's the name of your game?");
     },
 
     GAME_STATE_REG_NAME => function($context) {
@@ -80,18 +78,6 @@ $msg_processing_creation_handlers = array(
             $context->comm->reply(__('failure_general'));
             return;
         }
-
-        $context->comm->reply(
-            "Ok, name set. Please provide the name of <i>public Telegram channel</i> you will be using during your game.\nCheck out the <a href=\"https://github.com/CodeMOOC/TreasureHuntBot/wiki/Setting-up-a-public-channel\">online guide</a> for more information.",
-            null,
-            array("reply_markup" => array(
-                "inline_keyboard" => array(
-                    array(
-                        array("text" => "Skip channel", "callback_data" => "skip")
-                    )
-                )
-            ))
-        );
     },
 
     GAME_STATE_REG_CHANNEL => function($context) {
@@ -179,9 +165,6 @@ $msg_processing_creation_handlers = array(
                     $context->comm->reply(__('failure_general'));
                     return;
                 }
-                else {
-                    $context->comm->reply("Ok. Please provide an e-mail address I can use for further communications with you:");
-                }
             }
             else {
                 $context->comm->reply(__('fallback_response'));
@@ -199,9 +182,6 @@ $msg_processing_creation_handlers = array(
             $context->comm->reply(__('failure_general'));
             return;
         }
-
-        $context->comm->reply("Let's start defining the locations of your game. 🗺️");
-        $context->comm->reply("Send me the geographical position of where your game will <b>start</b> (this is where all players will gather just before the game).");
     },
 
     GAME_STATE_LOCATIONS_FIRST => function($context) {
@@ -211,8 +191,6 @@ $msg_processing_creation_handlers = array(
         }
 
         bot_creation_set_start($context, $context->message->latitude, $context->message->longitude);
-
-        $context->comm->reply("Very well. Now send the position of the <b>end</b> location (this is where players will go to complete the game).");
     },
 
     GAME_STATE_LOCATIONS_LAST => function($context) {
@@ -222,11 +200,6 @@ $msg_processing_creation_handlers = array(
         }
 
         bot_creation_set_end($context, $context->message->latitude, $context->message->longitude);
-
-        $context->comm->reply("Now, we'll have to create other locations that will be randomly selected by me during the game. You'll have to provide %NUM_LOCATIONS% locations at least. (<a href=\"https://github.com/CodeMOOC/TreasureHuntBot/wiki/Setting-up-game-locations\">More information</a>.)", array(
-            '%NUM_LOCATIONS%' => $context->memory[MEMORY_CREATION_MIN_LOCATIONS]
-        ));
-        $context->comm->reply("Start sending the geo-position for the first location.");
     },
 
     GAME_STATE_LOCATIONS => function($context) {
@@ -239,19 +212,35 @@ $msg_processing_creation_handlers = array(
                 $context->memory[MEMORY_CREATION_LOCATION_LNG] = $context->message->longitude;
             }
             else {
-                $context->memory[MEMORY_CREATION_LOCATION_NAME] = $context->message->text;
+                if(preg_match_all('/(\d*.\d*)\s*,\s*(\d*.\d*)/s', $context->message->text, $matches, PREG_PATTERN_ORDER) >= 1) {
+
+                    // User attempts to set location via text
+                    $context->memory[MEMORY_CREATION_LOCATION_LAT] = floatval($matches[1][0]);
+                    $context->memory[MEMORY_CREATION_LOCATION_LNG] = floatval($matches[2][0]);
+                }
+                else {
+                    $context->memory[MEMORY_CREATION_LOCATION_NAME] = $context->message->text;
+                }
             }
 
             // Write out current location status from memory
-            $reply_text = "📍 Location <b>%NEXT_INDEX%</b> at %POSITION%, “%NAME%”.";
+            $reply_text = "📍 Location <b>%NEXT_INDEX%</b>";
+            if(isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) {
+                $reply_text .= " at %POSITION%";
+            }
+            if(isset($context->memory[MEMORY_CREATION_LOCATION_NAME])) {
+                $reply_text .= " “%NAME%”";
+            }
+            $reply_text .= ".";
+
             if(!isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) {
-                $reply_text .= ' ' . "Send the geo-position for the location.";
+                $reply_text .= "\n" . "Send the geo-position for the location.";
             }
             else if(!isset($context->memory[MEMORY_CREATION_LOCATION_NAME])) {
-                $reply_text .= ' ' . "Write the name of the location.";
+                $reply_text .= "\n" . "Write the name of the location.";
             }
             else {
-                $reply_text .= ' ' . "All set? Send in a new position or a new name to update, otherwise tap on <i>Save</i>.";
+                $reply_text .= "\n" . "All set? Send in a new position or a new name to update, otherwise tap on <i>Save</i>.";
             }
 
             $buttons = array();
@@ -259,7 +248,7 @@ $msg_processing_creation_handlers = array(
                 $buttons[] = array(array("text" => "💾 Save location", "callback_data" => "save"));
             }
             if($stop_conditions_met) {
-                $buttons[] = array(array("text" => "Done", "callback_data" => "stop"));
+                $buttons[] = array(array("text" => "Cancel", "callback_data" => "stop"));
             }
 
             $context->comm->reply($reply_text, array(
@@ -271,7 +260,10 @@ $msg_processing_creation_handlers = array(
             )));
         }
         else if($context->callback) {
-            if($context->callback->data === 'stop') {
+            if($context->callback->data === 'another') {
+                $context->comm->reply("Ok! Send the next position please.");
+            }
+            else if($context->callback->data === 'stop') {
                 // Attempt to terminate locations phase
                 $result = bot_creation_stop_location($context);
                 if($result === 'conditions_not_met') {
@@ -284,7 +276,6 @@ $msg_processing_creation_handlers = array(
                 }
 
                 $context->comm->reply("Done! All locations have been registered.");
-                msg_processing_handle_game_creation($context); // reentrant
             }
             else if($context->callback->data === 'save') {
                 // Store current location from memory
@@ -302,11 +293,13 @@ $msg_processing_creation_handlers = array(
                     $buttons = (!$stop_conditions_met) ? null : array("reply_markup" => array(
                         "inline_keyboard" => array(
                             array(
+                                array("text" => "Another one", "callback_data" => "another"),
                                 array("text" => "I'm done", "callback_data" => "stop")
                             )
                         )
                     ));
-                    $context->comm->reply("Ok! Send the next position please.", null, $buttons);
+                    $text = (!$stop_conditions_met) ? "Ok! Send the next position please." : "Ok! The locations you entered are enough to play, but you may continue adding more.";
+                    $context->comm->reply($text, null, $buttons);
 
                     $context->memory[MEMORY_CREATION_LOCATION_LAT] = null;
                     $context->memory[MEMORY_CREATION_LOCATION_LNG] = null;
@@ -326,7 +319,49 @@ $msg_processing_creation_handlers = array(
                 return;
             }
         }
+    }
+);
 
+$msg_processing_creation_state_entry = array(
+    GAME_STATE_REG_NAME => function($context) {
+        $context->comm->reply("Ok! What's the name of your game?");
+    },
+
+    GAME_STATE_REG_CHANNEL => function($context) {
+        $context->comm->reply(
+            "Ok, name set. Please provide the name of <i>public Telegram channel</i> you will be using during your game.\nCheck out the <a href=\"https://github.com/CodeMOOC/TreasureHuntBot/wiki/Setting-up-a-public-channel\">online guide</a> for more information.",
+            null,
+            array("reply_markup" => array(
+                "inline_keyboard" => array(
+                    array(
+                        array("text" => "Skip channel", "callback_data" => "skip")
+                    )
+                )
+            ))
+        );
+    },
+
+    GAME_STATE_REG_EMAIL => function($context) {
+        $context->comm->reply("Ok. Please provide an e-mail address I can use for further communications with you:");
+    },
+
+    GAME_STATE_LOCATIONS_FIRST => function($context) {
+        $context->comm->reply("Let's start defining the locations of your game. 🗺️");
+        $context->comm->reply("Send me the geographical position of where your game will <b>start</b> (this is where all players will gather just before the game).");
+    },
+
+    GAME_STATE_LOCATIONS_LAST => function($context) {
+        $context->comm->reply("Very well. Now send the position of the <b>end</b> location (this is where players will go to complete the game).");
+    },
+
+    GAME_STATE_LOCATIONS => function($context) {
+        $context->comm->reply("Now, we'll have to create other locations that will be randomly selected by me during the game. You'll have to provide %NUM_LOCATIONS% locations at least. (<a href=\"https://github.com/CodeMOOC/TreasureHuntBot/wiki/Setting-up-game-locations\">More information</a>.)", array(
+            '%NUM_LOCATIONS%' => $context->memory[MEMORY_CREATION_MIN_LOCATIONS]
+        ));
+        $context->comm->reply("Start sending the geo-position for the first location.");
+    },
+
+    GAME_STATE_READY => function($context) {
         $context->comm->reply(
             "Your game '%GAME_NAME%' is ready to be activated.",
             null,
@@ -348,6 +383,7 @@ $msg_processing_creation_handlers = array(
  */
 function msg_processing_handle_game_creation($context) {
     global $msg_processing_creation_handlers;
+    global $msg_processing_creation_state_entry;
 
     if(!$context->game || !$context->game->is_admin) {
         return false;
@@ -360,15 +396,25 @@ function msg_processing_handle_game_creation($context) {
         }
     }
 
-    $game_state = $context->game->game_state;
-    Logger::debug("Handling action for game #{$context->game->game_id}, state " . GAME_STATE_MAP[$game_state], __FILE__, $context);
+    $initial_game_state = $context->game->game_state;
+    Logger::debug("Handling action for game #{$context->game->game_id}, state " . GAME_STATE_MAP[$initial_game_state], __FILE__, $context);
 
-    if(isset($msg_processing_creation_handlers[$game_state])) {
-        call_user_func($msg_processing_creation_handlers[$game_state], $context);
+    if(isset($msg_processing_creation_handlers[$initial_game_state])) {
+        call_user_func($msg_processing_creation_handlers[$initial_game_state], $context);
+
+        $final_game_state = $context->game->game_state;
+        if($final_game_state !== $initial_game_state) {
+            Logger::debug("User switched to state " . GAME_STATE_MAP[$final_game_state] . ", processing", __FILE__, $context);
+
+            if(isset($msg_processing_creation_state_entry[$final_game_state])) {
+                call_user_func($msg_processing_creation_state_entry[$final_game_state], $context);
+            }
+        }
+
         return true;
     }
     else {
-        Logger::debug("No callback to handle state " . GAME_STATE_MAP[$game_state], __FILE__, $context);
+        Logger::debug("No callback to handle state " . GAME_STATE_MAP[$initial_game_state], __FILE__, $context);
     }
 
     return false;
