@@ -7,7 +7,7 @@ title: Play
 There are a few requirements to be able to play the code hunting games, and they should all be procured before hand (you might need to dowload some applications, so a Wi-Fi connection is preferred for this step):
 * A smarphone
 * Telegram Messenger
-* QR Code scanner
+* QR Code Scanner
 * Internet connection
 
 ## Smartphone
@@ -18,7 +18,7 @@ Any smartphone that has a camera and can use the Telegram messenger is good. Kno
 * Windows Phone
 
 ## Telegram
-Telegram is a free instant messenger that can be found on the [iTunes App Store](https://itunes.apple.com/us/app/telegram-messenger/id686449807?mt=8), [Google Play Store](https://play.google.com/store/apps/details?id=org.telegram.messenger) or [Microfoft Store](https://www.microsoft.com/it-it/store/p/telegram-messenger/9wzdncrdzhs0).
+Telegram is a free instant messenger that can be found on the [iTunes App Store](https://itunes.apple.com/us/app/telegram-messenger/id686449807?mt=8), [Google Play Store](https://play.google.com/store/apps/details?id=org.telegram.messenger) or [Microsoft Store](https://www.microsoft.com/it-it/store/p/telegram-messenger/9wzdncrdzhs0).
 
 To use Telegram you will have to log in with an account, if you already have one, or sign in with a new account. You will also have to provide your phone number to activate Telegram on your device.
 This messenger service will be used also to follow the code hunting games on the public channels, so even if you're not the team captain you can still follow the game progress.
@@ -45,12 +45,15 @@ Another suggestion is to also have your location on: since it's a treasure hunt,
 
 Once you have all of the required instruments (Smartphone with Telegram, QR Code scanner and internet connection), you are ready to participate in the Code Hunting Games.
 
-// Coming soon: registering a team.
+You can participate with a team of people, but only the team captain will need to have the smartphone with required apps. The team captain will register his team by scanning a special QR Code that will open the Telegram Treasure Hunt Bot and pressing on 'start' once Telegram opens.
+The team captain will then choose a name for the team, take a selfie and wait for the beginning of the Code Hunting Games.
 
-
-During the game you will be repeating the following actions: scanning a QR Code, answering a bot on telegram, taking a selfie.
+During the game you will be repeating the following actions: finding and scanning a QR Code, answering a question asked by the treasure hunt bot on telegram, and taking a selfie.
  
 The game will begin with the scan of a QR Code that the organizers have placed at the starting location of the event. So open your QR Code scanner app, scan the QR Code and see Telegram open. The Code Hunting Bot will now ask you to solve a first puzzle. 
 
 Once you have solved the puzzle, send the answer to the Code Hunting Bot on Telegram.
+
 // Coming soon: syntax of answers and examples
+
+There will be quite a few riddles to solve at various locations, and once they have all been solved you will be sent to the final location to complete the Treasure Hunt.
