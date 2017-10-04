@@ -185,7 +185,7 @@ function msg_processing_handle_group_response($context) {
                 $file_info = telegram_get_file_info($context->message->get_photo_max_id());
                 $file_path = $file_info['file_path'];
                 $local_path = "{$context->game->game_id}-{$context->get_internal_id()}.jpg";
-                telegram_download_file($file_path, "../avatars/$local_path");
+                telegram_download_file($file_path, "../data/avatars/$local_path");
 
                 bot_set_group_photo($context, $local_path);
                 bot_set_group_state($context, STATE_REG_READY);
@@ -226,15 +226,15 @@ function msg_processing_handle_group_response($context) {
                 $file_info = telegram_get_file_info($context->message->get_photo_max_id());
                 $file_path = $file_info['file_path'];
                 $local_path = "{$context->game->game_id}-{$context->get_internal_id()}-{$reached_locations_count}";
-                telegram_download_file($file_path, "../selfies/{$local_path}.jpg");
+                telegram_download_file($file_path, "../data/selfies/{$local_path}.jpg");
 
                 // Process selfie and optional badge
                 if(false) {
                     // TODO: if this game has a badge overlay
                     $rootdir = realpath(dirname(__FILE__) . '/..');
-                    exec("convert {$rootdir}/selfies/{$local_path}.jpg -resize 1600x1600^ -gravity center -crop 1600x1600+0+0 +repage {$rootdir}/images/badge-summerschool-2017-08-22.png -composite {$rootdir}/badges/{$local_path}.jpg");
+                    exec("convert {$rootdir}/data/selfies/{$local_path}.jpg -resize 1600x1600^ -gravity center -crop 1600x1600+0+0 +repage {$rootdir}/images/badge-summerschool-2017-08-22.png -composite {$rootdir}/data/badges/{$local_path}.jpg");
 
-                    $context->picture("../badges/{$local_path}.jpg", __('game_selfie_response_badge'));
+                    $context->picture("../data/badges/{$local_path}.jpg", __('game_selfie_response_badge'));
                 }
                 else {
                     $context->comm->reply(__('game_selfie_response_ok'));
