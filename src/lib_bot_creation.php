@@ -102,7 +102,7 @@ function bot_creation_init($context, $event_id) {
         return false;
     }
 
-    code_lookup_generate($context, 'registration', null, $context->game->game_id, null);
+    code_lookup_generate($context, 'registration', $event_id, $game_id, null);
 
     $context->set_active_game($game_id, true);
     $context->reload();
