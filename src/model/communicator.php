@@ -40,6 +40,17 @@ class Communicator {
     }
 
     /**
+     * Replies to the current incoming message with a document.
+     */
+    function document($document_path, $caption, $additional_values = null) {
+        return telegram_send_document(
+            $this->chat_id,
+            $document_path,
+            $this->hydrate_text($caption, $additional_values)
+        );
+    }
+
+    /**
      * Sends out a message on the game-specific channel.
      */
     function channel($message, $additional_values = null) {
