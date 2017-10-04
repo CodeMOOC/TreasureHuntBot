@@ -10,7 +10,7 @@
 require_once(dirname(__FILE__) . '/config.php');
 require_once(dirname(__FILE__) . '/lib_database.php');
 
-const CODE_PADDING_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&§!+';
+const CODE_PADDING_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const CODE_PADDING_MAX_LENGTH = 18; // leaves space for duplicate numbering
 
 /**
