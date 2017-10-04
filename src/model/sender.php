@@ -17,12 +17,16 @@ class Sender {
         if(isset($from_data['last_name'])) {
             $this->last_name = $from_data['last_name'];
         }
-        $this->username = $from_data['username'];
-        $this->language_code = $from_data['language_code'];
+        if(isset($from_data['username'])) {
+            $this->username = $from_data['username'];
+        }
+        if(isset($from_data['language_code'])) {
+            $this->language_code = $from_data['language_code'];
+        }
     }
 
     public $id;
-    public $first_name = '';
+    public $first_name = 'Unknown';
     public $last_name = '';
     public $username = '';
     public $language_code = 'en-US';

@@ -140,9 +140,10 @@ class Communicator {
             $hydration_values['%GAME_ID%'] = $this->owning_context->game->game_id;
             $hydration_values['%GAME_NAME%'] = $this->owning_context->game->game_name;
             $hydration_values['%EVENT_NAME%'] = $this->owning_context->game->event_name;
-        }
-        if($this->owning_context->game->game_channel_name) {
-            $hydration_values['%GAME_CHANNEL%'] = $this->owning_context->game->game_channel_name;
+
+            if($this->owning_context->game->game_channel_name) {
+                $hydration_values['%GAME_CHANNEL%'] = $this->owning_context->game->game_channel_name;
+            }
         }
 
         return hydrate($message, unite_arrays($hydration_values, $additional_values));
