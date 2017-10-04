@@ -309,6 +309,12 @@ $msg_processing_creation_handlers = array(
         }
     },
 
+    GAME_STATE_GENERATION => function($context) {
+        $context->comm->reply("Still creating your files… (If this takes an inordinate amount of time, let us know.)");
+
+        telegram_send_chat_action($context->comm->get_telegram_id());
+    },
+
     GAME_STATE_READY => function($context) {
         if($context->callback) {
             if($context->callback->data === 'activate') {
@@ -361,9 +367,21 @@ $msg_processing_creation_state_entry = array(
         $context->comm->reply("Start sending the geo-position for the first location.");
     },
 
+    GAME_STATE_GENERATION => function($context) {
+        $context->comm->reply("Now I will generate the QR Codes you'll need for your game. This might take some time… ⏳");
+        telegram_send_chat_action($context->comm->get_telegram_id());
+        $code_file = bot_creation_generate_codes($context);
+
+        $context->comm->reply("Done! Sending the files…");
+        telegram_send_chat_action($context->comm->get_telegram_id(), 'upload_document');
+        $context->comm->document($code_file, "Package for game “%GAME_NAME%”");
+
+        bot_creation_update_state($context, GAME_STATE_READY);
+    },
+
     GAME_STATE_READY => function($context) {
         $context->comm->reply(
-            "Your game '%GAME_NAME%' is ready to be activated.",
+            "Your game '%GAME_NAME%' is now ready to be activated.",
             null,
             array("reply_markup" => array(
                 "inline_keyboard" => array(
@@ -373,6 +391,8 @@ $msg_processing_creation_state_entry = array(
                 )
             ))
         );
+
+        $context->comm->reply("Check out the [guide for game administrators](http://codehunting.games/create) for further information. Good luck and have fun! ✌")
     }
 );
 
@@ -402,14 +422,21 @@ function msg_processing_handle_game_creation($context) {
     if(isset($msg_processing_creation_handlers[$initial_game_state])) {
         call_user_func($msg_processing_creation_handlers[$initial_game_state], $context);
 
-        $final_game_state = $context->game->game_state;
-        if($final_game_state !== $initial_game_state) {
-            Logger::debug("User switched to state " . GAME_STATE_MAP[$final_game_state] . ", processing", __FILE__, $context);
-
-            if(isset($msg_processing_creation_state_entry[$final_game_state])) {
-                call_user_func($msg_processing_creation_state_entry[$final_game_state], $context);
+        do {
+            $updated_game_state = $context->game->game_state;
+            if($updated_game_state === $initial_game_state) {
+                break;
             }
+
+            Logger::debug("User switched to state " . GAME_STATE_MAP[$updated_game_state] . ", processing", __FILE__, $context);
+
+            if(isset($msg_processing_creation_state_entry[$updated_game_state])) {
+                call_user_func($msg_processing_creation_state_entry[$updated_game_state], $context);
+            }
+
+            $initial_game_state = $updated_game_state;
         }
+        while(true);
 
         return true;
     }

@@ -344,7 +344,7 @@ function bot_creation_stop_location($context) {
     }
 
     if($context->game->game_state == GAME_STATE_LOCATIONS) {
-        bot_creation_update_state($context, GAME_STATE_READY);
+        bot_creation_update_state($context, GAME_STATE_GENERATION);
     }
 
     return true;
@@ -391,4 +391,108 @@ function bot_creation_check_location_conditions($context) {
         ($locations_data[0] >= $context->memory[MEMORY_CREATION_MIN_LOCATIONS] && $locations_data[1] >= 1 && $locations_data[2] >= 1),
         intval($locations_data[0])
     );
+}
+
+function bot_creation_generate_code_pdf($context, $template_name, $location_id, $code, $lat, $lng, $name, $filename_part) {
+    $rootdir = realpath(dirname(__FILE__) . '/..');
+
+    // Generating PNG
+    exec(sprintf(
+        'php %s "%s" "%s"',
+        $rootdir . '/html2pdf/qrcode-gen.php',
+        BOT_DEEPLINK_START_ROOT . urlencode($code),
+        $rootdir . '/data/qrcodes/tmp/game-' . $context->game->game_id . "-{$filename_part}.png"
+    ));
+
+    // Generating PDF
+    exec(sprintf(
+        'php %s "%s" "%s" "%s" "%F" "%F" "%s" "%d" "%s"',
+        $rootdir . '/html2pdf/pdf-gen.php',
+        $rootdir . '/html2pdf/' . $template_name,
+        $rootdir . '/data/qrcodes/tmp/game-' . $context->game->game_id . "-{$filename_part}.pdf",
+        $rootdir . '/data/qrcodes/tmp/game-' . $context->game->game_id . "-{$filename_part}.png",
+        $lat,
+        $lng,
+        $name,
+        $location_id,
+        BOT_DEEPLINK_START_ROOT . urlencode($code)
+    ));
+}
+
+/**
+ * Generates a QR Code package for the current game.
+ * The generated package will be at /data/qrcodes/game-GAMEID.zip
+ * @return Full path to the generated package or false on failure.
+ */
+function bot_creation_generate_codes($context) {
+    Logger::info("Generating QR Codes for game {$context->game->game_id}", __FILE__, $context);
+
+    $rootdir = realpath(dirname(__FILE__) . '/..');
+    $final_file = $rootdir . "/data/qrcodes/game-{$context->game->game_id}.zip";
+
+    // Registration code
+    $registration_code = db_scalar_query(sprintf(
+        'SELECT `code` FROM `code_lookup` WHERE `type` = \'registration\' AND `game_id` = %d AND `is_disabled` = 0',
+        $context->game->game_id
+    ));
+    if(!$registration_code) {
+        Logger::error("Failed retrieving registration code for game {$context->game->game_id}", __FILE__, $context);
+        return false;
+    }
+
+    Logger::debug("Generating registration code '{$registration_code}'", __FILE__, $context);
+
+    bot_creation_generate_code_pdf($context, 'template-registration.html', 0, $registration_code, 0, 0, "{$context->game->game_name} (in event ‘{$context->game->event_name}’)", 'registration');
+
+    // Locations
+    $location_data = db_table_query(sprintf(
+        'SELECT `locations`.`location_id`, `locations`.`internal_note`, `locations`.`lat`, `locations`.`lng`, `code_lookup`.`code` FROM `locations` LEFT OUTER JOIN `code_lookup` ON `locations`.`game_id` = `code_lookup`.`game_id` AND `locations`.`location_id` = `code_lookup`.`location_id` WHERE `locations`.`game_id` = %d',
+        $context->game->game_id
+    ));
+    if($location_data === false || $location_data == null) {
+        Logger::error("Failed retrieving location codes for game {$context->game->game_id}", __FILE__, $context);
+        return false;
+    }
+
+    foreach($location_data as $loc) {
+        Logger::debug("Generating location code #{$loc[0]} '{$loc[4]}'", __FILE__, $context);
+
+        bot_creation_generate_code_pdf($context, 'template-location.html', $loc[0], $loc[4], $loc[2], $loc[3], $loc[1], "location{$loc[0]}");
+    }
+
+    // Zip everything together
+    exec(sprintf(
+        'zip -Djq "%s" %s %s',
+        $final_file . '.tmp',
+        $rootdir . "/data/qrcodes/tmp/game-{$context->game->game_id}-*.pdf",
+        $rootdir . "/data/qrcodes/tmp/placeholder"
+    ));
+
+    // Clean up temp files
+    exec(sprintf(
+        'rm %s',
+        $rootdir . "/data/qrcodes/tmp/game-{$context->game->game_id}*"
+    ));
+
+    // Switch trick to signal file as ready
+    exec(sprintf(
+        'mv %s %s',
+        $final_file . '.tmp',
+        $final_file
+    ));
+
+    Logger::debug("All done, {$final_file} " . filesize($final_file) . ' bytes written', __FILE__, $context);
+
+    return $final_file;
+}
+
+/**
+ * Checks whether the code file for the current game is ready.
+ * @return Path to the file or false if not ready.
+ */
+function bot_creation_check_codes($context) {
+    $rootdir = realpath(dirname(__FILE__) . '/..');
+    $final_file = $rootdir . "/data/qrcodes/game-{$context->game->game_id}.zip";
+
+    return (file_exists($final_file)) ? $final_file : false;
 }

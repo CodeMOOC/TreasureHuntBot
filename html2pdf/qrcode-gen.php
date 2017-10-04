@@ -1,16 +1,13 @@
-<?php 
-require 'vendor/autoload.php';
+<?php
+require(dirname(__FILE__) . '/vendor/autoload.php');
 
 use Endroid\QrCode\QrCode;
 
-$baseurl = $argv[1];
-$string = $argv[2];
-$output_file = $argv[3];
+$url = $argv[1];
+$output_file = $argv[2];
 
-if(!file_exists('qrcodes/'.$string.'.png')){
-    $qrCode = new QrCode($baseurl.$string);
-    $qrCode->setMargin(0)->setSize(1000);
+$qrCode = new QrCode($url);
+$qrCode->setMargin(0)->setSize(1000);
 
-    // Save it to a file
-    $qrCode->writeFile($output_file);
-}
+// Save it to a file
+$qrCode->writeFile($output_file);

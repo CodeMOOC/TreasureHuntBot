@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <meta charset="utf8">
+    <title>Code Hunting Games</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        font-weight: 500;
+        font-size: 40pt;
+        background: rgb(255,255,255);
+        -webkit-print-color-adjust: exact;
+        box-sizing: border-box;
+      }
+    .page {
+    padding: 10mm;
+    width: 128.5mm;
+    height: 190.0mm;
+    position: absolute;
+    }
+    .header-img {
+    }
+    .qrcode{
+    }
+
+   .url {
+    margin-top: 10mm;
+    font-weight:bold;
+    font-size:16pt;
+    text-align:center;
+   }
+   .content {
+    font-size: 20pt;
+   }
+   .label {
+    font-weight: bold;
+   }
+
+   #second-page {
+    top: 0px;
+    left: 148.5mm;
+   }
+
+    </style>
+  </head>
+  <body>
+  <div class="page">
+      <img class="header-img" width="100%" src="%root%/images/header.png"><br/>
+    <img class="qrcode" width="100%" src="%image%"><br/>
+      <div class="url">
+          http://codehunting.games
+      </div>
+    </div>
+  <div class="page" id="second-page">
+    <img class="header-img" width="100%" src="%root%/images/header.png"><br/>
+    <div class="content">
+      <div class="loc-content">
+        <span class="label">QRCODE CONTENT:</span> %qr-content%<br/>
+      </div>
+      <div class="loc-name">
+        <span class="label">REGISTRATION:</span> %loc-name%<br/>
+      </div>
+    </div>
+    </div>
+  </body>
+</html>

@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php';
+require_once(dirname(__FILE__) . '/vendor/autoload.php');
 
 // reference the Dompdf namespace
 use Dompdf\Dompdf;
@@ -15,9 +15,10 @@ $data_qr_content = $argv[8]; //qr-content
 
 // instantiate and use the dompdf class
 $dompdf = new Dompdf();
-$content = file_get_contents ($input_file);
+$content = file_get_contents($input_file);
 
 //populate html template
+$content = str_replace("%root%", dirname(__FILE__), $content);
 $content = str_replace("%image%", $data_image, $content);
 $content = str_replace("%loc-latitude%", $data_lat, $content);
 $content = str_replace("%loc-longitude%", $data_long, $content);
@@ -26,8 +27,6 @@ $content = str_replace("%loc-id%", $data_id, $content);
 $content = str_replace("%qr-content%", $data_qr_content, $content);
 
 $dompdf->loadHtml($content);
-
-var_dump($_dompdf_warnings);
 
 // (Optional) Setup the paper size and orientation
 $dompdf->setPaper('A4', 'landscape');
