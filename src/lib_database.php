@@ -7,6 +7,18 @@
  * Database support library. Don't change a thing here.
  */
 
+/**
+ * Converts a nullable integer to a database string.
+ */
+function i2db($i) {
+    if(is_int($i)) {
+        return $i;
+    }
+    else {
+        return 'NULL';
+    }
+}
+
  function db_default_error_logging($connection, $message = "Database error") {
     $errno = mysqli_errno($connection);
     $error = mysqli_error($connection);

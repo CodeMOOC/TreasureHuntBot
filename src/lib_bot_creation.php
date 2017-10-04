@@ -33,6 +33,9 @@ function bot_creation_verify($context) {
     }
 }
 
+/**
+ * Updates a game's state.
+ */
 function bot_creation_update_state($context, $new_state) {
     $prev_state = $context->game->game_state;
 
@@ -98,6 +101,8 @@ function bot_creation_init($context, $event_id) {
         Logger::error("Failed inserting new game cluster", __FILE__, $context);
         return false;
     }
+
+    code_lookup_generate($context, 'registration', null, $context->game->game_id, null);
 
     $context->set_active_game($game_id, true);
     $context->reload();
@@ -268,6 +273,8 @@ function bot_creation_set_start($context, $lat, $lng) {
         1
     ));
 
+    code_lookup_generate($context, 'location', null, $context->game->game_id, DEFAULT_START_LOCATION_ID);
+
     if($context->game->game_state == GAME_STATE_LOCATIONS_FIRST) {
         bot_creation_update_state($context, GAME_STATE_LOCATIONS_LAST);
     }
@@ -291,6 +298,8 @@ function bot_creation_set_end($context, $lat, $lng) {
         1
     ));
 
+    code_lookup_generate($context, 'location', null, $context->game->game_id, DEFAULT_END_LOCATION_ID);
+
     if($context->game->game_state == GAME_STATE_LOCATIONS_LAST) {
         bot_creation_update_state($context, GAME_STATE_LOCATIONS);
     }
@@ -304,16 +313,23 @@ function bot_creation_save_location($context, $lat, $lng, $name) {
     }
 
     $existing_count = bot_get_normal_location_count($context);
+    $location_id = DEFAULT_LOCATION_ID_OFFSET + $existing_count;
 
-    return db_perform_action(sprintf(
+    if(db_perform_action(sprintf(
         'INSERT INTO `locations` (`game_id`, `location_id`, `cluster_id`, `internal_note`, `lat`, `lng`) VALUES(%d, %d, %d, \'%s\', %F, %F)',
         $context->game->game_id,
-        DEFAULT_LOCATION_ID_OFFSET + $existing_count,
+        $location_id,
         DEFAULT_CLUSTER_ID,
         db_escape($name),
         $lat,
         $lng
-    ));
+    )) === false) {
+        return false;
+    }
+
+    code_lookup_generate($context, 'location', null, $context->game->game_id, $location_id);
+
+    return true;
 }
 
 function bot_creation_stop_location($context) {
