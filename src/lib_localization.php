@@ -12,13 +12,18 @@
 // Language codes are matched exactly for regional codes, and then approximately
 // using the first two characters.
 const LANGUAGE_LOCALE_MAP = array(
+    //'de' => 'de_DE.utf8',
     'en-US' => 'en_US.utf8',
-    'en' => 'en_US.utf8',
-    'it' => 'it_IT.utf8',
-    'de' => 'de_DE.utf8',
     'es' => 'es_ES.utf8',
-    'fr' => 'fr_FR.utf8',
-    'nl' => 'nl_NL.utf8'
+    'en' => 'en_US.utf8',
+    //'fr' => 'fr_FR.utf8',
+    'hr' => 'hr_HR.utf8',
+    'it' => 'it_IT.utf8',
+    //'nl' => 'nl_NL.utf8'
+    'ru' => 'ru_RU.utf8',
+    'sk' => 'sk_SK.utf8',
+    'sl' => 'sl_SI.utf8',
+    'sv' => 'sv_SE.utf8'
 );
 
 function localization_get_locale_for_iso($iso_code) {
