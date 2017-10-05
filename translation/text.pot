@@ -104,6 +104,10 @@ msgstr ""
 msgid "cmd_register_registered"
 msgstr ""
 
+# Error response for registration to an old/inactive game
+msgid "cmd_register_game_unallowed"
+msgstr ""
+
 # Registration: captcha quiz for verification
 msgid "registration_new_state"
 msgstr ""

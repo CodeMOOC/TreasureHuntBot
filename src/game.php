@@ -120,3 +120,42 @@ const GAME_LAST_PUZZLE_2_SOLUTION = 'abc';
 
 const GAME_LAST_PUZZLE_3_IMAGE = '../images/final_riddle_placeholder.jpg';
 const GAME_LAST_PUZZLE_3_SOLUTION = 'abc';
+
+/**
+ * Checks whether users can register to a game.
+ */
+function game_check_can_register($event_state, $game_state) {
+    if($game_state !== GAME_STATE_ACTIVE) {
+        return false;
+    }
+
+    if($event_state === EVENT_STATE_DEAD) {
+        return false;
+    }
+}
+
+/**
+ * Checks whether users can create games for an event.
+ */
+function event_check_can_create($event_state) {
+    if($event_state < EVENT_STATE_REGISTRATION || $event_state > EVENT_STATE_OPEN_FOR_ALL) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Checks whether users can play in a game.
+ */
+function game_check_can_play($event_state, $game_state) {
+    if($game_state !== GAME_STATE_ACTIVE) {
+        return false;
+    }
+
+    if($event_state === EVENT_STATE_DEAD) {
+        return false;
+    }
+
+    return true;
+}

@@ -67,12 +67,19 @@ function bot_creation_update_state($context, $new_state) {
 function bot_creation_init($context, $event_id) {
     // Load event data
     $event_data = db_row_query(sprintf(
-        'SELECT `min_num_locations`, `min_avg_distance` FROM `events` WHERE `event_id` = %d',
+        'SELECT `min_num_locations`, `min_avg_distance`, `state` FROM `events` WHERE `event_id` = %d',
         $event_id
     ));
     if(!$event_data) {
         Logger::error("Unable to load event #{$event_id}", __FILE__, $context);
         return false;
+    }
+
+    $event_state = (int)$event_data[2];
+    if(!event_check_can_create($event_state)) {
+        Logger::debug("Cannot create game for event in state " . EVENT_STATE_MAP[$event_state], __FILE__, $context);
+
+        return 'event_unallowed';
     }
 
     $context->memory[MEMORY_CREATION_MIN_LOCATIONS] = intval($event_data[0]);

@@ -43,12 +43,25 @@ function bot_register($context, $game_id) {
 
     Logger::debug("Attempting to register new group in game #{$game_id}", __FILE__, $context);
 
-    // Query game timeout
-    $game_info = db_row_query("SELECT `timeout_absolute`, `timeout_interval` FROM `games` WHERE `game_id` = {$game_id}");
+    // Query game information
+    $game_info = db_row_query(sprintf(
+        'SELECT `games`.`timeout_absolute`, `games`.`timeout_interval`, `games`.`state`, `events`.`state` FROM `games` LEFT OUTER JOIN `events` ON `games`.`event_id` = `events`.`event_id` WHERE `games`.`game_id` = %d',
+        $game_id
+    ));
     if($game_info === false || $game_info == null) {
         Logger::error("Game #{$game_id} does not exist", __FILE__, $context);
         return false;
     }
+
+    // Check game state
+    $game_state = (int)$game_info[2];
+    $event_state = (int)$game_info[3];
+    if(!game_check_can_register($context, $event_state, $game_state)) {
+        Logger::debug("Cannot register game in state " . GAME_STATE_MAP[$game_state] . " for event in state " . EVENT_STATE_MAP[$event_state], __FILE__, $context);
+        return 'game_unallowed';
+    }
+
+    // Compute group timeout and register
     $game_timeout = 'NULL';
     if($game_info[0]) {
         $game_timeout = "'{$game_info[0]}'";

@@ -232,6 +232,10 @@ function bot_reach_location($context, $location_id, $game_id) {
         return 'wrong';
     }
 
+    if(!game_check_can_play($context->game->event_state, $context->game->game_state)) {
+        return 'game_unallowed';
+    }
+
     $expected_id = bot_get_expected_location_id($context);
     Logger::debug("Expecting location ID {$expected_id}", __FILE__, $context);
 
@@ -375,6 +379,10 @@ function bot_direct_win($context, $event_id, $game_id) {
         Logger::warning("Victory code does not match currently played event or game", __FILE__, $context);
 
         return 'wrong';
+    }
+
+    if(!game_check_can_play($context->game->event_state, $context->game->game_state)) {
+        return 'game_unallowed';
     }
 
     if($context->game->group_state < STATE_GAME_LAST_LOC) {

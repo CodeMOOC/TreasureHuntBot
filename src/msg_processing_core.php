@@ -45,13 +45,14 @@ function process_update($context) {
 
     // Registration and play process
     if($context->game && $context->game->game_id !== null && !$context->game->is_admin) {
-        if($context->game->game_state == GAME_STATE_ACTIVE) {
+        if(game_check_can_play($context->game->event_state, $context->game->game_state)) {
             if(msg_processing_handle_group_response($context)) {
                 return;
             }
         }
         else {
             $context->comm->reply(__('failure_game_dead'));
+            return;
         }
     }
 

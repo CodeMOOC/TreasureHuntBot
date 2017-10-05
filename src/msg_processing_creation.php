@@ -23,10 +23,12 @@ function msg_processing_purge_game_creation($context) {
 function msg_processing_init_game_creation($context, $event_id) {
     msg_processing_purge_game_creation($context);
 
-    if(!bot_creation_init($context, $event_id)) {
-        $context->comm->reply(__('failure_general'));
+    $creation_result = bot_creation_init($context, $event_id);
+
+    if($creation_result === 'event_unallowed') {
+        $context->comm->reply("Sorry, the event for which you are trying to create a game does not take new registrations at the time.");
     }
-    else {
+    else if($creation_result === true) {
         $context->comm->reply(
             "Welcome to the game creation process. Do you want to proceed creating a new game for the '%EVENT_NAME%' event?",
             null,
@@ -39,6 +41,9 @@ function msg_processing_init_game_creation($context, $event_id) {
                 )
             ))
         );
+    }
+    else {
+        $context->comm->reply(__('failure_general'));
     }
 }
 

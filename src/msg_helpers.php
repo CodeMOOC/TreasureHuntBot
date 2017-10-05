@@ -19,6 +19,9 @@ function msg_process_victory($context, $event_id = null, $game_id = null) {
     if($result === 'wrong') {
         $context->comm->reply(__('cmd_start_wrong_payload'));
     }
+    else if($result === 'game_unallowed') {
+        $context->comm->reply(__('failure_game_dead'));
+    }
     else if($result === 'too_soon') {
         // Invalid state, cannot win game yet/again
         $context->comm->reply(__('cmd_start_prize_invalid'));

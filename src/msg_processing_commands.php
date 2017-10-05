@@ -20,7 +20,7 @@ function msg_processing_commands($context) {
 
         return true;
     }
-    else if(starts_with($text, '/start ')) {
+    else if(starts_with($text, '/start')) {
         $payload = extract_command_payload($text);
 
         Logger::debug("Start command with payload '{$payload}'", __FILE__, $context);
@@ -83,6 +83,9 @@ function msg_processing_commands($context) {
                         $context->comm->reply(__('cmd_register_registered'));
                         msg_processing_handle_group_state($context);
                     }
+                    else if($result === 'game_unallowed') {
+                        $context->comm->reply(__('cmd_register_game_unallowed'));
+                    }
                     else {
                         $context->comm->reply(__('failure_general'));
                     }
@@ -100,6 +103,9 @@ function msg_processing_commands($context) {
                     }
                     else if($result === 'wrong') {
                         $context->comm->reply(__('cmd_start_location_wrong'));
+                    }
+                    else if($result === 'game_unallowed') {
+                        $context->comm->reply(__('failure_game_dead'));
                     }
                     else {
                         if($result === 'first') {
