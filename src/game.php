@@ -93,11 +93,11 @@ const GAME_STATE_MAP                = array(
     255     => 'GAME_STATE_DEAD'
 );
 
-const GAME_LAST_PUZZLE_1_IMAGE = 'last_codeweek_2017_puzzle_1.jpg';
+const GAME_LAST_PUZZLE_1_IMAGE = '../images/final_riddle_placeholder.jpg';
 const GAME_LAST_PUZZLE_1_SOLUTION = 'abc';
 
-const GAME_LAST_PUZZLE_2_IMAGE = 'last_codeweek_2017_puzzle_1.jpg';
+const GAME_LAST_PUZZLE_2_IMAGE = '../images/final_riddle_placeholder.jpg';
 const GAME_LAST_PUZZLE_2_SOLUTION = 'abc';
 
-const GAME_LAST_PUZZLE_3_IMAGE = 'last_codeweek_2017_puzzle_1.jpg';
+const GAME_LAST_PUZZLE_3_IMAGE = '../images/final_riddle_placeholder.jpg';
 const GAME_LAST_PUZZLE_3_SOLUTION = 'abc';

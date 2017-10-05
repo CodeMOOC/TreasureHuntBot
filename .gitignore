@@ -5,6 +5,7 @@
 */config.php
 images/*
 !images/default.jpg
+!images/final_riddle_placeholder.jpg
 locations/*
 !locations/test.png
 riddles/*
