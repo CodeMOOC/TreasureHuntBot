@@ -392,7 +392,7 @@ $msg_processing_creation_state_entry = array(
             ))
         );
 
-        $context->comm->reply("Check out the [guide for game administrators](http://codehunting.games/create) for further information. Good luck and have fun! ✌")
+        $context->comm->reply("Check out the [guide for game administrators](http://codehunting.games/create) for further information. Good luck and have fun! ✌");
     }
 );
 

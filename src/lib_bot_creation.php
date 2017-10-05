@@ -90,8 +90,6 @@ function bot_creation_init($context, $event_id) {
         return false;
     }
 
-    Logger::debug("Game #{$game_id} created", __FILE__, $context);
-
     if(db_perform_action(sprintf(
         'INSERT INTO `game_location_clusters` (`game_id`, `cluster_id`, `num_locations`) VALUES(%d, %d, %d)',
         $game_id,
@@ -103,6 +101,8 @@ function bot_creation_init($context, $event_id) {
     }
 
     code_lookup_generate($context, 'registration', $event_id, $game_id, null);
+
+    Logger::info("Game #{$game_id} created", __FILE__, $context);
 
     $context->set_active_game($game_id, true);
     $context->reload();

@@ -48,13 +48,13 @@ class Logger {
     }
 
     private static function common($level, $message, $tag = '', $context = null) {
+        $base_tag = basename($tag, '.php');
+
         if(is_cli()) {
             // In CLI mode, output all logs to stderr
             fwrite(STDERR, self::severity_to_char($level) . '/' . $message . PHP_EOL);
         }
         else {
-            $base_tag = basename($tag, '.php');
-
             if($level >= self::SEVERITY_WARNING) {
                 // Write warning and errors to the system log
                 error_log(self::severity_to_char($level) . ':' . $base_tag . ':' . $message);
@@ -62,10 +62,28 @@ class Logger {
 
             // Log to DB if needed
             if(DEBUG_TO_DB || $level > self::SEVERITY_DEBUG) {
-                $identity = ($context != null && $context->get_user_id() != null) ? $context->get_user_id() : 'NULL';
-                $game_id = ($context != null && $context->get_game_id() != null) ? $context->get_game_id() : 'NULL';
+                $identity = ($context != null && $context->get_internal_id() != null) ? $context->get_internal_id() : 'NULL';
+                $game_id = ($context != null && $context->game != null) ? $context->game->game_id : 'NULL';
 
                 db_perform_action("INSERT INTO `log` (`log_id`, `severity`, `tag`, `message`, `timestamp`, `identity_id`, `game_id`) VALUES(DEFAULT, {$level}, '" . db_escape($base_tag) . "', '" . db_escape($message) . "', NOW(), {$identity}, {$game_id})");
+            }
+
+            // Log to debug chat if enabled
+            if(CHAT_GROUP_DEBUG && $level >= self::SEVERITY_WARNING) {
+                telegram_send_message(
+                    CHAT_GROUP_DEBUG,
+                    sprintf(
+                        "%s <b>%s</b>\n%s\nModule: <code>%s</code>\nGame ID: %s",
+                        ($level === self::SEVERITY_ERROR) ? '🚨' : '⚠️',
+                        ($level === self::SEVERITY_ERROR) ? 'Error' : 'Warning',
+                        $message,
+                        $base_tag,
+                        ($context != null && $context->game != null) ? $context->game->game_id : 'none'
+                    ),
+                    array(
+                        'parse_mode' => 'HTML'
+                    )
+                );
             }
         }
     }
