@@ -93,6 +93,25 @@ const GAME_STATE_MAP                = array(
     255     => 'GAME_STATE_DEAD'
 );
 
+const EVENT_STATE_NEW               = 0;   // placeholder for event creation process
+const EVENT_STATE_REGISTRATION      = 128; // event takes game registrations
+const EVENT_STATE_OPEN_FOR_ALL      = 244; // open for all, takes registrations, can play
+const EVENT_STATE_DEAD              = 255; // over and out, all games are terminated
+
+const EVENT_STATE_ALL                = array(
+    EVENT_STATE_NEW,
+    EVENT_STATE_REGISTRATION,
+    EVENT_STATE_OPEN_FOR_ALL,
+    EVENT_STATE_DEAD
+);
+
+const EVENT_STATE_MAP               = array(
+    0       => 'EVENT_STATE_NEW',
+    128     => 'EVENT_STATE_REGISTRATION',
+    244     => 'EVENT_STATE_OPEN_FOR_ALL',
+    255     => 'EVENT_STATE_DEAD'
+);
+
 const GAME_LAST_PUZZLE_1_IMAGE = '../images/final_riddle_placeholder.jpg';
 const GAME_LAST_PUZZLE_1_SOLUTION = 'abc';
 

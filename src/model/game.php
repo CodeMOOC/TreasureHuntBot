@@ -23,6 +23,7 @@ class Game {
 
     public  $event_id = null;
     public  $event_name = null;
+    public  $event_state = EVENT_STATE_OPEN_FOR_ALL;
     public  $event_channel_name = null;
 
     // Rows of cluster_id, num_locations, and description
@@ -69,13 +70,15 @@ class Game {
 
         //Event exists
         $this->event_name = $event_data[0];
+        $this->event_state = (int)$event_data[1];
         $this->event_channel_name = $event_data[2];
 
         Logger::debug(sprintf(
-            "User in game '%s' (%s), event '%s', channel '%s', censor %s",
-            $game_data[0],
+            "User in game '%s' (%s), event '%s' (%s), channel '%s', censor %s",
+            $this->game_name,
             GAME_STATE_MAP[$this->game_state],
-            $event_data[0],
+            $this->event_name,
+            EVENT_STATE_MAP[$this->event_state],
             $this->game_channel_name,
             b2s($this->game_channel_censor)
         ), __FILE__, $this->owning_context);
