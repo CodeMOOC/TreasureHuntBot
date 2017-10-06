@@ -360,9 +360,9 @@ function bot_get_current_hint($context) {
     }
 
     return db_scalar_query(sprintf(
-        'SELECT `riddles_solved_count` FROM `hints` WHERE `event_id` = %d AND `riddles_solved_count` = %d',
+        'SELECT `content` FROM `hints` WHERE `event_id` = %d AND `riddles_solved_count` = %d',
         $context->game->event_id,
-        $solver
+        $solved
     ));
 }
 
