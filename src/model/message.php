@@ -29,13 +29,13 @@ class Message implements iContent {
         $this->message_id = $payload['message_id'];
         $this->chat_id = $payload['chat']['id'];
 
-        if(isset($payload['text'])){
+        if(isset($payload['text'])) {
             $this->text = $payload['text'];
         }
-        if(isset($payload['photo'])){
+        if(isset($payload['photo'])) {
             $this->photo = $payload['photo'];
         }
-        if(isset($payload['caption'])){
+        if(isset($payload['caption'])) {
             $this->caption = $payload['caption'];
         }
         if(isset($payload['location'])) {
@@ -46,6 +46,24 @@ class Message implements iContent {
 
     function is_text() {
         return isset($this->text);
+    }
+
+    /**
+     * Gets a debugging description of the message.
+     */
+    function get_description() {
+        if(isset($this->text)) {
+            return "'{$this->text}'";
+        }
+        else if(isset($this->photo)) {
+            return "photo";
+        }
+        else if(isset($this->latitude)) {
+            return "location {$this->latitude},{$this->longitude}";
+        }
+        else {
+            return "???";
+        }
     }
 
     /**

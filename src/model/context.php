@@ -41,7 +41,6 @@ class Context {
      */
     function __construct($update) {
         $this->update = $update;
-        Logger::debug("Context loading update #{$update['update_id']}", __FILE__);
 
         $this->reload();
     }
@@ -54,9 +53,13 @@ class Context {
 
         if(isset($this->update['message'])) {
             $this->message = new Message($this->update['message']);
+
+            Logger::debug("Incoming message: {$this->message->get_description()}", __FILE__, $this);
         }
         else if(isset($this->update['callback_query'])) {
             $this->callback = new Callback($this->update['callback_query']);
+
+            Logger::debug("Incoming callback: {$this->callback->data}", __FILE__, $this);
         }
         else {
             Logger::fatal("Unknown kind of update", __FILE__);
