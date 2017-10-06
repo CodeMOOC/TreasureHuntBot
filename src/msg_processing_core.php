@@ -35,7 +35,7 @@ function process_update($context) {
     }
 
     // Game creation process
-    if($context->game && $context->game->is_admin && $context->game->game_state < GAME_STATE_ACTIVE) {
+    if($context->game && $context->game->is_admin && $context->game->game_state <= GAME_STATE_ACTIVE) {
         Logger::debug("Game setup process still running", __FILE__, $context);
 
         if(msg_processing_handle_game_creation($context)) {

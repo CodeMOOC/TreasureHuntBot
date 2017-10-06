@@ -154,8 +154,6 @@ $msg_processing_creation_handlers = array(
             else if($context->callback) {
                 if($context->callback->data === 'skip') {
                     bot_creation_update_state($context, GAME_STATE_REG_EMAIL);
-
-                    $context->comm->reply("Ok. Please provide an e-mail address I can use for further communications with you:");
                 }
                 else if($context->callback->data === 'tryagain') {
                     $context->comm->reply("Testing again…");
@@ -330,6 +328,12 @@ $msg_processing_creation_handlers = array(
                 return;
             }
         }
+
+        $context->comm->reply("Activate your game by clicking on the button above.");
+    },
+
+    GAME_STATE_ACTIVE => function($context) {
+        $context->comm->reply("Your game is running.");
     }
 );
 
@@ -385,8 +389,10 @@ $msg_processing_creation_state_entry = array(
     },
 
     GAME_STATE_READY => function($context) {
+        $context->comm->reply("Your game ‘%GAME_NAME%’ is now ready to be activated. Check out the <a href=\"http://codehunting.games/create\">guide for game administrators</a> for further information. Good luck and have fun! ✌");
+
         $context->comm->reply(
-            "Your game '%GAME_NAME%' is now ready to be activated.",
+            "When you’re ready to let users register and play, click below to activate the QR Codes.",
             null,
             array("reply_markup" => array(
                 "inline_keyboard" => array(
@@ -396,8 +402,6 @@ $msg_processing_creation_state_entry = array(
                 )
             ))
         );
-
-        $context->comm->reply("Check out the [guide for game administrators](http://codehunting.games/create) for further information. Good luck and have fun! ✌");
     }
 );
 
