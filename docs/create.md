@@ -7,7 +7,7 @@ The *Code Hunting Games* bot has been designed to let users create their own gam
 # Overview for organizers
 
 In this phase the game is invite-only: please check if organizers have sent you a link to create your own game.
-If so, follow the link on a device where you have Telegram installed.
+If so, follow the link on a device where you have Telegram installed (notice, creating a game has the [same requirements of playing the game](/play)).
 You will be automatically forwarded to the game creation process through the bot.
 
 The bot will ask the following information:
