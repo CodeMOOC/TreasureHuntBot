@@ -12,7 +12,7 @@ msgstr ""
 "X-Generator: Poedit 2.0.3\n"
 "POT-Creation-Date: 2017-09-15 10:27+0200\n"
 
-# Riddle type 1: where does Roby end up executing steps in %RIDDLE_PARAM%?
+# Riddle type 1: where does Roby end up executing steps in %RIDDLE_PARAM%? (coordinates row first)
 msgid "riddle_type_1"
 msgstr ""
 

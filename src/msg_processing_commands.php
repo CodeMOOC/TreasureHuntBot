@@ -27,7 +27,7 @@ function msg_processing_commands($context) {
 
         if($payload === '') {
             // Naked /start message
-            if($context->game->group_state) {
+            if($context->game && $context->game->group_state) {
                 $context->comm->reply(__('cmd_start_registered'));
 
                 msg_processing_handle_group_state($context);

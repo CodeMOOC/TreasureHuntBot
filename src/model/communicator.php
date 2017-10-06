@@ -55,7 +55,7 @@ class Communicator {
      */
     function channel($message, $additional_values = null) {
         if(!$this->owning_context->game->game_channel_name) {
-            Logger::error("Cannot send message to channel (channel not set)", __FILE__, $this);
+            Logger::info("Cannot send message to channel (channel not set)", __FILE__, $this->owning_context);
             return;
         }
 
@@ -67,12 +67,14 @@ class Communicator {
      */
     function channel_picture($photo_id, $message, $additional_values = null) {
         if(!$this->owning_context->game->game_channel_name) {
-            Logger::error("Cannot send picture to channel (channel not set)", __FILE__, $this);
+            Logger::info("Cannot send picture to channel (channel not set)", __FILE__, $this->owning_context);
+
             return;
         }
 
         if($this->owning_context->game->game_channel_censor) {
-            Logger::debug('Photo not sent to channel because of censorship settings', __FILE__, $this);
+            Logger::debug('Photo not sent to channel because of censorship settings', __FILE__, $this->owning_context);
+
             return $this->channel($message, $additional_values);
         }
         else {
@@ -89,7 +91,7 @@ class Communicator {
      */
     function event_channel($message, $additional_values = null) {
         if(!$this->owning_context->game->event_channel_name) {
-            Logger::error("Cannot send message to event channel (channel not set)", __FILE__, $this);
+            Logger::info("Cannot send message to event channel (channel not set)", __FILE__, $this->owning_context);
             return;
         }
 

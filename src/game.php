@@ -132,6 +132,8 @@ function game_check_can_register($event_state, $game_state) {
     if($event_state === EVENT_STATE_DEAD) {
         return false;
     }
+
+    return true;
 }
 
 /**

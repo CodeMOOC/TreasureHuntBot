@@ -166,7 +166,6 @@ function msg_processing_handle_group_response($context) {
                 return true;
             }
 
-
             bot_set_group_participants($context, $number);
             bot_set_group_state($context, STATE_REG_NUMBER);
 
@@ -354,7 +353,7 @@ function msg_processing_handle_group_response($context) {
                 $file_info = telegram_get_file_info($context->message->get_photo_max_id());
                 $file_path = $file_info['file_path'];
                 $local_path = "{$context->game->game_id}-{$context->get_internal_id()}-final";
-                telegram_download_file($file_path, "../selfies/{$local_path}.jpg");
+                telegram_download_file($file_path, "../data/selfies/{$local_path}.jpg");
 
                 $context->comm->reply(__('game_last_selfie_response_ok'));
 
