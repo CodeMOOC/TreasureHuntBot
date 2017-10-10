@@ -94,8 +94,8 @@ const GAME_STATE_MAP                = array(
 );
 
 const EVENT_STATE_NEW               = 0;   // placeholder for event creation process
-const EVENT_STATE_REGISTRATION      = 128; // event takes game registrations
-const EVENT_STATE_OPEN_FOR_ALL      = 244; // open for all, takes registrations, can play
+const EVENT_STATE_REGISTRATION      = 128; // event takes game creations and user registrations
+const EVENT_STATE_OPEN_FOR_ALL      = 192; // open for all, takes registrations, can play
 const EVENT_STATE_DEAD              = 255; // over and out, all games are terminated
 
 const EVENT_STATE_ALL                = array(
@@ -108,7 +108,7 @@ const EVENT_STATE_ALL                = array(
 const EVENT_STATE_MAP               = array(
     0       => 'EVENT_STATE_NEW',
     128     => 'EVENT_STATE_REGISTRATION',
-    244     => 'EVENT_STATE_OPEN_FOR_ALL',
+    192     => 'EVENT_STATE_OPEN_FOR_ALL',
     255     => 'EVENT_STATE_DEAD'
 );
 
@@ -129,7 +129,7 @@ function game_check_can_register($event_state, $game_state) {
         return false;
     }
 
-    if($event_state === EVENT_STATE_DEAD) {
+    if($event_state < EVENT_STATE_REGISTRATION || $event_state > EVENT_STATE_OPEN_FOR_ALL) {
         return false;
     }
 
