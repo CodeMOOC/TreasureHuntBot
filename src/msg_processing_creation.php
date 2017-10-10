@@ -90,7 +90,7 @@ $msg_processing_creation_handlers = array(
             $result = bot_creation_set_channel($context, $channel_name);
             if($result === 'invalid') {
                 $context->comm->reply(
-                    "Invalid channel name. Try another?",
+                    "Invalid channel name. Please provide the channel’s nickname.",
                     null,
                     array("reply_markup" => array(
                         "inline_keyboard" => array(

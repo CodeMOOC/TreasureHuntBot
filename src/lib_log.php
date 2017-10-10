@@ -9,6 +9,16 @@
 
 class Logger {
 
+    private static $is_suspended = false;
+
+    /**
+     * Suspend logging to database and bot.
+     * Can be used temporarily when warnings and errors are expected.
+     */
+    public static function suspend($suspend = false) {
+        self::$is_suspended = $suspend;
+    }
+
     const SEVERITY_DEBUG = 1;
     const SEVERITY_INFO = 64;
     const SEVERITY_WARNING = 128;
@@ -54,7 +64,7 @@ class Logger {
             // In CLI mode, output all logs to stderr
             fwrite(STDERR, self::severity_to_char($level) . '/' . $message . PHP_EOL);
         }
-        else {
+        else if(!self::$is_suspended) {
             if($level >= self::SEVERITY_WARNING) {
                 // Write warning and errors to the system log
                 error_log(self::severity_to_char($level) . ':' . $base_tag . ':' . $message);
@@ -63,7 +73,7 @@ class Logger {
             // Log to DB if needed
             if(DEBUG_TO_DB || $level > self::SEVERITY_DEBUG) {
                 $identity = ($context != null && $context->get_internal_id() != null) ? $context->get_internal_id() : 'NULL';
-                $game_id = ($context != null && $context->game != null) ? $context->game->game_id : 'NULL';
+                $game_id = ($context != null && $context->game != null && $context->game->game_id) ? $context->game->game_id : 'NULL';
 
                 db_perform_action("INSERT INTO `log` (`log_id`, `severity`, `tag`, `message`, `timestamp`, `identity_id`, `game_id`) VALUES(DEFAULT, {$level}, '" . db_escape($base_tag) . "', '" . db_escape($message) . "', NOW(), {$identity}, {$game_id})");
             }

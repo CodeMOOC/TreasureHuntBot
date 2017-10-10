@@ -189,13 +189,22 @@ function bot_creation_set_channel($context, $channel_name) {
         return false;
     }
 
-    if(!$channel_name || mb_substr($channel_name, 0, 1) !== '@') {
+    if(!$channel_name || mb_strpos($channel_name, ' ') !== false) {
         return 'invalid';
+    }
+
+    if(mb_substr($channel_name, 0, 1) !== '@') {
+        Logger::debug("Fixing channel name with missing '@' first character", __FILE__, $context);
+        $channel_name = '@' . $channel_name;
     }
 
     Logger::debug("Attempting to send message to '{$channel_name}'", __FILE__, $context);
 
-    if(!telegram_send_message($channel_name, "Test. Remove this message.")) {
+    Logger::suspend(true);
+    $result = telegram_send_message($channel_name, "Test. Remove this message.");
+    Logger::suspend(false);
+
+    if(!$result) {
         // TODO: provide better details about error (check for #403 code), etc.
         //       requires better error signaling in telegram_send_message.
         return 'fail_send';
