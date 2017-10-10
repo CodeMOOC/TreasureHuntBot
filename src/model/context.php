@@ -61,6 +61,10 @@ class Context {
 
             Logger::debug("Incoming callback: {$this->callback->data}", __FILE__, $this);
         }
+        else if(isset($this->update['channel_post'])) {
+            Logger::debug("Channel post, ignoring");
+            die();
+        }
         else {
             Logger::fatal("Unknown kind of update", __FILE__);
         }
