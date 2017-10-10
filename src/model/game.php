@@ -20,6 +20,7 @@ class Game {
     public  $game_channel_censor = false;
     public  $game_has_timeout = false;
     public  $game_timed_out = false;
+    public  $game_language = null;
 
     public  $event_id = null;
     public  $event_name = null;
@@ -41,7 +42,7 @@ class Game {
         }
 
         $game_data = db_row_query(sprintf(
-            "SELECT `name`, `event_id`, `state`, `telegram_channel`, `telegram_channel_censor_photo`, (`timeout_absolute` IS NOT NULL OR `timeout_interval` IS NOT NULL) AS `has_timeout` FROM `games` WHERE `game_id` = %d",
+            "SELECT `name`, `event_id`, `state`, `telegram_channel`, `telegram_channel_censor_photo`, (`timeout_absolute` IS NOT NULL OR `timeout_interval` IS NOT NULL) AS `has_timeout`, `language` FROM `games` WHERE `game_id` = %d",
             $game_id
         ));
         if(!$game_data) {
@@ -58,6 +59,7 @@ class Game {
         $this->game_channel_name = $game_data[3];
         $this->game_channel_censor = (boolean)$game_data[4];
         $this->game_has_timeout = (boolean)$game_data[5];
+        $this->game_language = $game_data[6];
 
         $event_data = db_row_query(sprintf(
             "SELECT `name`, `state`, `telegram_channel` FROM `events` WHERE `event_id` = %d",
@@ -74,13 +76,14 @@ class Game {
         $this->event_channel_name = $event_data[2];
 
         Logger::debug(sprintf(
-            "User in game '%s' (%s), event '%s' (%s), channel '%s', censor %s",
+            "User in game '%s' (%s), event '%s' (%s), channel '%s', censor %s, language '%s'",
             $this->game_name,
             GAME_STATE_MAP[$this->game_state],
             $this->event_name,
             EVENT_STATE_MAP[$this->event_state],
             $this->game_channel_name,
-            b2s($this->game_channel_censor)
+            b2s($this->game_channel_censor),
+            $this->game_language
         ), __FILE__, $this->owning_context);
 
         $this->load_player_data();

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 03, 2017 at 03:49 PM
--- Server version: 10.1.23-MariaDB-9+deb9u1
--- PHP Version: 7.0.22-1~dotdeb+8.1
+-- Generation Time: Oct 11, 2017 at 01:05 AM
+-- Server version: 10.1.26-MariaDB-0+deb9u1
+-- PHP Version: 7.0.19-1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -106,6 +106,7 @@ CREATE TABLE `games` (
   `location_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `location_lat` float DEFAULT NULL,
   `location_lng` float DEFAULT NULL,
+  `language` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
   `organizer_id` int(10) UNSIGNED NOT NULL,
   `organizer_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -171,6 +172,7 @@ CREATE TABLE `identities` (
   `full_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `first_seen_on` datetime NOT NULL,
   `last_access` datetime NOT NULL,
+  `language` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
   `is_admin` tinyint(1) NOT NULL DEFAULT '0',
   `active_game` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

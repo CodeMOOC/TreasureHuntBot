@@ -87,10 +87,11 @@ function bot_creation_init($context, $event_id) {
 
     // Create new entries
     $game_id = db_perform_action(sprintf(
-        'INSERT INTO `games` (`game_id`, `event_id`, `state`, `organizer_id`, `registered_on`) VALUES(DEFAULT, %d, %d, %d, NOW())',
+        'INSERT INTO `games` (`game_id`, `event_id`, `state`, `organizer_id`, `registered_on`, `language`) VALUES(DEFAULT, %d, %d, %d, NOW(), %s)',
         $event_id,
         GAME_STATE_NEW,
-        $context->get_internal_id()
+        $context->get_internal_id(),
+        ($context->language_override) ? ("'" . db_escape($context->language_override) . "'") : 'DEFAULT'
     ));
     if($game_id === false) {
         Logger::error("Failed inserting new game", __FILE__, $context);

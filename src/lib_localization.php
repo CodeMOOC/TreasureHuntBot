@@ -7,6 +7,8 @@
  * Support library for localization.
  */
 
+require_once(dirname(__FILE__) . '/lib_log.php');
+
 // This array maps ISO language codes to locales installed on the local system,
 // which match the locales printed by the `locale -a` command.
 // Language codes are matched exactly for regional codes, and then approximately
@@ -17,13 +19,28 @@ const LANGUAGE_LOCALE_MAP = array(
     'es' => 'es_ES.utf8',
     'en' => 'en_US.utf8',
     //'fr' => 'fr_FR.utf8',
-    'hr' => 'hr_HR.utf8',
+    //'hr' => 'hr_HR.utf8',
+    'hu' => 'hu_HU.utf8',
     'it' => 'it_IT.utf8',
     //'nl' => 'nl_NL.utf8'
     'ru' => 'ru_RU.utf8',
-    'sk' => 'sk_SK.utf8',
+    //'sk' => 'sk_SK.utf8',
     'sl' => 'sl_SI.utf8',
     'sv' => 'sv_SE.utf8'
+);
+
+// This array maps ISO language codes to user-readable representations of the
+// language, localized to the target language.
+const LANGUAGE_NAME_MAP = array(
+    'en-US' => 'English 🇺🇸',
+    'es' => 'Español 🇪🇸',
+    //'hr' => 'Hrvatski 🇭🇷',
+    'hu' => 'Magyar 🇭🇺',
+    'it' => 'Italiano 🇮🇹',
+    'ru' => 'Русский 🇷🇺',
+    //'sk' => 'Slovenčina 🇸🇰',
+    'sl' => 'Slovenščina 🇸🇮',
+    'sv' => 'Svenska 🇸🇪'
 );
 
 function localization_get_locale_for_iso($iso_code) {
@@ -48,7 +65,9 @@ function localization_set_locale($locale_iso_code) {
     $locale = localization_get_locale_for_iso($locale_iso_code);
 
     putenv('LC_ALL=' . $locale);
-    setlocale(LC_ALL, $locale);
+    if(setlocale(LC_ALL, $locale) === false) {
+        Logger::error("Failed to set locale to {$locale}", __FILE__);
+    }
 }
 
 function localization_safe_gettext($msgid, $domain) {

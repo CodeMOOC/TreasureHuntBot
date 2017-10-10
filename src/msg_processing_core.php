@@ -17,6 +17,7 @@ require_once(dirname(__FILE__) . '/msg_helpers.php');
 require_once(dirname(__FILE__) . '/msg_processing_admin.php');
 require_once(dirname(__FILE__) . '/msg_processing_commands.php');
 require_once(dirname(__FILE__) . '/msg_processing_creation.php');
+require_once(dirname(__FILE__) . '/msg_processing_localization.php');
 require_once(dirname(__FILE__) . '/msg_processing_state.php');
 
 function process_update($context) {
@@ -29,7 +30,12 @@ function process_update($context) {
         return;
     }
 
-    // Base commands (take precedence over anything else)
+    // Localization process
+    if(msg_processing_localization($context)) {
+        return;
+    }
+
+    // Base game commands
     if($context->is_message() && msg_processing_commands($context)) {
         return;
     }

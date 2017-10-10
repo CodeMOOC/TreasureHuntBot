@@ -7,8 +7,6 @@
  * Class wrapping the bot's context in a single execution.
  */
 
-// In From: [language_code] => en-US
-
 require_once(dirname(__FILE__) . '/../lib.php');
 
 require_once(dirname(__FILE__) . '/sender.php');
@@ -24,6 +22,7 @@ class Context {
 
     // Internal ID in table `identities`
     private $internal_id = null;
+    public $language_override = null;
 
     // Alternative update contents
     public $message;
@@ -142,7 +141,7 @@ class Context {
      * Loads the user's identity and game status.
      */
     private function load_identity_and_status() {
-        $identity_row = db_row_query("SELECT `id`, `active_game`, `is_admin` FROM `identities` WHERE `telegram_id` = {$this->get_telegram_user_id()}");
+        $identity_row = db_row_query("SELECT `id`, `active_game`, `is_admin`, `language` FROM `identities` WHERE `telegram_id` = {$this->get_telegram_user_id()}");
 
         // No identity registered, register now
         if(!$identity_row) {
@@ -159,7 +158,14 @@ class Context {
         }
 
         $this->internal_id = (int)$identity_row[0];
-        Logger::debug("Known identity #{$this->internal_id} on game #{$identity_row[1]} (admin: {$identity_row[2]})", __FILE__, $this);
+        $this->language_override = $identity_row[3];
+        Logger::debug(sprintf(
+            'Known identity #%d on game #%d (admin %s), language \'%s\'',
+            $this->internal_id,
+            $identity_row[1],
+            b2s($identity_row[2]),
+            $identity_row[3]
+        ), __FILE__, $this);
 
         // Update last access time and names
         db_perform_action(sprintf(
@@ -174,14 +180,18 @@ class Context {
 
     /**
      * Loads current language, taking into account user, game, and event settings.
-     * TODO: currently takes only user settings into account.
      */
     private function load_language() {
-        if(!$this->sender || !$this->sender->language_code) {
-            return;
+        if($this->language_override) {
+            // User language override always wins
+            localization_set_locale($this->language_override);
         }
-
-        localization_set_locale($this->sender->language_code);
+        else if($this->game && $this->game->game_language) {
+            localization_set_locale($this->game->game_language);
+        }
+        else if($this->sender && $this->sender->language_code) {
+            localization_set_locale($this->sender->language_code);
+        }
     }
 
     /**
