@@ -22,7 +22,9 @@ require_once(dirname(__FILE__) . '/msg_processing_state.php');
 
 function process_update($context) {
     if($context->game && $context->game->is_admin) {
-        // TODO: admin commands
+        if(msg_processing_admin($context)) {
+            return;
+        }
     }
 
     if(DEACTIVATED) {

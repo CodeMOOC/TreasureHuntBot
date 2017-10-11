@@ -413,40 +413,6 @@ function bot_direct_win($context, $event_id, $game_id) {
 /*** COUNTING AND AUXILIARY METHODS ***/
 
 /**
- * Gets the count of registered groups (verified and with name).
- */
-function bot_get_registered_groups($context) {
-    return db_scalar_query(sprintf(
-        "SELECT count(*) FROM `groups` WHERE `game_id` = %d AND `state` >= %d",
-        $context->game->game_id,
-        STATE_REG_NAME
-    ));
-}
-
-/**
- * Gets the count of ready groups (verified, with name, participants, and avatars).
- */
-function bot_get_ready_groups($context) {
-    return db_scalar_query(sprintf(
-        "SELECT count(*) FROM `groups` WHERE `game_id` = %d AND `state` >= %d",
-        $context->game->game_id,
-        STATE_REG_READY
-    ));
-}
-
-/**
- * Gets the total count of participants in groups that are ready.
- * Excludes groups by administrators.
- */
-function bot_get_ready_participants_count($context) {
-    return db_scalar_query(sprintf(
-        "SELECT sum(`participants_count`) FROM `groups` WHERE `game_id` = %d AND `state` >= %d",
-        $context->game->game_id,
-        STATE_REG_READY
-    ));
-}
-
-/**
  * Gets a list of Telegram IDs and names of all registered groups.
  * @param $min_state_level Minimum level the groups must have.
  * @return array List of (Telegram ID, Leader name, Group name).

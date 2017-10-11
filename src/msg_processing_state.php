@@ -189,7 +189,7 @@ function msg_processing_handle_group_response($context) {
                 bot_set_group_photo($context, $local_path);
                 bot_set_group_state($context, STATE_REG_READY);
 
-                $groups_count = bot_get_ready_groups($context);
+                $groups_count = bot_stats_ready_groups($context)[0];
 
                 Logger::info("Group '{$context->game->group_name}' is ready for the game ({$groups_count}th)", __FILE__, $context);
 
