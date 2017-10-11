@@ -101,3 +101,22 @@ class Logger {
     }
 
 }
+
+function logger_fatal_handler() {
+    $error = error_get_last();
+
+    var_dump($error);
+
+    if($error != null && $error['type'] === E_ERROR) {
+        // This is a fatal error, whoopsie
+        Logger::suspend(false);
+        Logger::error(sprintf(
+            '%s (line %d)',
+            $error['message'],
+            $error['line']
+        ), $error['file']);
+    }
+}
+
+// Register final "fatal error" handler
+register_shutdown_function("logger_fatal_handler");
