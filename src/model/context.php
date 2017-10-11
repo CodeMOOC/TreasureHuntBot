@@ -192,6 +192,9 @@ class Context {
         else if($this->sender && $this->sender->language_code) {
             localization_set_locale($this->sender->language_code);
         }
+
+        // Slight unpleasantness: unnamed group string must be loaded here
+        $this->game->group_name = __('unnamed_group');
     }
 
     /**

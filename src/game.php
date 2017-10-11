@@ -53,6 +53,22 @@ const STATE_MAP         = array(
     -1  => 'STATE_INVALID'
 );
 
+const STATE_READABLE_MAP         = array(
+    0   => 'Newly registered',
+    1   => 'Registering team (set name)',
+    2   => 'Registering team (set participants)',
+    3   => 'Registering team (send avatar)',
+    10  => 'Ready to play',
+    30  => 'Reaching a location',
+    32  => 'Snapping a selfie',
+    34  => 'Solving a puzzle',
+    40  => 'Reaching last location',
+    45  => 'Snapping last selfie',
+    50  => 'Solving last puzzle',
+    99  => 'Completed the game',
+    -1 =>  'Not playing'
+);
+
 const GAME_STATE_NEW                = 0;   // newly created, asked for confirmation
 const GAME_STATE_REG_NAME           = 1;   // confirmed, asked for name
 const GAME_STATE_REG_CHANNEL        = 5;   // name ok, asked for channel
@@ -91,6 +107,20 @@ const GAME_STATE_MAP                = array(
     127     => 'GAME_STATE_READY',
     128     => 'GAME_STATE_ACTIVE',
     255     => 'GAME_STATE_DEAD'
+);
+
+const GAME_STATE_READABLE_MAP                = array(
+    0       => 'New',
+    1       => 'Being configured (set name)',
+    5       => 'Being configured (set channel)',
+    10      => 'Being configured (set e-mail)',
+    30      => 'Being configured (set first location)',
+    40      => 'Being configured (set last location)',
+    50      => 'Being configured (set location)',
+    120     => 'Generating QR Codes',
+    127     => 'Ready',
+    128     => 'Active',
+    255     => 'Terminated'
 );
 
 const EVENT_STATE_NEW               = 0;   // placeholder for event creation process

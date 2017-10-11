@@ -13,13 +13,19 @@
  * @return bool True if processed.
  */
 function msg_processing_commands($context) {
+    if(!$context->is_message()) {
+        return false;
+    }
+
     $text = $context->message->text;
 
+    // HELP
     if($text === '/help') {
         $context->comm->reply(__('cmd_help'));
 
         return true;
     }
+    // START
     else if(starts_with($text, '/start')) {
         $payload = extract_command_payload($text);
 
@@ -137,6 +143,26 @@ function msg_processing_commands($context) {
                     break;
             }
         }
+
+        return true;
+    }
+    // STATUS
+    else if($text === '/status') {
+        if(!$context->game) {
+            $context->comm->reply("You are new to me. Hello! 🙂");
+            return true;
+        }
+
+        $status = "%FIRST_NAME%, you are " . (($context->game->is_admin) ? '<b>administering</b>' : 'playing') . " game <code>#%GAME_ID%</code> “%GAME_NAME%”, in the event <code>#%EVENT_ID%</code> “%EVENT_NAME%”.\n";
+
+        if($context->game->is_admin) {
+            $status .= 'The game is <code>' . GAME_STATE_READABLE_MAP[$context->game->game_state] . '</code>.';
+        }
+        else {
+            $status .= 'Your team “%GROUP_NAME%” is in state: <code>' . STATE_READABLE_MAP[$context->game->group_state] . '</code>.';
+        }
+
+        $context->comm->reply($status);
 
         return true;
     }

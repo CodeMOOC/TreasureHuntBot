@@ -36,7 +36,7 @@ function process_update($context) {
     }
 
     // Base game commands
-    if($context->is_message() && msg_processing_commands($context)) {
+    if(msg_processing_commands($context)) {
         return;
     }
 
