@@ -534,16 +534,6 @@ function bot_get_last_reached_location($context, $group_id) {
 }
 
 /**
- * Gets the amount of reached locations for all playing groups.
- */
-function bot_get_count_of_reached_location_for_playing_groups($context) {
-    return  db_table_query(sprintf(
-        "SELECT i.`telegram_id`, i.`id`, g.`name`, l.c FROM groups AS g LEFT JOIN `identities` AS i ON g.`group_id` = i.`id`INNER JOIN (SELECT group_id, game_id, COUNT(*) AS c FROM assigned_locations WHERE game_id = %d AND reached_on IS NOT NULL GROUP BY group_id) AS l ON l.group_id = g.group_id WHERE g.name IS NOT NULL ORDER BY l.`c` DESC",
-        $context->game->game_id
-    ));
-}
-
-/**
  * Gets the currently assigned riddle to the group, if any.
  * @param $group_id int Optional group ID.
  * @return array Seconds since last answer, correct solution, riddle ID.
@@ -562,47 +552,24 @@ function bot_get_current_assigned_riddle($context, $group_id = null) {
 }
 
 /**
- * Gets the current rank for playing groups.
- *
- * Groups are ordered following these criteria:
- * 1) number of reached location;
- * 2) group status;
- * 3) last_state_change (ASC).
- *
- * @return array|bool Table of (Telegram ID, group ID, group name, # reached locations,
- *                    group state, last state change) or false on failure.
+ * Get all games associated to the user: either because he or she is an organizer,
+ * or because he or she has registered a group as player.
+ * @return Array Rows of (ID, name, state, is administrator)
  */
-function bot_get_current_chart_of_playing_groups($context) {
-    return db_table_query("SELECT i.`telegram_id`, i.`id`, g.`name`, l.c, g.`state`, TIMESTAMPDIFF(MINUTE, g.`last_state_change`, NOW()) FROM groups AS g LEFT JOIN `identities` AS i ON g.`group_id` = i.`id`INNER JOIN (SELECT group_id, game_id, COUNT(*) AS c, MAX(reached_on) as max_r  FROM assigned_locations WHERE game_id = {$context->get_game_id()} AND reached_on IS NOT NULL GROUP BY group_id) AS l ON l.group_id = g.group_id WHERE g.name IS NOT NULL AND g.game_id = {$context->get_game_id()} ORDER BY l.`c`DESC, g.`state` DESC, l.max_r ASC");
+function bot_get_associated_games($context) {
+    return db_table_query(sprintf(
+        'SELECT `games`.`game_id`, `games`.`name`, `games`.`state`, 1 FROM `games` WHERE `games`.`state` < %2$d AND `games`.`organizer_id` = %1$d ' .
+        'UNION ' .
+        'SELECT `games`.`game_id`, `games`.`name`, `games`.`state`, 0 FROM `games` LEFT OUTER JOIN `groups` ON `games`.`game_id` = `groups`.`game_id` WHERE `games`.`state` < %2$d AND `groups`.`group_id` = %1$d',
+        $context->get_internal_id(),
+        GAME_STATE_DEAD
+    ));
 }
+
+// TODO: to be removed/refactored someday
 
 function bot_get_group_status($context, $group_id) {
     return db_scalar_query("SELECT `state` FROM `groups` WHERE `group_id` = {$group_id} AND `game_id` = {$context->get_game_id()};");
-}
-
-/**
- * Gets the amount of assigned locations for all playing group.
- */
-function bot_get_count_of_assigned_location_for_playing_groups($context) {
-    return  db_table_query("SELECT i.`telegram_id`, i.`id`, g.`name`, l.c FROM groups AS g LEFT JOIN `identities` AS i ON g.`group_id` = i.`id`INNER JOIN (SELECT group_id, game_id, COUNT(*) AS c FROM assigned_locations WHERE game_id = {$context->get_game_id()} AND assigned_on IS NOT NULL GROUP BY group_id) AS l ON l.group_id = g.group_id WHERE g.name IS NOT NULL ORDER BY l.`c` DESC;");
-}
-
-/**
- * Gets a map of group counts, grouped by group state.
- * Excludes groups by administrators.
- */
-function bot_get_group_count_by_state($context) {
-    $data = db_table_query("SELECT `groups`.`state`, count(*) FROM `groups` WHERE `groups`.`game_id` = {$context->get_game_id()} AND `groups`.`group_id` NOT IN (SELECT `organizer_id` FROM `games` WHERE `game_id` = {$context->get_game_id()}) GROUP BY `groups`.`state` ORDER BY `groups`.`state` ASC");
-
-    $map = array();
-    foreach(STATE_ALL as $c) {
-        $map[$c] = 0;
-    }
-    foreach($data as $d) {
-        $map[$d[0]] = $d[1];
-    }
-
-    return $map;
 }
 
 function bot_get_game_absolute_timeout($context){

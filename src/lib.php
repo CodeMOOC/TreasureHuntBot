@@ -18,4 +18,5 @@ require_once(dirname(__FILE__) . '/lib_memory.php');
 require_once(dirname(__FILE__) . '/lib_code.php');
 require_once(dirname(__FILE__) . '/lib_bot_creation.php');
 require_once(dirname(__FILE__) . '/lib_bot_registration.php');
+require_once(dirname(__FILE__) . '/lib_bot_stats.php');
 require_once(dirname(__FILE__) . '/lib_bot.php');

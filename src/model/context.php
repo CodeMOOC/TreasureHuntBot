@@ -201,6 +201,8 @@ class Context {
      * Update the user's active game (and his/her admin status).
      */
     public function set_active_game($game_id, $is_admin) {
+        // TODO: security check here
+
         db_perform_action(sprintf(
             "UPDATE `identities` SET `active_game` = %s, `is_admin` = %d WHERE `telegram_id` = %d",
             ($game_id === null) ? 'NULL' : $game_id,

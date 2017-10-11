@@ -62,7 +62,10 @@ function process_update($context) {
         }
     }
 
-    $context->comm->reply(__('fallback_response'));
+    if($context->is_message()) {
+        // Default responses only to messages
+        $context->comm->reply(__('fallback_response'));
+    }
 }
 
 $context = new Context($update);
