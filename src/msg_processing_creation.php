@@ -335,7 +335,17 @@ $msg_processing_creation_handlers = array(
             }
         }
 
-        $context->comm->reply("Activate your game by clicking on the button above.");
+        $context->comm->reply(
+            "Activate your game by cliking on the button below.",
+            null,
+            array("reply_markup" => array(
+                "inline_keyboard" => array(
+                    array(
+                        array("text" => "Activate game.", "callback_data" => "activate")
+                    )
+                )
+            ))
+        );
     },
 
     GAME_STATE_ACTIVE => function($context) {
@@ -403,7 +413,7 @@ $msg_processing_creation_state_entry = array(
             array("reply_markup" => array(
                 "inline_keyboard" => array(
                     array(
-                        array("text" => "Let's go!", "callback_data" => "activate")
+                        array("text" => "Let's go! Activate game.", "callback_data" => "activate")
                     )
                 )
             ))
