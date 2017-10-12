@@ -126,6 +126,7 @@ const GAME_STATE_READABLE_MAP                = array(
 const EVENT_STATE_NEW               = 0;   // placeholder for event creation process
 const EVENT_STATE_REGISTRATION      = 128; // event takes game creations and user registrations
 const EVENT_STATE_OPEN_FOR_ALL      = 192; // open for all, takes registrations, can play
+const EVENT_STATE_PLAYING           = 224; // event does not take registrations, allows play
 const EVENT_STATE_DEAD              = 255; // over and out, all games are terminated
 
 const EVENT_STATE_ALL                = array(
@@ -179,7 +180,7 @@ function event_check_can_create($event_state) {
     if($event_state < EVENT_STATE_REGISTRATION) {
         return 'unallowed_not_open';
     }
-    else if($event_state === EVENT_STATE_DEAD) {
+    else if($event_state >= EVENT_STATE_PLAYING) {
         return 'unallowed_event_over';
     }
 
@@ -190,12 +191,18 @@ function event_check_can_create($event_state) {
  * Checks whether users can play in a game.
  */
 function game_check_can_play($event_state, $game_state) {
-    if($game_state !== GAME_STATE_ACTIVE) {
-        return false;
+    if($event_state < EVENT_STATE_OPEN_FOR_ALL) {
+        return 'unallowed_event_not_ready';
+    }
+    else if($event_state === EVENT_STATE_DEAD) {
+        return 'unallowed_event_over';
     }
 
-    if($event_state === EVENT_STATE_DEAD) {
-        return false;
+    if($game_state < GAME_STATE_ACTIVE) {
+        return 'unallowed_game_not_ready';
+    }
+    else if($game_state === GAME_STATE_DEAD) {
+        return 'unallowed_game_over';
     }
 
     return true;

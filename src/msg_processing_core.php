@@ -53,14 +53,23 @@ function process_update($context) {
 
     // Registration and play process
     if($context->game && $context->game->game_id !== null && !$context->game->is_admin) {
-        if(game_check_can_play($context->game->event_state, $context->game->game_state)) {
+        $game_check_result = game_check_can_play($context->game->event_state, $context->game->game_state);
+        if($game_check_result === true) {
             if(msg_processing_handle_group_response($context)) {
                 return;
             }
         }
-        else {
+        else if($game_check_result === 'unallowed_event_not_ready') {
+            $context->comm->reply(__('failure_event_not_ready'));
+        }
+        else if($game_check_result === 'unallowed_event_over') {
+            $context->comm->reply(__('failure_event_over'));
+        }
+        else if($game_check_result === 'unallowed_game_not_ready') {
+            $context->comm->reply(__('failure_game_not_ready'));
+        }
+        else if($game_check_result === 'unallowed_game_over') {
             $context->comm->reply(__('failure_game_dead'));
-            return;
         }
     }
 

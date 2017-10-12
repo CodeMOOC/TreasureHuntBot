@@ -232,8 +232,9 @@ function bot_reach_location($context, $location_id, $game_id) {
         return 'wrong';
     }
 
-    if(!game_check_can_play($context->game->event_state, $context->game->game_state)) {
-        return 'game_unallowed';
+    $game_check_result = game_check_can_play($context->game->event_state, $context->game->game_state);
+    if($game_check_result !== true) {
+        return $game_check_result;
     }
 
     $expected_id = bot_get_expected_location_id($context);
@@ -381,8 +382,9 @@ function bot_direct_win($context, $event_id, $game_id) {
         return 'wrong';
     }
 
-    if(!game_check_can_play($context->game->event_state, $context->game->game_state)) {
-        return 'game_unallowed';
+    $game_check_result = game_check_can_play($context->game->event_state, $context->game->game_state);
+    if($game_check_result !== true) {
+        return $game_check_result;
     }
 
     if($context->game->group_state < STATE_GAME_LAST_LOC) {

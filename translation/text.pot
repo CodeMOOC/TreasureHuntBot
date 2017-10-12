@@ -36,6 +36,18 @@ msgstr ""
 msgid "failure_query"
 msgstr ""
 
+# Failure: current event of the game is not ready (i.e., cannot be played yet)
+msgid "failure_event_not_ready"
+msgstr ""
+
+# Failure: current event of the game is over
+msgid "failure_event_over"
+msgstr ""
+
+# Failure: current game has not yet been activated by administrator
+msgid "failure_game_not_ready"
+msgstr ""
+
 # Failure: current game has been closed and is over
 msgid "failure_game_dead"
 msgstr ""
