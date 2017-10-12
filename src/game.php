@@ -155,12 +155,18 @@ const GAME_LAST_PUZZLE_3_SOLUTION = 'abc';
  * Checks whether users can register to a game.
  */
 function game_check_can_register($event_state, $game_state) {
-    if($game_state !== GAME_STATE_ACTIVE) {
-        return false;
+    if($event_state < EVENT_STATE_REGISTRATION) {
+        return 'unallowed_event_not_ready';
+    }
+    else if($event_state === EVENT_STATE_DEAD) {
+        return 'unallowed_event_over';
     }
 
-    if($event_state < EVENT_STATE_REGISTRATION || $event_state > EVENT_STATE_OPEN_FOR_ALL) {
-        return false;
+    if($game_state === GAME_STATE_DEAD) {
+        return 'unallowed_game_over';
+    }
+    else if($game_state < GAME_STATE_ACTIVE) {
+        return 'unallowed_game_not_ready';
     }
 
     return true;
@@ -170,8 +176,11 @@ function game_check_can_register($event_state, $game_state) {
  * Checks whether users can create games for an event.
  */
 function event_check_can_create($event_state) {
-    if($event_state < EVENT_STATE_REGISTRATION || $event_state > EVENT_STATE_OPEN_FOR_ALL) {
-        return false;
+    if($event_state < EVENT_STATE_REGISTRATION) {
+        return 'unallowed_not_open';
+    }
+    else if($event_state === EVENT_STATE_DEAD) {
+        return 'unallowed_event_over';
     }
 
     return true;

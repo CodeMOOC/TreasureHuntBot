@@ -56,9 +56,10 @@ function bot_register($context, $game_id) {
     // Check game state
     $game_state = (int)$game_info[2];
     $event_state = (int)$game_info[3];
-    if(!game_check_can_register($event_state, $game_state)) {
-        Logger::debug("Cannot register game in state " . GAME_STATE_MAP[$game_state] . " for event in state " . EVENT_STATE_MAP[$event_state], __FILE__, $context);
-        return 'game_unallowed';
+    $game_check_result = game_check_can_register($event_state, $game_state);
+    if($game_check_result !== true) {
+        Logger::debug("Cannot register game in state " . GAME_STATE_MAP[$game_state] . " for event in state " . EVENT_STATE_MAP[$event_state] . ": {$game_check_result}", __FILE__, $context);
+        return $game_check_result;
     }
 
     // Compute group timeout and register

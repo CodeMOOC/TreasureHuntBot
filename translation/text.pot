@@ -104,8 +104,20 @@ msgstr ""
 msgid "cmd_register_registered"
 msgstr ""
 
-# Error response for registration to an old/inactive game
+# Error response for registration to a terminated game
 msgid "cmd_register_game_unallowed"
+msgstr ""
+
+# Error response for registration to a non-activated game
+msgid "cmd_register_game_unallowed_not_ready"
+msgstr ""
+
+# Error response for registration to a game in a terminated event
+msgid "cmd_register_game_unallowed_event"
+msgstr ""
+
+# Error response for registration to a game in a non-activated event
+msgid "cmd_register_game_unallowed_event_not_ready"
 msgstr ""
 
 # Registration: captcha quiz for verification

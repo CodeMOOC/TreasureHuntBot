@@ -25,8 +25,11 @@ function msg_processing_init_game_creation($context, $event_id) {
 
     $creation_result = bot_creation_init($context, $event_id);
 
-    if($creation_result === 'event_unallowed') {
+    if($creation_result === 'unallowed_not_open') {
         $context->comm->reply("Sorry, the event for which you are trying to create a game does not take new registrations at the time.");
+    }
+    else if($creation_result === 'unallowed_event_over') {
+        $context->comm->reply("Sorry, the event for which you are trying to create a game is over.");
     }
     else if($creation_result === true) {
         $context->comm->reply(

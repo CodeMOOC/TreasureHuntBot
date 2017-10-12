@@ -76,10 +76,11 @@ function bot_creation_init($context, $event_id) {
     }
 
     $event_state = (int)$event_data[2];
-    if(!event_check_can_create($event_state)) {
-        Logger::debug("Cannot create game for event in state " . EVENT_STATE_MAP[$event_state], __FILE__, $context);
+    $event_check_result = event_check_can_create($event_state);
+    if($event_check_result !== true) {
+        Logger::debug("Cannot create game for event in state " . EVENT_STATE_MAP[$event_state] . ": {$event_check_result}", __FILE__, $context);
 
-        return 'event_unallowed';
+        return $event_check_result;
     }
 
     $context->memory[MEMORY_CREATION_MIN_LOCATIONS] = intval($event_data[0]);

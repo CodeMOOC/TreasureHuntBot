@@ -111,8 +111,17 @@ function msg_processing_commands($context) {
                             $context->comm->reply(__('cmd_register_registered'));
                             msg_processing_handle_group_state($context);
                         }
-                        else if($result === 'game_unallowed') {
+                        else if($result === 'unallowed_event_not_ready') {
+                            $context->comm->reply(__('cmd_register_game_unallowed_event_not_ready'));
+                        }
+                        else if($result === 'unallowed_event_over') {
+                            $context->comm->reply(__('cmd_register_game_unallowed_event'));
+                        }
+                        else if($result === 'unallowed_game_over') {
                             $context->comm->reply(__('cmd_register_game_unallowed'));
+                        }
+                        else if($result === 'unallowed_game_not_ready') {
+                            $context->comm->reply(__('cmd_register_game_unallowed_not_ready'));
                         }
                         else {
                             $context->comm->reply(__('failure_general'));
