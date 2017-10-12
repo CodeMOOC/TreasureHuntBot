@@ -228,7 +228,7 @@ class Context {
             $this->memory['last_callback_message_id'] = $message_id;
         }
         else {
-            Logger::warning("Invalid result values from Telegram, unable to memorize message ID for callback", __FILE__, $this);
+            Logger::warning("Invalid result values from Telegram, unable to memorize message ID for callback: " . print_r($result, true), __FILE__, $this);
         }
     }
 

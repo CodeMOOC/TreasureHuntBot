@@ -140,6 +140,8 @@ class Communicator {
             // New inline keyboard set with message, memorize for callback verification
             $this->owning_context->memorize_callback($result);
         }
+
+        return $result;
     }
 
     private function hydrate_text($message, $additional_values = null) {
