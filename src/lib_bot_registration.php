@@ -11,12 +11,11 @@
  * Gets whether the user is registered for a given game.
  */
 function bot_is_registered($context, $game_id) {
-    if ($context->game->game_id == $game_id && $context->game->group_name != null) {
-        // User is currently playing this exact game
-        return true;
-    }
-
-    $registration_count = db_scalar_query("SELECT count(*) FROM `groups` WHERE `group_id` = {$context->get_internal_id()} AND `game_id` = {$game_id}");
+    $registration_count = db_scalar_query(sprintf(
+        'SELECT count(*) FROM `groups` WHERE `group_id` = %d AND `game_id` = %d',
+        $context->get_internal_id(),
+        $game_id
+    ));
 
     return ($registration_count >= 1);
 }
