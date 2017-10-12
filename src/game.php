@@ -133,6 +133,7 @@ const EVENT_STATE_ALL                = array(
     EVENT_STATE_NEW,
     EVENT_STATE_REGISTRATION,
     EVENT_STATE_OPEN_FOR_ALL,
+    EVENT_STATE_PLAYING,
     EVENT_STATE_DEAD
 );
 
@@ -140,6 +141,7 @@ const EVENT_STATE_MAP               = array(
     0       => 'EVENT_STATE_NEW',
     128     => 'EVENT_STATE_REGISTRATION',
     192     => 'EVENT_STATE_OPEN_FOR_ALL',
+    224     => 'EVENT_STATE_PLAYING',
     255     => 'EVENT_STATE_DEAD'
 );
 

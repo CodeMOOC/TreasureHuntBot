@@ -65,7 +65,7 @@ class Context {
             die();
         }
         else {
-            Logger::fatal("Unknown kind of update", __FILE__);
+            Logger::fatal("Unknown kind of update: " . print_r($this->update, true), __FILE__, $this);
         }
 
         $content = $this->get_content();
@@ -194,7 +194,9 @@ class Context {
         }
 
         // Slight unpleasantness: unnamed group string must be loaded here
-        $this->game->group_name = __('unnamed_group');
+        if(!$this->game->group_name) {
+            $this->game->group_name = __('unnamed_group');
+        }
     }
 
     /**
