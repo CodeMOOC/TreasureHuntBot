@@ -15,6 +15,9 @@ function msg_processing_purge_game_creation($context) {
     $context->memory[MEMORY_CREATION_MIN_DISTANCE] = null;
     $context->memory[MEMORY_CREATION_CHANNEL_TESTED] = null;
     $context->memory[MEMORY_CREATION_CHANNEL_NAME] = null;
+    $context->memory[MEMORY_CREATION_LOCATION_NAME] = null;
+    $context->memory[MEMORY_CREATION_LOCATION_LAT] = null;
+    $context->memory[MEMORY_CREATION_LOCATION_LNG] = null;
 }
 
 /**
