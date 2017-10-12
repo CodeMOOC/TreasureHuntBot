@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 11, 2017 at 01:05 AM
+-- Generation Time: Oct 12, 2017 at 04:32 PM
 -- Server version: 10.1.26-MariaDB-0+deb9u1
 -- PHP Version: 7.0.19-1
 
@@ -244,8 +244,8 @@ ALTER TABLE `assigned_locations`
 ALTER TABLE `assigned_riddles`
   ADD PRIMARY KEY (`event_id`,`game_id`,`riddle_id`,`group_id`) USING BTREE,
   ADD KEY `assriddles_group_index` (`group_id`) USING BTREE,
-  ADD KEY `assriddle_group_constraint` (`game_id`,`group_id`),
-  ADD KEY `assriddle_riddle_constraint` (`event_id`,`riddle_id`);
+  ADD KEY `assriddle_riddle_constraint` (`event_id`,`riddle_id`),
+  ADD KEY `assriddle_group_constraint` (`game_id`,`group_id`);
 
 --
 -- Indexes for table `code_lookup`
@@ -360,16 +360,16 @@ ALTER TABLE `log`
 -- Constraints for table `assigned_locations`
 --
 ALTER TABLE `assigned_locations`
-  ADD CONSTRAINT `assloc_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`),
-  ADD CONSTRAINT `assloc_location_constraint` FOREIGN KEY (`game_id`,`location_id`) REFERENCES `locations` (`game_id`, `location_id`);
+  ADD CONSTRAINT `assloc_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `assloc_location_constraint` FOREIGN KEY (`game_id`,`location_id`) REFERENCES `locations` (`game_id`, `location_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `assigned_riddles`
 --
 ALTER TABLE `assigned_riddles`
   ADD CONSTRAINT `assriddle_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`),
-  ADD CONSTRAINT `assriddle_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`),
-  ADD CONSTRAINT `assriddle_group_constraint` FOREIGN KEY (`game_id`,`group_id`) REFERENCES `groups` (`game_id`, `group_id`),
+  ADD CONSTRAINT `assriddle_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `assriddle_group_constraint` FOREIGN KEY (`game_id`,`group_id`) REFERENCES `groups` (`game_id`, `group_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `assriddle_riddle_constraint` FOREIGN KEY (`event_id`,`riddle_id`) REFERENCES `riddles` (`event_id`, `riddle_id`);
 
 --
@@ -390,20 +390,20 @@ ALTER TABLE `events`
 -- Constraints for table `games`
 --
 ALTER TABLE `games`
-  ADD CONSTRAINT `game_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `game_event_constraint` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`),
   ADD CONSTRAINT `game_organizer_constraint` FOREIGN KEY (`organizer_id`) REFERENCES `identities` (`id`);
 
 --
 -- Constraints for table `game_location_clusters`
 --
 ALTER TABLE `game_location_clusters`
-  ADD CONSTRAINT `game_location_clusters_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `game_location_clusters_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `groups`
 --
 ALTER TABLE `groups`
-  ADD CONSTRAINT `groups_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`),
+  ADD CONSTRAINT `groups_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `groups_identity_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`);
 
 --
@@ -416,8 +416,8 @@ ALTER TABLE `hints`
 -- Constraints for table `locations`
 --
 ALTER TABLE `locations`
-  ADD CONSTRAINT `location_cluster_constraint` FOREIGN KEY (`game_id`,`cluster_id`) REFERENCES `game_location_clusters` (`game_id`, `cluster_id`),
-  ADD CONSTRAINT `location_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `location_cluster_constraint` FOREIGN KEY (`game_id`,`cluster_id`) REFERENCES `game_location_clusters` (`game_id`, `cluster_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `location_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `log`
