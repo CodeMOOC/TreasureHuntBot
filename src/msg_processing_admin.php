@@ -8,6 +8,13 @@
  */
 
 function msg_processing_admin($context) {
+    if(!$context->game || !$context->game->is_admin) {
+        return false;
+    }
+
+    if(!$context->is_message()) {
+        return false;
+    }
     $text = $context->message->text;
 
     if($text === '/help') {
@@ -16,7 +23,7 @@ function msg_processing_admin($context) {
             "👑 <b>Administration commands:</b>\n" .
             "/overview: general overview of teams and their state.\n" .
             "/leaderboard: leaderboard of playing teams.\n" .
-            "/team <code>id</code>: get details about a team."
+            "/info <code>id</code>: get details about a team."
         );
         return true;
     }
@@ -73,7 +80,7 @@ function msg_processing_admin($context) {
         if($info[3] == STATE_GAME_LOCATION) {
             $location_info = bot_get_last_assigned_location($context, $group_id);
             if($location_info) {
-                $outbound .= "Assigned location #{$location_info[0]} {$location_info[3]}.\n";
+                $outbound .= "Assigned location #{$location_info[0]} “{$location_info[3]}”.\n";
             }
         }
         else if($info[3] == STATE_GAME_PUZZLE) {
@@ -119,7 +126,7 @@ function msg_processing_admin($context) {
             return true;
         }
 
-        if($code_info[0] === 'creation') {
+        if($code_info[0] === 'creation' || $code_info[0] === 'registration') {
             // Skip! Creaton QR Codes must not be handled, otherwise administrators
             // will not be able to create new events
             return false;

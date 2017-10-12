@@ -21,10 +21,8 @@ require_once(dirname(__FILE__) . '/msg_processing_localization.php');
 require_once(dirname(__FILE__) . '/msg_processing_state.php');
 
 function process_update($context) {
-    if($context->game && $context->game->is_admin) {
-        if(msg_processing_admin($context)) {
-            return;
-        }
+    if(msg_processing_admin($context)) {
+        return;
     }
 
     if(DEACTIVATED) {
@@ -53,23 +51,8 @@ function process_update($context) {
 
     // Registration and play process
     if($context->game && $context->game->game_id !== null && !$context->game->is_admin) {
-        $game_check_result = game_check_can_play($context->game->event_state, $context->game->game_state);
-        if($game_check_result === true) {
-            if(msg_processing_handle_group_response($context)) {
-                return;
-            }
-        }
-        else if($game_check_result === 'unallowed_event_not_ready') {
-            $context->comm->reply(__('failure_event_not_ready'));
-        }
-        else if($game_check_result === 'unallowed_event_over') {
-            $context->comm->reply(__('failure_event_over'));
-        }
-        else if($game_check_result === 'unallowed_game_not_ready') {
-            $context->comm->reply(__('failure_game_not_ready'));
-        }
-        else if($game_check_result === 'unallowed_game_over') {
-            $context->comm->reply(__('failure_game_dead'));
+        if(msg_processing_handle_group_response($context)) {
+            return;
         }
     }
 
