@@ -12,11 +12,11 @@ msgstr ""
 "X-Generator: Poedit 2.0.3\n"
 "POT-Creation-Date: 2017-09-15 10:27+0200\n"
 
-# Riddle type 1: where does Roby end up executing steps in %RIDDLE_PARAM%? (coordinates row first)
+# Riddle type 1: where does Roby end up executing steps in %RIDDLE_PARAM%? (A, B, or C)
 msgid "riddle_type_1"
 msgstr ""
 
-# Riddle type 2: specify the sequence of actions to lead Roby along the grayed-out path
+# Riddle type 2: specify the sequence of actions leading Roby along the grayed-out path (L, R, or F, without spaces)
 msgid "riddle_type_2"
 msgstr ""
 
@@ -24,11 +24,11 @@ msgstr ""
 msgid "riddle_type_3"
 msgstr ""
 
-# Riddle type 4: what is the missing action to reach X? (L, R, or F)
+# Riddle type 4: what is the missing action to reach ×? (L, R, or F)
 msgid "riddle_type_4"
 msgstr ""
 
-# Riddle type 5: which robot reaches X first, if all execute %RIDDLE_PARAM% simultaneously? (A, B, or C)
+# Riddle type 5: which robot reaches × first, if all execute %RIDDLE_PARAM% simultaneously? (A, B, or C)
 msgid "riddle_type_5"
 msgstr ""
 
@@ -40,10 +40,10 @@ msgstr ""
 msgid "riddle_type_7"
 msgstr ""
 
-# Final riddle: final coordinate reached by Roby based on previous hints received during the game
+# Final riddle: final destination reached by Roby based on previous hints received during the game (coordinates: letter first, digit last, like A1)
 msgid "riddle_type_final"
 msgstr ""
 
-# Final riddle: used for further steps of the same riddle, based on the same hints
+# Final riddle: used for further steps of the same riddle, based on the same hints (coordinates: letter first, digit last, like A1)
 msgid "riddle_type_final_repeat"
 msgstr ""
