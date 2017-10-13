@@ -40,20 +40,27 @@ section.page-header {
     }
 }
 
-footer.site-footer {
+.site-footer {
     text-align: center;
 }
 
 .anim-guide {
     width: 100%;
+    margin: 1em 0;
+    padding: 1em 0;
+    background-image: linear-gradient(to bottom, #EEEEEE 60%, #CCCCCC 90%, #BBBBBB 100%);
 
     img {
-        width: 80%;
-        height: auto;
+        width: auto;
+        height: 80vh;
+        max-height: 700px;
+        box-shadow: 3px 3px 20px #666;
+    }
 
-        @media screen and (min-width: 64em) {
-            width: 50%;
-            max-width: 400px;
-        }
+    .didascaly {
+        text-align: center;
+        margin: 1em 0 0 0;
+        font-style: italic;
+        color: #222;
     }
 }
