@@ -111,7 +111,7 @@ function bot_creation_init($context, $event_id) {
 
     code_lookup_generate($context, 'registration', $event_id, $game_id, null);
 
-    Logger::info("Game #{$game_id} created", __FILE__, $context);
+    Logger::info("Game #{$game_id} creation started", __FILE__, $context);
 
     $context->set_active_game($game_id, true);
     $context->reload();
@@ -220,6 +220,8 @@ function bot_creation_set_channel($context, $channel_name) {
     if($updates === false) {
         return false;
     }
+
+    Logger::info("Tested and set channel {$channel_name}", __FILE__, $context);
 
     return true;
 }
@@ -365,6 +367,8 @@ function bot_creation_stop_location($context) {
         bot_creation_update_state($context, GAME_STATE_GENERATION);
     }
 
+    Logger::info("Configured {$count} locations", __FILE__, $context);
+
     return true;
 }
 
@@ -377,6 +381,8 @@ function bot_creation_activate($context) {
     }
 
     bot_creation_update_state($context, GAME_STATE_ACTIVE);
+
+    Logger::info("Activated game", __FILE__, $context);
 
     return true;
 }
@@ -499,7 +505,7 @@ function bot_creation_generate_codes($context) {
         $final_file
     ));
 
-    Logger::debug("All done, {$final_file} " . filesize($final_file) . ' bytes written', __FILE__, $context);
+    Logger::info("Code generation completed: {$final_file} " . filesize($final_file) . ' bytes written', __FILE__, $context);
 
     return $final_file;
 }
