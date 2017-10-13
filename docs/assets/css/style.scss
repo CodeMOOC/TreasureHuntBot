@@ -39,3 +39,21 @@ section.page-header {
         }
     }
 }
+
+footer.site-footer {
+    text-align: center;
+}
+
+.anim-guide {
+    width: 100%;
+
+    img {
+        width: 80%;
+        height: auto;
+
+        @media screen and (min-width: 64em) {
+            width: 50%;
+            max-width: 400px;
+        }
+    }
+}
