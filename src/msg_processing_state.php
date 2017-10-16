@@ -271,7 +271,7 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case STATE_GAME_PUZZLE:
-            if($message_response) {
+            if($message_response || $message_response === '0') {
                 $result = bot_give_solution($context, $message_response);
 
                 if($result === false) {
