@@ -60,8 +60,8 @@ class Context {
 
             Logger::debug("Incoming callback: {$this->callback->data}", __FILE__, $this);
         }
-        else if(isset($this->update['channel_post'])) {
-            Logger::debug("Channel post, ignoring");
+        else if(isset($this->update['channel_post']) || isset($this->update['edited_message']) || isset($this->update['edited_channel_post'])) {
+            Logger::debug("Ignoring update");
             die();
         }
         else {
