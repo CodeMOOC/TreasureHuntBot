@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Code Hunting Games certificate</title>
+
+    <style>
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    font-weight: 500;
+    font-size: 26pt;
+    background: rgb(255,255,255);
+    -webkit-print-color-adjust: exact;
+    box-sizing: border-box;
+}
+.page {
+    position: absolute;
+    padding: 10mm;
+    width: 277.0mm;
+    height: 190.0mm;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 297.0mm;
+    height: 210.0mm;
+    background-image: url('%root%/html2pdf/images/bubbles-50.png');
+    background-repeat: no-repeat;
+}
+.left-overlay {
+    background-size: contain;
+    background-position: -90mm 0;
+}
+.right-overlay {
+    background-size: contain;
+    background-position: 170mm -120mm;
+}
+.header {
+    position: relative;
+    height: 50mm;
+}
+.header img {
+    position: absolute;
+    height: auto;
+}
+.content {
+    position: absolute;
+    top: 55mm;
+    padding: 0 2em;
+    text-align: center;
+    line-height: 1.4;
+}
+.content .big {
+    display: block;
+    margin: 0 0;
+    font-size: 34pt;
+    font-weight: bold;
+    white-space: nowrap;
+}
+.montage {
+    margin-top: 5mm;
+    text-align: center;
+    height: 40mm;
+}
+.montage img {
+    max-width: 277.0mm;
+    width: auto;
+    height: 40mm;
+}
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <img src="%root%/html2pdf/images/header-codeweek2017.png" style="top: 0; right: 0; width: 180mm" />
+        </div>
+
+        <div class="content">
+            The %NUMBER% members of team
+            <div class="big">%TEAM_NAME%</div>
+            have %ACTION% the
+            <div class="big">“%GAME_NAME%”</div>
+            treasure hunt, during the Code Hunting Games event for CodeWeek 2017, on 14 October 2017.
+
+            <div class="montage">
+                <img src="%root%/data/certificates/%BASE_GEN_FILE%-montage.png" />
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay left-overlay">
+
+    </div>
+
+    <div class="overlay right-overlay">
+
+    </div>
+
+    <img src="%root%/data/avatars/%BASE_GEN_FILE%.jpg" style="position: absolute; width: 70mm; height: auto; top: 12mm; left: 10mm" />
+
+    <img src="%root%/html2pdf/images/signature_ab.png" style="position: absolute; width: 80mm; height: auto; left: 212mm; top: 176mm" />
+</body>
+</html>
