@@ -158,8 +158,8 @@ function bot_set_group_state($context, $new_state) {
 
     Logger::debug(sprintf(
         "User status: %s => %s (rows: %d)",
-        STATE_MAP[$prev_state],
-        STATE_MAP[$new_state],
+        map_state_to_string(STATE_MAP, $prev_state),
+        map_state_to_string(STATE_MAP, $new_state),
         $updates
     ), __FILE__, $context);
 

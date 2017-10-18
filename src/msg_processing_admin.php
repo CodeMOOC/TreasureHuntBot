@@ -75,7 +75,7 @@ function msg_processing_admin($context) {
         $outbound =
             "👥 <b>Group #{$group_id} “{$info[1]}”</b>\n" .
             "Led by {$info[2]}, with {$info[5]} participants.\n" .
-            STATE_READABLE_MAP[intval($info[3])] . ", {$info[4]} minutes ago.\n";
+            map_state_to_string(STATE_READABLE_MAP, intval($info[3])) . ", {$info[4]} minutes ago.\n";
 
         if($info[3] == STATE_GAME_LOCATION) {
             $location_info = bot_get_last_assigned_location($context, $group_id);
@@ -105,7 +105,7 @@ function msg_processing_admin($context) {
 
         $outbound = "👥 <b>Leaderboard:</b>";
         foreach($groups as $group) {
-            $outbound .= "\n· <code>#{$group[1]}</code> “{$group[2]}”: {$group[3]} loc’s, " . mb_strtolower(STATE_READABLE_MAP[$group[4]]) . " ({$group[5]} mins ago).";
+            $outbound .= "\n· <code>#{$group[1]}</code> “{$group[2]}”: {$group[3]} loc’s, " . mb_strtolower(map_state_to_string(STATE_READABLE_MAP, $group[4])) . " ({$group[5]} mins ago).";
         }
 
         $context->comm->reply($outbound);

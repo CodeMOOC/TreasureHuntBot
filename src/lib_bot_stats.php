@@ -31,7 +31,10 @@ function bot_stats_generate_group_state_map($context) {
         $map[$c] = 0;
     }
     foreach($data as $d) {
-        $map[$d[0]] = $d[1];
+        if($d[0] > STATE_GAME_WON) {
+            $d[0] = STATE_GAME_WON; // group states after victory into victory
+        }
+        $map[$d[0]] += $d[1];
     }
 
     return $map;

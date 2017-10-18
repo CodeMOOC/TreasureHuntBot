@@ -32,6 +32,7 @@ class Game {
 
     public  $group_name = '';
     public  $group_state = STATE_INVALID;
+    public  $group_participants = 1;
 
     function __construct($game_id, $is_admin, $owning_context) {
         $this->owning_context = $owning_context;
@@ -104,6 +105,7 @@ class Game {
         $this->event_name = null;
 
         $this->group_state = STATE_INVALID;
+        $this->group_participants = 1;
     }
 
     /**
@@ -121,7 +123,7 @@ class Game {
 
         // Load group data, this SHOULD be non-null
         $group_data = db_row_query(sprintf(
-            "SELECT `name`, `state`, IF(`timeout_absolute` IS NULL, 0, TIMEDIFF(NOW(), `timeout_absolute`) > 0) AS `timed_out` FROM `groups` WHERE `group_id` = %d AND `game_id` = %d",
+            "SELECT `name`, `state`, IF(`timeout_absolute` IS NULL, 0, TIMEDIFF(NOW(), `timeout_absolute`) > 0) AS `timed_out`, `participants_count` FROM `groups` WHERE `group_id` = %d AND `game_id` = %d",
             $this->owning_context->get_internal_id(),
             $this->game_id
         ));
@@ -129,12 +131,13 @@ class Game {
             // We have a group
             $this->group_name = $group_data[0];
             $this->group_state = (int)$group_data[1];
+            $this->group_participants = intval($group_data[3]);
             $this->game_timed_out = (boolean)$group_data[2];
 
             Logger::debug(sprintf(
                 "User in registered group '%s', state %s (%d), timed out %s",
                 $this->group_name,
-                STATE_MAP[$this->group_state],
+                map_state_to_string(STATE_MAP, $this->group_state),
                 $this->group_state,
                 b2s($this->game_timed_out)
             ), __FILE__, $this->owning_context);

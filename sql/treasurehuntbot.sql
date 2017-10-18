@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 12, 2017 at 04:32 PM
+-- Generation Time: Oct 17, 2017 at 11:12 PM
 -- Server version: 10.1.26-MariaDB-0+deb9u1
 -- PHP Version: 7.0.19-1
 
@@ -139,7 +139,7 @@ CREATE TABLE `groups` (
   `game_id` int(10) UNSIGNED NOT NULL,
   `group_id` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `state` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `state` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   `participants_count` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   `photo_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Path to the group''s photo',
   `registered_on` datetime NOT NULL COMMENT 'Original generation timestamp',
@@ -210,6 +210,20 @@ CREATE TABLE `log` (
   `timestamp` datetime NOT NULL,
   `identity_id` int(10) UNSIGNED DEFAULT NULL,
   `game_id` int(10) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `questionnaire`
+--
+
+CREATE TABLE `questionnaire` (
+  `game_id` int(10) UNSIGNED NOT NULL,
+  `group_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(60) CHARACTER SET ascii NOT NULL,
+  `rating` tinyint(3) DEFAULT NULL,
+  `text` text COLLATE utf8_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -323,6 +337,14 @@ ALTER TABLE `log`
   ADD KEY `log_game_constraint` (`game_id`);
 
 --
+-- Indexes for table `questionnaire`
+--
+ALTER TABLE `questionnaire`
+  ADD PRIMARY KEY (`game_id`,`group_id`),
+  ADD KEY `name` (`name`),
+  ADD KEY `questionnaire_group_constraint` (`group_id`);
+
+--
 -- Indexes for table `riddles`
 --
 ALTER TABLE `riddles`
@@ -425,6 +447,13 @@ ALTER TABLE `locations`
 ALTER TABLE `log`
   ADD CONSTRAINT `log_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `log_identity_constraint` FOREIGN KEY (`identity_id`) REFERENCES `identities` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `questionnaire`
+--
+ALTER TABLE `questionnaire`
+  ADD CONSTRAINT `questionnaire_game_constraint` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `questionnaire_group_constraint` FOREIGN KEY (`group_id`) REFERENCES `identities` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `riddles`

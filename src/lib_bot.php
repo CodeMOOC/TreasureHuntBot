@@ -419,7 +419,7 @@ function bot_direct_win($context, $event_id, $game_id) {
  * @param $min_state_level Minimum level the groups must have.
  * @return array List of (Telegram ID, Leader name, Group name).
  */
-function bot_get_telegram_ids_of_groups($context, $min_state_level = STATE_NEW, $max_state_level = STATE_GAME_WON) {
+function bot_get_telegram_ids_of_groups($context, $min_state_level = STATE_NEW, $max_state_level = 255) {
     return db_table_query(sprintf(
         "SELECT i.`telegram_id`, s.`group_id`,  i.`full_name`, s.`name` FROM `groups` AS s LEFT JOIN `identities` AS i ON s.`group_id` = i.`id` WHERE s.`game_id` = %d AND s.`state` >= %d AND s.`state` <= %d",
         $context->game->game_id,

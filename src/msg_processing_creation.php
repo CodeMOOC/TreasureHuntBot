@@ -249,7 +249,7 @@ $msg_processing_creation_handlers = array(
                 $reply_text .= "\n" . "Write the name of the location.";
             }
             else {
-                $reply_text .= "\n" . "All set? Send in a new position or a new name to update, otherwise tap on <i>Save</i>.";
+                $reply_text .= "\n" . "All set? Send in a different position or a different name to update, otherwise tap on <i>Save</i>.";
             }
 
             $buttons = array();

@@ -196,10 +196,10 @@ function msg_processing_commands($context) {
             $status = "%FIRST_NAME%, you are " . (($context->game->is_admin) ? '<b>administering</b>' : 'playing') . " game <code>#%GAME_ID%</code> “%GAME_NAME%”, in the event <code>#%EVENT_ID%</code> “%EVENT_NAME%”.\n";
 
             if($context->game->is_admin) {
-                $status .= 'The game is <code>' . GAME_STATE_READABLE_MAP[$context->game->game_state] . '</code>.';
+                $status .= 'The game is <code>' . map_state_to_string(GAME_STATE_READABLE_MAP, $context->game->game_state) . '</code>.';
             }
             else {
-                $status .= 'Your team “%GROUP_NAME%” is in state: <code>' . STATE_READABLE_MAP[$context->game->group_state] . '</code>.';
+                $status .= 'Your team “%GROUP_NAME%” is in state: <code>' . map_state_to_string(STATE_READABLE_MAP, $context->game->group_state) . '</code>.';
             }
 
             $context->comm->reply($status);
@@ -228,7 +228,7 @@ function msg_processing_commands($context) {
                 if($context->game->game_id == $game[0] && $context->game->is_admin == $game[3]) {
                     $text .= "➡️ ";
                 }
-                $text .= "<code>#{$game[0]}</code> " . (($game[1]) ? "“{$game[1]}”" : "No name") . " <i>" . GAME_STATE_READABLE_MAP[$game[2]] . "</i>\n";
+                $text .= "<code>#{$game[0]}</code> " . (($game[1]) ? "“{$game[1]}”" : "No name") . " <i>" . map_state_to_string(GAME_STATE_READABLE_MAP, $game[2]) . "</i>\n";
 
                 if($i % 3 == 0) {
                     $game_keyboard[] = array();

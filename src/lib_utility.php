@@ -72,7 +72,7 @@ function extract_command_payload($text = '') {
  * Extracts a cleaned-up response from the user.
  */
 function extract_response($text) {
-    return mb_strtolower(trim($text, ' /,.!?;:\'"'));
+    return mb_strtolower(trim($text, ' /,.!?;:\'"+'));
 }
 
 /**

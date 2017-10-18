@@ -7,19 +7,23 @@
  * Game data.
  */
 
-const STATE_NEW             = 0;  // newly registered, captcha given
-const STATE_REG_VERIFIED    = 1;  // verified as human user, name asked
-const STATE_REG_NAME        = 2;  // name registered, participants asked
-const STATE_REG_NUMBER      = 3;  // number of participants given, selfie asked
-const STATE_REG_READY       = 10; // avatar given, ready to play
-const STATE_GAME_LOCATION   = 30; // [puzzle solved], location assigned, waiting for qr code
-const STATE_GAME_SELFIE     = 32; // location reached, qr code scanned, waiting for selfie
-const STATE_GAME_PUZZLE     = 34; // selfie taken, puzzle assigned
-const STATE_GAME_LAST_LOC   = 40; // last location assigned, waiting for qr code
-const STATE_GAME_LAST_SELF  = 45; // last location reached, asked for selfie
-const STATE_GAME_LAST_PUZ   = 50; // selfie taken, final puzzle assigned
-const STATE_GAME_WON        = 99; // final qrcode scanned, victory
-const STATE_INVALID         = -1; // mysterious invalid state
+const STATE_NEW             = 0;   // newly registered, captcha given
+const STATE_REG_VERIFIED    = 1;   // verified as human user, name asked
+const STATE_REG_NAME        = 2;   // name registered, participants asked
+const STATE_REG_NUMBER      = 3;   // number of participants given, selfie asked
+const STATE_REG_READY       = 10;  // avatar given, ready to play
+const STATE_GAME_LOCATION   = 30;  // [puzzle solved], location assigned, waiting for qr code
+const STATE_GAME_SELFIE     = 32;  // location reached, qr code scanned, waiting for selfie
+const STATE_GAME_PUZZLE     = 34;  // selfie taken, puzzle assigned
+const STATE_GAME_LAST_LOC   = 40;  // last location assigned, waiting for qr code
+const STATE_GAME_LAST_SELF  = 45;  // last location reached, asked for selfie
+const STATE_GAME_LAST_PUZ   = 50;  // selfie taken, final puzzle assigned
+                                   //   multiple last puzzle stages
+const STATE_GAME_WON        = 99;  // final qrcode scanned, victory
+const STATE_FEEDBACK        = 128; // won, asked for feedback
+                                   //   multiple feedback states
+const STATE_CERT_SENT       = 160; // won, certificate sent
+const STATE_INVALID         = -1;  // mysterious invalid state
 
 const STATE_ALL             = array(
     STATE_NEW,
@@ -34,6 +38,8 @@ const STATE_ALL             = array(
     STATE_GAME_LAST_SELF,
     STATE_GAME_LAST_PUZ,
     STATE_GAME_WON,
+    STATE_FEEDBACK,
+    STATE_CERT_SENT,
     STATE_INVALID
 );
 
@@ -50,10 +56,12 @@ const STATE_MAP         = array(
     45  => 'STATE_GAME_LAST_SELF',
     50  => 'STATE_GAME_LAST_PUZ',
     99  => 'STATE_GAME_WON',
-    -1  => 'STATE_INVALID'
+    128 => 'STATE_FEEDBACK',
+    160 => 'STATE_CERT_SENT'
 );
 
 const STATE_READABLE_MAP         = array(
+    -1  => 'Not playing',
     0   => 'Newly registered',
     1   => 'Registering team (set name)',
     2   => 'Registering team (set participants)',
@@ -65,8 +73,7 @@ const STATE_READABLE_MAP         = array(
     40  => 'Reaching last location',
     45  => 'Snapping last selfie',
     50  => 'Solving last puzzle',
-    99  => 'Completed the game',
-    -1 =>  'Not playing'
+    99  => 'Completed the game'
 );
 
 const GAME_STATE_NEW                = 0;   // newly created, asked for confirmation
@@ -145,14 +152,30 @@ const EVENT_STATE_MAP               = array(
     255     => 'EVENT_STATE_DEAD'
 );
 
-const GAME_LAST_PUZZLE_1_IMAGE = '../images/final_riddle_placeholder.jpg';
-const GAME_LAST_PUZZLE_1_SOLUTION = 'abc';
+const GAME_LAST_PUZZLE_1_IMAGE = '../riddles/codeweek-2017/finalpuzzle1.png';
+const GAME_LAST_PUZZLE_1_SOLUTION = 'c5';
 
-const GAME_LAST_PUZZLE_2_IMAGE = '../images/final_riddle_placeholder.jpg';
-const GAME_LAST_PUZZLE_2_SOLUTION = 'abc';
+const GAME_LAST_PUZZLE_2_IMAGE = '../riddles/codeweek-2017/finalpuzzle2.png';
+const GAME_LAST_PUZZLE_2_SOLUTION = 'd5';
 
-const GAME_LAST_PUZZLE_3_IMAGE = '../images/final_riddle_placeholder.jpg';
-const GAME_LAST_PUZZLE_3_SOLUTION = 'abc';
+const GAME_LAST_PUZZLE_3_IMAGE = '../riddles/codeweek-2017/ada.jpg';
+const GAME_LAST_PUZZLE_3_SOLUTION = 'ada';
+
+function map_state_to_string($array, $val) {
+    $values = array_keys($array);
+    $states = array_values($array);
+
+    for($i = 0; $i < sizeof($array); $i++) {
+        if($values[$i] == $val) {
+            return $states[$i];
+        }
+        else if($values[$i] > $val && $i > 0) {
+            return $states[$i - 1];
+        }
+    }
+
+    return $states[$i - 1];
+}
 
 /**
  * Checks whether users can register to a game.
