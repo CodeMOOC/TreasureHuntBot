@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 17, 2017 at 11:12 PM
+-- Generation Time: Oct 19, 2017 at 04:14 PM
 -- Server version: 10.1.26-MariaDB-0+deb9u1
 -- PHP Version: 7.0.19-1
 
@@ -340,7 +340,7 @@ ALTER TABLE `log`
 -- Indexes for table `questionnaire`
 --
 ALTER TABLE `questionnaire`
-  ADD PRIMARY KEY (`game_id`,`group_id`),
+  ADD PRIMARY KEY (`game_id`,`group_id`,`name`) USING BTREE,
   ADD KEY `name` (`name`),
   ADD KEY `questionnaire_group_constraint` (`group_id`);
 
