@@ -85,11 +85,58 @@ function msg_processing_handle_group_state($context) {
             return true;
 
         case STATE_GAME_LAST_PUZ + 2:
-            $context->comm->picture(GAME_LAST_PUZZLE_3_IMAGE, __('riddle_type_final_repeat', 'riddles'));
+            $context->comm->picture(GAME_LAST_PUZZLE_3_IMAGE, "“You found me! I’m known to be the first computer programmer. If you are a coder, you should know me by name.”");
             return true;
 
         case STATE_GAME_WON:
+        case STATE_CERT_SENT:
             $context->comm->reply(__('game_won_state'));
+            return true;
+
+        case STATE_FEEDBACK:
+            $context->comm->reply("📝 I liked the treasure hunt game.", null, array(
+                'reply_markup' => array(
+                    'keyboard' => array(
+                        array('1: strongly disagree'),
+                        array('2: disagree'),
+                        array('3: neutral'),
+                        array('4: agree'),
+                        array('5: strongly agree')
+                    )
+                )
+            ));
+            return true;
+
+        case STATE_FEEDBACK + 1:
+            $context->comm->reply("📝 The Telegram bot was easy to use and well-suited to the game.", null, array(
+                'reply_markup' => array(
+                    'keyboard' => array(
+                        array('1: strongly disagree'),
+                        array('2: disagree'),
+                        array('3: neutral'),
+                        array('4: agree'),
+                        array('5: strongly agree')
+                    )
+                )
+            ));
+            return true;
+
+        case STATE_FEEDBACK + 2:
+            $context->comm->reply("📝 I understand how scanning QR Codes works and how it interacts with the bot.", null, array(
+                'reply_markup' => array(
+                    'keyboard' => array(
+                        array('1: strongly disagree'),
+                        array('2: disagree'),
+                        array('3: neutral'),
+                        array('4: agree'),
+                        array('5: strongly agree')
+                    )
+                )
+            ));
+            return true;
+
+        case STATE_FEEDBACK + 3:
+            $context->comm->reply("📝 Please write down any other comment or suggestion.");
             return true;
     }
 
@@ -399,7 +446,114 @@ function msg_processing_handle_group_response($context) {
             }
             return true;
 
+        case STATE_FEEDBACK:
+            $feedback_rating = intval($message_response);
+            if($feedback_rating > 0 && $feedback_rating <= 5) {
+                if(db_perform_action(sprintf(
+                    'REPLACE INTO `questionnaire` (`game_id`, `group_id`, `name`, `rating`) VALUES(%d, %d, \'%s\', %d)',
+                    $context->game->game_id,
+                    $context->get_internal_id(),
+                    'game_rating',
+                    $feedback_rating
+                )) === false) {
+                    $context->comm->reply(__('failure_general'));
+                    return true;
+                }
+
+                bot_set_group_state($context, STATE_FEEDBACK + 1);
+            }
+
+            msg_processing_handle_group_state($context);
+            return true;
+
+        case STATE_FEEDBACK + 1:
+            $feedback_rating = intval($message_response);
+            if($feedback_rating > 0 && $feedback_rating <= 5) {
+                if(db_perform_action(sprintf(
+                    'REPLACE INTO `questionnaire` (`game_id`, `group_id`, `name`, `rating`) VALUES(%d, %d, \'%s\', %d)',
+                    $context->game->game_id,
+                    $context->get_internal_id(),
+                    'telegram_rating',
+                    $feedback_rating
+                )) === false) {
+                    $context->comm->reply(__('failure_general'));
+                    return true;
+                }
+
+                bot_set_group_state($context, STATE_FEEDBACK + 2);
+            }
+
+            msg_processing_handle_group_state($context);
+            return true;
+
+        case STATE_FEEDBACK + 2:
+            $feedback_rating = intval($message_response);
+            if($feedback_rating > 0 && $feedback_rating <= 5) {
+                if(db_perform_action(sprintf(
+                    'REPLACE INTO `questionnaire` (`game_id`, `group_id`, `name`, `rating`) VALUES(%d, %d, \'%s\', %d)',
+                    $context->game->game_id,
+                    $context->get_internal_id(),
+                    'qrcode_rating',
+                    $feedback_rating
+                )) === false) {
+                    $context->comm->reply(__('failure_general'));
+                    return true;
+                }
+
+                bot_set_group_state($context, STATE_FEEDBACK + 3);
+            }
+
+            msg_processing_handle_group_state($context);
+            return true;
+
+        case STATE_FEEDBACK + 3:
+            if($message_response) {
+                if(db_perform_action(sprintf(
+                    'REPLACE INTO `questionnaire` (`game_id`, `group_id`, `name`, `text`) VALUES(%d, %d, \'%s\', \'%s\')',
+                    $context->game->game_id,
+                    $context->get_internal_id(),
+                    'free_opinion',
+                    db_escape($message_response)
+                )) === false) {
+                    $context->comm->reply(__('failure_general'));
+                    return true;
+                }
+
+                $context->comm->reply("Thank you! 🙌 Generating your certificate…");
+                telegram_send_chat_action($context->comm->get_telegram_id());
+
+                // Generate certificate and montages
+                $intermediate_locations_count = db_scalar_query(sprintf(
+                    'SELECT `min_num_locations` FROM `events` WHERE `event_id` = %d',
+                    $context->game->event_id
+                ));
+                $total_locations_count = $intermediate_locations_count + 2; // start and end
+
+                $rootdir = realpath(dirname(__FILE__) . '/..');
+                $identifier = "{$context->game->game_id}-{$context->get_internal_id()}";
+
+                Logger::debug("Generating montage", __FILE__, $context);
+
+                exec("montage {$rootdir}/data/selfies/{$identifier}-*.jpg -background \"#0000\" -auto-orient -geometry 150x150 +polaroid -tile {$total_locations_count}x1 {$rootdir}/data/certificates/{$identifier}-montage.png");
+
+                Logger::debug("Generating certificate", __FILE__, $context);
+
+                exec("php {$rootdir}/html2pdf/cert-gen.php \"{$rootdir}/data/certificates/{$identifier}-certificate.pdf\" {$context->game->group_participants} \"{$context->game->group_name}\" \"completed\" \"{$context->game->game_name}\" \"{$identifier}\"");
+
+                Logger::info("Delivering certificate", __FILE__, $context);
+                $context->comm->document("{$rootdir}/data/certificates/{$identifier}-certificate.pdf", "Certificate for “%GROUP_NAME%”");
+                $context->comm->reply("Thank you again for playing! 🙂");
+
+                bot_set_group_state($context, STATE_CERT_SENT);
+
+                return true;
+            }
+
+            msg_processing_handle_group_state($context);
+            return true;
+
         case STATE_GAME_WON:
+        case STATE_CERT_SENT:
             // Expect nothing, game is won
             msg_processing_handle_group_state($context);
             return true;

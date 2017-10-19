@@ -22,3 +22,4 @@ data/qrcodes/*
 translation/**/*.mo
 translation/**/*.po
 html2pdf/vendor/
+html2pdf/images/signature_ab\.png
