@@ -24,9 +24,7 @@ $content = str_replace("%ACTION%", $data_action, $content);
 $content = str_replace("%GAME_NAME%", $data_game_name, $content);
 $content = str_replace("%BASE_GEN_FILE%", $data_identifier, $content);
 
-echo $content . PHP_EOL;
-
-$dompdf->loadHtml($content);
+$dompdf->loadHtml($content, 'UTF-8');
 
 // (Optional) Setup the paper size and orientation
 $dompdf->setPaper('A4', 'landscape');
@@ -36,7 +34,7 @@ $dompdf->render();
 
 $pdf_gen = $dompdf->output();
 
-if(!file_put_contents($output_file, $pdf_gen)){
+if(!file_put_contents($output_file, $pdf_gen)) {
     echo 'Not OK!';
     exit(1);
 }
