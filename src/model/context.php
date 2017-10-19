@@ -39,9 +39,43 @@ class Context {
      * @param $update Telegram update data structure.
      */
     function __construct($update) {
-        $this->update = $update;
+        if(is_integer($update)) {
+            $this->update = $this->create_fake_update($update);
+        }
+        else {
+            $this->update = $update;
+        }
 
         $this->reload();
+    }
+
+    private function create_fake_update($identity) {
+        $user_info = db_row_query(sprintf(
+            'SELECT `telegram_id`, `first_name`, `full_name` FROM `identities` WHERE `id` = %d',
+            $identity
+        ));
+        if(!$user_info) {
+            return null;
+        }
+
+        return array(
+            'update_id' => 1,
+            'message' => array(
+                'message_id' => 1,
+                'from' => array(
+                    'id' => (int)$user_info[0],
+                    'first_name' => $user_info[1],
+                    'last_name' => mb_substr($user_info[2], mb_strlen($user_info[1] + 1))
+                ),
+                'chat' => array(
+                    'id' => (int)$user_info[0],
+                    'first_name' => $user_info[1],
+                    'last_name' => mb_substr($user_info[2], mb_strlen($user_info[1] + 1)),
+                    'type' => 'private'
+                ),
+                'text' => ''
+            )
+        );
     }
 
     /**
