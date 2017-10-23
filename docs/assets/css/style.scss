@@ -44,17 +44,12 @@ section.page-header {
     text-align: center;
 }
 
-.anim-guide {
+.picture, .anim-guide {
     width: 100%;
     margin: 1em 0;
-    padding: 1em 0;
     text-align: center;
-    background-image: linear-gradient(to bottom, #EEEEEE 60%, #CCCCCC 90%, #BBBBBB 100%);
 
     img {
-        width: auto;
-        height: 80vh;
-        max-height: 700px;
         box-shadow: 3px 3px 20px #666;
     }
 
@@ -63,5 +58,16 @@ section.page-header {
         margin: 1em 0 0 0;
         font-style: italic;
         color: #222;
+    }
+}
+
+.anim-guide {
+    padding: 1em 0;
+    background-image: linear-gradient(to bottom, #EEEEEE 60%, #CCCCCC 90%, #BBBBBB 100%);
+
+    img {
+        width: auto;
+        height: 70vh;
+        max-height: 700px;
     }
 }

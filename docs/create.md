@@ -2,13 +2,12 @@
 title: Create
 ---
 
-The *Code Hunting Games* bot has been designed to let users create their own games, either for “free play” games or to participate in a large-scale multi-game event (such as the planned game for *CodeWeek 2017*).
+The *Code Hunting Games* bot has been designed to let users create their own treasure hunt games, either for “free play” games or to participate in a large-scale multi-game event (such as the planned game for *CodeWeek 2017*).
 
 # Overview for organizers
 
-In this phase the game is invite-only: please check if organizers have sent you a link to create your own game.
-If so, follow the link on a device where you have Telegram installed (notice that creating a game has the [same requirements of playing the game](/play)).
-You will be automatically forwarded to the game creation process through the bot.
+Creating and organizing a *Code Hunting Game* has the [same requirements of playing the game](/play).
+It all starts with a special QR&nbsp;Code link, that will automatically forward you to the game creation process through a conversation with our Telegram bot.
 
 <div class="anim-guide">
 <img src="/assets/images/qrcode-scan.gif" width="400" alt="QR Code scanning process with registration of the game" />
@@ -35,6 +34,18 @@ Once you’re done, the bot will generate a **ZIP package of QR Codes** (in PDF)
 You will then be able to print out the PDFs and hide the QR Codes at the actual physical locations you specified.
 
 In the end, remember to **activate** the game by clicking on the “activate” button in your conversation with the bot. (QR Codes provided in your game package will not work until the game is activated.)
+
+## Let’s go!
+
+Ready to create your first *Code Hunting Games* instance?
+Scan the following code to start the creation process.
+
+<div class="picture">
+<a href="https://t.me/treasurehuntbot?start=free-to-play">
+<img src="/assets/images/qrcode-free-code-hunting.jpg" width="370" alt="Free game creation link" />
+</a>
+<div class="didascaly">Free game creation QR&nbsp;Code.</div>
+</div>
 
 Have fun! ✌
 
