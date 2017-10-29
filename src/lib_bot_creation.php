@@ -114,7 +114,6 @@ function bot_creation_init($context, $event_id) {
     Logger::info("Game #{$game_id} creation started", __FILE__, $context);
 
     $context->set_active_game($game_id, true);
-    $context->reload();
 
     return true;
 }

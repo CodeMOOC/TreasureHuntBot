@@ -30,7 +30,6 @@ function bot_register($context, $game_id) {
         Logger::info("User already registered for game #{$game_id}", __FILE__, $context);
 
         $context->set_active_game($game_id, false);
-        $context->reload();
 
         return 'already_registered';
     }
@@ -84,7 +83,6 @@ function bot_register($context, $game_id) {
     Logger::info("New group registered in game #{$game_id}", __FILE__, $context);
 
     $context->set_active_game($game_id, false);
-    $context->reload();
 
     return true;
 }
