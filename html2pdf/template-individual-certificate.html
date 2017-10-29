@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Code Hunting Games certificate</title>
+
+    <style>
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'DejaVu Sans', 'Arial', sans-serif;
+    font-weight: 500;
+    font-size: 26pt;
+    background: rgb(255,255,255);
+    -webkit-print-color-adjust: exact;
+    box-sizing: border-box;
+    width: 297.0mm;
+    height: 210.0mm;
+}
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 297mm;
+    height: 210mm;
+}
+.page {
+    position: absolute;
+    padding: 10mm;
+    width: 277.0mm;
+    height: 190.0mm;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 297.0mm;
+    height: 210.0mm;
+    background-image: url('%root%/html2pdf/images/bubbles-50.png');
+    background-repeat: no-repeat;
+}
+.left-overlay {
+    background-position: -90mm 0;
+}
+.right-overlay {
+    background-position: 170mm -120mm;
+}
+.header {
+    margin-top: 12mm;
+    height: 50mm;
+    text-align: center;
+}
+.header img {
+    height: auto;
+}
+.content {
+    position: absolute;
+    top: 55mm;
+    padding: 0 2em;
+    text-align: center;
+    line-height: 1.2;
+}
+.content .big {
+    display: block;
+    margin: 0;
+    font-size: 34pt;
+    font-weight: bold;
+    white-space: nowrap;
+}
+    </style>
+</head>
+<body>
+    <img src="%root%/html2pdf/images/codeeu-background.jpg" class="background" />
+
+    <div class="page">
+        <div class="header">
+            <img src="%root%/html2pdf/images/title-codeweek2017.png" style="width: 145mm" />
+        </div>
+
+        <div class="content">
+            Si certifica che
+            <div class="big">&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</div>
+            membro della squadra
+            <div class="big">%TEAM_NAME%</div>
+            ha partecipato alla caccia al tesoro “%GAME_NAME%” per CodeWeek 2017, il 14 ottobre 2017.
+        </div>
+    </div>
+
+    <img src="%root%/data/certificates/individual/%BASE_GEN_FILE%-montage.png" style="position: absolute; width: 277mm; height: auto; max-height: 60mm; left: 10mm; right: 10mm; bottom: 47mm" />
+
+    <div class="overlay left-overlay">
+    </div>
+
+    <div class="overlay right-overlay">
+    </div>
+
+    <img src="%root%/data/avatars/%BASE_GEN_FILE%.jpg" style="position: absolute; width: 50mm; height: auto; max-height: 80mm; top: 12mm; left: 10mm" />
+
+    <img src="%root%/html2pdf/images/codyroby.png" style="position: absolute; width: 50mm; height: auto; top: 21mm; right: 10mm" />
+
+    <img src="%root%/html2pdf/images/signature_ab.png" style="position: absolute; width: 80mm; height: auto; left: 212mm; top: 176mm" />
+</body>
+</html>
