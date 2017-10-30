@@ -49,6 +49,21 @@ function msg_process_victory($context, $event_id = null, $game_id = null) {
                 '%INDEX%' => $result[2]
             ));
         }
+
+        // Send out questionnaire starting option
+        $context->memorize_callback(
+            $context->comm->reply(
+                __('questionnaire_init_question'),
+                null,
+                array("reply_markup" => array(
+                    "inline_keyboard" => array(
+                        array(
+                            array("text" => __('questionnaire_init_question_response'), "callback_data" => "questionnaire")
+                        )
+                    )
+                ))
+            )
+        );
     }
     else {
         $context->comm->reply(__('failure_general'));

@@ -89,54 +89,57 @@ function msg_processing_handle_group_state($context) {
             return true;
 
         case STATE_GAME_WON:
-        case STATE_CERT_SENT:
             $context->comm->reply(__('game_won_state'));
             return true;
 
         case STATE_FEEDBACK:
-            $context->comm->reply("📝 I liked the treasure hunt game.", null, array(
+            $context->comm->reply(__('questionnaire_q1'), null, array(
                 'reply_markup' => array(
                     'keyboard' => array(
-                        array('1: strongly disagree'),
-                        array('2: disagree'),
-                        array('3: neutral'),
-                        array('4: agree'),
-                        array('5: strongly agree')
+                        array(__('questionnaire_likert_1')),
+                        array(__('questionnaire_likert_2')),
+                        array(__('questionnaire_likert_3')),
+                        array(__('questionnaire_likert_4')),
+                        array(__('questionnaire_likert_5'))
                     )
                 )
             ));
             return true;
 
         case STATE_FEEDBACK + 1:
-            $context->comm->reply("📝 The Telegram bot was easy to use and well-suited to the game.", null, array(
+            $context->comm->reply(__('questionnaire_q2'), null, array(
                 'reply_markup' => array(
                     'keyboard' => array(
-                        array('1: strongly disagree'),
-                        array('2: disagree'),
-                        array('3: neutral'),
-                        array('4: agree'),
-                        array('5: strongly agree')
+                        array(__('questionnaire_likert_1')),
+                        array(__('questionnaire_likert_2')),
+                        array(__('questionnaire_likert_3')),
+                        array(__('questionnaire_likert_4')),
+                        array(__('questionnaire_likert_5'))
                     )
                 )
             ));
             return true;
 
         case STATE_FEEDBACK + 2:
-            $context->comm->reply("📝 I understand how scanning QR Codes works and how it interacts with the bot.", null, array(
+            $context->comm->reply(__('questionnaire_q3'), null, array(
                 'reply_markup' => array(
                     'keyboard' => array(
-                        array('1: strongly disagree'),
-                        array('2: disagree'),
-                        array('3: neutral'),
-                        array('4: agree'),
-                        array('5: strongly agree')
+                        array(__('questionnaire_likert_1')),
+                        array(__('questionnaire_likert_2')),
+                        array(__('questionnaire_likert_3')),
+                        array(__('questionnaire_likert_4')),
+                        array(__('questionnaire_likert_5'))
                     )
                 )
             ));
             return true;
 
         case STATE_FEEDBACK + 3:
-            $context->comm->reply("📝 Please write down any other comment or suggestion.");
+            $context->comm->reply(__('questionnaire_q4'));
+            return true;
+
+        case STATE_CERT_SENT:
+            $context->comm->reply(__('game_won_state'));
             return true;
     }
 
@@ -519,32 +522,60 @@ function msg_processing_handle_group_response($context) {
                     return true;
                 }
 
-                $context->comm->reply("Thank you! 🙌 Generating your certificate…");
-                telegram_send_chat_action($context->comm->get_telegram_id());
+                // Send out confirmation because of free-form text response
+                $context->memorize_callback(
+                    $context->comm->reply(
+                        __('questionnaire_free_confirmation'),
+                        null,
+                        array('reply_markup' => array(
+                            'inline_keyboard' => array(
+                                array(
+                                    array('text' => __('questionnaire_free_confirmation_confirm_button'), 'callback_data' => 'questionnaire confirm'),
+                                    array('text' => __('questionnaire_free_confirmation_deny_button'), 'callback_data' => 'questionnaire deny')
+                                )
+                            )
+                        )
+                    ))
+                );
 
-                // Generate certificate and montages
-                $intermediate_locations_count = db_scalar_query(sprintf(
-                    'SELECT `min_num_locations` FROM `events` WHERE `event_id` = %d',
-                    $context->game->event_id
-                ));
-                $total_locations_count = $intermediate_locations_count + 2; // start and end
+                return true;
+            }
+            else if($context->is_callback()) {
+                if(!$context->verify_callback()) {
+                    return false;
+                }
 
-                $rootdir = realpath(dirname(__FILE__) . '/..');
-                $identifier = "{$context->game->game_id}-{$context->get_internal_id()}";
+                if($context->callback->data == 'questionnaire confirm') {
+                    $context->comm->reply(__('questionnaire_finish_generating'));
+                    telegram_send_chat_action($context->comm->get_telegram_id());
 
-                Logger::debug("Generating montage", __FILE__, $context);
+                    // Generate certificate and montages
+                    $intermediate_locations_count = db_scalar_query(sprintf(
+                        'SELECT `min_num_locations` FROM `events` WHERE `event_id` = %d',
+                        $context->game->event_id
+                    ));
+                    $total_locations_count = $intermediate_locations_count + 2; // start and end
 
-                exec("montage {$rootdir}/data/selfies/{$identifier}-*.jpg -background \"#0000\" -auto-orient -geometry 150x150 +polaroid -tile {$total_locations_count}x1 {$rootdir}/data/certificates/{$identifier}-montage.png");
+                    $rootdir = realpath(dirname(__FILE__) . '/..');
+                    $identifier = "{$context->game->game_id}-{$context->get_internal_id()}";
 
-                Logger::debug("Generating certificate", __FILE__, $context);
+                    Logger::debug("Generating montage", __FILE__, $context);
 
-                exec("php {$rootdir}/html2pdf/cert-gen.php \"{$rootdir}/data/certificates/{$identifier}-certificate.pdf\" {$context->game->group_participants} \"{$context->game->group_name}\" \"completed\" \"{$context->game->game_name}\" \"{$identifier}\"");
+                    exec("montage {$rootdir}/data/selfies/{$identifier}-*.jpg -background \"#0000\" -auto-orient -geometry 150x150 +polaroid -tile {$total_locations_count}x1 {$rootdir}/data/certificates/{$identifier}-montage.png");
 
-                Logger::info("Delivering certificate", __FILE__, $context);
-                $context->comm->document("{$rootdir}/data/certificates/{$identifier}-certificate.pdf", "Certificate for “%GROUP_NAME%”");
-                $context->comm->reply("Thank you again for playing! 🙂");
+                    Logger::debug("Generating certificate", __FILE__, $context);
 
-                bot_set_group_state($context, STATE_CERT_SENT);
+                    exec("php {$rootdir}/html2pdf/cert-gen.php \"{$rootdir}/data/certificates/{$identifier}-certificate.pdf\" {$context->game->group_participants} \"{$context->game->group_name}\" \"completed\" \"{$context->game->game_name}\" \"{$identifier}\"");
+
+                    Logger::info("Delivering certificate", __FILE__, $context);
+                    $context->comm->document("{$rootdir}/data/certificates/{$identifier}-certificate.pdf", __('questionnaire_attachment_caption'));
+                    $context->comm->reply(__('questionnaire_finish_thankyou'));
+
+                    bot_set_group_state($context, STATE_CERT_SENT);
+                }
+                else {
+                    $context->comm->reply(__('questionnaire_free_retry_prompt'));
+                }
 
                 return true;
             }
@@ -553,8 +584,26 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case STATE_GAME_WON:
+            if($context->is_callback()) {
+                if(!$context->verify_callback()) {
+                    return false;
+                }
+
+                if($context->callback->data == 'questionnaire') {
+                    bot_set_group_state($context, STATE_FEEDBACK);
+
+                    $context->comm->reply(__('questionnaire_init_instructions'));
+                    $context->comm->reply(__('questionnaire_init_begin'));
+                }
+                else {
+                    return false;
+                }
+            }
+
+            msg_processing_handle_group_state($context);
+            return true;
+
         case STATE_CERT_SENT:
-            // Expect nothing, game is won
             msg_processing_handle_group_state($context);
             return true;
     }

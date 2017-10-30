@@ -283,3 +283,75 @@ msgstr ""
 # Bot is currently deactivated
 msgid "deactivated"
 msgstr ""
+
+# After victory, bot asks for questionnaire and certificate generation
+msgid "questionnaire_init_question"
+msgstr ""
+
+# Affirmative answer to questionnaire question
+msgid "questionnaire_init_question_response"
+msgstr ""
+
+# Instructions about the questionnaire that will be delivered
+msgid "questionnaire_init_instructions"
+msgstr ""
+
+# Let's begin
+msgid "questionnaire_init_begin"
+msgstr ""
+
+msgid "questionnaire_q1"
+msgstr ""
+
+msgid "questionnaire_q2"
+msgstr ""
+
+msgid "questionnaire_q3"
+msgstr ""
+
+msgid "questionnaire_q4"
+msgstr ""
+
+# Answer on Likert scale, must begin with digit 1
+msgid "questionnaire_likert_1"
+msgstr ""
+
+# Answer on Likert scale, must begin with digit 2
+msgid "questionnaire_likert_2"
+msgstr ""
+
+# Answer on Likert scale, must begin with digit 3
+msgid "questionnaire_likert_3"
+msgstr ""
+
+# Answer on Likert scale, must begin with digit 4
+msgid "questionnaire_likert_4"
+msgstr ""
+
+# Answer on Likert scale, must begin with digit 5
+msgid "questionnaire_likert_5"
+msgstr ""
+
+msgid "questionnaire_free_confirmation"
+msgstr ""
+
+msgid "questionnaire_free_confirmation_confirm_button"
+msgstr ""
+
+msgid "questionnaire_free_confirmation_deny_button"
+msgstr ""
+
+msgid "questionnaire_free_retry_prompt"
+msgstr ""
+
+# Finished, thank you, generating the certificate
+msgid "questionnaire_finish_generating"
+msgstr ""
+
+# Caption for the certificate transmission
+msgid "questionnaire_attachment_caption"
+msgstr ""
+
+# Final thank you
+msgid "questionnaire_finish_thankyou"
+msgstr ""
