@@ -23,6 +23,7 @@ $content = str_replace("%TEAM_NAME%", $data_team_name, $content);
 $content = str_replace("%ACTION%", $data_action, $content);
 $content = str_replace("%GAME_NAME%", $data_game_name, $content);
 $content = str_replace("%BASE_GEN_FILE%", $data_identifier, $content);
+$content = str_replace("%DATE%", date('j F Y'), $content);
 
 $dompdf->loadHtml($content, 'UTF-8');
 

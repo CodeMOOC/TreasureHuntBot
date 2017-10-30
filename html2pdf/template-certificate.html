@@ -57,6 +57,7 @@ html, body {
     text-align: center;
 }
 .header img {
+    margin-top: 10mm;
     height: auto;
 }
 .content {
@@ -76,11 +77,11 @@ html, body {
     </style>
 </head>
 <body>
-    <img src="%root%/html2pdf/images/codeeu-background.jpg" class="background" />
+    <img src="%root%/html2pdf/images/generic-background.jpg" class="background" />
 
     <div class="page">
         <div class="header">
-            <img src="%root%/html2pdf/images/title-codeweek2017.png" style="width: 145mm" />
+            <img src="%root%/html2pdf/images/title.png" style="width: 145mm" />
         </div>
 
         <div class="content">
@@ -88,11 +89,13 @@ html, body {
             <div class="big">%TEAM_NAME%</div>
             have %ACTION% the
             <div class="big">“%GAME_NAME%”</div>
-            treasure hunt, during the Code Hunting Games event for CodeWeek 2017, on 14 October 2017.
+            treasure hunt on %DATE%<br />in a <i>Code Hunting Games</i> event.
         </div>
     </div>
 
-    <img src="%root%/data/certificates/%BASE_GEN_FILE%-montage.png" style="position: absolute; width: 277mm; height: auto; max-height: 60mm; left: 10mm; right: 10mm; bottom: 47mm" />
+    <div style="position: absolute; width: 277mm; height: 34mm; left: 10mm; top: 160mm; text-align: center">
+        <img src="%root%/data/certificates/%BASE_GEN_FILE%-montage.png" style="max-width: 277mm; height: 34mm" />
+    </div>
 
     <div class="overlay left-overlay">
     </div>
