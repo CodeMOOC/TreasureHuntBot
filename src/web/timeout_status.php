@@ -20,7 +20,7 @@ require_once(dirname(__FILE__) . '/web_config.php');
 
 
 $data = [];
-$context = new Context(GAME_ID);
+$context = Context::create_for_game_admin(GAME_ID);
 $timeout = bot_get_game_absolute_timeout($context);
 
 $data = array( 'is_timeout_th' => $timeout != false,
@@ -31,5 +31,3 @@ header("Content-type:application/json; charset=UTF-8");
 header("access-control-allow-origin: *");
 
 echo json_encode((object)$data);
-
-

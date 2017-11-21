@@ -65,17 +65,36 @@ class Context {
                 'from' => array(
                     'id' => (int)$user_info[0],
                     'first_name' => $user_info[1],
-                    'last_name' => mb_substr($user_info[2], mb_strlen($user_info[1] + 1))
+                    'last_name' => mb_substr($user_info[2], mb_strlen($user_info[1]) + 1)
                 ),
                 'chat' => array(
                     'id' => (int)$user_info[0],
                     'first_name' => $user_info[1],
-                    'last_name' => mb_substr($user_info[2], mb_strlen($user_info[1] + 1)),
+                    'last_name' => mb_substr($user_info[2], mb_strlen($user_info[1]) + 1),
                     'type' => 'private'
                 ),
                 'text' => ''
             )
         );
+    }
+
+    /**
+     * Creates a Context instance for the administrator of a given game.
+     */
+    public static function create_for_game_admin($game_id) {
+        $admin_id = db_scalar_query(sprintf(
+            'SELECT `organizer_id` FROM `games` WHERE `game_id` = %d',
+            $game_id
+        ));
+
+        if(!$admin_id) {
+            return null;
+        }
+        else {
+            $context = new Context($admin_id);
+            $context->set_active_game($game_id, true, false);
+            return $context;
+        }
     }
 
     /**

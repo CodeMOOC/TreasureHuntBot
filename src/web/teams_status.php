@@ -11,9 +11,8 @@ require_once(dirname(__FILE__) . '/../lib.php');
 require_once(dirname(__FILE__) . '/backend_lib.php');
 require_once(dirname(__FILE__) . '/web_config.php');
 
-
 $data = [];
-$context = new Context(GAME_ID);
+$context = Context::create_for_game_admin(GAME_ID);
 $playing_groups = bot_get_current_chart_of_playing_groups($context);
 
 foreach ($playing_groups as $pg) {
@@ -42,8 +41,9 @@ foreach ($playing_groups as $pg) {
         $group_data['next_note'] = $last_assigned_loc[3];
     }
 
+    // Return data for groups that have at data for at least one location
     if(count($group_data) > 4) {
-        $data [] = (object)$group_data;
+        $data[] = (object)$group_data;
     }
 }
 

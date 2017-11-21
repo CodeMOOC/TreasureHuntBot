@@ -537,9 +537,9 @@ function bot_get_associated_games($context) {
 // TODO: to be removed/refactored someday
 
 function bot_get_group_status($context, $group_id) {
-    return db_scalar_query("SELECT `state` FROM `groups` WHERE `group_id` = {$group_id} AND `game_id` = {$context->get_game_id()};");
+    return db_scalar_query("SELECT `state` FROM `groups` WHERE `group_id` = {$group_id} AND `game_id` = {$context->game->game_id};");
 }
 
 function bot_get_game_absolute_timeout($context){
-    return db_scalar_query("SELECT timeout_absolute FROM games WHERE game_id = {$context->get_game_id()};");
+    return db_scalar_query("SELECT timeout_absolute FROM games WHERE game_id = {$context->game->game_id};");
 }
