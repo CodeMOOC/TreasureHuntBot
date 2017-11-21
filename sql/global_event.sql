@@ -8,7 +8,7 @@ SELECT `log`.`identity_id`, (SELECT `groups`.`name` FROM `groups` WHERE `groups`
 SELECT `games`.`name`, count(*), SUM(`groups`.`participants_count`) FROM `games` LEFT OUTER JOIN `groups` ON `games`.`game_id` = `groups`.`game_id` WHERE `games`.`event_id` = 7 AND `games`.`state` >= 128 GROUP BY `games`.`game_id`;
 
 # Overview: Number of games, groups, participants, and std.dev by event
-SELECT count(DISTINCT `games`.`game_id`) AS games_count, count(`groups`.`group_id`) AS groups_count, SUM(`groups`.`participants_count`) AS participant_count, AVG(`groups`.`participants_count`) AS participant_avg, STDDEV_POP(`groups`.`participants_count`) AS participant_stddev FROM `games` LEFT OUTER JOIN `groups` ON `games`.`game_id` = `groups`.`game_id` WHERE `games`.`event_id` = 7 AND `games`.`state` >= 128;
+SELECT count(DISTINCT `games`.`game_id`) AS games_count, count(`groups`.`group_id`) AS groups_count, SUM(`groups`.`participants_count`) AS participant_count, AVG(`groups`.`participants_count`) AS participant_avg, STDDEV_POP(`groups`.`participants_count`) AS participant_stddev FROM `games` LEFT OUTER JOIN `groups` ON `games`.`game_id` = `groups`.`game_id` WHERE `games`.`event_id` = 7 AND `games`.`state` >= 128 AND `groups`.`state` >= 30;
 
 # Overview: starting locations for all games
 SELECT `games`.`name`, `locations`.`lat`, `locations`.`lng` FROM `games` LEFT OUTER JOIN `locations` ON `games`.`game_id` = `locations`.`game_id` WHERE `games`.`event_id` IN (7, 8) AND `games`.`state` >= 128 AND `locations`.`location_id` = 1;
