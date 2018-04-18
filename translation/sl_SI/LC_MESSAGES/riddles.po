@@ -1,0 +1,90 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: treasure-hunt-bot\n"
+"PO-Revision-Date: 2017-10-13 10:02-0400\n"
+"Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
+"Language-Team: Slovenian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"X-Generator: crowdin.com\n"
+"POT-Creation-Date: 2017-09-15 10:27+0200\n"
+"X-Crowdin-Project: treasure-hunt-bot\n"
+"X-Crowdin-Language: sl\n"
+"X-Crowdin-File: riddles.pot\n"
+"Language: sl_SI\n"
+
+# Riddle type 1: where does Roby end up executing steps in %RIDDLE_PARAM%? (A, B, or C)
+msgid "riddle_type_1"
+msgstr "Kje se bo znašel Roby, če se bo premikal po teh navodilih: %RIDDLE_PARAM%? (A, B ali C)\n"
+"Pomoč:\n"
+"L = obrat v levo\n"
+"R = obrat v desno\n"
+"F = korak naprej"
+
+# Riddle type 2: specify the sequence of actions leading Roby along the grayed-out path (L, R, or F, without spaces)
+msgid "riddle_type_2"
+msgstr "Zapišite zaporedje ukazov (L, R in F), s katerimi se bo Ruby premaknil po sivi poti.\n"
+"Uporabite ukaze:\n"
+"L za obrat v levo, \n"
+"R za obrat v desno in \n"
+"F za korak naprej."
+
+# Riddle type 3: if robots execute %RIDDLE_PARAM% simultaneously, how many times do they meet on the same cell?
+msgid "riddle_type_3"
+msgstr "Če se robota sočasno premikata po zaporedju %RIDDLE_PARAM%, kolikokrat se bosta srečala na isti kocki?\n"
+"Pomoč:\n"
+"L = obrat v levo \n"
+"R = obrat v desno\n"
+"F = korak naprej"
+
+# Riddle type 4: what is the missing action to reach ×? (L, R, or F)
+msgid "riddle_type_4"
+msgstr "Kateri ukaz manjka v nizu, da bo Ruby dosegel ×? (Odgovorite z L, R ali F)\n"
+"Pomoč:\n"
+"L = obrat v levo\n"
+"R = obrat v desno\n"
+"F = korak naprej"
+
+# Riddle type 5: which robot reaches × first, if all execute %RIDDLE_PARAM% simultaneously? (A, B, or C)
+msgid "riddle_type_5"
+msgstr "Kateri robot bo prvi dosegel ×, če vsi sočasno sledijo nizu ukazov %RIDDLE_PARAM%? \n"
+"(Odgovorite z A, B ali C.)\n"
+"Pomoč:\n"
+"L = obrat v levo\n"
+"R = obrat v desno\n"
+"F = korak naprej"
+
+# Riddle type 6: how many green (F) cards are needed to visit all cells at least once?
+msgid "riddle_type_6"
+msgstr "Koliko zelenih kartic (F) z ukazom korak naprej je potrebnih, da Ruby na vsak kvadratek stopi vsaj enkrat?\n"
+"Pomoč:\n"
+"L = obrat v levo\n"
+"R = obrat v desno\n"
+"F = korak naprej"
+
+# Riddle type 7: what is the minimum number of actions needed to visit all grayed-out cells?
+msgid "riddle_type_7"
+msgstr "Kaj je najmanjše možno število korakov, s katerimi se lahko Ruby sprehodi po vseh sivih kockah?\n"
+"Pomoč:\n"
+"L = obrat v levo\n"
+"R = obrat v desno\n"
+"F = korak naprej"
+
+# Final riddle: final destination reached by Roby based on previous hints received during the game (coordinates: letter first, digit last, like A1)
+msgid "riddle_type_final"
+msgstr "Pomislite na vse namige, ki ste jih prejeli v prejšnjih nalogah in ugotovite, kje se bo Ruby znašel na koncu svoje poti? (Zapišite koordinate: najprej črko, nato številko - npr. A1.)\n"
+"Pomoč:\n"
+"L = obrat v levo\n"
+"R = obrat v desno\n"
+"F = korak naprej"
+
+# Final riddle: used for further steps of the same riddle, based on the same hints (coordinates: letter first, digit last, like A1)
+msgid "riddle_type_final_repeat"
+msgstr "Ni še konec! Kje se bo znašel Ruby na koncu? Pomislite na vse namige, ki ste jih prejeli v prejšnjih nalogah. (Zapišite koordinate: najprej črko, nato številko - npr. A1.)\n"
+"Pomoč:\n"
+"L = obrat v levo\n"
+"R = obrat v desno\n"
+"F = korak naprej"
+

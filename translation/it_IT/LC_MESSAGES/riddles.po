@@ -1,0 +1,53 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: treasure-hunt-bot\n"
+"PO-Revision-Date: 2017-10-30 12:01-0400\n"
+"Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
+"Language-Team: Italian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"POT-Creation-Date: 2017-09-15 10:27+0200\n"
+"X-Crowdin-Project: treasure-hunt-bot\n"
+"X-Crowdin-Language: it\n"
+"X-Crowdin-File: riddles.pot\n"
+"Language: it_IT\n"
+
+# Riddle type 1: where does Roby end up executing steps in %RIDDLE_PARAM%? (A, B, or C)
+msgid "riddle_type_1"
+msgstr "Dove finisce Roby dopo aver eseguito la sequenza di istruzioni %RIDDLE_PARAM%? (A, B o C)"
+
+# Riddle type 2: specify the sequence of actions leading Roby along the grayed-out path (L, R, or F, without spaces)
+msgid "riddle_type_2"
+msgstr "Specifica la sequenza di azioni che conducono Roby lungo il percorso grigio. (L, R e F, senza spazi)"
+
+# Riddle type 3: if robots execute %RIDDLE_PARAM% simultaneously, how many times do they meet on the same cell?
+msgid "riddle_type_3"
+msgstr "Se entrambi i robot eseguono %RIDDLE_PARAM% contemporaneamente, quante volte si incrociano sulla stessa cella?"
+
+# Riddle type 4: what is the missing action to reach ×? (L, R, or F)
+msgid "riddle_type_4"
+msgstr "Qual è l'azione mancante per raggiungere ×? (L, R o F)"
+
+# Riddle type 5: which robot reaches × first, if all execute %RIDDLE_PARAM% simultaneously? (A, B, or C)
+msgid "riddle_type_5"
+msgstr "Quale robot raggiunge per primo la ×, se tutti eseguono %RIDDLE_PARAM% contemporaneamente? (A, B o C)"
+
+# Riddle type 6: how many green (F) cards are needed to visit all cells at least once?
+msgid "riddle_type_6"
+msgstr "Quante carte verdi (F) servono per visitare tutte le caselle almeno una volta?"
+
+# Riddle type 7: what is the minimum number of actions needed to visit all grayed-out cells?
+msgid "riddle_type_7"
+msgstr "Qual è il numero minimo di azioni necessarie per visitare tutte le caselle grigie?"
+
+# Final riddle: final destination reached by Roby based on previous hints received during the game (coordinates: letter first, digit last, like A1)
+msgid "riddle_type_final"
+msgstr "Dove finisce Roby, in base agli indizi che hai ricevuto precedentemente durante la partita? (Specifica la coordinata: letter e poi numero, come ‘A1’.)"
+
+# Final riddle: used for further steps of the same riddle, based on the same hints (coordinates: letter first, digit last, like A1)
+msgid "riddle_type_final_repeat"
+msgstr "Non abbiamo ancora finito! Dove finisce Roby, in base agli stessi indizi di prima? (Specifica la coordinata: letter e poi numero, come ‘A1’.)"
+

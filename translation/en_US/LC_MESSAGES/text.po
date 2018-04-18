@@ -1,0 +1,369 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: treasure-hunt-bot\n"
+"PO-Revision-Date: 2017-10-30 12:01-0400\n"
+"Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
+"Language-Team: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"POT-Creation-Date: 2017-09-15 10:27+0200\n"
+"X-Crowdin-Project: treasure-hunt-bot\n"
+"X-Crowdin-Language: en\n"
+"X-Crowdin-File: text.pot\n"
+"Language: en_US\n"
+
+# Name of any group before having a name assigned
+msgid "unnamed_group"
+msgstr "Unnamed"
+
+# General failure message
+msgid "failure_general"
+msgstr "Whoops! This is embarrassing… Something went wrong!\n"
+"Try again later, please."
+
+# Failure: user is not registered to the game with a group
+msgid "failure_group_not_found"
+msgstr "You don’t seem to be registered to the game. 🤔"
+
+# Failure: user team is already registered and ready
+msgid "failure_group_already_active"
+msgstr "You’re ready to play."
+
+# Failure: user team is not ready to play and attempted to play
+msgid "failure_group_invalid_state"
+msgstr "Your team appears not to be ready to play. 🙁 Please follow the instructions you were given."
+
+# Failure: internal error of a DB query
+msgid "failure_query"
+msgstr "Failure during database access."
+
+# Failure: current event of the game is not ready (i.e., cannot be played yet)
+msgid "failure_event_not_ready"
+msgstr "The event “%EVENT_NAME%” has not started yet."
+
+# Failure: current event of the game is over
+msgid "failure_event_over"
+msgstr "The event “%EVENT_NAME%” is over. Thanks for playing. 🙂"
+
+# Failure: current game has not yet been activated by administrator
+msgid "failure_game_not_ready"
+msgstr "The game “%GAME_NAME%” has not yet been activated. Follow instructions by the organizers."
+
+# Failure: current game has been closed and is over
+msgid "failure_game_dead"
+msgstr "The game is over. 🏁\n"
+"See you at the next <i>Code Hunting Games</i> event!"
+
+# Response to /help command
+msgid "cmd_help"
+msgstr ""
+
+# Response to naked /start command: greeting and general instructions
+msgid "cmd_start_new"
+msgstr "Hi, %FULL_NAME%! Welcome to the <b>Code Hunting Games</b> bot. In order to participate, you must register to a game: follow the instructions given by the organizers."
+
+# Response to naked /start command: user is already registered for a game
+msgid "cmd_start_registered"
+msgstr "Welcome back, %FULL_NAME%! This is the <b>Code Hunting Games</b> bot."
+
+# Response to victory code in invalid state
+msgid "cmd_start_prize_invalid"
+msgstr "Hmmm, you appear to have found the prize, but <i>too</i> soon! 🤔"
+
+# Response to victory code (first of game)
+msgid "cmd_start_prize_first"
+msgstr "🎉 <b>Congratulations!</b> 🎉\n"
+"You solved the last puzzle correctly and you’re the first team to complete the game! 🏁"
+
+# Response to victory code (not first of game, %WINNING_GROUP% first group, %INDEX% arrival position)
+msgid "cmd_start_prize_not_first"
+msgstr "🎉 <b>Congratulations!</b> 🎉\n"
+"You are team number %INDEX% to solve the last puzzle correctly and to complete the game! 🏁"
+
+# Response to first victory code on public channel (%GROUP_NAME% name)
+msgid "cmd_start_prize_channel_first"
+msgstr "🏁 <b>Team “%GROUP_NAME%” is the first to complete the game! Congratulations!</b>"
+
+# Response to victory code on public channel (%GROUP_NAME% name, %INDEX%, arrival position)
+msgid "cmd_start_prize_channel_not_first"
+msgstr "🏁 <b>Team “%GROUP_NAME%” is number %INDEX% finishing the game!</b>"
+
+# Response to start location reached
+msgid "cmd_start_location_reached_first"
+msgstr "Let’s begin! 🎉"
+
+# Response to any successive location reached
+msgid "cmd_start_location_reached"
+msgstr "Well done, you found the right spot!"
+
+# Response to last location reached
+msgid "cmd_start_location_reached_last"
+msgstr "Great, you have reached the <b>last location</b>!"
+
+# Unexpcted location code (not requested)
+msgid "cmd_start_location_unexpected"
+msgstr "I don’t need to know where you are, right now! Please follow the instructions."
+
+# Response to wrong location reached (different location than intended)
+msgid "cmd_start_location_wrong"
+msgstr "It looks like you scanned the wrong code! Did you end up in the wrong place? 😒"
+
+# Unknown payload (invalid QR Code, other game, etc.)
+msgid "cmd_start_wrong_payload"
+msgstr "Sorry, I didn’t understand that. Did you scan the wrong code?"
+
+# First response after registration code, welcome to game
+msgid "cmd_register_confirm"
+msgstr "Welcome to <b>%GAME_NAME%</b>! 🎉 Let’s start by registering your team."
+
+# Successive responses to registration of same game
+msgid "cmd_register_registered"
+msgstr "Your registration request has been received. 👍"
+
+# Error response for registration to a terminated game
+msgid "cmd_register_game_unallowed"
+msgstr "The “%GAME_NAME%” game is over. 🏁\n"
+"See you at the next <i>Code Hunting Game</i>!"
+
+# Error response for registration to a non-activated game
+msgid "cmd_register_game_unallowed_not_ready"
+msgstr "The game “%GAME_NAME%” has not yet been activated. Follow instructions by the organizers."
+
+# Error response for registration to a game in a terminated event
+msgid "cmd_register_game_unallowed_event"
+msgstr "Sorry, the event “%EVENT_NAME%” is over."
+
+# Error response for registration to a game in a non-activated event
+msgid "cmd_register_game_unallowed_event_not_ready"
+msgstr "The event “%EVENT_NAME%” has not started yet."
+
+# Registration: captcha quiz for verification
+msgid "registration_new_state"
+msgstr "Are you ready to play? To be sure, I’ll ask you a simple coding question. (The rules are based on the <a href=\"http://codemooc.org/codyroby/\">CodyRoby</a> game.)"
+
+# Registration: captcha quiz caption with instructions
+msgid "registration_new_state_caption"
+msgstr "Where does Roby end up, following the instructions on the cards? (A, B, or C)"
+
+# Registration: captcha quiz correct
+msgid "registration_new_response_correct"
+msgstr "<i>Correct!</i>\n"
+"You appear to be a sentient human. (Or a very well-made robot, who knows. 🤖)"
+
+# Registration: captcha quiz wrong
+msgid "registration_new_response_wrong"
+msgstr "<i>Wrong!</i>\n"
+"Check and try again."
+
+# Registration: name choice prompt
+msgid "registration_verified_state"
+msgstr "Please choose a name for your team. Something terrifying, perhaps. What name do you choose?"
+
+# Registration: name choice confirmation (%GROUP_NAME% name, %GROUP_COUNT% prog. count)
+msgid "registration_verified_response_ok"
+msgstr "Ok, “%GROUP_NAME%” sounds good! You are team number %GROUP_COUNT%."
+
+# Registration: name choice not valid
+msgid "registration_verified_response_invalid"
+msgstr "That doesn’t look like a valid name. What name do you choose for your team?"
+
+# Registration: number of participants prompt
+msgid "registration_name_state"
+msgstr "How many people are there in your team (yourself included)?"
+
+# Registration: number of participants not valid
+msgid "registration_name_response_invalid"
+msgstr "Just send the number, please."
+
+# Registration: number of participants too few
+msgid "registration_name_response_toofew"
+msgstr "A team must be composed of at least <b>2</b> people!"
+
+# Registration: number of participants too many
+msgid "registration_name_response_toomany"
+msgstr "The maximum allowed number of people per team is <b>20</b>!"
+
+# Registration: number of participants confirmation
+msgid "registration_name_response_ok"
+msgstr "Your team of %NUMBER% players is confirmed!"
+
+# Registration: avatar prompt
+msgid "registration_number_state"
+msgstr "Please send an avatar or a picture of your team."
+
+# Registration: avatar confirmation
+msgid "registration_number_response_ok"
+msgstr "Looking good! The team “%GROUP_NAME%” is registered. 👍"
+
+# Registration: avatar not valid
+msgid "registration_number_response_invalid"
+msgstr "Whoops, something went wrong. Please send an image of your team."
+
+# Registration: final confirmation and instructions (%GAME_CHANNEL% Telegram channel)
+msgid "registration_ready_state_with_channel"
+msgstr "Everything OK! Please make sure to be registered to the %GAME_CHANNEL% channel and follow the instructions."
+
+# Registration: final confirmation and instructions
+msgid "registration_ready_state_without_channel"
+msgstr "Everything OK! Follow the instructions you will be given by the organizers."
+
+# Game state: reach assigned location and look for QR Code
+msgid "game_location_state"
+msgstr "Reach the assigned location and look for a QR Code!"
+
+# Game state: snap selfie
+msgid "game_selfie_state"
+msgstr "Send a nice <i>selfie</i> of your team! (Grimaces are allowed. Make sure you all fit in the center of the picture.)"
+
+# Game state: selfie confirmation with badge
+msgid "game_selfie_response_badge"
+msgstr "Nice picture! Here’s your badge for the reached location."
+
+# Game state: selfie confirmation
+msgid "game_selfie_response_ok"
+msgstr "Nice picture!"
+
+# Game state: selfie forwarding caption for public channel (%GROUP_NAME% name, %INDEX% location number)
+msgid "game_selfie_forward_caption"
+msgstr "Team “%GROUP_NAME%” reached location number %INDEX%!"
+
+# Game state: solve puzzle
+msgid "game_puzzle_state"
+msgstr "Write the answer to the puzzle here."
+
+# Game state: too quick puzzle response, wait %SECONDS% more for next answer
+msgid "game_puzzle_response_wait"
+msgstr "Please wait for %SECONDS% more seconds before writing your answer again."
+
+# Game state: puzzle solution wrong, wait 60 seconds
+msgid "game_puzzle_response_wrong"
+msgstr "Err… not really! 😩 I’m afraid your answer is not correct. Please wait for one minute before trying again… and think it through this time! 😉"
+
+# Game state: puzzle solution correct, congratulations
+msgid "game_puzzle_response_correct"
+msgstr "That’s right!"
+
+# Game state: reach last location
+msgid "game_last_location_state"
+msgstr "Almost there… Quick, get to the <i>last</i> location!"
+
+# Game state: please snap last selfie
+msgid "game_last_selfie_state"
+msgstr "Almost there: send me one last <i>selfie</i> to celebrate your imminent victory!"
+
+# Last selfie received
+msgid "game_last_selfie_response_ok"
+msgstr "Great picture!"
+
+# Last selfie caption for public channel
+msgid "game_last_selfie_forward_caption"
+msgstr "Team “%GROUP_NAME%” reached the last location!"
+
+# Game state: solve last puzzle prompt
+msgid "game_last_puzzle_state"
+msgstr "Solve the last puzzle by writing the answer here."
+
+# Instructions for solving last puzzle, sent first time together with puzzle image
+msgid "game_last_puzzle_instructions"
+msgstr "By solving the previous puzzles you have collected precious hints, which you will need in order to solve the last puzzle of the game and win. Good luck! 😉"
+
+# Last puzzle solution given is wrong
+msgid "game_last_puzzle_wrong"
+msgstr "<i>Wrong!</i>"
+
+# Game state: the game is over, thank you very much
+msgid "game_won_state"
+msgstr "You completed the '%GAME_NAME%' game!"
+
+# Default response for any other message
+msgid "fallback_response"
+msgstr "Sorry, I didn’t understand your request."
+
+# Photo was unexpected
+msgid "unrequested_photo"
+msgstr "Thanks for the picture! Please send photos only when requested. 😉"
+
+# Unsupported kind of message (location, audio, etc.)
+msgid "unsupported_other"
+msgstr "Hold on, hold on! I’n not <i>this</i> smart, yet, and I cannot handle these messages. Please only send text or photos."
+
+# Bot is currently deactivated
+msgid "deactivated"
+msgstr "No <i>Code Hunting Game</i> is running at the moment. We’ll be back soon, in the meantime you can <a href=\"http://informatica.uniurb.it/en/treasurehuntbot/\">read the story of this bot</a>.\n"
+"<i>Stay tuned!</i>"
+
+# After victory, bot asks for questionnaire and certificate generation
+msgid "questionnaire_init_question"
+msgstr "Thanks for playing! We would like to ask you a couple of simple questions about the game. Once you answer all questions, we will send you a certificate for your victory. 🏅"
+
+# Affirmative answer to questionnaire question
+msgid "questionnaire_init_question_response"
+msgstr "I’m ready!"
+
+# Instructions about the questionnaire that will be delivered
+msgid "questionnaire_init_instructions"
+msgstr "We will ask you 3 questions to which you can answer on a scale from 1 to 5. The fourth and last one if a free text question: if you prefer not to answer, please write “no”."
+
+# Let's begin
+msgid "questionnaire_init_begin"
+msgstr "Let’s begin!"
+
+msgid "questionnaire_q1"
+msgstr "📝 I liked the treasure hunt game."
+
+msgid "questionnaire_q2"
+msgstr "📝 The Telegram bot was easy to use and well-suited for the game."
+
+msgid "questionnaire_q3"
+msgstr "📝 I understand how QR Codes work and how they interact with the bot."
+
+msgid "questionnaire_q4"
+msgstr "📝 Please write down any other comment or suggestion:"
+
+# Answer on Likert scale, must begin with digit 1
+msgid "questionnaire_likert_1"
+msgstr "1: strongly disagree"
+
+# Answer on Likert scale, must begin with digit 2
+msgid "questionnaire_likert_2"
+msgstr "2: disagree"
+
+# Answer on Likert scale, must begin with digit 3
+msgid "questionnaire_likert_3"
+msgstr "3: neutral"
+
+# Answer on Likert scale, must begin with digit 4
+msgid "questionnaire_likert_4"
+msgstr "4: agree"
+
+# Answer on Likert scale, must begin with digit 5
+msgid "questionnaire_likert_5"
+msgstr "5: strongly agree"
+
+msgid "questionnaire_free_confirmation"
+msgstr "Suggestions registered. Do you wish to confirm?"
+
+msgid "questionnaire_free_confirmation_confirm_button"
+msgstr "Yes"
+
+msgid "questionnaire_free_confirmation_deny_button"
+msgstr "No, let me try again"
+
+msgid "questionnaire_free_retry_prompt"
+msgstr "Ok. Write down any comments or suggestion here:"
+
+# Finished, thank you, generating the certificate
+msgid "questionnaire_finish_generating"
+msgstr "Thank you! 🙌 Generating your certificate…"
+
+# Caption for the certificate transmission
+msgid "questionnaire_attachment_caption"
+msgstr "Certificate for “%GROUP_NAME%”"
+
+# Final thank you
+msgid "questionnaire_finish_thankyou"
+msgstr "Thank you again for playing! 🙂"
+

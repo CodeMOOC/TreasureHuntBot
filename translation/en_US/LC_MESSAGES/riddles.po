@@ -1,0 +1,53 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: treasure-hunt-bot\n"
+"PO-Revision-Date: 2017-10-30 12:01-0400\n"
+"Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
+"Language-Team: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"POT-Creation-Date: 2017-09-15 10:27+0200\n"
+"X-Crowdin-Project: treasure-hunt-bot\n"
+"X-Crowdin-Language: en\n"
+"X-Crowdin-File: riddles.pot\n"
+"Language: en_US\n"
+
+# Riddle type 1: where does Roby end up executing steps in %RIDDLE_PARAM%? (A, B, or C)
+msgid "riddle_type_1"
+msgstr "Where does Roby end up after executing the following sequence of actions: %RIDDLE_PARAM%? (A, B, or C)"
+
+# Riddle type 2: specify the sequence of actions leading Roby along the grayed-out path (L, R, or F, without spaces)
+msgid "riddle_type_2"
+msgstr "Specify the sequence of actions (L, F, or R, without spaces) that lead Roby along the grayed-out path."
+
+# Riddle type 3: if robots execute %RIDDLE_PARAM% simultaneously, how many times do they meet on the same cell?
+msgid "riddle_type_3"
+msgstr "If both robots execute %RIDDLE_PARAM% simultaneously, how many times do they meet on the same cell?"
+
+# Riddle type 4: what is the missing action to reach ×? (L, R, or F)
+msgid "riddle_type_4"
+msgstr "What is the missing action to reach ×? (L, R, or F)"
+
+# Riddle type 5: which robot reaches × first, if all execute %RIDDLE_PARAM% simultaneously? (A, B, or C)
+msgid "riddle_type_5"
+msgstr "Which robot reaches × first, if all execute %RIDDLE_PARAM% simultaneously? (A, B, or C)"
+
+# Riddle type 6: how many green (F) cards are needed to visit all cells at least once?
+msgid "riddle_type_6"
+msgstr "How many green (F) cards are needed to visit all cells at least once?"
+
+# Riddle type 7: what is the minimum number of actions needed to visit all grayed-out cells?
+msgid "riddle_type_7"
+msgstr "What is the minimum number of actions needed to visit all grayed-out cells?"
+
+# Final riddle: final destination reached by Roby based on previous hints received during the game (coordinates: letter first, digit last, like A1)
+msgid "riddle_type_final"
+msgstr "Where does Roby end up, based on the previous hints you received during the game? (Write the final coordinate: letter first, then digit, like ‘A1’.)"
+
+# Final riddle: used for further steps of the same riddle, based on the same hints (coordinates: letter first, digit last, like A1)
+msgid "riddle_type_final_repeat"
+msgstr "You’re not done, yet! Where does Roby end up, based on the same hints you used before? (Write the final coordinate: letter first, digit last, like ‘A1’.)"
+

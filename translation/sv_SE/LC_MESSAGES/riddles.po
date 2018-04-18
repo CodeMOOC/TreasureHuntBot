@@ -1,0 +1,53 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: treasure-hunt-bot\n"
+"PO-Revision-Date: 2017-10-13 10:05-0400\n"
+"Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
+"Language-Team: Swedish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"POT-Creation-Date: 2017-09-15 10:27+0200\n"
+"X-Crowdin-Project: treasure-hunt-bot\n"
+"X-Crowdin-Language: sv-SE\n"
+"X-Crowdin-File: riddles.pot\n"
+"Language: sv_SE\n"
+
+# Riddle type 1: where does Roby end up executing steps in %RIDDLE_PARAM%? (A, B, or C)
+msgid "riddle_type_1"
+msgstr "Vart hamnar Ruby då han följer instruktionen:%RIDDLE_PARAM%? (A, B eller C)"
+
+# Riddle type 2: specify the sequence of actions leading Roby along the grayed-out path (L, R, or F, without spaces)
+msgid "riddle_type_2"
+msgstr "Ge instruktioner för att leda Ruby längs de gråmarkerade rutorna. (L=vänster,F=framåt,H=höger, OBS! inga mellanslag)"
+
+# Riddle type 3: if robots execute %RIDDLE_PARAM% simultaneously, how many times do they meet on the same cell?
+msgid "riddle_type_3"
+msgstr "Om båda robotarnas program körs samtidigt%RIDDLE_PARAM%, hur många gånger kommer de då att krocka?"
+
+# Riddle type 4: what is the missing action to reach ×? (L, R, or F)
+msgid "riddle_type_4"
+msgstr "Vilken instruktion saknas för att nå x? (L=vänster,R=höger eller F=framåt)"
+
+# Riddle type 5: which robot reaches × first, if all execute %RIDDLE_PARAM% simultaneously? (A, B, or C)
+msgid "riddle_type_5"
+msgstr "Vilken robot når x först om allas program%RIDDLE_PARAM% körs samtidigt? (A,B eller C)"
+
+# Riddle type 6: how many green (F) cards are needed to visit all cells at least once?
+msgid "riddle_type_6"
+msgstr "Hur många gröna (F) kort behövs för att besöka alla rutor minst en gång?"
+
+# Riddle type 7: what is the minimum number of actions needed to visit all grayed-out cells?
+msgid "riddle_type_7"
+msgstr "Vilket är det minsta antalet förflyttningar som behövs för att besöka alla gråa rutor?"
+
+# Final riddle: final destination reached by Roby based on previous hints received during the game (coordinates: letter first, digit last, like A1)
+msgid "riddle_type_final"
+msgstr "Vart hamnar Roby baserat på tidigare ledtrådar som du fått under spelet+ (Skriv den sista koordinaten: bokstav först och siffra sen, ex ‘A1’.)"
+
+# Final riddle: used for further steps of the same riddle, based on the same hints (coordinates: letter first, digit last, like A1)
+msgid "riddle_type_final_repeat"
+msgstr "Ni är inte färdiga ännu! Vart hamnar Ruby baserat på samma ledtrådar som du använde tidigare? (Skriv den sista koordinaten: bokstav först och siffra sen, ex ‘A1’.)"
+

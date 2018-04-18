@@ -1,0 +1,368 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: treasure-hunt-bot\n"
+"PO-Revision-Date: 2017-10-30 12:01-0400\n"
+"Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
+"Language-Team: Slovenian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"X-Generator: crowdin.com\n"
+"POT-Creation-Date: 2017-09-15 10:27+0200\n"
+"X-Crowdin-Project: treasure-hunt-bot\n"
+"X-Crowdin-Language: sl\n"
+"X-Crowdin-File: text.pot\n"
+"Language: sl_SI\n"
+
+# Name of any group before having a name assigned
+msgid "unnamed_group"
+msgstr "Skupina brez imena"
+
+# General failure message
+msgid "failure_general"
+msgstr "Joj, nekaj je šlo narobe. Prosim, poskusite še enkrat!"
+
+# Failure: user is not registered to the game with a group
+msgid "failure_group_not_found"
+msgstr "Izgleda, da se še niste registrirali? 🤔"
+
+# Failure: user team is already registered and ready
+msgid "failure_group_already_active"
+msgstr "Pripravljeni ste na igro. 🤓"
+
+# Failure: user team is not ready to play and attempted to play
+msgid "failure_group_invalid_state"
+msgstr "Hm, nekaj ni v redu. 😕 Prosim, še enkrat preverite, kakšna so navodila."
+
+# Failure: internal error of a DB query
+msgid "failure_query"
+msgstr "Ups, en škrat nam nagaja v bazi."
+
+# Failure: current event of the game is not ready (i.e., cannot be played yet)
+msgid "failure_event_not_ready"
+msgstr ""
+
+# Failure: current event of the game is over
+msgid "failure_event_over"
+msgstr ""
+
+# Failure: current game has not yet been activated by administrator
+msgid "failure_game_not_ready"
+msgstr ""
+
+# Failure: current game has been closed and is over
+msgid "failure_game_dead"
+msgstr "Ta igra je zaključena, zato do nje ne morete več dostopati. 🏁\n"
+"Se vidimo pri naslednjem <i>Lovu na kodo</i>!"
+
+# Response to /help command
+msgid "cmd_help"
+msgstr "Pomoč prihaja ..."
+
+# Response to naked /start command: greeting and general instructions
+msgid "cmd_start_new"
+msgstr "Zdravo, %FULL_NAME%! Ste pripravljeni za igro <b>Lova na kodo</b>? Najprej se morate registrirati - organizator igre vam lahko pri tem pomaga."
+
+# Response to naked /start command: user is already registered for a game
+msgid "cmd_start_registered"
+msgstr "Dobrodošli nazaj, %FULL_NAME%! Tukaj bot igrice <b>Lov na kodo</b>."
+
+# Response to victory code in invalid state
+msgid "cmd_start_prize_invalid"
+msgstr "Hmmm, izgleda, da ste nagrado odkrili prehitro!? 🤔"
+
+# Response to victory code (first of game)
+msgid "cmd_start_prize_first"
+msgstr "🎉 <b>Čestitke!</b> 🎉\n"
+"Rešili ste zadnjo uganka, bili ste najhitrejši med vsemi ekipami! 🏁"
+
+# Response to victory code (not first of game, %WINNING_GROUP% first group, %INDEX% arrival position)
+msgid "cmd_start_prize_not_first"
+msgstr "🎉 <b>Čestitke!</b> 🎉\n"
+"Vaša ekipa %INDEX% je pravilno rešila še zadnjo uganko in uspešno zaključila igro! 🏁"
+
+# Response to first victory code on public channel (%GROUP_NAME% name)
+msgid "cmd_start_prize_channel_first"
+msgstr "🏁 <b>Ekipa “%GROUP_NAME%” je prva zaključila igro. Čestitke!</b>"
+
+# Response to victory code on public channel (%GROUP_NAME% name, %INDEX%, arrival position)
+msgid "cmd_start_prize_channel_not_first"
+msgstr "🏁 <b>Ekipa “%GROUP_NAME%” je igro zaključila na %INDEX%. mestu! Čestitke!</b>"
+
+# Response to start location reached
+msgid "cmd_start_location_reached_first"
+msgstr "No, pa začnimo! 🎉"
+
+# Response to any successive location reached
+msgid "cmd_start_location_reached"
+msgstr "Odlično, našli ste pravo lokacijo!"
+
+# Response to last location reached
+msgid "cmd_start_location_reached_last"
+msgstr "Super, našli ste še <b>zadnjo lokacijo</b>!"
+
+# Unexpcted location code (not requested)
+msgid "cmd_start_location_unexpected"
+msgstr "Ne vem, kje se nahajate. Preverite lokacijo še enkrat in sledite navodilom igre. 🗺"
+
+# Response to wrong location reached (different location than intended)
+msgid "cmd_start_location_wrong"
+msgstr "Izgleda, da ste poskenirali napačno kodo. Je možno, da ste se znašli na napačni lokaciji? 😒"
+
+# Unknown payload (invalid QR Code, other game, etc.)
+msgid "cmd_start_wrong_payload"
+msgstr "Joj, tega pa ne razumem. Ste morda poskenirali napačno kodo?"
+
+# First response after registration code, welcome to game
+msgid "cmd_register_confirm"
+msgstr "Dobrodošli v igri <b>%GAME_NAME%</b>! 🎉 Začnete tako, da registrirate svojo ekipo."
+
+# Successive responses to registration of same game
+msgid "cmd_register_registered"
+msgstr "Prejeli smo zahtevo za registracijo vaše skupine. 👍"
+
+# Error response for registration to a terminated game
+msgid "cmd_register_game_unallowed"
+msgstr "Oprostite, prijava v igro trenutno ni možna."
+
+# Error response for registration to a non-activated game
+msgid "cmd_register_game_unallowed_not_ready"
+msgstr ""
+
+# Error response for registration to a game in a terminated event
+msgid "cmd_register_game_unallowed_event"
+msgstr ""
+
+# Error response for registration to a game in a non-activated event
+msgid "cmd_register_game_unallowed_event_not_ready"
+msgstr ""
+
+# Registration: captcha quiz for verification
+msgid "registration_new_state"
+msgstr "Ste pripravljeni? Da se prepričam o tem, vam bom zastavil preprosto programersko uganko.\n"
+"(Tukaj veljajo podobna pravila kot v igrici <a href=\"http://codemooc.org/codyroby/\">CodyRoby</a>.)"
+
+# Registration: captcha quiz caption with instructions
+msgid "registration_new_state_caption"
+msgstr "Kje bo končal Roby, če bo sledil navodilom na kartici? (Odgovorite z A, B ali C)"
+
+# Registration: captcha quiz correct
+msgid "registration_new_response_correct"
+msgstr "<i>Pravilno!</i>\n"
+"Izgleda, da ste čisto pravi človek. (Ali pa robot, ki se zna zelo dobro pretvarjati. 🤖)"
+
+# Registration: captcha quiz wrong
+msgid "registration_new_response_wrong"
+msgstr "<i>Napačen odgovor!</i>\n"
+"Dobro poglejte, premislite in poskusite še enkrat."
+
+# Registration: name choice prompt
+msgid "registration_verified_state"
+msgstr "Svoji ekipi določite ime. Izberite npr. kaj zastrašujočega. 👻 No, že veste, kako se boste imenovali?"
+
+# Registration: name choice confirmation (%GROUP_NAME% name, %GROUP_COUNT% prog. count)
+msgid "registration_verified_response_ok"
+msgstr "Ok, “%GROUP_NAME%” zveni dobro! Vi ste %GROUP_COUNT%. ekipa."
+
+# Registration: name choice not valid
+msgid "registration_verified_response_invalid"
+msgstr "S tem imenom mi povzročate preglavice. Izberite kakšno drugo ime, prosim."
+
+# Registration: number of participants prompt
+msgid "registration_name_state"
+msgstr "Koliko vas je vseh skupaj v ekipi?"
+
+# Registration: number of participants not valid
+msgid "registration_name_response_invalid"
+msgstr "Zapišite s števkami, prosim."
+
+# Registration: number of participants too few
+msgid "registration_name_response_toofew"
+msgstr "V ekipi morata biti vsaj <b>2</b> člana - hitro poiščite partnerja! 👫 👭 👬"
+
+# Registration: number of participants too many
+msgid "registration_name_response_toomany"
+msgstr "Ekipa lahko šteje največ <b>20</b> članov."
+
+# Registration: number of participants confirmation
+msgid "registration_name_response_ok"
+msgstr "Potrjujem - število članov v vaši ekipi je: %NUMBER%"
+
+# Registration: avatar prompt
+msgid "registration_number_state"
+msgstr "Pošljite mi avatarja oziroma sliko, ki predstavlja vašo ekipo."
+
+# Registration: avatar confirmation
+msgid "registration_number_response_ok"
+msgstr "Odlično! Ekipa “%GROUP_NAME%” je registrirana. 👍"
+
+# Registration: avatar not valid
+msgid "registration_number_response_invalid"
+msgstr "Joj, nekaj je šlo narobe. Pošljite sliko vaše ekipe."
+
+# Registration: final confirmation and instructions (%GAME_CHANNEL% Telegram channel)
+msgid "registration_ready_state_with_channel"
+msgstr "Vse je pod nadzorom! Prepričajte se, da ste se vpisali v kanal %GAME_CHANNEL% in sledite navodilom."
+
+# Registration: final confirmation and instructions
+msgid "registration_ready_state_without_channel"
+msgstr "Vse ok! Sedaj počakajte na navodila organizatorja igre."
+
+# Game state: reach assigned location and look for QR Code
+msgid "game_location_state"
+msgstr "Najdite lokacijo in tam poiščite QR kodo!"
+
+# Game state: snap selfie
+msgid "game_selfie_state"
+msgstr "Naredite ekipni <i>selfi</i>! (Spakovanje je dovoljeno. Prepričajte pa se, da boste vsi na fotografiji.)"
+
+# Game state: selfie confirmation with badge
+msgid "game_selfie_response_badge"
+msgstr "Dobra fotka! Podeljujem vam priznanje za opravljeno nalogo."
+
+# Game state: selfie confirmation
+msgid "game_selfie_response_ok"
+msgstr "Dobra fotka!"
+
+# Game state: selfie forwarding caption for public channel (%GROUP_NAME% name, %INDEX% location number)
+msgid "game_selfie_forward_caption"
+msgstr "Ekipa “%GROUP_NAME%” je našla lokacijo št. %INDEX%!"
+
+# Game state: solve puzzle
+msgid "game_puzzle_state"
+msgstr "Zapišite odgovor."
+
+# Game state: too quick puzzle response, wait %SECONDS% more for next answer
+msgid "game_puzzle_response_wait"
+msgstr "Počakati morate še %SECONDS% sekund preden lahko ponovno odgovarjate."
+
+# Game state: puzzle solution wrong, wait 60 seconds
+msgid "game_puzzle_response_wrong"
+msgstr "Ah... ne! 😩 Vaš odgovor ni pravilen. Počakajte minuto in vmes dobro premislite, kakšen je pravi odgovor! 💪"
+
+# Game state: puzzle solution correct, congratulations
+msgid "game_puzzle_response_correct"
+msgstr "Rešitev je pravilna, čestitke!"
+
+# Game state: reach last location
+msgid "game_last_location_state"
+msgstr "Skoraj ste že na cilju … Hitro poiščite <i>zadnjo</i> lokacijo!"
+
+# Game state: please snap last selfie
+msgid "game_last_selfie_state"
+msgstr "Skoraj smo že gotovi: pošljite mi še zadnji <i>selfi</i>. Poskrbite, da boste izgledali zmagoslavno!"
+
+# Last selfie received
+msgid "game_last_selfie_response_ok"
+msgstr "Wow, kako lepo!"
+
+# Last selfie caption for public channel
+msgid "game_last_selfie_forward_caption"
+msgstr "Ekipa “%GROUP_NAME%” je našla zadnjo lokacijo!"
+
+# Game state: solve last puzzle prompt
+msgid "game_last_puzzle_state"
+msgstr "Zapišite odgovor na zadnje vprašanje."
+
+# Instructions for solving last puzzle, sent first time together with puzzle image
+msgid "game_last_puzzle_instructions"
+msgstr "Med reševanjem prejšnjih nalog ste dobivali namige za rešitev zadnje naloge. Srečno! 😉"
+
+# Last puzzle solution given is wrong
+msgid "game_last_puzzle_wrong"
+msgstr "<i>Jejhata, napačen odgovor!</i>"
+
+# Game state: the game is over, thank you very much
+msgid "game_won_state"
+msgstr "Zaključili ste igro '%GAME_NAME%'!"
+
+# Default response for any other message
+msgid "fallback_response"
+msgstr "Ne razumem vašega ukaza."
+
+# Photo was unexpected
+msgid "unrequested_photo"
+msgstr "Hvala za fotko - ampak ne vem, kam naj jo dam. Da ne bo zmede, prosim, če mi fotografijo pošljete le, kadar vas prosim zanjo. 😉"
+
+# Unsupported kind of message (location, audio, etc.)
+msgid "unsupported_other"
+msgstr "Lepo počasi, prosim. <i>Tako</i> pameten pa spet nisem, da bi obvladal toliko podatkov naenkrat. Prosim, pošiljajte mi ločeno samo besedilo ali samo fotografijo."
+
+# Bot is currently deactivated
+msgid "deactivated"
+msgstr "Trenutno ne poteka nobena igra <i>Lova na kodo</i>. Kmalu se vrnemo - medtem pa lahko preberete <a href=\"http://informatica.uniurb.it/en/treasurehuntbot/\">zgodbo o Code Hunting botu</a>.\n"
+"<i>Ostanite z nami!</i>"
+
+# After victory, bot asks for questionnaire and certificate generation
+msgid "questionnaire_init_question"
+msgstr ""
+
+# Affirmative answer to questionnaire question
+msgid "questionnaire_init_question_response"
+msgstr ""
+
+# Instructions about the questionnaire that will be delivered
+msgid "questionnaire_init_instructions"
+msgstr ""
+
+# Let's begin
+msgid "questionnaire_init_begin"
+msgstr ""
+
+msgid "questionnaire_q1"
+msgstr ""
+
+msgid "questionnaire_q2"
+msgstr ""
+
+msgid "questionnaire_q3"
+msgstr ""
+
+msgid "questionnaire_q4"
+msgstr ""
+
+# Answer on Likert scale, must begin with digit 1
+msgid "questionnaire_likert_1"
+msgstr ""
+
+# Answer on Likert scale, must begin with digit 2
+msgid "questionnaire_likert_2"
+msgstr ""
+
+# Answer on Likert scale, must begin with digit 3
+msgid "questionnaire_likert_3"
+msgstr ""
+
+# Answer on Likert scale, must begin with digit 4
+msgid "questionnaire_likert_4"
+msgstr ""
+
+# Answer on Likert scale, must begin with digit 5
+msgid "questionnaire_likert_5"
+msgstr ""
+
+msgid "questionnaire_free_confirmation"
+msgstr ""
+
+msgid "questionnaire_free_confirmation_confirm_button"
+msgstr ""
+
+msgid "questionnaire_free_confirmation_deny_button"
+msgstr ""
+
+msgid "questionnaire_free_retry_prompt"
+msgstr ""
+
+# Finished, thank you, generating the certificate
+msgid "questionnaire_finish_generating"
+msgstr ""
+
+# Caption for the certificate transmission
+msgid "questionnaire_attachment_caption"
+msgstr ""
+
+# Final thank you
+msgid "questionnaire_finish_thankyou"
+msgstr ""
+

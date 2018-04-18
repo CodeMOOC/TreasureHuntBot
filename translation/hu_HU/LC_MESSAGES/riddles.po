@@ -1,0 +1,53 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: treasure-hunt-bot\n"
+"PO-Revision-Date: 2017-10-13 10:02-0400\n"
+"Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
+"Language-Team: Hungarian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"POT-Creation-Date: 2017-09-15 10:27+0200\n"
+"X-Crowdin-Project: treasure-hunt-bot\n"
+"X-Crowdin-Language: hu\n"
+"X-Crowdin-File: riddles.pot\n"
+"Language: hu_HU\n"
+
+# Riddle type 1: where does Roby end up executing steps in %RIDDLE_PARAM%? (A, B, or C)
+msgid "riddle_type_1"
+msgstr "Hova jut el Roby, miután végrehajtja a következő lépéseket: %RIDDLE_PARAM%? (A, B vagy C)"
+
+# Riddle type 2: specify the sequence of actions leading Roby along the grayed-out path (L, R, or F, without spaces)
+msgid "riddle_type_2"
+msgstr "Add meg a lépések helyes sorrendjét (L, R vagy F, szóközök nélkül), hogy Roby a szürke útvonalon haladjon!"
+
+# Riddle type 3: if robots execute %RIDDLE_PARAM% simultaneously, how many times do they meet on the same cell?
+msgid "riddle_type_3"
+msgstr "Hányszor találkoznak a robotok azonos cellában, ha mindkét robot végrehajtja a parancsot %RIDDLE_PARAM%?"
+
+# Riddle type 4: what is the missing action to reach ×? (L, R, or F)
+msgid "riddle_type_4"
+msgstr "Melyik lépés hiányzik ahhoz, hogy elérjük ×-et? (L, R vagy F)"
+
+# Riddle type 5: which robot reaches × first, if all execute %RIDDLE_PARAM% simultaneously? (A, B, or C)
+msgid "riddle_type_5"
+msgstr "Melyik robot éri el elsőként az ×-et, ha párhuzamosan hajtják végre a parancsokat %RIDDLE_PARAM%? (A, B vagy C)"
+
+# Riddle type 6: how many green (F) cards are needed to visit all cells at least once?
+msgid "riddle_type_6"
+msgstr "Hány darab zöld színű kártya (F) szükséges ahhoz, hogy minden cellát legalább egyszer meglátogassunk?"
+
+# Riddle type 7: what is the minimum number of actions needed to visit all grayed-out cells?
+msgid "riddle_type_7"
+msgstr "Legkevesebb hány lépés szükséges ahhoz, hogy minden szürke cellát meglátogassunk?"
+
+# Final riddle: final destination reached by Roby based on previous hints received during the game (coordinates: letter first, digit last, like A1)
+msgid "riddle_type_final"
+msgstr "Hova jut el Roby azon információk alapján, amit a játék során kaptál? (Add meg a végső koordinátát nagybetű és szám formában, pl. \"A1\".)"
+
+# Final riddle: used for further steps of the same riddle, based on the same hints (coordinates: letter first, digit last, like A1)
+msgid "riddle_type_final_repeat"
+msgstr "Még nem vagy kész! Hova jut el Roby az előzőleg kapott információk alapján? (Add meg a végső koordinátát nagybetű és szám formában, pl. \"A1\".)"
+

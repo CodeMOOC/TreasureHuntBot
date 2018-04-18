@@ -20,6 +20,5 @@ data/qrcodes/*
 !data/qrcodes/placeholder
 !data/qrcodes/tmp/placeholder
 translation/**/*.mo
-translation/**/*.po
 html2pdf/vendor/
 html2pdf/images/signature_ab\.png

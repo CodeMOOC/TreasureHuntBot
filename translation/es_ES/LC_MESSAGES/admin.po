@@ -1,0 +1,121 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: treasure-hunt-bot\n"
+"PO-Revision-Date: 2017-10-13 10:02-0400\n"
+"Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
+"Language-Team: Spanish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"POT-Creation-Date: 2017-09-15 10:27+0200\n"
+"X-Crowdin-Project: treasure-hunt-bot\n"
+"X-Crowdin-Language: es-ES\n"
+"X-Crowdin-File: admin.pot\n"
+"Language: es_ES\n"
+
+# Welcome message when registering new game for event
+msgid "creation_welcome"
+msgstr ""
+
+# Confirm game registration
+msgid "creation_welcome_confirm"
+msgstr ""
+
+# Abort game registration
+msgid "creation_welcome_abort"
+msgstr ""
+
+# Name request for game
+msgid "creation_set_name"
+msgstr ""
+
+# Telegram channel request for game
+msgid "creation_set_channel"
+msgstr ""
+
+# Skip button for telegram channel request
+msgid "creation_set_channel_skip"
+msgstr ""
+
+# Attempting to write on public channel, please wait
+msgid "creation_set_channel_write_attempt"
+msgstr ""
+
+# Confirmation of public channel
+msgid "creation_set_channel_confirm"
+msgstr ""
+
+# Failed to write on public channel
+msgid "creation_set_channel_failure"
+msgstr ""
+
+# Prompt user for new Telegram channel or to retry writing
+msgid "creation_set_channel_again"
+msgstr ""
+
+# Retry button to write to public Telegram channel
+msgid "creation_set_channel_retry"
+msgstr ""
+
+# Prompt user for image censorship on public channel
+msgid "creation_set_channel_censorship"
+msgstr ""
+
+# Enable censorship button
+msgid "creation_set_channel_censorship_enable"
+msgstr ""
+
+# Disable censorship button
+msgid "creation_set_channel_censorship_disable"
+msgstr ""
+
+# Prompt for contact e-mail
+msgid "creation_set_email"
+msgstr ""
+
+# Confirm e-mail registration
+msgid "creation_set_email_confirm"
+msgstr ""
+
+# E-mail supplied is not valid
+msgid "creation_set_email_wrong"
+msgstr ""
+
+# Beginning of location registrations
+msgid "creation_location_begin"
+msgstr ""
+
+# Prompt for first location (start position)
+msgid "creation_location_start"
+msgstr ""
+
+# Prompt for last location
+msgid "creation_location_end"
+msgstr ""
+
+# Prompt for next location, if any (%COUNT% total registered for game, %MINIMUM% minimum locations for game, %AVGDIST% average distance of locations, %MINAVGDIST% minimum average distance of locations)
+msgid "creation_location_next"
+msgstr ""
+
+# Prompt for next location if number of locations reached but not minimum average distance (%COUNT% total registered for game, %MINIMUM% minimum locations for game, %AVGDIST% average distance of locations, %MINAVGDIST% minimum average distance of locations)
+msgid "creation_location_next_insufficient_avg_distance"
+msgstr ""
+
+# Stop button for location insertion, appears if minimum number of locations is reached and other constraints are met
+msgid "creation_location_next_stop"
+msgstr ""
+
+# Prompt for internal description of location
+msgid "creation_location_set_name"
+msgstr ""
+
+# Confirm successful creation
+msgid "creation_completed"
+msgstr ""
+
+# Generic failure, something went wrong, start again please
+msgid "failure"
+msgstr ""
+
