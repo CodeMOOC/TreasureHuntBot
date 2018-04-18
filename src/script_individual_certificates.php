@@ -19,9 +19,9 @@ if(!isset($argv[1])) {
 $game_id = intval($argv[1]);
 
 $groups = db_table_query(sprintf(
-    'SELECT `groups`.`group_id`, `groups`.`name`, `groups`.`state`, `games`.`name` FROM `games` LEFT OUTER JOIN `groups` ON `games`.`game_id` = `groups`.`game_id` WHERE `games`.`game_id` = %d AND `groups`.`state` > %d',
+    'SELECT `groups`.`group_id`, `groups`.`name`, `groups`.`state`, `games`.`name` FROM `games` LEFT OUTER JOIN `groups` ON `games`.`game_id` = `groups`.`game_id` WHERE `games`.`game_id` = %d AND `groups`.`state` >= %d',
     $game_id,
-    STATE_REG_READY
+    STATE_GAME_WON
 ));
 
 printf("Found %d teams in game %d.\n", sizeof($groups), $game_id);
@@ -36,9 +36,6 @@ foreach($groups as $group_info) {
         $group_info[0]
     ));
     $total_locations_count = $reached_locations_count + 1 + (($group_info[2] > STATE_GAME_LAST_SELF) ? 1 : 0); // start and end
-
-    if($group_info[0] != 291)
-        continue;
 
     $rootdir = realpath(dirname(__FILE__) . '/..');
     $identifier = "{$game_id}-{$group_info[0]}";
