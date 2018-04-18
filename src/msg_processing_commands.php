@@ -225,10 +225,12 @@ function msg_processing_commands($context) {
                     $text .= "👤 <b>Played games:</b>\n";
                 }
 
+                $text .= "<code>#{$game[0]}</code> " . (($game[1]) ? "“{$game[1]}”" : "No name") . " (" . map_state_to_string(GAME_STATE_READABLE_MAP, $game[2]) . ")";
                 if($context->game->game_id == $game[0] && $context->game->is_admin == $game[3]) {
-                    $text .= "➡️ ";
+                    $text .= " ✅";
                 }
-                $text .= "<code>#{$game[0]}</code> " . (($game[1]) ? "“{$game[1]}”" : "No name") . " <i>" . map_state_to_string(GAME_STATE_READABLE_MAP, $game[2]) . "</i>\n";
+
+                $text .= "\n";
 
                 if($i % 3 == 0) {
                     $game_keyboard[] = array();
