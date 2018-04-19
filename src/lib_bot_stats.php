@@ -53,8 +53,9 @@ function bot_stats_generate_group_state_map($context) {
  */
 function bot_get_current_chart_of_playing_groups($context) {
     return db_table_query(sprintf(
-        'SELECT `identities`.`telegram_id`, `identities`.`id`, `groups`.`name`, IF(`link`.`c` IS NOT NULL, `link`.`c`, 0), `groups`.`state`, TIMESTAMPDIFF(MINUTE, `groups`.`last_state_change`, NOW()) FROM `groups` LEFT JOIN `identities` ON `groups`.`group_id` = `identities`.`id` LEFT JOIN (SELECT group_id, game_id, COUNT(*) AS c, MAX(reached_on) as max_r FROM assigned_locations WHERE game_id = %1$d AND reached_on IS NOT NULL GROUP BY group_id) AS `link` ON `link`.`group_id` = `groups`.`group_id` WHERE `groups`.`game_id` = %1$d ORDER BY `link`.`c` DESC, `groups`.`state` DESC, `link`.`max_r` ASC',
-        $context->game->game_id
+        'SELECT `identities`.`telegram_id`, `identities`.`id`, `groups`.`name`, IF(`link`.`c` IS NOT NULL, `link`.`c`, 0), `groups`.`state`, TIMESTAMPDIFF(MINUTE, `groups`.`last_state_change`, NOW()) FROM `groups` LEFT JOIN `identities` ON `groups`.`group_id` = `identities`.`id` LEFT JOIN (SELECT group_id, game_id, COUNT(*) AS c, MAX(reached_on) as max_r FROM assigned_locations WHERE game_id = %1$d AND reached_on IS NOT NULL GROUP BY group_id) AS `link` ON `link`.`group_id` = `groups`.`group_id` WHERE `groups`.`game_id` = %1$d AND `groups`.`state` >= %2$d ORDER BY `link`.`c` DESC, `groups`.`state` DESC, `link`.`max_r` ASC',
+        $context->game->game_id,
+        STATE_GAME_LOCATION
     ));
 }
 

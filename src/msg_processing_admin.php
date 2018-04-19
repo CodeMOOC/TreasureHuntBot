@@ -104,8 +104,10 @@ function msg_processing_admin($context) {
         $groups = bot_get_current_chart_of_playing_groups($context);
 
         $outbound = "👥 <b>Leaderboard:</b>";
+        $position = 1;
         foreach($groups as $group) {
-            $outbound .= "\n· <code>#{$group[1]}</code> “{$group[2]}”: {$group[3]} loc’s, " . mb_strtolower(map_state_to_string(STATE_READABLE_MAP, $group[4])) . " ({$group[5]} mins ago).";
+            $outbound .= "\n<b>{$position}</b>. <code>#{$group[1]}</code> “{$group[2]}”: {$group[3]} loc’s, " . mb_strtolower(map_state_to_string(STATE_READABLE_MAP, $group[4])) . " ({$group[5]} mins ago).";
+            $position++;
         }
 
         $context->comm->reply($outbound);
