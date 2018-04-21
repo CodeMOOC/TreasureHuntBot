@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: treasure-hunt-bot\n"
-"PO-Revision-Date: 2017-10-30 12:01-0400\n"
+"PO-Revision-Date: 2018-04-21 04:37-0400\n"
 "Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -89,7 +89,7 @@ msgstr "🏁 <b>Il gruppo “%GROUP_NAME%” ha completato il gioco per primo! C
 
 # Response to victory code on public channel (%GROUP_NAME% name, %INDEX%, arrival position)
 msgid "cmd_start_prize_channel_not_first"
-msgstr "🏁 <b>Il gruppo “%GROUP_NAME%” è il %INDEX%° gruppo a completare il gioco!</b>"
+msgstr "🏁 <b>Il gruppo “%GROUP_NAME%” è il %INDEX%° a completare il gioco!</b>"
 
 # Response to start location reached
 msgid "cmd_start_location_reached_first"

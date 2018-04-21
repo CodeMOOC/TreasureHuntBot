@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: treasure-hunt-bot\n"
-"PO-Revision-Date: 2017-10-30 12:01-0400\n"
+"PO-Revision-Date: 2018-04-21 04:37-0400\n"
 "Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
 "Language-Team: Hungarian\n"
 "MIME-Version: 1.0\n"
@@ -241,7 +241,7 @@ msgstr "Hm… nem igazán! 😩 Attól tartok, a válasz nem helyes. Kérlek, v�
 
 # Game state: puzzle solution correct, congratulations
 msgid "game_puzzle_response_correct"
-msgstr ""
+msgstr "Helyes! Gratulálok!"
 
 # Game state: reach last location
 msgid "game_last_location_state"
@@ -294,7 +294,7 @@ msgstr "Nem, a <i>Code Hunting Game</i> jelenleg fut. Hamarosan visszatérünk, 
 
 # After victory, bot asks for questionnaire and certificate generation
 msgid "questionnaire_init_question"
-msgstr ""
+msgstr "köszönjük, hogy játszottál! Szeretnénk egy pár egyszerű kérdést feltenni a játékról. Amennyiben minden kérdésre válaszolsz, megjutalmazunk egy oklevéllel. 🏅"
 
 # Affirmative answer to questionnaire question
 msgid "questionnaire_init_question_response"
@@ -362,5 +362,5 @@ msgstr ""
 
 # Final thank you
 msgid "questionnaire_finish_thankyou"
-msgstr ""
+msgstr "Köszönjük, hogy játszottál! 🙂"
 
