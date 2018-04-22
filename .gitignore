@@ -14,11 +14,15 @@ data/avatars/*
 !data/avatars/placeholder
 data/badges/*
 !data/badges/placeholder
-data/selfies/*
-!data/selfies/placeholder
+data/certificates/*
+!data/certificates/placeholder
+data/locations/*
+!data/locations/placeholder
 data/qrcodes/*
 !data/qrcodes/placeholder
 !data/qrcodes/tmp/placeholder
+data/selfies/*
+!data/selfies/placeholder
 translation/**/*.mo
 html2pdf/vendor/
 html2pdf/images/signature_ab\.png
