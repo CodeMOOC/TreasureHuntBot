@@ -19,6 +19,7 @@ const MEMORY_CREATION_CHANNEL_NAME = 'creation_channel_name';
 const MEMORY_CREATION_LOCATION_LAT = 'creation_location_lat';
 const MEMORY_CREATION_LOCATION_LNG = 'creation_location_lng';
 const MEMORY_CREATION_LOCATION_NAME = 'creation_location_name';
+const MEMORY_CREATION_LOCATION_PICTURE = 'creation_location_picture';
 
 /**
  * Verifies that the user is currently creating a new game.
@@ -326,7 +327,7 @@ function bot_creation_set_end($context, $lat, $lng) {
     return true;
 }
 
-function bot_creation_save_location($context, $lat, $lng, $name) {
+function bot_creation_save_location($context, $lat, $lng, $name, $image_path = null) {
     if(!bot_creation_verify($context)) {
         return false;
     }
@@ -335,13 +336,14 @@ function bot_creation_save_location($context, $lat, $lng, $name) {
     $location_id = DEFAULT_LOCATION_ID_OFFSET + $existing_count;
 
     if(db_perform_action(sprintf(
-        'INSERT INTO `locations` (`game_id`, `location_id`, `cluster_id`, `internal_note`, `lat`, `lng`) VALUES(%d, %d, %d, \'%s\', %F, %F)',
+        'INSERT INTO `locations` (`game_id`, `location_id`, `cluster_id`, `internal_note`, `lat`, `lng`, `image_path`) VALUES(%d, %d, %d, \'%s\', %F, %F, %s)',
         $context->game->game_id,
         $location_id,
         DEFAULT_CLUSTER_ID,
         db_escape($name),
         $lat,
-        $lng
+        $lng,
+        (!$image_path) ? 'NULL' : ("'" . db_escape($image_path) . "'")
     )) === false) {
         return false;
     }
