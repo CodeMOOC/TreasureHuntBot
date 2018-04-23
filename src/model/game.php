@@ -218,6 +218,10 @@ class Game {
             Logger::error("No clusters defined", __FILE__, $this->owning_context);
             return false;
         }
+        if($num_reached_locations == 0) {
+            Logger::debug("First cluster does not start a new cluster", __FILE__, $this->owning_context);
+            return false;
+        }
 
         foreach($this->game_location_clusters as $cluster) {
             if($num_reached_locations == 0) {

@@ -18,6 +18,7 @@ function msg_processing_purge_game_creation($context) {
     $context->memory[MEMORY_CREATION_LOCATION_NAME] = null;
     $context->memory[MEMORY_CREATION_LOCATION_LAT] = null;
     $context->memory[MEMORY_CREATION_LOCATION_LNG] = null;
+    $context->memory[MEMORY_CREATION_LOCATION_PICTURE] = null;
 }
 
 /**
@@ -203,74 +204,118 @@ $msg_processing_creation_handlers = array(
     },
 
     GAME_STATE_LOCATIONS_LAST => function($context) {
-        if(!$context->message || !$context->message->is_location()) {
-            $context->comm->reply("Please send a geographical location (use Telegram's <i>share</i> button).");
-            return;
+        if($context->message) {
+            if($context->message->is_location()) {
+                $context->memory[MEMORY_CREATION_LOCATION_LAT] = $context->message->latitude;
+                $context->memory[MEMORY_CREATION_LOCATION_LNG] = $context->message->longitude;
+            }
+            else if($context->message->is_photo()) {
+                $file_info = telegram_get_file_info($context->message->get_photo_max_id());
+                $file_path = $file_info['file_path'];
+                $local_path = "{$context->game->game_id}-final.jpg";
+                telegram_download_file($file_path, "../data/locations/{$local_path}");
+
+                Logger::info("Stored location picture from {$file_path} to {$local_path}", __FILE__, $context);
+
+                $context->memory[MEMORY_CREATION_LOCATION_PICTURE] = $local_path;
+            }
+        }
+        else if($context->callback) {
+            if($context->callback->data === 'save') {
+                bot_creation_set_end($context,
+                    $context->memory[MEMORY_CREATION_LOCATION_LAT],
+                    $context->memory[MEMORY_CREATION_LOCATION_LNG],
+                    $context->memory[MEMORY_CREATION_LOCATION_PICTURE]
+                );
+                return;
+            }
+            else if($context->callback->data === 'delete picture') {
+                $context->memory[MEMORY_CREATION_LOCATION_PICTURE] = null;
+
+                $context->comm->reply("Ok.");
+            }
         }
 
-        bot_creation_set_end($context, $context->message->latitude, $context->message->longitude);
+        // Put together response
+        $reply_text = "📍 Final location";
+        if(isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) {
+            $reply_text .= " at %POSITION%";
+        }
+        if(isset($context->memory[MEMORY_CREATION_LOCATION_PICTURE])) {
+            $reply_text .= " with picture 🖼";
+        }
+        $reply_text .= ".";
+
+        if(!isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) {
+            $reply_text .= "\nAll locations must have a geographical position. Send the position using Telegram's “share” button.";
+        }
+        else if(!isset($context->memory[MEMORY_CREATION_LOCATION_PICTURE])) {
+            $reply_text .= "\nAll locations can also have pictures, which will be shown to the players instead of the geographical position. Send a picture for the last location, if you want.";
+        }
+        else {
+            $reply_text .= "\nOk? Tap on <i>Save</i> if you're done.";
+        }
+
+        $buttons = array();
+        if(isset($context->memory[MEMORY_CREATION_LOCATION_PICTURE])) {
+            $buttons[] = array(array("text" => "Remove picture", "callback_data" => "delete picture"));
+        }
+        if(isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) {
+            if(isset($context->memory[MEMORY_CREATION_LOCATION_PICTURE])) {
+                $buttons[] = array(array("text" => "💾 Save location", "callback_data" => "save"));
+            }
+            else {
+                $buttons[] = array(array("text" => "💾 No picture needed", "callback_data" => "save"));
+            }
+        }
+
+        $context->comm->reply($reply_text, array(
+            '%POSITION%' => (isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) ? sprintf("%.2F,%.2F", $context->memory[MEMORY_CREATION_LOCATION_LAT], $context->memory[MEMORY_CREATION_LOCATION_LNG]) : '???'
+        ), array("reply_markup" => array(
+            "inline_keyboard" => $buttons
+        )));
     },
 
     GAME_STATE_LOCATIONS => function($context) {
-        if($context->message) {
-            list($stop_conditions_met, $count) = bot_creation_check_location_conditions($context);
+        list($stop_conditions_met, $count) = bot_creation_check_location_conditions($context);
 
+        if($context->message) {
             // User is sending an update (of any kind)
             if($context->message->is_location()) {
                 $context->memory[MEMORY_CREATION_LOCATION_LAT] = $context->message->latitude;
                 $context->memory[MEMORY_CREATION_LOCATION_LNG] = $context->message->longitude;
             }
+            else if($context->message->is_photo()) {
+                $file_info = telegram_get_file_info($context->message->get_photo_max_id());
+                $file_path = $file_info['file_path'];
+                $local_path = "{$context->game->game_id}-" . ($count + 1) . '.jpg';
+                telegram_download_file($file_path, "../data/locations/{$local_path}");
+
+                Logger::info("Stored location picture from {$file_path} to {$local_path}", __FILE__, $context);
+
+                $context->memory[MEMORY_CREATION_LOCATION_PICTURE] = $local_path;
+            }
             else {
                 if(preg_match_all('/(\d*.\d*)\s*,\s*(\d*.\d*)/s', $context->message->text, $matches, PREG_PATTERN_ORDER) >= 1) {
-
                     // User attempts to set location via text
                     $context->memory[MEMORY_CREATION_LOCATION_LAT] = floatval($matches[1][0]);
                     $context->memory[MEMORY_CREATION_LOCATION_LNG] = floatval($matches[2][0]);
                 }
                 else {
+                    // Generic text, used as location name
                     $context->memory[MEMORY_CREATION_LOCATION_NAME] = $context->message->text;
                 }
             }
-
-            // Write out current location status from memory
-            $reply_text = "📍 Location <b>%NEXT_INDEX%</b>";
-            if(isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) {
-                $reply_text .= " at %POSITION%";
-            }
-            if(isset($context->memory[MEMORY_CREATION_LOCATION_NAME])) {
-                $reply_text .= " “%NAME%”";
-            }
-            $reply_text .= ".";
-
-            if(!isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) {
-                $reply_text .= "\n" . "Send the geo-position for the location.";
-            }
-            else if(!isset($context->memory[MEMORY_CREATION_LOCATION_NAME])) {
-                $reply_text .= "\n" . "Write the name of the location.";
-            }
-            else {
-                $reply_text .= "\n" . "All set? Send in a different position or a different name to update, otherwise tap on <i>Save</i>.";
-            }
-
-            $buttons = array();
-            if(isset($context->memory[MEMORY_CREATION_LOCATION_LAT]) && isset($context->memory[MEMORY_CREATION_LOCATION_NAME])) {
-                $buttons[] = array(array("text" => "💾 Save location", "callback_data" => "save"));
-            }
-            if($stop_conditions_met) {
-                $buttons[] = array(array("text" => "Cancel", "callback_data" => "stop"));
-            }
-
-            $context->comm->reply($reply_text, array(
-                '%NEXT_INDEX%' => $count + 1,
-                '%POSITION%' => (isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) ? sprintf("%.2F,%.2F", $context->memory[MEMORY_CREATION_LOCATION_LAT], $context->memory[MEMORY_CREATION_LOCATION_LNG]) : '???',
-                '%NAME%' => (isset($context->memory[MEMORY_CREATION_LOCATION_NAME])) ? $context->memory[MEMORY_CREATION_LOCATION_NAME] : '???'
-            ), array("reply_markup" => array(
-                "inline_keyboard" => $buttons
-            )));
         }
         else if($context->callback) {
-            if($context->callback->data === 'another') {
+            if($context->callback->data === 'delete picture') {
+                $context->memory[MEMORY_CREATION_LOCATION_PICTURE] = null;
+
+                $context->comm->reply("Ok.");
+            }
+            else if($context->callback->data === 'another') {
                 $context->comm->reply("Ok! Send the next position please.");
+                return;
             }
             else if($context->callback->data === 'stop') {
                 // Attempt to terminate locations phase
@@ -285,6 +330,7 @@ $msg_processing_creation_handlers = array(
                 }
 
                 $context->comm->reply("Done! All locations have been registered.");
+                return;
             }
             else if($context->callback->data === 'save') {
                 // Store current location from memory
@@ -292,7 +338,8 @@ $msg_processing_creation_handlers = array(
                     $context,
                     $context->memory[MEMORY_CREATION_LOCATION_LAT],
                     $context->memory[MEMORY_CREATION_LOCATION_LNG],
-                    $context->memory[MEMORY_CREATION_LOCATION_NAME]
+                    $context->memory[MEMORY_CREATION_LOCATION_NAME],
+                    $context->memory[MEMORY_CREATION_LOCATION_PICTURE]
                 ) === false) {
                     $context->comm->reply(__('failure_general'));
                 }
@@ -313,9 +360,54 @@ $msg_processing_creation_handlers = array(
                     $context->memory[MEMORY_CREATION_LOCATION_LAT] = null;
                     $context->memory[MEMORY_CREATION_LOCATION_LNG] = null;
                     $context->memory[MEMORY_CREATION_LOCATION_NAME] = null;
+                    $context->memory[MEMORY_CREATION_LOCATION_PICTURE] = null;
+
+                    return;
                 }
             }
         }
+
+        // Write out current location status from memory
+        $reply_text = "📍 Location <b>%NEXT_INDEX%</b>";
+        if(isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) {
+            $reply_text .= " at %POSITION%";
+        }
+        if(isset($context->memory[MEMORY_CREATION_LOCATION_NAME])) {
+            $reply_text .= " “%NAME%”";
+        }
+        if(isset($context->memory[MEMORY_CREATION_LOCATION_PICTURE])) {
+            $reply_text .= " 🖼";
+        }
+        $reply_text .= ".";
+
+        if(!isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) {
+            $reply_text .= "\n" . "Send the geo-position for the location.";
+        }
+        else if(!isset($context->memory[MEMORY_CREATION_LOCATION_NAME])) {
+            $reply_text .= "\n" . "Write the name of the location.";
+        }
+        else {
+            $reply_text .= "\n" . "All set? Send in a picture, a different position, or a different name to update, otherwise tap on <i>Save</i>.";
+        }
+
+        $buttons = array();
+        if(isset($context->memory[MEMORY_CREATION_LOCATION_PICTURE])) {
+            $buttons[] = array(array("text" => "Remove picture", "callback_data" => "delete picture"));
+        }
+        if(isset($context->memory[MEMORY_CREATION_LOCATION_LAT]) && isset($context->memory[MEMORY_CREATION_LOCATION_NAME])) {
+            $buttons[] = array(array("text" => "💾 Save location", "callback_data" => "save"));
+        }
+        if($stop_conditions_met) {
+            $buttons[] = array(array("text" => "Cancel", "callback_data" => "stop"));
+        }
+
+        $context->comm->reply($reply_text, array(
+            '%NEXT_INDEX%' => $count + 1,
+            '%POSITION%' => (isset($context->memory[MEMORY_CREATION_LOCATION_LAT])) ? sprintf("%.2F,%.2F", $context->memory[MEMORY_CREATION_LOCATION_LAT], $context->memory[MEMORY_CREATION_LOCATION_LNG]) : '???',
+            '%NAME%' => (isset($context->memory[MEMORY_CREATION_LOCATION_NAME])) ? $context->memory[MEMORY_CREATION_LOCATION_NAME] : '???'
+        ), array("reply_markup" => array(
+            "inline_keyboard" => $buttons
+        )));
     },
 
     GAME_STATE_GENERATION => function($context) {
@@ -386,7 +478,7 @@ $msg_processing_creation_state_entry = array(
     },
 
     GAME_STATE_LOCATIONS => function($context) {
-        $context->comm->reply("Now, we'll have to create other locations that will be randomly selected by me during the game. You'll have to provide %NUM_LOCATIONS% locations at least. (<a href=\"https://github.com/CodeMOOC/TreasureHuntBot/wiki/Setting-up-game-locations\">More information</a>.)", array(
+        $context->comm->reply("Now, we'll have to create other locations that will be randomly selected by me during the game. You'll have to provide %NUM_LOCATIONS% locations at least. Each location is identified by a geographical position and can have an optional picture (<a href=\"https://github.com/CodeMOOC/TreasureHuntBot/wiki/Setting-up-game-locations\">More information</a>.)", array(
             '%NUM_LOCATIONS%' => $context->memory[MEMORY_CREATION_MIN_LOCATIONS]
         ));
         $context->comm->reply("Start sending the geo-position for the first location.");
