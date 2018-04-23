@@ -302,19 +302,20 @@ function bot_creation_set_start($context, $lat, $lng) {
     return true;
 }
 
-function bot_creation_set_end($context, $lat, $lng) {
+function bot_creation_set_end($context, $lat, $lng, $image_path = null) {
     if(!bot_creation_verify($context)) {
         return false;
     }
 
     db_perform_action(sprintf(
-        'REPLACE INTO `locations` (`game_id`, `location_id`, `cluster_id`, `internal_note`, `lat`, `lng`, `is_end`) VALUES(%d, %d, %d, \'%s\', %F, %F, %d)',
+        'REPLACE INTO `locations` (`game_id`, `location_id`, `cluster_id`, `internal_note`, `lat`, `lng`, `image_path`, `is_end`) VALUES(%d, %d, %d, \'%s\', %F, %F, %s, %d)',
         $context->game->game_id,
         DEFAULT_END_LOCATION_ID,
         DEFAULT_CLUSTER_ID,
         'Ending location',
         $lat,
         $lng,
+        (!$image_path) ? 'NULL' : ("'" . db_escape($image_path) . "'"),
         1
     ));
 
