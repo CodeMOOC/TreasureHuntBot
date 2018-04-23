@@ -428,7 +428,7 @@ $msg_processing_creation_handlers = array(
         }
 
         $context->comm->reply(
-            "Activate your game by cliking on the button below.",
+            "Activate your game by clicking on the button below.",
             null,
             array("reply_markup" => array(
                 "inline_keyboard" => array(
