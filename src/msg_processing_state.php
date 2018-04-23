@@ -369,8 +369,8 @@ function msg_processing_handle_group_response($context) {
                     }
                     if($location_info[3]) {
                         // Image with optional caption
-                        $context->picture(
-                            '../locations/' . $location_info[3],
+                        $context->comm->picture(
+                            '../data/locations/' . $location_info[3],
                             ($location_info[2]) ? $location_info[2] : null
                         );
                     }
