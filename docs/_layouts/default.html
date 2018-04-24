@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
 
         <!-- Facebook open graph -->
-        <meta property="og:title" content="{{ page.title | default: site.title }}" />
+        <meta property="og:title" content="{{ page.title | default: 'Code Hunting Games' }}" />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="http://codehunting.games{{ page.url }}" />
         <meta property="og:site_name" content="{{ site.title }}" />
@@ -45,6 +45,9 @@
                 <p>Developed at the University of Urbino.</p>
             </div>
         </footer>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ '/assets/js/bootstrap.bundle.min.js' | relative_url }}"></script>
 
         {% if site.google_analytics %}
         <script type="text/javascript">
