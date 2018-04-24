@@ -1,5 +1,9 @@
 body {
     font-family: "Open Sans", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 section.page-header {
@@ -79,6 +83,8 @@ nav.navbar .navbar-brand span {
     font-size: 1.1rem;
     line-height: 1.5;
     color: #606c71;
+
+    flex-grow: 1;
 }
 .main-content p {
     line-height: 1.7;
