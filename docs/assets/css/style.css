@@ -1,0 +1,134 @@
+body {
+    font-family: "Open Sans", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+section.page-header {
+    color: #fff;
+    text-align: center;
+    background-color: #1770D6;
+    background-image: linear-gradient(120deg, #1770D6, #1AE776);
+
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+@media (min-width: 992px) {
+    section.page-header {
+        padding: 4rem 0;
+    }
+}
+@media (min-width: 1200px) {
+    section.page-header {
+        padding: 5rem 0;
+    }
+}
+
+section.page-header h1 {
+    font-size: 3rem;
+}
+@media (min-width: 992px) {
+    section.page-header h1 {
+        font-size: 3.5rem;
+    }
+}
+@media (min-width: 1200px) {
+    section.page-header h1 {
+        font-size: 4rem;
+    }
+}
+
+section.page-header .tagline {
+    font-size: 1.25rem;
+    font-weight: normal;
+    margin: 0;
+
+    opacity: 0.8;
+}
+
+section.page-header nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+nav.navbar .navbar-brand {
+    text-transform: lowercase;
+}
+nav.navbar .navbar-brand span {
+    font-weight: 700;
+}
+.navbar-dark .navbar-brand:hover {
+    color: #1AE776;
+}
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255,1);
+}
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #1AE776;
+}
+.navbar-dark .navbar-nav .nav-link:focus {
+    color: #1AE776;
+}
+.dropdown-item:focus, .dropdown-item:hover {
+    color: white;
+    text-decoration: none;
+    background-color: #1770D6;
+    background-image: linear-gradient(120deg, #1770D6, #1AE776);
+}
+
+.main-content {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: #606c71;
+}
+.main-content p {
+    line-height: 1.7;
+}
+.main-content h2 {
+    color: #159957;
+    margin-top: 1.6rem;
+}
+.main-content h3 {
+    color: #1770D6;
+    margin-top: 1rem;
+}
+
+.site-footer {
+    text-align: center;
+    font-size: 1rem;
+    color: #8e9aa0;
+    background-image: linear-gradient(to bottom, white 30%, rgb(235, 235, 235) 100%);
+
+    margin-top: 2rem;
+}
+.site-footer > .container {
+    border-top: solid 1px #eff0f1;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.site-footer > .container > *:last-child {
+    margin-bottom: 0;
+}
+
+.picture, .anim-guide {
+    width: 100%;
+    margin: 1em 0;
+    text-align: center;
+}
+.picture img, .anim-guide img {
+    box-shadow: 3px 3px 20px #666;
+}
+.picture .didascaly, .anim-guide .didascaly {
+    text-align: center;
+    margin: 1em 0 0 0;
+    font-style: italic;
+    color: #222;
+}
+.anim-guide {
+    padding: 1em 0;
+    background-image: linear-gradient(to bottom, #EEEEEE 60%, #CCCCCC 90%, #BBBBBB 100%);
+}
+.anim-guide img {
+    width: auto;
+    height: 70vh;
+    max-height: 700px;
+}

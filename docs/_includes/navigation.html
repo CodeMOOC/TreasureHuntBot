@@ -1,25 +1,29 @@
-<!-- This finds the current page so it can be highlighted. -->
-
-{% for entry in site.data.navigation %}
-{% capture fullurl %}{{ site.baseurl }}{{ entry.url }}{% endcapture %}
-    {% if fullurl == page.url %}
-        {% assign current_page = fullurl %}
-        {% break %}
-    {% elsif page.url contains fullurl %}
-        {% assign current_page = fullurl %}
-    {% endif %}
-{% endfor %}
-
-<!-- Then we build the nav bar. -->
-<nav>
-    {% for entry in site.data.navigation %}
-        {% if entry.url == current_page %}
-            {% assign current = ' class="current"' %}
-        {% else %}
-            <!-- We have to declare it 'null' to ensure it doesn't propagate. -->
-            {% assign current = null %}
-        {% endif %}
-        {% assign sublinks = entry.sublinks %}
-        <a href="{{ site.baseurl }}{{ entry.url }}" {{ current }}>{{ entry.title }}</a>
-    {% endfor %}
-</nav>
+    <nav class="navbar navbar-dark bg-dark navbar-expand-md">
+        <a class="navbar-brand" href="http://codehunting.games/"><span>CodeHunting</span>.Games</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-main" aria-controls="navbar-main" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar-main">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownEn" data-toggle="dropdown">English guide</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownEn">
+                        <a class="dropdown-item" href="#">Requirements</a>
+                        <a class="dropdown-item" href="#">How to play?</a>
+                        <a class="dropdown-item" href="#">Creating your own game</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownIt" data-toggle="dropdown">Guida in italiano</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownIt">
+                        <a class="dropdown-item" href="#">Requisiti</a>
+                        <a class="dropdown-item" href="#">Come giocare`?</a>
+                        <a class="dropdown-item" href="#">Amministrare un gioco</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Contribute</a>
+                </li>
+            </ul>
+        </div>
+    </nav>

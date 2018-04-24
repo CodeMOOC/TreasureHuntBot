@@ -1,5 +1,4 @@
 ---
-title: Code Hunting Games
 ---
 
 *Code Hunting Games* are mixed-reality “treasure hunt” games in which teams of players compete against each other and solve coding puzzles through a Telegram bot.
