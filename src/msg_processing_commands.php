@@ -64,6 +64,10 @@ function msg_processing_commands($context) {
                     $context->comm->reply(__('cmd_start_new'));
                 }
             }
+            else if($payload === 'test') {
+                // Test message from docs website
+                $context->comm->reply(__('cmd_test'));
+            }
             else {
                 $code_info = db_row_query(sprintf(
                     "SELECT `type`, `event_id`, `game_id`, `location_id`, `is_disabled` FROM `code_lookup` WHERE `code` = '%s'",

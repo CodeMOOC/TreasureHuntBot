@@ -124,8 +124,8 @@ function msg_processing_admin($context) {
             db_escape($payload)
         ));
         if($code_info == null || $code_info === false) {
-            $context->comm->reply("Unknown code");
-            return true;
+            // Unknown code, might match with something further down
+            return false;
         }
 
         if($code_info[0] === 'creation' || $code_info[0] === 'registration') {

@@ -56,6 +56,10 @@ msgstr ""
 msgid "cmd_help"
 msgstr ""
 
+# Response to test QR Code
+msgid "cmd_test"
+msgstr ""
+
 # Response to naked /start command: greeting and general instructions
 msgid "cmd_start_new"
 msgstr ""

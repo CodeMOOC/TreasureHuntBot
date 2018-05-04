@@ -61,6 +61,10 @@ msgstr "The game is over. 🏁\n"
 msgid "cmd_help"
 msgstr ""
 
+# Response to test QR Code
+msgid "cmd_test"
+msgstr "All set! You have everything you need to scan QR Codes and play with Code Hunting Games. 👍"
+
 # Response to naked /start command: greeting and general instructions
 msgid "cmd_start_new"
 msgstr "Hi, %FULL_NAME%! Welcome to the <b>Code Hunting Games</b> bot. In order to participate, you must register to a game: follow the instructions given by the organizers."
