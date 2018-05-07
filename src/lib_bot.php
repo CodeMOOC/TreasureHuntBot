@@ -306,8 +306,8 @@ function bot_give_solution($context, $solution) {
 
     // Timeout
     $second_interval = $riddle_info[0];
-    if($second_interval && intval($second_interval) <= 60) {
-        return 61 - $second_interval;
+    if($second_interval && intval($second_interval) <= 30) {
+        return 31 - $second_interval;
     }
 
     $correct_answer = $riddle_info[1];
