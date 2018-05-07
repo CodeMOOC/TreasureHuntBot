@@ -52,7 +52,7 @@ Su iOS&nbsp;11 o recenti versioni di Android, puntando la fotocamera verso un QR
 
 <div class="picture">
 <a href="https://t.me/treasurehuntbot?start=test">
-<img src="/assets/images/qrcode-test.jpg" width="370" alt="Test link" />
+<img src="/assets/images/qrcode-test.png" width="370" alt="Test link" />
 </a>
 </div>
 

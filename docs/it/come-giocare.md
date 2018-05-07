@@ -23,7 +23,6 @@ Il codice viene diffuso prima dell'inizio della partita dagli organizzatori e de
 
 <div class="picture">
 <img src="/assets/images/game-registration.jpg" alt="Passo di registrazione" />
-</a>
 <div class="didascaly">Conversazione di registrazione ad una partita.</div>
 </div>
 
@@ -37,7 +36,7 @@ Nella conversazione che segue, il bot chiederà le seguenti informazioni:
 ### Svolgimento della partita
 
 Le squadra di giocatori si raccolgono nel luogo di partenza all'ora prestabilita di inizio.
-Appena iniziatata la partita, gli organizzatori mostreranno il QR&nbsp;Code di inizio (ossia, il codice del luogo di partenza) ai giocatori.
+Appena iniziata la partita, gli organizzatori mostreranno il QR&nbsp;Code di inizio (ossia, il codice del luogo di partenza) ai giocatori.
 Scansionando il QR&nbsp;Code la partita avrà inizio.
 
 Il gioco è strutturato secondo il seguente schema:

@@ -122,6 +122,8 @@ nav.navbar .navbar-brand span {
 }
 .picture img, .anim-guide img {
     box-shadow: 3px 3px 20px #666;
+    max-height: 75vh;
+    width: auto;
 }
 .picture .didascaly, .anim-guide .didascaly {
     text-align: center;
