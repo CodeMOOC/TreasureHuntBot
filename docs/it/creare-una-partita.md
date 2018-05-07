@@ -8,7 +8,7 @@ Prima di iniziare, verificare innanzitutto i [requisiti del gioco](/it/requisiti
 
 ## Processo di creazione
 
-Per iniziare a creare una nuova partita di *Code Hunting Games*, scannerizzare il seguente QR&nbps;Code:
+Per iniziare a creare una nuova partita di *Code Hunting Games*, scannerizzare il seguente QR&nbsp;Code:
 
 <div class="picture">
 <a href="https://t.me/treasurehuntbot?start=free-to-play">
@@ -21,7 +21,7 @@ Per iniziare a creare una nuova partita di *Code Hunting Games*, scannerizzare i
 
 <div class="anim-guide">
 <img src="/assets/images/qrcode-scan.gif" />
-<div class="didascaly">Esempio di scansione del codice e richiesta informazioni di base.</div>
+<div class="didascaly">Esempio di scansione del codice di creazione e richiesta informazioni di base.</div>
 </div>
 
 Il bot chiederà conferma della creazione di una nuova partita, dopodché chiederà le seguenti informazioni:
@@ -36,6 +36,7 @@ Ogni partita necessita di **due luoghi fondamentali**, uno per la partenza (è i
 
 La **tappa di partenza** va specificata come sola posizione geografica.
 Utilizzare la funzione “condividi” di Telegram per condividere una posizione.
+*Nota bene:* è possibile indicare una posizione in cui non ci si trova attualmente, spostando il punto di Telegram sulla mappa.
 
 <div class="anim-guide">
 <img src="/assets/images/share-location.gif" alt="Inviare una posizione geografica tramite Telegram" />
@@ -52,7 +53,7 @@ Le tappe intermedie verranno selezionate casualmente a tutte le squadre che part
 
 Ogni tappa va creata specificando:
 
-* Una **posizione geografica**, obbligatoria (nel caso di partite al chiuso o in cui la posizione geografica non è importante, è possibile specificare una posizione approssimativa, *nota bene* che è possibile indicare una posizione in cui non ci si trova attualmente, spostando il punto di Telegram sulla mappa),
+* Una **posizione geografica**, obbligatoria (nel caso di partite al chiuso o in cui la posizione geografica non è importante, è possibile specificare una posizione approssimativa),
 * Un **nome**, obbligatorio, che verrà utilizzato solo nella comunicazione con gli organizzatori,
 * Un'**immagine**, opzionalmente (come nel caso della tappa finale, l'immagine verrà utilizzata al posto della posizione geografica nel fornire la prossima destinazione da raggiungere alle squadre).
 
@@ -66,9 +67,11 @@ Il bot **genererà quindi i QR&nbsp;Code**, che verranno trasferiti tramite Tele
 Una volta ricevuto il pacchetto&nbsp;ZIP, accertarsi di cliccare sul pulsante “attivazione” del bot per fare in modo che la partita appena creata sia attiva ed i QR&nbsp;Code vengano attivati correttamente.
 
 Dopo aver **stampato** i PDF trasmessi dal bot (ed averli opzionalmente plastificati), i codici delle tappe vanno installati fisicamente in prossimità delle tappe.
-Nota bene: va rispettata la corrispondenza tra posizione geografica (o indizio sulla base di immagine) indicata per la tappa e la posizione effettiva del QR&nbsp;Code stampato, in modo da non rendere troppo difficoltosa l'individuazione della tappa da parte delle squadre.
+*Nota bene:* va rispettata la corrispondenza tra posizione geografica (o indizio sulla base di immagine) indicata per la tappa e la posizione effettiva del QR&nbsp;Code stampato, in modo da non rendere troppo difficoltosa l'individuazione della tappa da parte delle squadre.
 
 ## Gestione
+
+Coming soon.
 
 ## Problemi?
 
