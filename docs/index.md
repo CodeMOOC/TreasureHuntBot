@@ -2,16 +2,19 @@
 ---
 
 <div class="row">
-<div class="col-md-8">
-<p class="lead">
-<i>Code Hunting Games</i> are mixed-reality “treasure hunt” games in which teams of players compete against each other and solve coding puzzles through a Telegram bot.
-</p>
-</div>
-<div class="col-md-4">
-<div class="note">
-<a href="/it/introduzione"><img src="/assets/images/flag-italy.jpg" alt="Bandiera italiana" class="flag" />Leggi l’introduzione in Italiano!</a>
-</div>
-</div>
+    <div class="col-md-8">
+        <p class="lead">
+            <i>Code Hunting Games</i> are mixed-reality “treasure hunt” games in which teams of players compete against each other and solve coding puzzles through a Telegram bot.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <div class="note">
+            <a href="/it/introduzione">
+                <img src="/assets/images/flag-italy.jpg" alt="Bandiera italiana" class="flag" />
+                <div>Leggi l’introduzione in Italiano!</div>
+            </a>
+        </div>
+    </div>
 </div>
 
 ## How does it work?

@@ -110,19 +110,24 @@ nav.navbar .navbar-brand span {
     margin-bottom: 0;
 }
 .main-content .note a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
     color: #666;
     text-decoration: underline;
 }
 .main-content .note img.flag {
     width: auto;
-    height: 1em;
-    border: solid 1px black;
-    margin-right: 1em;
+    height: 1.8em;
+    border: solid 1px #777;
+    margin-right: 0.5em;
+    box-shadow: #BBB 0 0 8px;
 }
 
 .site-footer {
     text-align: center;
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: #8e9aa0;
     background-image: linear-gradient(to bottom, white 30%, rgb(235, 235, 235) 100%);
 
@@ -142,7 +147,7 @@ nav.navbar .navbar-brand span {
     margin: 1em 0;
     text-align: center;
 }
-.picture img, .anim-guide img {
+.picture img, .anim-guide img, .anim-guide iframe {
     box-shadow: 3px 3px 20px #777;
     max-height: 75vh;
     width: auto;
@@ -155,7 +160,6 @@ nav.navbar .navbar-brand span {
 }
 .anim-guide {
     padding: 1em 0;
-    background-image: linear-gradient(to bottom, #EEEEEE 60%, #CCCCCC 90%, #BBBBBB 100%);
 }
 .anim-guide img {
     width: auto;
