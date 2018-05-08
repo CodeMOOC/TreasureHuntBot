@@ -19,12 +19,14 @@ Altri dettagli sono inclusi nelle [istruzioni per i giocatori](/it/come-giocare)
 Il seguente video mostra una sessione di prova di un gioco, con sole 3&nbsp;tappe:
 
 <div class="anim-guide">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/4rSpoatljm8" frameborder="0" allowfullscreen></iframe>
-    <div class="didascaly">Demo of a game run through the city of Urbino.</div>
+    <div class="player">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/4rSpoatljm8" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="didascaly">Demo di una breve partita tra le strade di Urbino.</div>
 </div>
 
 ## Interessati? 🙌
 
-Date un'occhiata alla [guida per giocatori](/it/come-giocare) oppure alle istruzioni per [creare una propria partita](/it/creare-una-partita).
+Date un’occhiata alla [guida per giocatori](/it/come-giocare) oppure alle istruzioni per [creare una propria partita](/it/creare-una-partita).
 
 Buon divertimento!
