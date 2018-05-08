@@ -98,6 +98,28 @@ nav.navbar .navbar-brand span {
     margin-top: 1rem;
 }
 
+.main-content .note {
+    background: #EEE;
+    color: #666;
+    padding: 1em;
+    margin-bottom: 1em;
+
+    box-shadow: 3px 3px 18px #777;
+}
+.main-content .note:last-of-type {
+    margin-bottom: 0;
+}
+.main-content .note a {
+    color: #666;
+    text-decoration: underline;
+}
+.main-content .note img.flag {
+    width: auto;
+    height: 1em;
+    border: solid 1px black;
+    margin-right: 1em;
+}
+
 .site-footer {
     text-align: center;
     font-size: 1rem;
@@ -121,7 +143,7 @@ nav.navbar .navbar-brand span {
     text-align: center;
 }
 .picture img, .anim-guide img {
-    box-shadow: 3px 3px 20px #666;
+    box-shadow: 3px 3px 20px #777;
     max-height: 75vh;
     width: auto;
 }
