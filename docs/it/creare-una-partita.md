@@ -71,7 +71,7 @@ Dopo aver **stampato** i PDF trasmessi dal bot (ed averli opzionalmente plastifi
 
 ## Gestione
 
-Coming soon.
+*Più informazioni a breve.*
 
 ## Problemi?
 

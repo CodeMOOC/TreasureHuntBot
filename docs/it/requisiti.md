@@ -58,7 +58,11 @@ Su iOS&nbsp;11 o recenti versioni di Android, puntando la fotocamera verso un QR
 
 Una volta interagito con il collegamento, si avvierà Telegram e, cliccando sul pulsante “Avvia”, si attiverà la conversazione con il bot.
 
-Se la fotocamera non offre questa funzionalità, vi suggeriamo di installare le seguenti applicazioni per scansionare il codice: [QR&nbsp;Code&nbsp;Barcode](https://itunes.apple.com/us/app/qrcode-barcode/id811899990?l=en&mt=8) per iOS, [Barcode Scanner](https://play.google.com/store/apps/details?id=com.google.zxing.client.android) per Android e [QR&nbsp;Scanner](https://www.microsoft.com/store/apps/9NBLGGH08M95) per Windows.
+Se la fotocamera non offre questa funzionalità, vi suggeriamo di installare una delle seguenti applicazioni per scansionare il codice:
+
+* Per iOS: [QR&nbsp;Code&nbsp;Barcode](https://itunes.apple.com/us/app/qrcode-barcode/id811899990?l=en&mt=8),
+* Per Android: [Barcode Scanner](https://play.google.com/store/apps/details?id=com.google.zxing.client.android),
+* Per Windows: [QR&nbsp;Scanner](https://www.microsoft.com/store/apps/9NBLGGH08M95).
 
 ## Ciò che serve per creare una partita
 
