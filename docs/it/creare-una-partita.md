@@ -2,7 +2,9 @@
 title: Creare una partita
 ---
 
-Il bot di *Code Hunting Games* permette a qualsiasi utente di organizzare e gestire una propria caccia al tesoro, in maniera del tutto indipendente, per un qualsiasi numero di giocatori.
+<p class="lead">
+Il bot di <i>Code Hunting Games</i> permette a qualsiasi utente di organizzare e gestire una propria caccia al tesoro, in maniera del tutto indipendente, per un qualsiasi numero di giocatori.
+</p>
 
 Prima di iniziare, verificare innanzitutto i [requisiti del gioco](/it/requisiti).
 
@@ -26,8 +28,8 @@ Per iniziare a creare una nuova partita di *Code Hunting Games*, scannerizzare i
 
 Il bot chiederà conferma della creazione di una nuova partita, dopodché chiederà le seguenti informazioni:
 
-1. **Nome** della partita (verrà visualizzato dagli utenti ed utilizzato per la creazione dei certificati),
-1. Nome breve del **canale Telegram** utilizzato per la comunicazione automatica degli aggiornamenti della partita. Questo è opzionale. Il nome va fornito nella forma “@nomecanale”. Il bot deve essere preventivamente aggiunto come amministratore al canale, [leggere il Wiki per altre informazioni](https://github.com/CodeMOOC/TreasureHuntBot/wiki/Setting-up-a-public-channel).
+1. **Nome** della partita (verrà visualizzato dagli utenti ed utilizzato per la creazione dei certificati).
+1. Nome breve del **canale Telegram** utilizzato per la comunicazione automatica degli aggiornamenti della partita. Questo è opzionale. Il nome va fornito nella forma “@nomecanale”. Il bot `@treasurehuntbot` deve essere preventivamente aggiunto come amministratore al canale, [leggere il Wiki per altre informazioni](https://github.com/CodeMOOC/TreasureHuntBot/wiki/Setting-up-a-public-channel).
 1. Indirizzo **e-mail** degli organizzatori (non verrà mai condiviso, ma solo utilizzato internamente per eventuali comunicazioni di servizio).
 
 ### Luogo di inizio e di fine
@@ -37,6 +39,7 @@ Ogni partita necessita di **due luoghi fondamentali**, uno per la partenza (è i
 La **tappa di partenza** va specificata come sola posizione geografica.
 Utilizzare la funzione “condividi” di Telegram per condividere una posizione.
 *Nota bene:* è possibile indicare una posizione in cui non ci si trova attualmente, spostando il punto di Telegram sulla mappa.
+[Leggi il Wiki per altre informazioni](https://github.com/CodeMOOC/TreasureHuntBot/wiki/Setting-up-game-locations).
 
 <div class="anim-guide">
     <img src="/assets/images/share-location.gif" alt="Inviare una posizione geografica tramite Telegram" />
@@ -53,8 +56,8 @@ Le tappe intermedie verranno selezionate casualmente a tutte le squadre che part
 
 Ogni tappa va creata specificando:
 
-* Una **posizione geografica**, obbligatoria (nel caso di partite al chiuso o in cui la posizione geografica non è importante, è possibile specificare una posizione approssimativa),
-* Un **nome**, obbligatorio, che verrà utilizzato solo nella comunicazione con gli organizzatori,
+* Una **posizione geografica**, obbligatoria (nel caso di partite al chiuso o in cui la posizione geografica non è importante, è possibile specificare una posizione approssimativa).
+* Un **nome**, obbligatorio, che verrà utilizzato solo nella comunicazione con gli organizzatori.
 * Un’**immagine**, opzionalmente (come nel caso della tappa finale, l’immagine verrà utilizzata al posto della posizione geografica nel fornire la prossima destinazione da raggiungere alle squadre).
 
 [Altre informazioni sul WiKi](https://github.com/CodeMOOC/TreasureHuntBot/wiki/Setting-up-game-locations).

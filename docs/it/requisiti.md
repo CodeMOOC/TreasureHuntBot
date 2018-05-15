@@ -2,7 +2,10 @@
 title: Requisiti
 ---
 
-*Code Hunting Games* sfrutta il sistema di messagistica Telegram per proporre un’esperienza di gioco facile ed accessibile, sia per i giocatori che per gli amministratori.
+<p class="lead">
+<i>Code Hunting Games</i> sfrutta il sistema di messagistica Telegram per proporre un’esperienza di gioco facile ed accessibile, sia per i giocatori che per gli amministratori.
+</p>
+
 Il gioco si sviluppa come una classica “caccia al tesoro”, con squadre di giocatori che si sfidano alla ricerca di tappe e nella soluzione di enigmi.
 Ogni tappa è identificata da un codice a barre quadrato (un “QR&nbsp;Code”).
 
@@ -47,7 +50,7 @@ Può essere utile portarsi dietro una batteria USB.
 
 Uno scanner QR&nbsp;Code è un’applicazione per smartphone che scansiona i codici a barre quadrati utilizzati dal gioco.
 
-Verificate innanzitutto se il vostro sistema operativo offre questa funzione direttamente tramite la fotocamera, inquadrando il seguente QR&nbsp;Code.
+Verificate innanzitutto se il vostro sistema operativo offre questa funzione direttamente tramite l'app fotocamera, inquadrando il seguente QR&nbsp;Code.
 Su iOS&nbsp;11 o recenti versioni di Android, puntando la fotocamera verso un QR&nbsp;Code comparirà un collegamento in sovrimpressione.
 
 <div class="picture">
@@ -56,7 +59,8 @@ Su iOS&nbsp;11 o recenti versioni di Android, puntando la fotocamera verso un QR
 </a>
 </div>
 
-Una volta interagito con il collegamento, si avvierà Telegram e, cliccando sul pulsante “Avvia”, si attiverà la conversazione con il bot.
+Una volta cliccato sul collegamento, si avvierà automaticamente Telegram.
+Cliccando sul pulsante “Avvia”, si attiverà la conversazione con il bot che darà conferma del corretto funzionamento.
 
 Se la fotocamera non offre questa funzionalità, vi suggeriamo di installare una delle seguenti applicazioni per scansionare il codice:
 

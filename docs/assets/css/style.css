@@ -87,15 +87,19 @@ nav.navbar .navbar-brand span {
     flex-grow: 1;
 }
 .main-content p {
-    line-height: 1.7;
+    line-height: 2rem;
 }
 .main-content h2 {
+    font-weight: 700;
     color: #159957;
-    margin-top: 1.6rem;
+    margin-top: 4rem;
+    margin-bottom: 1rem;
 }
 .main-content h3 {
+    text-transform: uppercase;
+    font-weight: 700;
     color: #1770D6;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
 }
 
 .main-content .note {
