@@ -9,6 +9,10 @@ title: About
 * Saverio Delpriori
 * Brendan Paolini
 
+The source code of the bot is [hosted on GitHub](https://github.com/CodeMOOC/TreasureHuntBot) and released under the [MIT&nbsp;License](https://github.com/CodeMOOC/TreasureHuntBot/blob/master/LICENSE).
+
+*Code Hunting Games* has been used in several large-scale games, including coding-related events in Urbino (with 200–300 participants) and an [international multi-game event during CodeWeek&nbsp;2017](http://blog.codeweek.eu/post/166975540609/the-codehunting-game-more-than-1000-people) with 22&nbsp;parallel treasure hunts and a total of over 1000&nbsp;participants.
+
 ## Publications
 
 * Klopfenstein, Lorenz&nbsp;C., Delpriori, Saverio, Paolini, Brendan&nbsp;D., Bogliolo, Alessandro. [X&nbsp;marks the Bot: Online coding-based treasure hunt games for code literacy](https://www.researchgate.net/publication/323810319_X_Marks_the_Bot_Online_coding-based_treasure_hunt_games_for_code_literacy), *Proceedings of INTED&nbsp;2018*, `10.21125/inted.2018.0951`&nbsp;(2018).
