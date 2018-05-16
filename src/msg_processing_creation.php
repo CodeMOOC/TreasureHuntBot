@@ -225,7 +225,7 @@ $msg_processing_creation_handlers = array(
                 bot_creation_set_end($context,
                     $context->memory[MEMORY_CREATION_LOCATION_LAT],
                     $context->memory[MEMORY_CREATION_LOCATION_LNG],
-                    $context->memory[MEMORY_CREATION_LOCATION_PICTURE]
+                    ($context->memory[MEMORY_CREATION_LOCATION_PICTURE] ?? null)
                 );
                 return;
             }
