@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.1
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 19, 2017 at 04:14 PM
+-- Generation Time: May 16, 2018 at 10:20 AM
 -- Server version: 10.1.26-MariaDB-0+deb9u1
--- PHP Version: 7.0.19-1
+-- PHP Version: 7.0.27-0+deb9u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -215,6 +215,19 @@ CREATE TABLE `log` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `perf_log`
+--
+
+CREATE TABLE `perf_log` (
+  `id` int(11) NOT NULL,
+  `timestamp` datetime NOT NULL,
+  `memory_peak_bytes` int(10) UNSIGNED NOT NULL,
+  `elapsed_seconds` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `questionnaire`
 --
 
@@ -337,6 +350,13 @@ ALTER TABLE `log`
   ADD KEY `log_game_constraint` (`game_id`);
 
 --
+-- Indexes for table `perf_log`
+--
+ALTER TABLE `perf_log`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `timestamp` (`timestamp`);
+
+--
 -- Indexes for table `questionnaire`
 --
 ALTER TABLE `questionnaire`
@@ -374,6 +394,12 @@ ALTER TABLE `identities`
 --
 ALTER TABLE `log`
   MODIFY `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `perf_log`
+--
+ALTER TABLE `perf_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- Constraints for dumped tables
 --
