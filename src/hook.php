@@ -7,6 +7,10 @@
  * Basic message processing webhook end-point for your bot.
  */
 
+if(PERF_LOGGING) {
+    $perf_logging_start = microtime(true);
+}
+
 require_once(dirname(__FILE__) . '/lib.php');
 
 // Get input contents
@@ -23,4 +27,15 @@ if (!$update) {
 }
 else {
     include 'msg_processing_core.php';
+
+    if(PERF_LOGGING) {
+        $perf_logging_elapsed = microtime(true) - $perf_logging_start;
+        $perf_logging_memory = memory_get_peak_usage(true);
+
+        db_perform_action(sprintf(
+            "INSERT INTO `perf_log` (`id`, `timestamp`, `memory_peak_bytes`, `elapsed_seconds`) VALUES(DEFAULT, NOW(), %d, %f)",
+            $perf_logging_memory,
+            $perf_logging_elapsed
+        ));
+    }
 }
