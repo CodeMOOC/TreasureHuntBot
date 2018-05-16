@@ -227,6 +227,11 @@ $msg_processing_creation_handlers = array(
                     $context->memory[MEMORY_CREATION_LOCATION_LNG],
                     ($context->memory[MEMORY_CREATION_LOCATION_PICTURE] ?? null)
                 );
+
+                $context->memory[MEMORY_CREATION_LOCATION_LAT] = null;
+                $context->memory[MEMORY_CREATION_LOCATION_LNG] = null;
+                $context->memory[MEMORY_CREATION_LOCATION_PICTURE] = null;
+
                 return;
             }
             else if($context->callback->data === 'delete picture') {
