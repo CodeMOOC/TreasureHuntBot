@@ -7,9 +7,7 @@
  * Basic message processing in pull mode for your bot.
  */
 
-if(PERF_LOGGING) {
-    $perf_logging_start = microtime(true);
-}
+$perf_logging_start = microtime(true);
 
 require_once(dirname(__FILE__) . '/lib.php');
 

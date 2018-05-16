@@ -7,9 +7,7 @@
  * Basic message processing webhook end-point for your bot.
  */
 
-if(PERF_LOGGING) {
-    $perf_logging_start = microtime(true);
-}
+$perf_logging_start = microtime(true);
 
 require_once(dirname(__FILE__) . '/lib.php');
 
