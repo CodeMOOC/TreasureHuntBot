@@ -230,7 +230,7 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case STATE_REG_NUMBER:
-            if($context->message->get_photo_max_id()) {
+            if($context->is_message() && $context->message->get_photo_max_id()) {
                 $file_info = telegram_get_file_info($context->message->get_photo_max_id());
                 $file_path = $file_info['file_path'];
                 $local_path = "{$context->game->game_id}-{$context->get_internal_id()}.jpg";
@@ -269,7 +269,7 @@ function msg_processing_handle_group_response($context) {
 
         case STATE_GAME_SELFIE:
             // Expecting photo taken at reached location
-            if($context->message->get_photo_max_id()) {
+            if($context->is_message() && $context->message->get_photo_max_id()) {
                 $reached_locations_count = bot_get_count_of_reached_locations($context);
 
                 $file_info = telegram_get_file_info($context->message->get_photo_max_id());
@@ -399,7 +399,7 @@ function msg_processing_handle_group_response($context) {
 
         case STATE_GAME_LAST_SELF:
             // Expecting photo taken at last location
-            if($context->message->get_photo_max_id()) {
+            if($context->is_message() && $context->message->get_photo_max_id()) {
                 $file_info = telegram_get_file_info($context->message->get_photo_max_id());
                 $file_path = $file_info['file_path'];
                 $local_path = "{$context->game->game_id}-{$context->get_internal_id()}-final";
