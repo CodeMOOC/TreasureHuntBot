@@ -31,9 +31,9 @@ else {
         $perf_logging_memory = memory_get_peak_usage(true);
 
         db_perform_action(sprintf(
-            "INSERT INTO `perf_log` (`id`, `timestamp`, `memory_peak_bytes`, `elapsed_seconds`) VALUES(DEFAULT, NOW(), %d, %f)",
+            "INSERT INTO `perf_log` (`id`, `timestamp`, `memory_peak_bytes`, `elapsed_seconds`) VALUES(DEFAULT, NOW(), %d, %s)",
             $perf_logging_memory,
-            $perf_logging_elapsed
+            number_format($perf_logging_elapsed, 3, '.', '')
         ));
     }
 }
