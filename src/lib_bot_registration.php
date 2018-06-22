@@ -43,7 +43,7 @@ function bot_register($context, $game_id) {
 
     // Query game information
     $game_info = db_row_query(sprintf(
-        'SELECT `games`.`timeout_absolute`, `games`.`timeout_interval`, `games`.`state`, `events`.`state` FROM `games` LEFT OUTER JOIN `events` ON `games`.`event_id` = `events`.`event_id` WHERE `games`.`game_id` = %d',
+        'SELECT `games`.`timeout_absolute`, `games`.`timeout_interval`, `games`.`state`, `events`.`state`, `games`.`quick_start` FROM `games` LEFT OUTER JOIN `events` ON `games`.`event_id` = `events`.`event_id` WHERE `games`.`game_id` = %d',
         $game_id
     ));
     if($game_info === false || $game_info == null) {
@@ -69,11 +69,13 @@ function bot_register($context, $game_id) {
         $game_timeout = "DATE_ADD(NOW(), INTERVAL {$game_info[1]} MINUTE)";
     }
 
+    $quick_start = (bool)$game_info[4];
+
     if(db_perform_action(sprintf(
         "INSERT INTO `groups` (`game_id`, `group_id`, `state`, `registered_on`, `last_state_change`, `timeout_absolute`) VALUES(%d, %d, %d, NOW(), NOW(), %s)",
         $game_id,
         $context->get_internal_id(),
-        STATE_NEW,
+        ($quick_start) ? STATE_REG_READY : STATE_NEW,
         $game_timeout
     )) === false) {
         Logger::error("Failed to register group status", __FILE__, $context);
