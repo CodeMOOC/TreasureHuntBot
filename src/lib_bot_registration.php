@@ -43,7 +43,7 @@ function bot_register($context, $game_id) {
 
     // Query game information
     $game_info = db_row_query(sprintf(
-        'SELECT `games`.`timeout_absolute`, `games`.`timeout_interval`, `games`.`state`, `events`.`state`, `games`.`quick_start` FROM `games` LEFT OUTER JOIN `events` ON `games`.`event_id` = `events`.`event_id` WHERE `games`.`game_id` = %d',
+        'SELECT `games`.`timeout_absolute`, `games`.`timeout_interval`, `games`.`state`, `events`.`state`, `games`.`quick_start`, `games`.`language` FROM `games` LEFT OUTER JOIN `events` ON `games`.`event_id` = `events`.`event_id` WHERE `games`.`game_id` = %d',
         $game_id
     ));
     if($game_info === false || $game_info == null) {
@@ -71,6 +71,7 @@ function bot_register($context, $game_id) {
 
     $quick_start = (bool)$game_info[4];
 
+    // Perform group registration
     if(db_perform_action(sprintf(
         "INSERT INTO `groups` (`game_id`, `group_id`, `state`, `registered_on`, `last_state_change`, `timeout_absolute`) VALUES(%d, %d, %d, NOW(), NOW(), %s)",
         $game_id,
@@ -85,6 +86,12 @@ function bot_register($context, $game_id) {
     Logger::info("New group registered in game #{$game_id}", __FILE__, $context);
 
     $context->set_active_game($game_id, false);
+
+    // Optionally switch language if game dictates language override
+    $game_language = $game_info[5];
+    if($game_language != null) {
+        localization_set_locale_and_persist($context, $game_language);
+    }
 
     return true;
 }

@@ -236,13 +236,19 @@ class Context {
      */
     private function load_language() {
         if($this->language_override) {
+            Logger::debug("Language override set to {$this->language_override}", __FILE__, $this);
+
             // User language override always wins
             localization_set_locale($this->language_override);
         }
         else if($this->game && $this->game->game_language) {
+            Logger::debug("Using game locale {$this->game->game_language}", __FILE__, $this);
+
             localization_set_locale($this->game->game_language);
         }
         else if($this->sender && $this->sender->language_code) {
+            Logger::debug("Using user language code {$this->sender->language_code}", __FILE__, $this);
+
             localization_set_locale($this->sender->language_code);
         }
 

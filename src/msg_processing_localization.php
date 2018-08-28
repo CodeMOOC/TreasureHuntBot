@@ -12,15 +12,7 @@ require_once(dirname(__FILE__) . '/model/context.php');
 const MEMORY_LOCALIZATION_KEY = "localizationProcess";
 
 function msg_processing_localization_set_language_code($context, $code) {
-    $code = mb_substr(localization_get_locale_for_iso($code), 0, 5);
-
-    db_perform_action(sprintf(
-        'UPDATE `identities` SET `language` = \'%s\' WHERE `id` = %d',
-        db_escape($code),
-        $context->get_internal_id()
-    ));
-
-    Logger::debug("Language code set to {$code}", __FILE__, $context);
+    localization_set_locale_and_persist($code);
 
     $context->comm->reply("Language set to <code>{$code}</code>. 👍");
 }
@@ -54,7 +46,7 @@ function msg_processing_localization($context) {
             }
 
             // TODO: localization
-            $context->comm->reply('Which language do you speak?', null, array(
+            $context->comm->reply('What language do you speak?', null, array(
                 'reply_markup' => array(
                     'inline_keyboard' => $lang_keyboard
                 )

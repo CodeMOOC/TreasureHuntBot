@@ -7,6 +7,7 @@
  * Support library for localization.
  */
 
+require_once(dirname(__FILE__) . '/model/context.php');
 require_once(dirname(__FILE__) . '/lib_log.php');
 
 // This array maps ISO language codes to locales installed on the local system,
@@ -48,9 +49,9 @@ function localization_get_locale_for_iso($iso_code) {
         // Exact match
         return LANGUAGE_LOCALE_MAP[$iso_code];
     }
-    else if(strlen($iso_code) > 2 && array_key_exists(substr($iso_code, 0, 2), LANGUAGE_LOCALE_MAP)) {
+    else if(mb_strlen($iso_code) > 2 && array_key_exists(mb_substr($iso_code, 0, 2), LANGUAGE_LOCALE_MAP)) {
         // Match with base 2-character ISO code
-        return LANGUAGE_LOCALE_MAP[substr($iso_code, 0, 2)];
+        return LANGUAGE_LOCALE_MAP[mb_substr($iso_code, 0, 2)];
     }
     else {
         // No match found :(
@@ -59,7 +60,7 @@ function localization_get_locale_for_iso($iso_code) {
 }
 
 /**
- * Set current locale by language ISO code.
+ * Sets current locale by language ISO code.
  */
 function localization_set_locale($locale_iso_code) {
     $locale = localization_get_locale_for_iso($locale_iso_code);
@@ -68,6 +69,25 @@ function localization_set_locale($locale_iso_code) {
     if(setlocale(LC_ALL, $locale) === false) {
         Logger::error("Failed to set locale to {$locale}", __FILE__);
     }
+
+    return $locale;
+}
+
+/**
+ * Sets current locale and persists selection in user context.
+ */
+function localization_set_locale_and_persist($context, $locale_iso_code) {
+    $locale = localization_set_locale($locale_iso_code);
+
+    db_perform_action(sprintf(
+        'UPDATE `identities` SET `language` = \'%s\' WHERE `id` = %d',
+        db_escape($locale),
+        $context->get_internal_id()
+    ));
+
+    Logger::debug("Language code persisted to {$code}", __FILE__, $context);
+
+    return $locale;
 }
 
 function localization_safe_gettext($msgid, $domain) {
