@@ -12,7 +12,7 @@ require_once(dirname(__FILE__) . '/model/context.php');
 const MEMORY_LOCALIZATION_KEY = "localizationProcess";
 
 function msg_processing_localization_set_language_code($context, $code) {
-    localization_set_locale_and_persist($code);
+    localization_set_locale_and_persist($context, $code);
 
     $context->comm->reply("Language set to <code>{$code}</code>. 👍");
 }
