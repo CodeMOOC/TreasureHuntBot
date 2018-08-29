@@ -45,9 +45,9 @@ msgstr "Qual è il numero minimo di azioni necessarie per visitare tutte le case
 
 # Final riddle: final destination reached by Roby based on previous hints received during the game (coordinates: letter first, digit last, like A1)
 msgid "riddle_type_final"
-msgstr "Dove finisce Roby, in base agli indizi che hai ricevuto precedentemente durante la partita? (Specifica la coordinata: letter e poi numero, come ‘A1’.)"
+msgstr "Dove finisce Roby, in base agli indizi che hai ricevuto precedentemente durante la partita? (Specifica la coordinata: lettera e poi numero, come ‘A1’.)"
 
 # Final riddle: used for further steps of the same riddle, based on the same hints (coordinates: letter first, digit last, like A1)
 msgid "riddle_type_final_repeat"
-msgstr "Non abbiamo ancora finito! Dove finisce Roby, in base agli stessi indizi di prima? (Specifica la coordinata: letter e poi numero, come ‘A1’.)"
+msgstr "Non abbiamo ancora finito! Dove finisce Roby, in base agli stessi indizi di prima? (Specifica la coordinata: lettera e poi numero, come ‘A1’.)"
 
