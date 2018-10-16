@@ -11,14 +11,17 @@ Before you start, check whether you [satisfy the game's requirements](/en/requir
 ## Creation process
 
 In order to start the game creation process, scan the following QR&nbsp;Code with your smartphone.
-It will automatically forward you to the game creation process through a conversation with the Telegram bot.
+It will automatically forward you to the game creation process.
 
 <div class="picture">
     <a href="https://t.me/treasurehuntbot?start=free-to-play">
         <img src="/assets/images/qrcode-free-code-hunting.jpg" alt="Free game creation code" />
     </a>
-    <div class="didascaly">Free to play game creation code.</div>
+    <div class="didascaly">Creation code for “free to play” game sessions.</div>
 </div>
+
+Note that games created using this QR&nbsp;Code above will generate a new independent game, which will not be associated to any event (so-called “free to play” games).
+If you want to join the **global Code&nbsp;Week&nbsp;2018 event**, please refer to the [specific Code&nbsp;Week game creation instructions](/codeweek2018) and to the [official announcement on the blog](http://blog.codeweek.eu/post/179080628670/want-to-have-fun-with-friends-organise-a-code).
 
 ### Basic game information
 

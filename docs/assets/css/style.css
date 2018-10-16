@@ -90,13 +90,13 @@ nav.navbar .navbar-brand span {
     line-height: 2rem;
 }
 .main-content h2 {
+    text-transform: uppercase;
     font-weight: 700;
     color: #159957;
     margin-top: 4rem;
     margin-bottom: 1rem;
 }
 .main-content h3 {
-    text-transform: uppercase;
     font-weight: 700;
     color: #1770D6;
     margin-top: 1.5rem;
