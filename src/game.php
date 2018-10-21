@@ -152,14 +152,14 @@ const EVENT_STATE_MAP               = array(
     255     => 'EVENT_STATE_DEAD'
 );
 
-const GAME_LAST_PUZZLE_1_IMAGE = '../riddles/codeweek-2017/finalpuzzle1.png';
+const GAME_LAST_PUZZLE_1_IMAGE = '../riddles/codeweek-2018/europe.jpg';
 const GAME_LAST_PUZZLE_1_SOLUTION = 'c5';
 
-const GAME_LAST_PUZZLE_2_IMAGE = '../riddles/codeweek-2017/finalpuzzle2.png';
+const GAME_LAST_PUZZLE_2_IMAGE = '../riddles/codeweek-2018/france.jpg';
 const GAME_LAST_PUZZLE_2_SOLUTION = 'd5';
 
-const GAME_LAST_PUZZLE_3_IMAGE = '../riddles/codeweek-2017/ada.jpg';
-const GAME_LAST_PUZZLE_3_SOLUTION = 'ada';
+const GAME_LAST_PUZZLE_3_IMAGE = '../riddles/codeweek-2018/pascal.jpg';
+const GAME_LAST_PUZZLE_3_SOLUTION = 'pascal';
 
 function map_state_to_string($array, $val) {
     $values = array_keys($array);

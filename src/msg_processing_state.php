@@ -85,7 +85,7 @@ function msg_processing_handle_group_state($context) {
             return true;
 
         case STATE_GAME_LAST_PUZ + 2:
-            $context->comm->picture(GAME_LAST_PUZZLE_3_IMAGE, "“You found me! I’m known to be the first computer programmer. If you are a coder, you should know me by name.”");
+            $context->comm->picture(GAME_LAST_PUZZLE_3_IMAGE, "“Hello, mes amis. My father was a tax collector in Rouen and I helped him by developing one of the first mechanical calculators in 1642. What's my last name?”");
             return true;
 
         case STATE_GAME_WON:
