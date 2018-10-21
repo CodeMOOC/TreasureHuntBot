@@ -565,7 +565,7 @@ function msg_processing_handle_group_response($context) {
 
                     Logger::debug("Generating certificate", __FILE__, $context);
 
-                    exec("php {$rootdir}/html2pdf/cert-gen.php \"{$rootdir}/data/certificates/{$identifier}-certificate.pdf\" {$context->game->group_participants} \"{$context->game->group_name}\" \"completed\" \"{$context->game->game_name}\" \"{$identifier}\"");
+                    exec("php {$rootdir}/html2pdf/cert-gen.php \"{$rootdir}/data/certificates/{$identifier}-certificate.pdf\" {$context->game->group_participants} \"" . addslashes($context->game->group_name) . "\" \"completed\" \"{$context->game->game_name}\" \"{$identifier}\"");
 
                     Logger::info("Delivering certificate", __FILE__, $context);
                     $context->comm->document("{$rootdir}/data/certificates/{$identifier}-certificate.pdf", __('questionnaire_attachment_caption'));
