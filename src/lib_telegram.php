@@ -7,6 +7,8 @@
  * Support library. Don't change a thing here.
  */
 
+require_once(dirname(__FILE__) . '/lib_http.php');
+
 /**
  * Performs a cURL request to a Telegram API and returns the parsed results.
  *
