@@ -488,10 +488,9 @@ function bot_creation_generate_codes($context) {
 
     // Zip everything together
     exec(sprintf(
-        'zip -Djq "%s" %s %s',
+        'zip -Djq "%s" %s',
         $final_file . '.tmp',
-        $rootdir . "/data/qrcodes/tmp/game-{$context->game->game_id}-*.pdf",
-        $rootdir . "/data/qrcodes/tmp/placeholder"
+        $rootdir . "/data/qrcodes/tmp/game-{$context->game->game_id}-*.pdf"
     ));
 
     // Clean up temp files
