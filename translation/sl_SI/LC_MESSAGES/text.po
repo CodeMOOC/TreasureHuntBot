@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: treasure-hunt-bot\n"
-"PO-Revision-Date: 2017-10-30 12:01-0400\n"
+"PO-Revision-Date: 2019-03-12 21:46\n"
 "Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
 "Language-Team: Slovenian\n"
 "MIME-Version: 1.0\n"
@@ -41,15 +41,15 @@ msgstr "Ups, en škrat nam nagaja v bazi."
 
 # Failure: current event of the game is not ready (i.e., cannot be played yet)
 msgid "failure_event_not_ready"
-msgstr ""
+msgstr "Igra “%EVENT_NAME%” se še ni začela."
 
 # Failure: current event of the game is over
 msgid "failure_event_over"
-msgstr ""
+msgstr "Igra “%EVENT_NAME%” je zaključena. Hvala, da si bil_a z nami. 🙂"
 
 # Failure: current game has not yet been activated by administrator
 msgid "failure_game_not_ready"
-msgstr ""
+msgstr "Igra “%GAME_NAME%” še ni aktivirana. Sledi navodilom organizatorja."
 
 # Failure: current game has been closed and is over
 msgid "failure_game_dead"
@@ -59,6 +59,10 @@ msgstr "Ta igra je zaključena, zato do nje ne morete več dostopati. 🏁\n"
 # Response to /help command
 msgid "cmd_help"
 msgstr "Pomoč prihaja ..."
+
+# Response to test QR Code
+msgid "cmd_test"
+msgstr "Vse je pripravljeno! Imaš vse, kar potrebuješ za skeniranje QR kode. Lova na kodo se lahko začne. 👍"
 
 # Response to naked /start command: greeting and general instructions
 msgid "cmd_start_new"
@@ -128,15 +132,15 @@ msgstr "Oprostite, prijava v igro trenutno ni možna."
 
 # Error response for registration to a non-activated game
 msgid "cmd_register_game_unallowed_not_ready"
-msgstr ""
+msgstr "Igra “%GAME_NAME%” še ni aktivirana. Sledi navodilom organizatorja."
 
 # Error response for registration to a game in a terminated event
 msgid "cmd_register_game_unallowed_event"
-msgstr ""
+msgstr "Igra “%EVENT_NAME%” je zaključena."
 
 # Error response for registration to a game in a non-activated event
 msgid "cmd_register_game_unallowed_event_not_ready"
-msgstr ""
+msgstr "Igra “%EVENT_NAME%” se še ni začela."
 
 # Registration: captcha quiz for verification
 msgid "registration_new_state"
@@ -296,73 +300,73 @@ msgstr "Trenutno ne poteka nobena igra <i>Lova na kodo</i>. Kmalu se vrnemo - me
 
 # After victory, bot asks for questionnaire and certificate generation
 msgid "questionnaire_init_question"
-msgstr ""
+msgstr "Hvala za igro! Rad bi ti zastavil še nekaj vprašanj, potem pa ti pošljem certifikat. 🏅"
 
 # Affirmative answer to questionnaire question
 msgid "questionnaire_init_question_response"
-msgstr ""
+msgstr "Začnimo!"
 
 # Instructions about the questionnaire that will be delivered
 msgid "questionnaire_init_instructions"
-msgstr ""
+msgstr "Na prva tri vprašanja odgovoriš tako, da izbereš vrednost na lestvici od 1 do 5. Četrto vprašanje zahteva pisni odgovor. Če ne želiš odgovoriti, vpiši \"ne\"."
 
 # Let's begin
 msgid "questionnaire_init_begin"
-msgstr ""
+msgstr "Začnimo!"
 
 msgid "questionnaire_q1"
-msgstr ""
+msgstr "📝 Igra mi je bila všeč."
 
 msgid "questionnaire_q2"
-msgstr ""
+msgstr "📝Telegram bot je preprost za uporabo in igranje Lova na kodo."
 
 msgid "questionnaire_q3"
-msgstr ""
+msgstr "📝 Razumem, kako delujejo QR kode in kako poteka njihova interakcija s Telegram botom."
 
 msgid "questionnaire_q4"
-msgstr ""
+msgstr "📝 Če imaš še kak komentar ali predlog, ga vpiši:"
 
 # Answer on Likert scale, must begin with digit 1
 msgid "questionnaire_likert_1"
-msgstr ""
+msgstr "1: sploh se ne strinjam"
 
 # Answer on Likert scale, must begin with digit 2
 msgid "questionnaire_likert_2"
-msgstr ""
+msgstr "2: se ne strinjam"
 
 # Answer on Likert scale, must begin with digit 3
 msgid "questionnaire_likert_3"
-msgstr ""
+msgstr "3: niti-niti"
 
 # Answer on Likert scale, must begin with digit 4
 msgid "questionnaire_likert_4"
-msgstr ""
+msgstr "4: se strinjam"
 
 # Answer on Likert scale, must begin with digit 5
 msgid "questionnaire_likert_5"
-msgstr ""
+msgstr "5: se popolnoma strinjam"
 
 msgid "questionnaire_free_confirmation"
-msgstr ""
+msgstr "Odgovor je shranjen. Želiš nadaljevati?"
 
 msgid "questionnaire_free_confirmation_confirm_button"
-msgstr ""
+msgstr "Da"
 
 msgid "questionnaire_free_confirmation_deny_button"
-msgstr ""
+msgstr "Ne, poskusil_a bom znova"
 
 msgid "questionnaire_free_retry_prompt"
-msgstr ""
+msgstr "Ok. Svoj predlog lahko vpišeš tukaj:"
 
 # Finished, thank you, generating the certificate
 msgid "questionnaire_finish_generating"
-msgstr ""
+msgstr "Hvala! 🙌 Pripavljam tvoj certifikat ..."
 
 # Caption for the certificate transmission
 msgid "questionnaire_attachment_caption"
-msgstr ""
+msgstr "Certifikat za “%GROUP_NAME%”"
 
 # Final thank you
 msgid "questionnaire_finish_thankyou"
-msgstr ""
+msgstr "Hvala za igro! 🙂"
 

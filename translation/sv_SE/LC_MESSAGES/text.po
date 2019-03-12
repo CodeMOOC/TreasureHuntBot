@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: treasure-hunt-bot\n"
-"PO-Revision-Date: 2017-10-30 12:01-0400\n"
+"PO-Revision-Date: 2018-05-03 18:25-0400\n"
 "Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
 "Language-Team: Swedish\n"
 "MIME-Version: 1.0\n"
@@ -59,6 +59,10 @@ msgstr ""
 # Response to /help command
 msgid "cmd_help"
 msgstr "Hjälp!"
+
+# Response to test QR Code
+msgid "cmd_test"
+msgstr ""
 
 # Response to naked /start command: greeting and general instructions
 msgid "cmd_start_new"

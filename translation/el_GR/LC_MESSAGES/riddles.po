@@ -1,0 +1,53 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: treasure-hunt-bot\n"
+"PO-Revision-Date: 2019-03-12 21:46\n"
+"Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
+"Language-Team: Greek\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"POT-Creation-Date: 2017-09-15 10:27+0200\n"
+"X-Crowdin-Project: treasure-hunt-bot\n"
+"X-Crowdin-Language: el\n"
+"X-Crowdin-File: riddles.pot\n"
+"Language: el_GR\n"
+
+# Riddle type 1: where does Roby end up executing steps in %RIDDLE_PARAM%? (A, B, or C)
+msgid "riddle_type_1"
+msgstr "Πού θα σταματήσει ο Roby αφού ακολουθήσει την παρακάτω σειρά εντολών: %RIDDLE_PARAM%; (A, B, ή C)"
+
+# Riddle type 2: specify the sequence of actions leading Roby along the grayed-out path (L, R, or F, without spaces)
+msgid "riddle_type_2"
+msgstr "Γράψτε τη σειρά των εντολών (L, F, ή R, χωρίς κενά) ώστε ο Roby να περπατήσει όλο το γκρίζο μονοπάτι ."
+
+# Riddle type 3: if robots execute %RIDDLE_PARAM% simultaneously, how many times do they meet on the same cell?
+msgid "riddle_type_3"
+msgstr "Αν και τα δύο ρομπότ ακολουθήσουν ταυτόχρονα τις εντολές %RIDDLE_PARAM% πόσες φορές θα συναντηθούν στο ίδιο τετράγωνο;"
+
+# Riddle type 4: what is the missing action to reach ×? (L, R, or F)
+msgid "riddle_type_4"
+msgstr "Ποια είναι η εντολή που λείπει για να φτάσει στο ×; (L, R, ή F)"
+
+# Riddle type 5: which robot reaches × first, if all execute %RIDDLE_PARAM% simultaneously? (A, B, or C)
+msgid "riddle_type_5"
+msgstr "Ποιο ρομπότ φτάνει πρώτο στο ×, αν όλα εκτελέσουν τις εντολές %RIDDLE_PARAM% ταυτόχρονα; (A, B, ή C)"
+
+# Riddle type 6: how many green (F) cards are needed to visit all cells at least once?
+msgid "riddle_type_6"
+msgstr "Πόσες πράσινες κάρτες (F) χρειάζονται για να περάσει από όλα τα τετράγωνα μία φορά;"
+
+# Riddle type 7: what is the minimum number of actions needed to visit all grayed-out cells?
+msgid "riddle_type_7"
+msgstr "Ποιος είναι ο ελάχιστος αριθμός εντολών που χρειάζονται για να περάσει από όλα τα γκρίζα τετράγωνα; "
+
+# Final riddle: final destination reached by Roby based on previous hints received during the game (coordinates: letter first, digit last, like A1)
+msgid "riddle_type_final"
+msgstr "Σε ποιο τετράγωνο καταλήγει ο Roby, σύμφωνα με τις προηγούμενες, κρυμμένες υποδείξεις που λάβατε όσο παίζατε το παιχνίδι; (Γράψτε το όνομα του τετραγώνου, πρώτα το γράμμα και μετά ο αριθμός, για παράδειγμα A1.)"
+
+# Final riddle: used for further steps of the same riddle, based on the same hints (coordinates: letter first, digit last, like A1)
+msgid "riddle_type_final_repeat"
+msgstr "Δεν τελειώσατε ακόμα! Πού θα σταματήσει ο Roby, ακολουθώντας τις ίδιες με εντολές όπως προηγουμένως; (Γράψτε το όνομα του τελικού τετραγώνου, πρώτα το γράμμα και μετά ο αριθμός, για παράδειγμα A1.)"
+

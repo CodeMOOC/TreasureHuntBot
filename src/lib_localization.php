@@ -16,6 +16,7 @@ require_once(dirname(__FILE__) . '/lib_log.php');
 // using the first two characters.
 const LANGUAGE_LOCALE_MAP = array(
     //'de' => 'de_DE.utf8',
+    'el' => 'el_GR.utf8',
     'en-US' => 'en_US.utf8',
     'es' => 'es_ES.utf8',
     'en' => 'en_US.utf8',
@@ -33,6 +34,7 @@ const LANGUAGE_LOCALE_MAP = array(
 // This array maps ISO language codes to user-readable representations of the
 // language, localized to the target language.
 const LANGUAGE_NAME_MAP = array(
+    'el' => 'Greek 🇬🇷',
     'en-US' => 'English 🇺🇸',
     'es' => 'Español 🇪🇸',
     //'hr' => 'Hrvatski 🇭🇷',

@@ -3,119 +3,119 @@ msgstr ""
 "Project-Id-Version: treasure-hunt-bot\n"
 "PO-Revision-Date: 2019-03-12 21:46\n"
 "Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
-"Language-Team: Slovenian\n"
+"Language-Team: Greek\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
 "POT-Creation-Date: 2017-09-15 10:27+0200\n"
 "X-Crowdin-Project: treasure-hunt-bot\n"
-"X-Crowdin-Language: sl\n"
+"X-Crowdin-Language: el\n"
 "X-Crowdin-File: admin.pot\n"
-"Language: sl_SI\n"
+"Language: el_GR\n"
 
 # Welcome message when registering new game for event
 msgid "creation_welcome"
-msgstr "Dobrodošli - pomagali vam bomo pri organizaciji igre."
+msgstr ""
 
 # Confirm game registration
 msgid "creation_welcome_confirm"
-msgstr "Potrjujemo registracijo vaše igre."
+msgstr ""
 
 # Abort game registration
 msgid "creation_welcome_abort"
-msgstr "Registracija igre je bila prekinjena."
+msgstr ""
 
 # Name request for game
 msgid "creation_set_name"
-msgstr "Določite ime igre."
+msgstr ""
 
 # Telegram channel request for game
 msgid "creation_set_channel"
-msgstr "Določite ime kanala na Telegramu, v katerem bo potekala igra."
+msgstr ""
 
 # Skip button for telegram channel request
 msgid "creation_set_channel_skip"
-msgstr "Preskoči kreiranje kanala v Telegramu."
+msgstr ""
 
 # Attempting to write on public channel, please wait
 msgid "creation_set_channel_write_attempt"
-msgstr "Poskušamo pisati v Telegramov kanal, prosimo počakajte."
+msgstr ""
 
 # Confirmation of public channel
 msgid "creation_set_channel_confirm"
-msgstr "Kanal za igro je pripravljen."
+msgstr ""
 
 # Failed to write on public channel
 msgid "creation_set_channel_failure"
-msgstr "Napaka pri pisanju v Telegramov kanal."
+msgstr ""
 
 # Prompt user for new Telegram channel or to retry writing
 msgid "creation_set_channel_again"
-msgstr "Ustvarite nov kanal ali pa poskusite ponovno pisati v obstoječega. "
+msgstr ""
 
 # Retry button to write to public Telegram channel
 msgid "creation_set_channel_retry"
-msgstr "Ponovno zapišite v kanal."
+msgstr ""
 
 # Prompt user for image censorship on public channel
 msgid "creation_set_channel_censorship"
-msgstr "Ali dovolite javno objavo fotografij v tem kanalu?"
+msgstr ""
 
 # Enable censorship button
 msgid "creation_set_channel_censorship_enable"
-msgstr "Skrij fotografije, da ne bodo javno dostopne"
+msgstr ""
 
 # Disable censorship button
 msgid "creation_set_channel_censorship_disable"
-msgstr "Dovoli javno objavo fotografij med igro."
+msgstr ""
 
 # Prompt for contact e-mail
 msgid "creation_set_email"
-msgstr "Vpišite svoj email"
+msgstr ""
 
 # Confirm e-mail registration
 msgid "creation_set_email_confirm"
-msgstr "Potrdite registracijo prek sporočila, ki smo vam ga poslali na email"
+msgstr ""
 
 # E-mail supplied is not valid
 msgid "creation_set_email_wrong"
-msgstr "Vpisan email ni veljaven"
+msgstr ""
 
 # Beginning of location registrations
 msgid "creation_location_begin"
-msgstr "Začnite z vnosom lokacij"
+msgstr ""
 
 # Prompt for first location (start position)
 msgid "creation_location_start"
-msgstr "Vnesite začetno lokacijo - tukaj bo start igre"
+msgstr ""
 
 # Prompt for last location
 msgid "creation_location_end"
-msgstr "Vnesite končno lokacijo - tukaj bo cilj igre"
+msgstr ""
 
 # Prompt for next location, if any (%COUNT% total registered for game, %MINIMUM% minimum locations for game, %AVGDIST% average distance of locations, %MINAVGDIST% minimum average distance of locations)
 msgid "creation_location_next"
-msgstr "Vnesite naslednjo lokacijo"
+msgstr ""
 
 # Prompt for next location if number of locations reached but not minimum average distance (%COUNT% total registered for game, %MINIMUM% minimum locations for game, %AVGDIST% average distance of locations, %MINAVGDIST% minimum average distance of locations)
 msgid "creation_location_next_insufficient_avg_distance"
-msgstr "Razdalja med to in prejšnjo lokacijo je premajhna."
+msgstr ""
 
 # Stop button for location insertion, appears if minimum number of locations is reached and other constraints are met
 msgid "creation_location_next_stop"
-msgstr "Ok, tukaj lahko ustvarite novo lokacijo"
+msgstr ""
 
 # Prompt for internal description of location
 msgid "creation_location_set_name"
-msgstr "Vpišite podatke o lokaciji"
+msgstr ""
 
 # Confirm successful creation
 msgid "creation_completed"
-msgstr "Vse ok!"
+msgstr ""
 
 # Generic failure, something went wrong, start again please
 msgid "failure"
-msgstr "Prišlo je do napake, prosim, poskusite ponovno."
+msgstr ""
 
