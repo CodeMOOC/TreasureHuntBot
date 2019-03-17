@@ -34,25 +34,23 @@ while getopts ":s:c:t:" opt; do
 done
 
 if [ -z "$TOKEN" ]; then
-        echo -e "\nERROR: missing token argument.\n"
-        PrintHelp;
-        exit 1;
-fi
-
-if [ -z "$CERTIFICATE" ]; then
-        echo -e "\nERROR: missing <certificate path> argument.\n"
-        PrintHelp;
-        exit 1;
+  echo -e "\nERROR: missing token argument.\n"
+  PrintHelp;
+  exit 1;
 fi
 
 if [ -z "$SCRIPT" ]; then
-        echo -e "\nERROR: missing <script HTTPS URL> argument.\n"
-        PrintHelp;
-        exit 1;
+  echo -e "\nERROR: missing <script HTTPS URL> argument.\n"
+  PrintHelp;
+  exit 1;
 fi
 
-echo "Executing: curl -F \"url=$SCRIPT\" -F \"certificate=@$CERTIFICATE\" https://api.telegram.org/bot$TOKEN/setWebhook"
-
-curl -F "url=$SCRIPT" -F "certificate=@$CERTIFICATE" https://api.telegram.org/bot$TOKEN/setWebhook
+if [ -z "$CERTIFICATE" ]; then
+  echo "Setting hook URL without certificate..."
+  curl -F "url=$SCRIPT" https://api.telegram.org/bot$TOKEN/setWebhook
+else
+  echo "Setting hook URL with certificate..."
+  curl -F "url=$SCRIPT" -F "certificate=@$CERTIFICATE" https://api.telegram.org/bot$TOKEN/setWebhook
+fi
 
 echo ""
