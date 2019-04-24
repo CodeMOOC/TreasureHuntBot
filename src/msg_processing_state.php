@@ -302,16 +302,30 @@ function msg_processing_handle_group_response($context) {
                     return true;
                 }
 
-                // Send out riddle
+                // Get riddle information
                 $riddle_info = bot_get_riddle_info($context, $riddle_id);
-                $riddle_text = __('riddle_type_' . $riddle_info[0], 'riddles');
-                $riddle_hydration = array(
-                    '%RIDDLE_PARAM%' => $riddle_info[1]
-                );
+                
+                $riddle_text = '';
+                $riddle_hydration = array();
+
+                if(!$riddle_info[0] || intval($riddle_info[0]) <= 0) {
+                    // Unknown/custom riddle type, get text from parameter
+                    $riddle_text = $riddle_info[1];
+                }
+                else {
+                    // Standard riddle, get translated riddle text and hydrate with parameter
+                    $riddle_text = __('riddle_type_' . $riddle_info[0], 'riddles');
+                    $riddle_hydration = array(
+                        '%RIDDLE_PARAM%' => $riddle_info[1]
+                    );
+                }
+
                 if($riddle_info[2]) {
+                    // Has picture
                     $context->comm->picture("../riddles/{$riddle_info[2]}", $riddle_text, $riddle_hydration);
                 }
                 else {
+                    // Text-only riddle
                     $context->comm->reply($riddle_text, $riddle_hydration);
                 }
             }

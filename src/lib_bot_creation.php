@@ -411,7 +411,7 @@ function bot_creation_check_location_conditions($context) {
         $context->game->game_id
     ));
 
-    // TODO: add averge distance check
+    // TODO: add average distance check
 
     return array(
         ($locations_data[0] >= $context->memory[MEMORY_CREATION_MIN_LOCATIONS] && $locations_data[1] >= 1 && $locations_data[2] >= 1),
