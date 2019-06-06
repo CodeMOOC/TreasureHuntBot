@@ -1,0 +1,22 @@
+version: '3'
+
+networks:
+  web:
+    external: true
+  backend:
+
+services:
+  bot:
+    image: php/7.3.6-apache
+    networks:
+    - web
+    - backend
+    expose:
+    - "80"
+    labels:
+    - "traefik.enable=true"
+    - "traefik.docker.network=web"
+    - "traefik.protocol=http"
+    - "traefik.port=80"
+    - "traefik.frontend.rule=Host:bot.codehunting.games"
+    - "traefik.frontend.entryPoints=https"
