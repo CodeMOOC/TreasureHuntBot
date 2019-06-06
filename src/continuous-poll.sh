@@ -12,9 +12,11 @@
 # the third parameter (polling timeout) is set to a number
 # greater than 0.
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
 echo "Starting to poll (terminate with Ctrl+C)..."
 
 while true; do
-    php pull.php
+    php $DIR/pull.php
     sleep 1
 done
