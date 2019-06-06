@@ -362,13 +362,12 @@ function msg_processing_handle_group_response($context) {
                     $location_info = bot_get_location_info($context, $target_location_id);
 
                     $send_location = false;
-                    if($context->game->next_location_starts_cluster($advance_result['reached_locations'])) {
+                    if($context->game->cluster_forces_location_on_enter($advance_result['reached_locations'])) {
                         // Starting a new cluster, force next location to be shown
                         $send_location = true;
-
-                        // TODO: add other cluster information here
                     }
                     if(!$location_info[2] && !$location_info[3]) {
+                        // Only location is available, force send
                         $send_location = true;
                     }
 

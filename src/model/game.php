@@ -27,7 +27,7 @@ class Game {
     public  $event_state = EVENT_STATE_OPEN_FOR_ALL;
     public  $event_channel_name = null;
 
-    // Rows of cluster_id, num_locations, and description
+    // Rows of cluster_id, num_locations, description, force_location_on_enter
     private $game_location_clusters = null;
 
     public  $group_name = '';
@@ -149,7 +149,7 @@ class Game {
      */
     private function load_game_clusters() {
         $this->game_location_clusters = db_table_query(sprintf(
-            "SELECT `cluster_id`, `num_locations`, `description` FROM `game_location_clusters` WHERE `game_id` = %s ORDER BY `cluster_id` ASC",
+            "SELECT `cluster_id`, `num_locations`, `description`, `force_location_on_enter` FROM `game_location_clusters` WHERE `game_id` = %s ORDER BY `cluster_id` ASC",
             $this->game_id
         ));
         Logger::debug(sprintf(
@@ -227,6 +227,37 @@ class Game {
             if($num_reached_locations == 0) {
                 Logger::debug("Cluster #{$cluster[0]} starts a new cluster", __FILE__, $this->owning_context);
                 return true;
+            }
+
+            $num_reached_locations -= intval($cluster[1]);
+        }
+
+        Logger::debug("Cluster #{$cluster[0]} does not start a new cluster", __FILE__, $this->owning_context);
+        return false;
+    }
+
+    /**
+     * Gets whether the next location's cluster forces a location transmission.
+     * @param $num_reached_locations Number of reached locations.
+     */
+    function cluster_forces_location_on_enter($num_reached_locations) {
+        if($this->game_location_clusters == null) {
+            Logger::warning("Get next location cluster without having clusters", __FILE__, $this->owning_context);
+            return false;
+        }
+        if(count($this->game_location_clusters) == 0) {
+            Logger::error("No clusters defined", __FILE__, $this->owning_context);
+            return false;
+        }
+        if($num_reached_locations == 0) {
+            Logger::debug("First cluster does not start a new cluster", __FILE__, $this->owning_context);
+            return false;
+        }
+
+        foreach($this->game_location_clusters as $cluster) {
+            if($num_reached_locations == 0) {
+                Logger::debug("Cluster #{$cluster[0]} forces location: {$cluster[3]}", __FILE__, $this->owning_context);
+                return (boolean)$cluster[3];
             }
 
             $num_reached_locations -= intval($cluster[1]);

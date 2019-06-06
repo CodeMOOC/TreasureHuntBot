@@ -127,7 +127,8 @@ CREATE TABLE `game_location_clusters` (
   `game_id` int(10) UNSIGNED NOT NULL,
   `cluster_id` tinyint(3) UNSIGNED NOT NULL,
   `num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Number of locations to reach in this cluster',
-  `description` text COLLATE utf8_unicode_ci
+  `description` text COLLATE utf8_unicode_ci,
+  `force_location_on_enter` bit(1) NOT NULL DEFAULT b'0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
