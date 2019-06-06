@@ -249,3 +249,17 @@ function telegram_edit_message($chat_id, $message_id, $text, $parameters = null)
 
     return perform_telegram_request($handle);
 }
+
+/**
+ * Asnwers a callback query.
+ * https://core.telegram.org/bots/api#answercallbackquery
+ * 
+ * @param int $callback_id Identifier of the callback query.
+ */
+function telegram_answer_callback_query($callback_id) {
+    $handle = prepare_curl_api_request(TELEGRAM_API_URI_BASE . 'answerCallbackQuery', 'POST', array(
+        'callback_query_id' => $callback_id
+    ), null);
+
+    return perform_telegram_request($handle);
+}

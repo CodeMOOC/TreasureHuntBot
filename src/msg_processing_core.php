@@ -63,5 +63,12 @@ function process_update($context) {
 }
 
 $context = new Context($update);
+
 process_update($context);
+if($context->is_callback()) {
+    // If we are handling a callback, set the callback as processed now
+    $callback_id = $context->callback->callback_id;
+    telegram_answer_callback_query($callback_id, TRUE);
+}
+
 $context->close();
