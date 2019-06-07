@@ -610,16 +610,17 @@ function msg_processing_handle_group_response($context) {
                     $rootdir = realpath(dirname(__FILE__) . '/..');
                     $identifier = "{$context->game->game_id}-{$context->get_internal_id()}";
 
-                    Logger::debug("Generating montage", __FILE__, $context);
+                    Logger::debug("Generating montage with identifier {$identifier}", __FILE__, $context);
 
                     exec("montage {$rootdir}/data/selfies/{$identifier}-*.jpg -background \"#0000\" -auto-orient -geometry 150x150 +polaroid -tile {$total_locations_count}x1 {$rootdir}/data/certificates/{$identifier}-montage.png");
 
                     Logger::debug("Generating certificate", __FILE__, $context);
+                    $certificate_path = "{$rootdir}/data/certificates/{$identifier}-certificate.pdf";
 
-                    exec("php {$rootdir}/html2pdf/cert-gen.php \"{$rootdir}/data/certificates/{$identifier}-certificate.pdf\" {$context->game->group_participants} \"" . addslashes($context->game->group_name) . "\" \"completed\" \"{$context->game->game_name}\" \"{$identifier}\"");
+                    exec("php {$rootdir}/html2pdf/cert-gen.php \"{$certificate_path}\" {$context->game->group_participants} \"" . addslashes($context->game->group_name) . "\" \"completed\" \"{$context->game->game_name}\" \"{$identifier}\"");
 
-                    Logger::info("Delivering certificate", __FILE__, $context);
-                    $context->comm->document("{$rootdir}/data/certificates/{$identifier}-certificate.pdf", __('questionnaire_attachment_caption'));
+                    Logger::info("Delivering certificate from {$certificate_path}", __FILE__, $context);
+                    $context->comm->document($certificate_path, __('questionnaire_attachment_caption'));
                     $context->comm->reply(__('questionnaire_finish_thankyou'));
 
                     bot_set_group_state($context, STATE_CERT_SENT);

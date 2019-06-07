@@ -99,14 +99,17 @@ function telegram_send_location($chat_id, $latitude, $longitude, $parameters = n
  * Accepts Telegram API IDs, remote URLs, or local files.
  */
 function telegram_process_file_id($file_id) {
-    $abspath = realpath(dirname(__FILE__) . '/' . $file_id);
     if(filter_var($file_id, FILTER_VALIDATE_URL) !== FALSE && stripos($file_id, 'http') === 0) {
         // Do nothing for remote URLs
         return $file_id;
     }
-    else if($abspath !== FALSE && file_exists($abspath)) {
-        // Local file
-        return new CURLFile($abspath);
+    else if(file_exists($file_id)) {
+        // Local path with valid path
+        return new CURLFile($file_id);
+    }
+    else if(file_exists(realpath(dirname(__FILE__) . '/' . $file_id))) {
+        // Local file with path that can be resolved
+        return new CURLFile(realpath(dirname(__FILE__) . '/' . $file_id));
     }
     else {
         // Must be an online photo ID, keep as is
