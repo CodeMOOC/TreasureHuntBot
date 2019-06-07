@@ -95,6 +95,26 @@ function telegram_send_location($chat_id, $latitude, $longitude, $parameters = n
 }
 
 /**
+ * Processes a file ID to be used by the Telegram API.
+ * Accepts Telegram API IDs, remote URLs, or local files.
+ */
+function telegram_process_file_id($file_id) {
+    $abspath = realpath(dirname(__FILE__) . '/' . $file_id);
+    if(filter_var($file_id, FILTER_VALIDATE_URL) !== FALSE && stripos($file_id, 'http') === 0) {
+        // Do nothing for remote URLs
+        return $file_id;
+    }
+    else if($abspath !== FALSE && file_exists($abspath)) {
+        // Local file
+        return new CURLFile($abspath);
+    }
+    else {
+        // Must be an online photo ID, keep as is
+        return $file_id;
+    }
+}
+
+/**
  * Sends a Telegram bot photo message.
  * https://core.telegram.org/bots/api#sendphoto
  *
@@ -108,8 +128,6 @@ function telegram_send_photo($chat_id, $photo_id, $caption, $parameters = null) 
         Logger::error('Path to attached photo must be set', __FILE__);
         return false;
     }
-    // Photo is remote if URL or non-existing file identifier is used
-    $is_remote = (stripos($photo_id, 'http') === 0) || !file_exists($photo_id);
 
     $parameters = prepare_parameters($parameters, array(
         'chat_id' => $chat_id,
@@ -117,7 +135,7 @@ function telegram_send_photo($chat_id, $photo_id, $caption, $parameters = null) 
     ));
 
     $handle = prepare_curl_api_request(TELEGRAM_API_URI_BASE . 'sendPhoto', 'POST', $parameters, array(
-        'photo' => ($is_remote) ? $photo_id : new CURLFile($photo_id)
+        'photo' => telegram_process_file_id($photo_id)
     ));
 
     return perform_telegram_request($handle);
@@ -137,8 +155,6 @@ function telegram_send_photo($chat_id, $photo_id, $caption, $parameters = null) 
         Logger::error('Path to attached photo must be set', __FILE__);
         return false;
     }
-    // Photo is remote if URL or non-existing file identifier is used
-    $is_remote = (stripos($document_id, 'http') === 0) || !file_exists($document_id);
 
     $parameters = prepare_parameters($parameters, array(
         'chat_id' => $chat_id,
@@ -146,7 +162,7 @@ function telegram_send_photo($chat_id, $photo_id, $caption, $parameters = null) 
     ));
 
     $handle = prepare_curl_api_request(TELEGRAM_API_URI_BASE . 'sendDocument', 'POST', $parameters, array(
-        'document' => ($is_remote) ? $document_id : new CURLFile($document_id)
+        'document' => telegram_process_file_id($document_id)
     ));
 
     return perform_telegram_request($handle);
