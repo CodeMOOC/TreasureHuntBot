@@ -411,7 +411,7 @@ function msg_processing_handle_group_response($context) {
                         $caption_text = ($location_info[2]) ? $location_info[2] : null;
 
                         $hint_keyboard = null;
-                        if($context->game->location_hints_enabled) {
+                        if($context->game->location_hints_enabled && !$advance_result['end_of_track']) {
                             $hint_keyboard = array("reply_markup" => array(
                                 "inline_keyboard" => array(
                                     array(
