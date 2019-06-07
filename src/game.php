@@ -161,6 +161,12 @@ const GAME_LAST_PUZZLE_2_SOLUTION = 'd5';
 const GAME_LAST_PUZZLE_3_IMAGE = '../riddles/codeweek-2018/pascal.jpg';
 const GAME_LAST_PUZZLE_3_SOLUTION = 'pascal';
 
+const GAME_MINECRAFT_URBINO_PUZZLE_1_IMAGE = '../images/raffaello-minecraft-last-map.jpg';
+const GAME_MINECRAFT_URBINO_PUZZLE_1_SOLUTION = 'b4';
+
+const GAME_MINECRAFT_URBINO_PUZZLE_3_IMAGE = '../images/raffaello.jpg';
+const GAME_MINECRAFT_URBINO_PUZZLE_3_SOLUTION = 'giovanni';
+
 function map_state_to_string($array, $val) {
     $values = array_keys($array);
     $states = array_values($array);

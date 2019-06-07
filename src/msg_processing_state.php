@@ -77,6 +77,11 @@ function msg_processing_handle_group_state($context) {
             return true;
 
         case STATE_GAME_LAST_PUZ:
+            if($context->game->game_id == 434) {
+                $context->comm->picture(GAME_MINECRAFT_URBINO_PUZZLE_1_IMAGE, __('riddle_type_final', 'riddles'));
+                return true;
+            }
+
             $context->comm->picture(GAME_LAST_PUZZLE_1_IMAGE, __('riddle_type_final', 'riddles'));
             return true;
 
@@ -85,6 +90,11 @@ function msg_processing_handle_group_state($context) {
             return true;
 
         case STATE_GAME_LAST_PUZ + 2:
+            if($context->game->game_id == 434) {
+                $context->comm->picture(GAME_MINECRAFT_URBINO_PUZZLE_3_IMAGE, "“Sono nato qui, figlio di un pittore come poi lo sarei diventato io. Qual era il nome di mio padre?”");
+                return true;
+            }
+
             $context->comm->picture(GAME_LAST_PUZZLE_3_IMAGE, "“Hello, mes amis. My father was a tax collector in Rouen and I helped him by developing one of the first mechanical calculators in 1642. What's my last name?”");
             return true;
 
@@ -470,6 +480,18 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case STATE_GAME_LAST_PUZ:
+            if($context->game->game_id == 434) {
+                if($message_response === GAME_MINECRAFT_URBINO_PUZZLE_1_SOLUTION) {
+                    bot_set_group_state($context, STATE_GAME_LAST_PUZ + 2);
+
+                    msg_processing_handle_group_state($context);
+                }
+                else {
+                    $context->comm->reply(__('game_last_puzzle_wrong'));
+                }
+                return true;
+            }
+
             if($message_response === GAME_LAST_PUZZLE_1_SOLUTION) {
                 bot_set_group_state($context, STATE_GAME_LAST_PUZ + 1);
 
@@ -492,6 +514,16 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case STATE_GAME_LAST_PUZ + 2:
+            if($context->game->game_id == 434) {
+                if($message_response === GAME_MINECRAFT_URBINO_PUZZLE_3_SOLUTION) {
+                    msg_process_victory($context);
+                }
+                else {
+                    $context->comm->reply(__('game_last_puzzle_wrong'));
+                }
+                return true;
+            }
+
             if($message_response === GAME_LAST_PUZZLE_3_SOLUTION) {
                 msg_process_victory($context);
             }
