@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 06, 2019 at 08:11 PM
+-- Generation Time: Jun 07, 2019 at 04:31 PM
 -- Server version: 10.1.37-MariaDB-0+deb9u1
 -- PHP Version: 7.0.33-0+deb9u1
 
@@ -109,6 +109,7 @@ CREATE TABLE `games` (
   `language` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
   `organizer_id` int(10) UNSIGNED NOT NULL,
   `organizer_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `badge_overlay_image` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telegram_channel_censor_photo` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Set if pictures should not be sent on the channel',
   `quick_start` tinyint(1) NOT NULL DEFAULT '0',

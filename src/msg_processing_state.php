@@ -305,12 +305,11 @@ function msg_processing_handle_group_response($context) {
                 telegram_download_file($file_path, "../data/selfies/{$local_path}.jpg");
 
                 // Process selfie and optional badge
-                if(false) {
-                    // TODO: if this game has a badge overlay
+                if($context->game->badge_overlay_image) {
                     $rootdir = realpath(dirname(__FILE__) . '/..');
-                    exec("convert {$rootdir}/data/selfies/{$local_path}.jpg -resize 1600x1600^ -gravity center -crop 1600x1600+0+0 +repage {$rootdir}/images/badge-summerschool-2017-08-22.png -composite {$rootdir}/data/badges/{$local_path}.jpg");
+                    exec("convert {$rootdir}/data/selfies/{$local_path}.jpg -resize 1600x1600^ -gravity center -crop 1600x1600+0+0 +repage {$rootdir}/{$context->game->badge_overlay_image} -composite {$rootdir}/data/badges/{$local_path}.jpg");
 
-                    $context->picture("../data/badges/{$local_path}.jpg", __('game_selfie_response_badge'));
+                    $context->comm->picture("../data/badges/{$local_path}.jpg", __('game_selfie_response_badge'));
                 }
                 else {
                     $context->comm->reply(__('game_selfie_response_ok'));
