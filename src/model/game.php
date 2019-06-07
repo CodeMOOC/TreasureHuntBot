@@ -21,6 +21,7 @@ class Game {
     public  $game_has_timeout = false;
     public  $game_timed_out = false;
     public  $game_language = null;
+    public  $location_hints_enabled = false;
 
     public  $event_id = null;
     public  $event_name = null;
@@ -43,7 +44,7 @@ class Game {
         }
 
         $game_data = db_row_query(sprintf(
-            "SELECT `name`, `event_id`, `state`, `telegram_channel`, `telegram_channel_censor_photo`, (`timeout_absolute` IS NOT NULL OR `timeout_interval` IS NOT NULL) AS `has_timeout`, `language` FROM `games` WHERE `game_id` = %d",
+            "SELECT `name`, `event_id`, `state`, `telegram_channel`, `telegram_channel_censor_photo`, (`timeout_absolute` IS NOT NULL OR `timeout_interval` IS NOT NULL) AS `has_timeout`, `language`, `location_hints_enabled` FROM `games` WHERE `game_id` = %d",
             $game_id
         ));
         if(!$game_data) {
@@ -61,6 +62,7 @@ class Game {
         $this->game_channel_censor = (boolean)$game_data[4];
         $this->game_has_timeout = (boolean)$game_data[5];
         $this->game_language = $game_data[6];
+        $this->location_hints_enabled = (boolean)$game_data[7];
 
         $event_data = db_row_query(sprintf(
             "SELECT `name`, `state`, `telegram_channel` FROM `events` WHERE `event_id` = %d",

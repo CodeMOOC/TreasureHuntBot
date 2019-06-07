@@ -224,6 +224,24 @@ function bot_get_expected_location_id($context) {
 }
 
 /**
+ * Gets the time elapsed since the last location assignment.
+ */
+function bot_get_time_since_location_assignment($context) {
+    $elapsed_time = db_scalar_query(sprintf(
+        "SELECT TIMESTAMPDIFF(SECOND, `assigned_on`, NOW()) AS `elapsed` FROM `assigned_locations` WHERE `game_id` = %d AND `group_id` = %d && `reached_on` IS NULL ORDER BY `assigned_on` DESC LIMIT 1",
+        $context->game->game_id,
+        $context->get_internal_id()
+    ));
+    
+    if($elapsed_time) {
+        return $elapsed_time;
+    }
+    else {
+        return 0;
+    }
+}
+
+/**
  * Group reaches location through a code.
  */
 function bot_reach_location($context, $location_id, $game_id) {

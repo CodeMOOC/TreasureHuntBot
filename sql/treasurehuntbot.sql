@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 22, 2018 at 03:27 PM
--- Server version: 10.1.26-MariaDB-0+deb9u1
--- PHP Version: 7.0.27-0+deb9u1
+-- Generation Time: Jun 06, 2019 at 08:11 PM
+-- Server version: 10.1.37-MariaDB-0+deb9u1
+-- PHP Version: 7.0.33-0+deb9u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -112,6 +112,7 @@ CREATE TABLE `games` (
   `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telegram_channel_censor_photo` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Set if pictures should not be sent on the channel',
   `quick_start` tinyint(1) NOT NULL DEFAULT '0',
+  `location_hints_enabled` bit(1) NOT NULL DEFAULT b'0',
   `timeout_absolute` datetime DEFAULT NULL COMMENT 'Absolute timeout when game ends',
   `timeout_interval` smallint(6) DEFAULT NULL COMMENT 'Relative timeout in minutes from start',
   `registered_on` datetime NOT NULL

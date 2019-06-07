@@ -263,7 +263,34 @@ function msg_processing_handle_group_response($context) {
 
         case STATE_GAME_LOCATION:
             // We expect a deeplink that will come through the /start command
-            // Ignore everything
+            if($context->is_callback() && $context->callback->data === 'hint') {
+                $elapsed_seconds = bot_get_time_since_location_assignment($context);
+                $seconds_to_wait = 60 - $elapsed_seconds;
+                Logger::debug("{$elapsed_seconds} seconds elapsed since location assignment", __FILE__, $context);
+
+                if($elapsed_seconds >= 60) {
+                    $context->comm->reply(__('game_location_hint_confirm'));
+
+                    $location_info = bot_get_location_info($context, bot_get_expected_location_id($context));
+                    telegram_send_location(
+                        $context->get_telegram_chat_id(),
+                        $location_info[0],
+                        $location_info[1]
+                    );
+                    return true;
+                }
+                else {
+                    $context->comm->reply(__('game_location_hint_wait'), array(
+                        '%SECONDS%' => $seconds_to_wait
+                    ));
+                    return true;
+                }
+            }
+            else if($context->is_message() && $context->is_message()->is_text()) {
+                // Should signal error, provide button for hint
+                return true;
+            }
+
             msg_processing_handle_group_state($context);
             return true;
 
@@ -382,9 +409,21 @@ function msg_processing_handle_group_response($context) {
                     }
                     if($location_info[3]) {
                         // Image with optional caption
+                        $caption_text = ($location_info[2]) ? $location_info[2] : null;
+
+                        $hint_keyboard = null;
+                        if($context->game->location_hints_enabled) {
+                            $hint_keyboard = array("reply_markup" => array(
+                                "inline_keyboard" => array(
+                                    array(
+                                        array("text" => __('game_location_hint_button'), "callback_data" => "hint")
+                                    )
+                                )
+                            ));
+                        }
+
                         $context->comm->picture(
-                            '../data/locations/' . $location_info[3],
-                            ($location_info[2]) ? $location_info[2] : null
+                            '../data/locations/' . $location_info[3], $caption_text, null, $hint_keyboard
                         );
                     }
                     else if($location_info[2]) {

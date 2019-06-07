@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: treasure-hunt-bot\n"
-"PO-Revision-Date: 2018-08-29 07:16\n"
-"Last-Translator: LorenzCK <lck@klopfenstein.net>\n"
+"PO-Revision-Date: 2019-06-07 14:44\n"
+"Last-Translator: Lorenz Cuno Klopfenstein (LorenzCK)\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -218,6 +218,18 @@ msgstr "Tutto ok! Seguite le istruzioni che vi verranno date dagli organizzatori
 msgid "game_location_state"
 msgstr "Raggiungete il punto assegnato e trovate il QR Code!"
 
+# Location sent, button text to ask for hint
+msgid "game_location_hint_button"
+msgstr "Chiedi suggerimento"
+
+# Must wait for %SECONDS% seconds before getting hint
+msgid "game_location_hint_wait"
+msgstr "Dovete aspettare almeno altri %SECONDS% prima di poter ricevere un suggerimento. ⏱"
+
+# Here's the hint
+msgid "game_location_hint_confirm"
+msgstr "Serve una mano? Ecco il posto esatto da raggiungere!"
+
 # Game state: snap selfie
 msgid "game_selfie_state"
 msgstr "Mandatemi un bel <i>selfie</i> di gruppo! (Sono ammesse smorfie e assicuratevi di essere tutti al centro della foto.)"
@@ -242,7 +254,7 @@ msgstr "Scrivete qui la risposta al quesito appena inviato."
 msgid "game_puzzle_response_wait"
 msgstr "Dovete aspettare altri %SECONDS% secondi prima di poter rispondere."
 
-# Game state: puzzle solution wrong, wait 60 seconds
+# Game state: puzzle solution wrong, wait 30 seconds
 msgid "game_puzzle_response_wrong"
 msgstr "Ehm… Non proprio! 😩 Purtroppo avete sbagliato e dovrete aspettare un minuto prima di poter dare un’altra risposta…\n"
 "Giusto il tempo di pensare alla soluzione corretta! 😉"

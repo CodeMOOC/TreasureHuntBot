@@ -208,6 +208,18 @@ msgstr ""
 msgid "game_location_state"
 msgstr ""
 
+# Location sent, button text to ask for hint
+msgid "game_location_hint_button"
+msgstr ""
+
+# Must wait for %SECONDS% seconds before getting hint
+msgid "game_location_hint_wait"
+msgstr ""
+
+# Here's the hint
+msgid "game_location_hint_confirm"
+msgstr ""
+
 # Game state: snap selfie
 msgid "game_selfie_state"
 msgstr ""
@@ -232,7 +244,7 @@ msgstr ""
 msgid "game_puzzle_response_wait"
 msgstr ""
 
-# Game state: puzzle solution wrong, wait 60 seconds
+# Game state: puzzle solution wrong, wait 30 seconds
 msgid "game_puzzle_response_wrong"
 msgstr ""
 

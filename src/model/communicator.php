@@ -31,11 +31,17 @@ class Communicator {
     /**
      * Replies to the current incoming message with a picture.
      */
-    function picture($photo_id, $message, $additional_values = null) {
+    function picture($photo_id, $message, $additional_values = null, $additional_parameters = null) {
+        $default_parameters = array(
+            'parse_mode' => 'HTML'
+        );
+        $final_parameters = unite_arrays($default_parameters, $additional_parameters);
+
         return telegram_send_photo(
             $this->chat_id,
             $photo_id,
-            $this->hydrate_text($message, $additional_values)
+            $this->hydrate_text($message, $additional_values),
+            $final_parameters
         );
     }
 
