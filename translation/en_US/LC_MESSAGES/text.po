@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: treasure-hunt-bot\n"
-"PO-Revision-Date: 2019-06-07 14:45\n"
+"PO-Revision-Date: 2019-06-07 16:29\n"
 "Last-Translator: Lorenz Cuno Klopfenstein (LorenzCK)\n"
 "Language-Team: English\n"
 "MIME-Version: 1.0\n"
@@ -256,7 +256,7 @@ msgstr "Please wait for %SECONDS% more seconds before writing your answer again.
 
 # Game state: puzzle solution wrong, wait 30 seconds
 msgid "game_puzzle_response_wrong"
-msgstr "Err… not really! 😩 I’m afraid your answer is not correct. Please wait for one minute before trying again… and think it through this time! 😉"
+msgstr "Err… not really! 😩 I’m afraid your answer is not correct. Please wait for a couple of seconds before trying again… and think it through this time! 😉"
 
 # Game state: puzzle solution correct, congratulations
 msgid "game_puzzle_response_correct"
