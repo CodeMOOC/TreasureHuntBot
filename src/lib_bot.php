@@ -300,8 +300,7 @@ function bot_reach_location($context, $location_id, $game_id) {
 function bot_give_solution($context, $solution) {
     $riddle_info = bot_get_current_assigned_riddle($context);
     if($riddle_info == null || $riddle_info === false) {
-        Logger::error("Unable to load current riddle info", __FILE__, $context);
-        return false;
+        Logger::error("Unable to load current riddle info: " . var_dump($riddle_info), __FILE__, $context);
     }
 
     // Timeout

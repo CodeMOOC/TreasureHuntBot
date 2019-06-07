@@ -87,7 +87,7 @@ function localization_set_locale_and_persist($context, $locale_iso_code) {
         $context->get_internal_id()
     ));
 
-    Logger::debug("Language code persisted to {$code}", __FILE__, $context);
+    Logger::debug("Language code persisted to {$locale}", __FILE__, $context);
 
     return $locale;
 }
