@@ -282,7 +282,13 @@ function msg_processing_handle_group_response($context) {
                 else {
                     $context->comm->reply(__('game_location_hint_wait'), array(
                         '%SECONDS%' => $seconds_to_wait
-                    ));
+                    ), array("reply_markup" => array(
+                        "inline_keyboard" => array(
+                            array(
+                                array("text" => __('game_location_hint_button'), "callback_data" => 'hint')
+                            )
+                        )
+                    )));
                     return true;
                 }
             }
@@ -415,7 +421,7 @@ function msg_processing_handle_group_response($context) {
                             $hint_keyboard = array("reply_markup" => array(
                                 "inline_keyboard" => array(
                                     array(
-                                        array("text" => __('game_location_hint_button'), "callback_data" => "hint")
+                                        array("text" => __('game_location_hint_button'), "callback_data" => 'hint')
                                     )
                                 )
                             ));
