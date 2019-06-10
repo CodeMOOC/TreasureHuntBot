@@ -79,7 +79,7 @@ function telegram_send_message($chat_id, $message, $parameters = null) {
  */
 function telegram_send_location($chat_id, $latitude, $longitude, $parameters = null) {
     if(!is_numeric($latitude) || !is_numeric($longitude)) {
-        Logger:error('Latitude and longitude must be numbers', __FILE__);
+        Logger::error('Latitude and longitude must be numbers', __FILE__);
         return false;
     }
 

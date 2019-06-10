@@ -292,7 +292,7 @@ function msg_processing_handle_group_response($context) {
                     return true;
                 }
             }
-            else if($context->is_message() && $context->is_message()->is_text()) {
+            else if($context->is_message() && $context->message->is_text()) {
                 // Should signal error, provide button for hint
                 return true;
             }
