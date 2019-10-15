@@ -21,7 +21,8 @@ It will automatically forward you to the game creation process.
 </div>
 
 Note that games created using this QR&nbsp;Code above will generate a new independent game, which will not be associated to any event (so-called “free to play” games).
-If you want to join the **global Code&nbsp;Week&nbsp;2018 event**, please refer to the [specific Code&nbsp;Week game creation instructions](/codeweek2018) and to the [official announcement on the blog](http://blog.codeweek.eu/post/179080628670/want-to-have-fun-with-friends-organise-a-code).
+
+If you want to join the **global Code&nbsp;Week&nbsp;2019 event**, please refer to the [specific Code&nbsp;Week game creation instructions](/codeweek2019).
 
 ### Basic game information
 
