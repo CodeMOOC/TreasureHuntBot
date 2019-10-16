@@ -8,8 +8,6 @@ images/*
 !images/final_riddle_placeholder.jpg
 locations/*
 !locations/test.png
-riddles/*
-!riddles/default.jpg
 data/avatars/*
 !data/avatars/placeholder
 data/badges/*
