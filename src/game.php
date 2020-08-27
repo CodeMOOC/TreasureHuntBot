@@ -152,6 +152,8 @@ const EVENT_STATE_MAP               = array(
     255     => 'EVENT_STATE_DEAD'
 );
 
+const GAME_EVENT_ID_CODEWEEK_2019 = 13;
+
 const GAME_LAST_PUZZLE_1_IMAGE = '../riddles/codeweek-2018/europe.jpg';
 const GAME_LAST_PUZZLE_1_SOLUTION = 'c5';
 
