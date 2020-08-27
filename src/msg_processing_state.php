@@ -466,9 +466,14 @@ function msg_processing_handle_group_response($context) {
 
                 $context->comm->channel_picture($file_info['file_id'], __('game_last_selfie_forward_caption'));
 
-                $context->comm->reply(__('game_last_puzzle_instructions'));
-
-                bot_set_group_state($context, STATE_GAME_LAST_PUZ);
+                if(in_array($context->game->event_id, EVENT_IDS_WITH_FINAL_PUZZLE)) {
+                    $context->comm->reply(__('game_last_puzzle_instructions'));
+                    
+                    bot_set_group_state($context, STATE_GAME_LAST_PUZ);
+                }
+                else {
+                    msg_process_victory($context);
+                }
             }
 
             msg_processing_handle_group_state($context);

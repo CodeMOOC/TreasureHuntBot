@@ -161,6 +161,16 @@ const GAME_LAST_PUZZLE_2_SOLUTION = 'd5';
 const GAME_LAST_PUZZLE_3_IMAGE = '../riddles/codeweek-2018/pascal.jpg';
 const GAME_LAST_PUZZLE_3_SOLUTION = 'pascal';
 
+const EVENT_IDS_WITH_FINAL_PUZZLE = array(
+    2,
+    7,
+    8,
+    10,
+    11,
+    12,
+    13
+);
+
 function map_state_to_string($array, $val) {
     $values = array_keys($array);
     $states = array_values($array);
