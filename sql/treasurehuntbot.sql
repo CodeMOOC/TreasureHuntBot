@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 07, 2019 at 04:31 PM
--- Server version: 10.1.37-MariaDB-0+deb9u1
--- PHP Version: 7.0.33-0+deb9u1
+-- Generation Time: Sep 08, 2020 at 07:31 PM
+-- Server version: 10.1.45-MariaDB-0+deb9u1
+-- PHP Version: 7.0.33-0+deb9u8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -196,6 +196,7 @@ CREATE TABLE `locations` (
   `lng` float NOT NULL,
   `image_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `description` text COLLATE utf8_unicode_ci,
+  `hint` text COLLATE utf8_unicode_ci COMMENT 'Optional hint when user fails',
   `is_start` bit(1) NOT NULL DEFAULT b'0',
   `is_end` bit(1) NOT NULL DEFAULT b'0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

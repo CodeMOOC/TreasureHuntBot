@@ -54,7 +54,7 @@ function bot_get_riddle_info($context, $riddle_id) {
  */
 function bot_get_location_info($context, $location_id) {
     return db_row_query(sprintf(
-        "SELECT `lat`, `lng`, `description`, `image_path`, `internal_note` FROM `locations` WHERE `game_id` = %d AND `location_id` = %d",
+        "SELECT `lat`, `lng`, `description`, `image_path`, `internal_note`, `hint` FROM `locations` WHERE `game_id` = %d AND `location_id` = %d",
         $context->game->game_id,
         $location_id
     ));

@@ -284,14 +284,20 @@ function msg_processing_handle_group_response($context) {
                 Logger::debug("{$elapsed_seconds} seconds elapsed since location assignment", __FILE__, $context);
 
                 if($elapsed_seconds >= 60) {
-                    $context->comm->reply(__('game_location_hint_confirm'));
-
                     $location_info = bot_get_location_info($context, bot_get_expected_location_id($context));
-                    telegram_send_location(
-                        $context->get_telegram_chat_id(),
-                        $location_info[0],
-                        $location_info[1]
-                    );
+                    if($location_info[5]) {
+                        // Send location-specific text hint
+                        $context->comm->reply($location_info[5]);
+                    }
+                    else {
+                        // Send precise location
+                        $context->comm->reply(__('game_location_hint_confirm'));
+                        telegram_send_location(
+                            $context->get_telegram_chat_id(),
+                            $location_info[0],
+                            $location_info[1]
+                        );
+                    }
                     return true;
                 }
                 else {
@@ -308,7 +314,15 @@ function msg_processing_handle_group_response($context) {
                 }
             }
             else if($context->is_message() && $context->message->is_text()) {
-                // Should signal error, provide button for hint
+                $context->comm->reply('Come again? 🤔 Are you lost?', array(
+                    '%SECONDS%' => $seconds_to_wait
+                ), array("reply_markup" => array(
+                    "inline_keyboard" => array(
+                        array(
+                            array("text" => __('game_location_hint_button'), "callback_data" => 'hint')
+                        )
+                    )
+                )));
                 return true;
             }
 

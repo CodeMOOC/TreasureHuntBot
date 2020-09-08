@@ -216,7 +216,7 @@ msgstr "Everything OK! Follow the instructions you will be given by the organize
 
 # Game state: reach assigned location and look for QR Code
 msgid "game_location_state"
-msgstr "Reach the assigned location and look for a QR Code!"
+msgstr "Find the assigned location and look for a QR Code!"
 
 # Location sent, button text to ask for hint
 msgid "game_location_hint_button"
