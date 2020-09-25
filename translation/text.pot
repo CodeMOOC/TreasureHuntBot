@@ -208,6 +208,10 @@ msgstr ""
 msgid "game_location_state"
 msgstr ""
 
+# Location sent, wrong response given, do you want hint?
+msgid "game_location_hint_nudge"
+msgstr ""
+
 # Location sent, button text to ask for hint
 msgid "game_location_hint_button"
 msgstr ""

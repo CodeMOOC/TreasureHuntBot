@@ -218,6 +218,10 @@ msgstr "Tutto ok! Seguite le istruzioni che vi verranno date dagli organizzatori
 msgid "game_location_state"
 msgstr "Raggiungete il punto assegnato e trovate il QR Code!"
 
+# Location sent, wrong response given, do you want hint?
+msgid "game_location_hint_nudge"
+msgstr "Come? 🤔 Vi siete persi?"
+
 # Location sent, button text to ask for hint
 msgid "game_location_hint_button"
 msgstr "Chiedi suggerimento"

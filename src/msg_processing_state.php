@@ -314,7 +314,7 @@ function msg_processing_handle_group_response($context) {
                 }
             }
             else if($context->is_message() && $context->message->is_text()) {
-                $context->comm->reply('Come again? 🤔 Are you lost?', array(
+                $context->comm->reply(__('game_location_hint_nudge'), array(
                     '%SECONDS%' => $seconds_to_wait
                 ), array("reply_markup" => array(
                     "inline_keyboard" => array(
