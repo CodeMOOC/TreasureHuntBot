@@ -665,8 +665,9 @@ function msg_processing_handle_group_response($context) {
 
                     // Generate certificate and montages
                     $intermediate_locations_count = db_scalar_query(sprintf(
-                        'SELECT `min_num_locations` FROM `events` WHERE `event_id` = %d',
-                        $context->game->event_id
+                        'SELECT COUNT(*) FROM `assigned_locations` WHERE `game_id` = %d AND `group_id` = %d',
+                        $context->game->game_id,
+                        $context->get_internal_id()
                     ));
                     $total_locations_count = $intermediate_locations_count + 2; // start and end
 
