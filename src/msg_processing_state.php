@@ -77,30 +77,24 @@ function msg_processing_handle_group_state($context) {
             return true;
 
         case STATE_GAME_LAST_PUZ:
-            if($context->game->event_id === GAME_EVENT_ID_CODEWEEK_2019) {
-                $context->comm->picture('../riddles/codeweek-2019/europe.jpg', __('riddle_type_final', 'riddles'));
-            }
-            else {
-                $context->comm->picture(GAME_LAST_PUZZLE_1_IMAGE, __('riddle_type_final', 'riddles'));
-            }
+            $context->comm->picture(
+                $context->game->event_final_riddles['puzzle_1_riddle'],
+                __('riddle_type_final', 'riddles')
+            );
             return true;
 
         case STATE_GAME_LAST_PUZ + 1:
-            if($context->game->event_id === GAME_EVENT_ID_CODEWEEK_2019) {
-                $context->comm->picture('../riddles/codeweek-2019/hungary.jpg', __('riddle_type_final_repeat', 'riddles'));
-            }
-            else {
-                $context->comm->picture(GAME_LAST_PUZZLE_2_IMAGE, __('riddle_type_final_repeat', 'riddles'));
-            }
+            $context->comm->picture(
+                $context->game->event_final_riddles['puzzle_2_riddle'],
+                __('riddle_type_final_repeat', 'riddles')
+            );
             return true;
 
         case STATE_GAME_LAST_PUZ + 2:
-            if($context->game->event_id === GAME_EVENT_ID_CODEWEEK_2019) {
-                $context->comm->picture('../riddles/codeweek-2019/vonneumann.jpg', "“Helló, barátaim! I was born here in 1903 and in ’29 I moved to the United States. Modern computer architecture and programming are based on a model that has my name. What’s the first name I adopted when moving to the USA?”");
-            }
-            else {
-                $context->comm->picture(GAME_LAST_PUZZLE_3_IMAGE, "“Hello, mes amis. My father was a tax collector in Rouen and I helped him by developing one of the first mechanical calculators in 1642. What's my last name?”");
-            }
+            $context->comm->picture(
+                $context->game->event_final_riddles['puzzle_3_riddle'],
+                $context->game->event_final_riddles['puzzle_3_text']
+            );
             return true;
 
         case STATE_GAME_WON:
@@ -365,7 +359,7 @@ function msg_processing_handle_group_response($context) {
 
                 // Get riddle information
                 $riddle_info = bot_get_riddle_info($context, $riddle_id);
-                
+
                 $riddle_text = '';
                 $riddle_hydration = array();
 
@@ -409,7 +403,7 @@ function msg_processing_handle_group_response($context) {
                     $confirm_text = __('game_puzzle_response_correct');
                     $current_hint = bot_get_current_hint($context);
                     if($current_hint) {
-                        $confirm_text .= ' <code>' . $current_hint . '</code>';
+                        $confirm_text .= ' <b>' . $current_hint . '</b>';
                     }
                     $context->comm->reply($confirm_text);
 
@@ -495,9 +489,8 @@ function msg_processing_handle_group_response($context) {
 
                 $context->comm->channel_picture($file_info['file_id'], __('game_last_selfie_forward_caption'));
 
-                if(in_array($context->game->event_id, EVENT_IDS_WITH_FINAL_PUZZLE)) {
+                if($context->game->has_final_riddle()) {
                     $context->comm->reply(__('game_last_puzzle_instructions'));
-                    
                     bot_set_group_state($context, STATE_GAME_LAST_PUZ);
                 }
                 else {
@@ -510,57 +503,32 @@ function msg_processing_handle_group_response($context) {
             return true;
 
         case STATE_GAME_LAST_PUZ:
-            if($context->game->event_id === GAME_EVENT_ID_CODEWEEK_2019) {
-                if($message_response === 'e6') {
-                    bot_set_group_state($context, STATE_GAME_LAST_PUZ + 1);
-                    msg_processing_handle_group_state($context);
-                    return true;
-                }
+            if($message_response === $context->game->event_final_riddles['puzzle_1_solution']) {
+                bot_set_group_state($context, STATE_GAME_LAST_PUZ + 1);
+                msg_processing_handle_group_state($context);
             }
             else {
-                if($message_response === GAME_LAST_PUZZLE_1_SOLUTION) {
-                    bot_set_group_state($context, STATE_GAME_LAST_PUZ + 1);
-                    msg_processing_handle_group_state($context);
-                    return true;
-                }
+                $context->comm->reply(__('game_last_puzzle_wrong'));
             }
-            
-            $context->comm->reply(__('game_last_puzzle_wrong'));
             return true;
 
         case STATE_GAME_LAST_PUZ + 1:
-            if($context->game->event_id === GAME_EVENT_ID_CODEWEEK_2019) {
-                if($message_response === 'd3') {
-                    bot_set_group_state($context, STATE_GAME_LAST_PUZ + 2);
-                    msg_processing_handle_group_state($context);
-                    return true;
-                }
+            if($message_response === $context->game->event_final_riddles['puzzle_2_solution']) {
+                bot_set_group_state($context, STATE_GAME_LAST_PUZ + 2);
+                msg_processing_handle_group_state($context);
             }
             else {
-                if($message_response === GAME_LAST_PUZZLE_2_SOLUTION) {
-                    bot_set_group_state($context, STATE_GAME_LAST_PUZ + 2);
-                    msg_processing_handle_group_state($context);
-                }
+                $context->comm->reply(__('game_last_puzzle_wrong'));
             }
-            
-            $context->comm->reply(__('game_last_puzzle_wrong'));
             return true;
 
         case STATE_GAME_LAST_PUZ + 2:
-            if($context->game->event_id === GAME_EVENT_ID_CODEWEEK_2019) {
-                if($message_response === 'john') {
-                    msg_process_victory($context);
-                    return true;
-                }
+            if($message_response === $context->game->event_final_riddles['puzzle_3_solution']) {
+                msg_process_victory($context);
             }
             else {
-                if($message_response === GAME_LAST_PUZZLE_3_SOLUTION) {
-                    msg_process_victory($context);
-                    return true;
-                }
+                $context->comm->reply(__('game_last_puzzle_wrong'));
             }
-            
-            $context->comm->reply(__('game_last_puzzle_wrong'));
             return true;
 
         case STATE_FEEDBACK:

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 08, 2020 at 07:31 PM
+-- Generation Time: Sep 26, 2020 at 07:57 PM
 -- Server version: 10.1.45-MariaDB-0+deb9u1
 -- PHP Version: 7.0.33-0+deb9u8
 
@@ -89,7 +89,8 @@ CREATE TABLE `events` (
   `max_num_locations` tinyint(3) UNSIGNED NOT NULL DEFAULT '30' COMMENT 'Maximum number of locations',
   `organizer_id` int(10) UNSIGNED NOT NULL,
   `min_avg_distance` float DEFAULT NULL COMMENT 'Minimum average distance between locations (in kms)',
-  `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL
+  `telegram_channel` varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `final_riddle_json` text COLLATE utf8_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
