@@ -152,27 +152,6 @@ const EVENT_STATE_MAP               = array(
     255     => 'EVENT_STATE_DEAD'
 );
 
-const GAME_EVENT_ID_CODEWEEK_2019 = 13;
-
-const GAME_LAST_PUZZLE_1_IMAGE = '../riddles/codeweek-2018/europe.jpg';
-const GAME_LAST_PUZZLE_1_SOLUTION = 'c5';
-
-const GAME_LAST_PUZZLE_2_IMAGE = '../riddles/codeweek-2018/france.jpg';
-const GAME_LAST_PUZZLE_2_SOLUTION = 'd5';
-
-const GAME_LAST_PUZZLE_3_IMAGE = '../riddles/codeweek-2018/pascal.jpg';
-const GAME_LAST_PUZZLE_3_SOLUTION = 'pascal';
-
-const EVENT_IDS_WITH_FINAL_PUZZLE = array(
-    2,
-    7,
-    8,
-    10,
-    11,
-    12,
-    13
-);
-
 function map_state_to_string($array, $val) {
     $values = array_keys($array);
     $states = array_values($array);

@@ -28,6 +28,7 @@ class Game {
     public  $event_name = null;
     public  $event_state = EVENT_STATE_OPEN_FOR_ALL;
     public  $event_channel_name = null;
+    public  $event_final_riddles = array();
 
     // Rows of cluster_id, num_locations, description, force_location_on_enter
     private $game_location_clusters = null;
@@ -67,7 +68,7 @@ class Game {
         $this->badge_overlay_image = $game_data[8];
 
         $event_data = db_row_query(sprintf(
-            "SELECT `name`, `state`, `telegram_channel` FROM `events` WHERE `event_id` = %d",
+            "SELECT `name`, `state`, `telegram_channel`, `final_riddle_json` FROM `events` WHERE `event_id` = %d",
             $this->event_id
         ));
         if(!$event_data) {
@@ -79,6 +80,9 @@ class Game {
         $this->event_name = $event_data[0];
         $this->event_state = (int)$event_data[1];
         $this->event_channel_name = $event_data[2];
+        if($event_data[3] != NULL) {
+            $this->event_final_riddles = json_decode($event_data[3], TRUE);
+        }
 
         Logger::debug(sprintf(
             "User in game '%s' (%s), event '%s' (%s), channel '%s', censor %s, language '%s'",
@@ -107,6 +111,7 @@ class Game {
 
         $this->event_id = null;
         $this->event_name = null;
+        $this->event_final_riddles = array();
 
         $this->group_state = STATE_INVALID;
         $this->group_participants = 1;
@@ -269,6 +274,11 @@ class Game {
 
         Logger::debug("Cluster #{$cluster[0]} does not start a new cluster", __FILE__, $this->owning_context);
         return false;
+    }
+
+    function has_final_riddle() {
+        // This is a bit brittle
+        return count($this->event_final_riddles) > 0;
     }
 
 }
