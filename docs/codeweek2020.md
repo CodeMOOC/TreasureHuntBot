@@ -7,12 +7,12 @@ Get ready for a Europe-wide treasure hunt!&nbsp;🔎
 </p>
 
 This year's Code&nbsp;Week <i>Code Hunting Game</i> has been fully revamped.
-The game can be played on your own time, individually or in team, simply by talking with a Telegram bot and looking around a treasure map!&nbsp;🗺
+The game can be played on your own time, at home, individually or in team, simply by talking with a Telegram bot and looking around a treasure map!&nbsp;🗺
 
 ## What do you need?
 
 Not much: you'll simply need a Telegram account and a Telegram client application, either on your [PC/Mac](https://desktop.telegram.org/) or on your mobile phone ([Android](https://telegram.org/dl/android)/[iOS](https://telegram.org/dl/ios)).
-If you're playing using your phone, you'll also need a QR&nbsp;Code scanner (they are usually integrated within the phone's camera).
+If you're playing using your phone, you'll also need a QR&nbsp;Code scanner (they are usually integrated within your phone's camera).
 Check out the [requirements page](/en/requirements) for more information.
 
 ## How does it work?
