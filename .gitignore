@@ -6,6 +6,7 @@
 images/*
 !images/default.jpg
 !images/final_riddle_placeholder.jpg
+!images/quiz-captcha.png
 locations/*
 !locations/test.png
 data/avatars/*
