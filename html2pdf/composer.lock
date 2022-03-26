@@ -1,10 +1,9 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "22bf3b7d83067bcf367fdbe52622a8b6",
     "content-hash": "47f6eca458c6fc1a00a4a5e92bd5e0da",
     "packages": [
         {
@@ -47,7 +46,7 @@
             ],
             "description": "BaconQrCode is a QR code generator for PHP.",
             "homepage": "https://github.com/Bacon/BaconQrCode",
-            "time": "2016-01-09 22:55:35"
+            "time": "2016-01-09T22:55:35+00:00"
         },
         {
             "name": "dompdf/dompdf",
@@ -109,7 +108,7 @@
             ],
             "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
             "homepage": "https://github.com/dompdf/dompdf",
-            "time": "2017-09-14 01:36:24"
+            "time": "2017-09-14T01:36:24+00:00"
         },
         {
             "name": "endroid/qrcode",
@@ -179,7 +178,7 @@
                 "qrcode",
                 "symfony"
             ],
-            "time": "2017-09-12 14:37:06"
+            "time": "2017-09-12T14:37:06+00:00"
         },
         {
             "name": "khanamiryan/qrcode-detector-decoder",
@@ -229,7 +228,7 @@
                 "qr",
                 "zxing"
             ],
-            "time": "2017-01-13 09:11:46"
+            "time": "2017-01-13T09:11:46+00:00"
         },
         {
             "name": "myclabs/php-enum",
@@ -273,7 +272,7 @@
             "keywords": [
                 "enum"
             ],
-            "time": "2017-06-28 16:24:08"
+            "time": "2017-06-28T16:24:08+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -321,7 +320,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-09-27 21:40:39"
+            "time": "2017-09-27T21:40:39+00:00"
         },
         {
             "name": "phenx/php-font-lib",
@@ -358,7 +357,7 @@
             ],
             "description": "A library to read, parse, export and make subsets of different types of font files.",
             "homepage": "https://github.com/PhenX/php-font-lib",
-            "time": "2017-09-13 16:14:37"
+            "time": "2017-09-13T16:14:37+00:00"
         },
         {
             "name": "phenx/php-svg-lib",
@@ -398,20 +397,20 @@
             ],
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
-            "time": "2017-05-24 10:07:27"
+            "time": "2017-05-24T10:07:27+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
-            "version": "8.1.0",
+            "version": "8.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabberworm/PHP-CSS-Parser.git",
-                "reference": "850cbbcbe7fbb155387a151ea562897a67e242ef"
+                "reference": "b3683fba4e30963908265b039190a0e88f74c6fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabberworm/PHP-CSS-Parser/zipball/850cbbcbe7fbb155387a151ea562897a67e242ef",
-                "reference": "850cbbcbe7fbb155387a151ea562897a67e242ef",
+                "url": "https://api.github.com/repos/sabberworm/PHP-CSS-Parser/zipball/b3683fba4e30963908265b039190a0e88f74c6fb",
+                "reference": "b3683fba4e30963908265b039190a0e88f74c6fb",
                 "shasum": ""
             },
             "require": {
@@ -442,7 +441,11 @@
                 "parser",
                 "stylesheet"
             ],
-            "time": "2016-07-19 19:14:21"
+            "support": {
+                "issues": "https://github.com/sabberworm/PHP-CSS-Parser/issues",
+                "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.1.1"
+            },
+            "time": "2020-06-01T09:09:10+00:00"
         },
         {
             "name": "symfony/inflector",
@@ -499,7 +502,7 @@
                 "symfony",
                 "words"
             ],
-            "time": "2017-07-29 21:54:42"
+            "time": "2017-07-29T21:54:42+00:00"
         },
         {
             "name": "symfony/options-resolver",
@@ -553,7 +556,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2017-07-29 21:54:42"
+            "time": "2017-07-29T21:54:42+00:00"
         },
         {
             "name": "symfony/polyfill-php70",
@@ -612,7 +615,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-14 15:44:48"
+            "time": "2017-06-14T15:44:48+00:00"
         },
         {
             "name": "symfony/property-access",
@@ -680,7 +683,7 @@
                 "property path",
                 "reflection"
             ],
-            "time": "2017-08-30 14:49:16"
+            "time": "2017-08-30T14:49:16+00:00"
         }
     ],
     "packages-dev": [],
@@ -690,5 +693,6 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
 }
