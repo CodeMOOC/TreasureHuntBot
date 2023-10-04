@@ -1,3 +1,5 @@
+This repository is archived. The Code Hunting Games bot has been superseded by the [Code Week version](https://github.com/CodeMOOC/CodeWeek-TreasureHuntBot).
+
 # Treasure Hunt Bot
 
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/treasure-hunt-bot/localized.svg)](https://crowdin.com/project/treasure-hunt-bot)
